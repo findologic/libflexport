@@ -1,0 +1,116 @@
+<?php
+
+namespace FINDOLOGIC\Tests;
+
+use FINDOLOGIC\XmlExport\Elements\Bonus;
+use FINDOLOGIC\XmlExport\Elements\DateAdded;
+use FINDOLOGIC\XmlExport\Elements\Description;
+use FINDOLOGIC\XmlExport\Elements\Item;
+use FINDOLOGIC\XmlExport\Elements\Name;
+use FINDOLOGIC\XmlExport\Elements\Price;
+use FINDOLOGIC\XmlExport\Elements\SalesFrequency;
+use FINDOLOGIC\XmlExport\Elements\Sort;
+use FINDOLOGIC\XmlExport\Elements\Summary;
+use FINDOLOGIC\XmlExport\Elements\Url;
+use FINDOLOGIC\XmlExport\Page;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Class XmlSerializationTest
+ * @package FINDOLOGIC\Tests
+ *
+ * Tests that the serialized output adheres to the defined schema and to things that cannot be covered by it.
+ *
+ * The schema is fetched from GitHub every time the test case is run, to ensure that tests still pass in case the schema
+ * changed in the meantime.
+ */
+class XmlSerializationTest extends TestCase
+{
+    const SCHEMA_URL = 'https://raw.githubusercontent.com/findologic/xml-export/master/src/main/resources/findologic.xsd';
+
+    private static $schema;
+
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+
+        // Download the schema once for the whole test case for speed as compared to downloading it for each test.
+        self::$schema = file_get_contents(self::SCHEMA_URL);
+    }
+
+    private function getMinimalItem()
+    {
+        $item = new Item('123');
+
+        $name = new Name();
+        $name->setValue('Foobar');
+        $item->setName($name);
+
+        $summary = new Summary();
+        $summary->setValue('This is a summary.');
+        $item->setSummary($summary);
+
+        $description = new Description();
+        $description->setValue('This is a more verbose description.');
+        $item->setDescription($description);
+
+        $price = new Price();
+        $price->setValue('13.37');
+        $item->setPrice($price);
+
+        $url = new Url();
+        $url->setValue('http://example.org/my-awesome-product.html');
+        $item->setUrl($url);
+
+        $bonus = new Bonus();
+        $bonus->setValue(3);
+        $item->setBonus($bonus);
+
+        $salesFrequency = new SalesFrequency();
+        $salesFrequency->setValue(42);
+        $item->setSalesFrequency($salesFrequency);
+
+        $dateAdded = new DateAdded();
+        $dateAdded->setDateValue(new \DateTime());
+        $item->setDateAdded($dateAdded);
+
+        $sort = new Sort();
+        $sort->setValue(2);
+        $item->setSort($sort);
+
+        return $item;
+    }
+
+    private function assertPageIsValid(Page $page)
+    {
+        $document = $page->getXml();
+
+        $this->assertTrue($document->schemaValidateSource(self::$schema));
+    }
+
+    public function testEmptyPageIsValid()
+    {
+        $page = new Page(0, 20, 0);
+
+        $this->assertPageIsValid($page);
+    }
+
+    public function testMinimalItemIsValid()
+    {
+        $page = new Page(0, 1, 1);
+        $item = $this->getMinimalItem();
+        $page->addItem($item);
+
+        $this->assertPageIsValid($page);
+    }
+
+    public function testPropertyKeysAndValuesAreCdataWrapped()
+    {
+        $this->markTestIncomplete();
+        $page = new Page(0, 1, 1);
+        $item = $this->getMinimalItem();
+        $page->addItem($item);
+
+        $this->assertPageIsValid($page);
+    }
+}

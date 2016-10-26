@@ -1,0 +1,23 @@
+{
+    "name": "findologic/xml-export",
+    "description": "FINDOLOGIC XML export toolkit",
+    "require-dev": {
+        "phpunit/phpunit": "~5.6",
+        "goetas-webservices/xsd2php":"^0.2"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Chris Ortner",
+            "email": "chris@codexfons.com"
+        }
+    ],
+    "require": {
+        "goetas-webservices/xsd2php-runtime": "^0.2.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "FINDOLOGIC\\XmlExport": "src/"
+        }
+    }
+}
