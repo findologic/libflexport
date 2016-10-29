@@ -3,7 +3,7 @@
 namespace FINDOLOGIC\Export\Helpers;
 
 
-class XmlHelper
+class XMLHelper
 {
     /**
      * Shortcut for creating an XML element.

@@ -2,17 +2,19 @@
 
 namespace FINDOLOGIC\Tests;
 
+use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
 use FINDOLOGIC\Export\Data\DateAdded;
 use FINDOLOGIC\Export\Data\Description;
-use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Name;
 use FINDOLOGIC\Export\Data\Price;
+use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\SalesFrequency;
 use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\XML\Page;
+use FINDOLOGIC\Export\XML\XMLItem;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -40,18 +42,18 @@ class XmlSerializationTest extends TestCase
 
     private function getMinimalItem()
     {
-        $item = new Item('123');
+        $item = new XMLItem('123');
 
         $name = new Name();
-        $name->setValue('Foobar');
+        $name->setValue('Foobar &quot;</>]]>');
         $item->setName($name);
 
         $summary = new Summary();
-        $summary->setValue('This is a summary.');
+        $summary->setValue('This is a summary. &quot;</>]]>');
         $item->setSummary($summary);
 
         $description = new Description();
-        $description->setValue('This is a more verbose description.');
+        $description->setValue('This is a more verbose description. &quot;</>]]>');
         $item->setDescription($description);
 
         $price = new Price();
@@ -106,9 +108,25 @@ class XmlSerializationTest extends TestCase
 
     public function testPropertyKeysAndValuesAreCdataWrapped()
     {
-        $this->markTestIncomplete();
         $page = new Page(0, 1, 1);
         $item = $this->getMinimalItem();
+
+        $property = new Property('&quot;</>', array(null => '&quot;</>'));
+        $item->addProperty($property);
+
+        $page->addItem($item);
+
+        $this->assertPageIsValid($page);
+    }
+
+    public function testAttributesAreCdataWrapped()
+    {
+        $page = new Page(0, 1, 1);
+        $item = $this->getMinimalItem();
+
+        $attribute = new Attribute('&quot;</>', array('&quot;</>', 'regular'));
+        $item->addAttribute($attribute);
+
         $page->addItem($item);
 
         $this->assertPageIsValid($page);

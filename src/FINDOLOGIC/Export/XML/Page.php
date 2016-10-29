@@ -3,8 +3,7 @@
 namespace FINDOLOGIC\Export\XML;
 
 
-use FINDOLOGIC\Export\Data\Item;
-use FINDOLOGIC\Export\Helpers\XmlHelper;
+use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 class Page
 {
@@ -21,7 +20,7 @@ class Page
         $this->items = array();
     }
 
-    public function addItem(Item $item)
+    public function addItem(XMLItem $item)
     {
         array_push($this->items, $item);
     }
@@ -29,17 +28,17 @@ class Page
     public function getXml()
     {
         $document = new \DOMDocument('1.0', 'utf-8');
-        $root = XmlHelper::createElement($document, 'findologic', array('version' => '1.0'));
+        $root = XMLHelper::createElement($document, 'findologic', array('version' => '1.0'));
         $document->appendCHild($root);
 
-        $items = XmlHelper::createElement($document, 'items', array(
+        $items = XMLHelper::createElement($document, 'items', array(
             'start' => $this->start,
             'count' => $this->count,
             'total' => $this->total
         ));
         $root->appendChild($items);
 
-        /** @var Item $item */
+        /** @var XMLItem $item */
         foreach ($this->items as $item) {
             $itemDom = $item->getDomSubtree($document);
             $items->appendChild($itemDom);

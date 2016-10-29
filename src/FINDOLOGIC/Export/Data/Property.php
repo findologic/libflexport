@@ -14,11 +14,12 @@ class DuplicateValueForUsergroupException extends \RuntimeException
 class Property
 {
     private $key;
-    private $values = array();
+    private $values;
 
-    public function __construct($key)
+    public function __construct($key, $values = array())
     {
         $this->key = $key;
+        $this->values = $values;
     }
 
     public function getKey()

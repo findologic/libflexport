@@ -9,7 +9,7 @@ namespace FINDOLOGIC\Export\Helpers;
  *
  * Simple values that can differ per usergroup, but have one value at most for each.
  */
-abstract class UsergroupAwareSimpleValue extends Serializable
+abstract class UsergroupAwareSimpleValue implements Serializable
 {
     private $collectionName;
     private $itemName;
@@ -31,10 +31,10 @@ abstract class UsergroupAwareSimpleValue extends Serializable
      */
     public function getDomSubtree(\DOMDocument $document)
     {
-        $collectionElem = XmlHelper::createElement($document, $this->collectionName);
+        $collectionElem = XMLHelper::createElement($document, $this->collectionName);
 
         foreach ($this->values as $usergroup => $value) {
-            $itemElem = XmlHelper::createElementWithText($document, $this->itemName, $value);
+            $itemElem = XMLHelper::createElementWithText($document, $this->itemName, $value);
             $collectionElem->appendChild($itemElem);
 
             if ($usergroup !== '') {
