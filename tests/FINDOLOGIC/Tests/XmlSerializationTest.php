@@ -198,25 +198,4 @@ class XmlSerializationTest extends TestCase
 
         $this->assertPageIsValid($page);
     }
-
-    public function testFoo()
-    {
-        $rawData = file_get_contents(__DIR__ . '/../../../data.csv');
-        $parsedData = array();
-        $id = 0;
-
-        $lines = explode("\n", $rawData);
-
-        foreach ($lines as $line) {
-            if (strpos($line, ',title')) {
-                continue;
-            }
-
-            $columns = explode(',', $line);
-            $columns[0] = $id;
-            $id++;
-
-            array_push($parsedData, $columns);
-        }
-    }
 }
