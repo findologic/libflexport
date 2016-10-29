@@ -1,10 +1,10 @@
 <?php
 
-namespace FINDOLOGIC\XmlExport\Elements;
+namespace FINDOLOGIC\Export\Data;
 
 
-use FINDOLOGIC\XmlExport\Helpers\Serializable;
-use FINDOLOGIC\XmlExport\Helpers\XmlHelper;
+use FINDOLOGIC\Export\Helpers\Serializable;
+use FINDOLOGIC\Export\Helpers\XmlHelper;
 
 class Item extends Serializable
 {

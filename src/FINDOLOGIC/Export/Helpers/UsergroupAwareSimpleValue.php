@@ -1,17 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mrc
- * Date: 10/26/16
- * Time: 6:29 PM
- */
 
-namespace FINDOLOGIC\XmlExport\Helpers;
+namespace FINDOLOGIC\Export\Helpers;
 
 
 /**
  * Class UsergroupAwareSimpleValue
- * @package FINDOLOGIC\XmlExport\Helpers
+ * @package FINDOLOGIC\XML\Helpers
  *
  * Simple values that can differ per usergroup, but have one value at most for each.
  */

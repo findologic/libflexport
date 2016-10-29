@@ -3,13 +3,13 @@
 namespace FINDOLOGIC\Tests;
 
 
-use FINDOLOGIC\XmlExport\Elements\Property;
+use FINDOLOGIC\Export\Data\Property;
 use PHPUnit\Framework\TestCase;
 
 class PropertyTest extends TestCase
 {
     /**
-     * @expectedException \FINDOLOGIC\XmlExport\Elements\DuplicateValueForUsergroupException
+     * @expectedException \FINDOLOGIC\Export\Data\DuplicateValueForUsergroupException
      */
     public function testAddingMultipleValuesPerUsergroupCausesException()
     {
@@ -19,7 +19,7 @@ class PropertyTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\XmlExport\Elements\DuplicateValueForUsergroupException
+     * @expectedException \FINDOLOGIC\Export\Data\DuplicateValueForUsergroupException
      */
     public function testAddingMultipleValuesWithoutUsergroupCausesException()
     {

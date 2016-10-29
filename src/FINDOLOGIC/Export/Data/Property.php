@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\XmlExport\Elements;
+namespace FINDOLOGIC\Export\Data;
 
 
 class DuplicateValueForUsergroupException extends \RuntimeException

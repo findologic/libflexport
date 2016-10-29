@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mrc
- * Date: 10/26/16
- * Time: 6:24 PM
- */
 
-namespace FINDOLOGIC\XmlExport\Helpers;
+namespace FINDOLOGIC\Export\Helpers;
 
 
 class XmlHelper

@@ -2,17 +2,17 @@
 
 namespace FINDOLOGIC\Tests;
 
-use FINDOLOGIC\XmlExport\Elements\Bonus;
-use FINDOLOGIC\XmlExport\Elements\DateAdded;
-use FINDOLOGIC\XmlExport\Elements\Description;
-use FINDOLOGIC\XmlExport\Elements\Item;
-use FINDOLOGIC\XmlExport\Elements\Name;
-use FINDOLOGIC\XmlExport\Elements\Price;
-use FINDOLOGIC\XmlExport\Elements\SalesFrequency;
-use FINDOLOGIC\XmlExport\Elements\Sort;
-use FINDOLOGIC\XmlExport\Elements\Summary;
-use FINDOLOGIC\XmlExport\Elements\Url;
-use FINDOLOGIC\XmlExport\Page;
+use FINDOLOGIC\Export\Data\Bonus;
+use FINDOLOGIC\Export\Data\DateAdded;
+use FINDOLOGIC\Export\Data\Description;
+use FINDOLOGIC\Export\Data\Item;
+use FINDOLOGIC\Export\Data\Name;
+use FINDOLOGIC\Export\Data\Price;
+use FINDOLOGIC\Export\Data\SalesFrequency;
+use FINDOLOGIC\Export\Data\Sort;
+use FINDOLOGIC\Export\Data\Summary;
+use FINDOLOGIC\Export\Data\Url;
+use FINDOLOGIC\Export\XML\Page;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -112,5 +112,26 @@ class XmlSerializationTest extends TestCase
         $page->addItem($item);
 
         $this->assertPageIsValid($page);
+    }
+
+    public function testFoo()
+    {
+        $rawData = file_get_contents(__DIR__ . '/../../../data.csv');
+        $parsedData = array();
+        $id = 0;
+
+        $lines = explode("\n", $rawData);
+
+        foreach ($lines as $line) {
+            if (strpos($line, ',title')) {
+                continue;
+            }
+
+            $columns = explode(',', $line);
+            $columns[0] = $id;
+            $id++;
+
+            array_push($parsedData, $columns);
+        }
     }
 }

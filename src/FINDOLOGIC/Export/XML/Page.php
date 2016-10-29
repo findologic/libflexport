@@ -1,10 +1,10 @@
 <?php
 
-namespace FINDOLOGIC\XmlExport;
+namespace FINDOLOGIC\Export\XML;
 
 
-use FINDOLOGIC\XmlExport\Elements\Item;
-use FINDOLOGIC\XmlExport\Helpers\XmlHelper;
+use FINDOLOGIC\Export\Data\Item;
+use FINDOLOGIC\Export\Helpers\XmlHelper;
 
 class Page
 {

@@ -1,11 +1,10 @@
 <?php
 
-namespace FINDOLOGIC\XmlExport\Helpers;
+namespace FINDOLOGIC\Export\Helpers;
 
 
 /**
- * Interface Serializable
- * @package FINDOLOGIC\XmlExport
+ * Data that is serializable as CSV or XML.
  */
 abstract class Serializable
 {

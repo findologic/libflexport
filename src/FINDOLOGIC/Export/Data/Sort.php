@@ -1,9 +1,9 @@
 <?php
 
-namespace FINDOLOGIC\XmlExport\Elements;
+namespace FINDOLOGIC\Export\Data;
 
 
-use FINDOLOGIC\XmlExport\Helpers\UsergroupAwareSimpleValue;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
 class Sort extends UsergroupAwareSimpleValue
 {
