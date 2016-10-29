@@ -36,17 +36,24 @@ abstract class Item implements Serializable
     /** @var Sort */
     protected $sort;
 
+    /** @var AllKeywords */
+    protected $keywords;
+
+    /** @var AllOrdernumbers */
+    protected $ordernumbers;
+
     protected $properties = array();
 
     protected $attributes = array();
 
     protected $images = array();
 
-    protected $ordernumbers = array();
-
     public function __construct($id)
     {
         $this->id = $id;
+
+        $this->keywords = new AllKeywords();
+        $this->ordernumbers = new AllOrdernumbers();
     }
 
     public function setName(Name $name)
@@ -130,18 +137,22 @@ abstract class Item implements Serializable
 
     public function addOrdernumber(Ordernumber $ordernumber)
     {
-        if (!array_key_exists($ordernumber->getUsergroup(), $this->ordernumbers)) {
-            $this->ordernumbers[$ordernumber->getUsergroup()] = array();
-        }
-
-        array_push($this->ordernumbers[$ordernumber->getUsergroup()], $ordernumber);
+        $this->ordernumbers->addValue($ordernumber);
     }
 
     public function setAllOrdernumbers(array $ordernumbers)
     {
-        foreach ($ordernumbers as $ordernumber) {
-            $this->addOrdernumber($ordernumber);
-        }
+        $this->ordernumbers->setAllValues($ordernumbers);
+    }
+
+    public function addKeyword(Keyword $keyword)
+    {
+        $this->keywords->addValue($keyword);
+    }
+
+    public function setAllKeywords(array $keywords)
+    {
+        $this->keywords->setAllValues($keywords);
     }
 
     /**

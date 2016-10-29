@@ -28,14 +28,12 @@ class XMLItem extends Item
         $itemElem->appendChild($this->salesFrequency->getDomSubtree($document));
         $itemElem->appendChild($this->dateAdded->getDomSubtree($document));
         $itemElem->appendChild($this->sort->getDomSubtree($document));
-
-        // TODO: lots of stuff
+        $itemElem->appendChild($this->keywords->getDomSubtree($document));
+        $itemElem->appendChild($this->ordernumbers->getDomSubtree($document));
 
         $itemElem->appendChild($this->buildProperties($document));
         $itemElem->appendChild($this->buildAttributes($document));
-        $itemElem->appendChild($this->buildOrdernumbers($document));
         $itemElem->appendChild($this->buildImages($document));
-        $itemElem->appendChild($this->buildKeywords($document));
         $itemElem->appendChild($this->buildUsergroups($document));
 
         return $itemElem;
@@ -85,26 +83,6 @@ class XMLItem extends Item
         return $allAttributes;
     }
 
-    private function buildOrdernumbers(\DOMDocument $document)
-    {
-        $allOrdernumbers = XMLHelper::createElement($document, 'allOrdernumbers');
-
-        foreach ($this->ordernumbers as $usergroup => $ordernumbers) {
-            $usergroupOrdernumbersElem = XMLHelper::createElement($document, 'ordernumbers');
-            if ($usergroup) {
-                $usergroupOrdernumbersElem->setAttribute('usergroup', $usergroup);
-            }
-            $allOrdernumbers->appendChild($usergroupOrdernumbersElem);
-
-            /** @var Ordernumber $ordernumber */
-            foreach ($ordernumbers as $ordernumber) {
-                $usergroupOrdernumbersElem->appendChild($ordernumber->getDomSubtree($document));
-            }
-        }
-
-        return $allOrdernumbers;
-    }
-
     private function buildImages(\DOMDocument $document)
     {
         $allImagesElem = XMLHelper::createElement($document, 'allImages');
@@ -123,15 +101,6 @@ class XMLItem extends Item
         }
 
         return $allImagesElem;
-    }
-
-    private function buildKeywords(\DOMDocument $document)
-    {
-        $allKeywords = XMLHelper::createElement($document, 'allKeywords');
-
-        // TODO
-
-        return $allKeywords;
     }
 
     private function buildUsergroups(\DOMDocument $document)

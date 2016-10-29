@@ -7,6 +7,7 @@ use FINDOLOGIC\Export\Data\Bonus;
 use FINDOLOGIC\Export\Data\DateAdded;
 use FINDOLOGIC\Export\Data\Description;
 use FINDOLOGIC\Export\Data\Image;
+use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Name;
 use FINDOLOGIC\Export\Data\Ordernumber;
 use FINDOLOGIC\Export\Data\Price;
@@ -158,6 +159,21 @@ class XmlSerializationTest extends TestCase
         $item->setAllOrdernumbers(array(
             new Ordernumber('137-42-23.7'),
             new Ordernumber('137-42-23.7-A', 'usergroup'),
+        ));
+
+        $page->addItem($item);
+
+        $this->assertPageIsValid($page);
+    }
+
+    public function testKeywordsSupportUsergroups()
+    {
+        $page = new Page(0, 1, 1);
+        $item = $this->getMinimalItem();
+
+        $item->setAllKeywords(array(
+            new Keyword('awesome &quot;</>]]>7'),
+            new Keyword('restricted', 'usergroup'),
         ));
 
         $page->addItem($item);
