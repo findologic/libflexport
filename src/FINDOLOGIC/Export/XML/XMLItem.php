@@ -6,7 +6,7 @@ namespace FINDOLOGIC\Export\XML;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
-use FINDOLOGIC\Export\Data\Ordernumber;
+use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 class XMLItem extends Item
@@ -107,7 +107,10 @@ class XMLItem extends Item
     {
         $usergroups = XMLHelper::createElement($document, 'usergroups');
 
-        // TODO
+        /** @var Usergroup $usergroup */
+        foreach ($this->usergroups as $usergroup) {
+            $usergroups->appendChild($usergroup->getDomSubtree($document));
+        }
 
         return $usergroups;
     }

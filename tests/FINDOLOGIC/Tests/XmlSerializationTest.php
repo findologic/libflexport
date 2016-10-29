@@ -16,6 +16,7 @@ use FINDOLOGIC\Export\Data\SalesFrequency;
 use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
+use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\XML\Page;
 use FINDOLOGIC\Export\XML\XMLItem;
 use PHPUnit\Framework\TestCase;
@@ -174,6 +175,21 @@ class XmlSerializationTest extends TestCase
         $item->setAllKeywords(array(
             new Keyword('awesome &quot;</>]]>7'),
             new Keyword('restricted', 'usergroup'),
+        ));
+
+        $page->addItem($item);
+
+        $this->assertPageIsValid($page);
+    }
+
+    public function testUsergroupVisibilitiesAreExported()
+    {
+        $page = new Page(0, 1, 1);
+        $item = $this->getMinimalItem();
+
+        $item->setAllUsergroups(array(
+            new Usergroup('one group'),
+            new Usergroup('another group')
         ));
 
         $page->addItem($item);

@@ -48,6 +48,8 @@ abstract class Item implements Serializable
 
     protected $images = array();
 
+    protected $usergroups = array();
+
     public function __construct($id)
     {
         $this->id = $id;
@@ -153,6 +155,16 @@ abstract class Item implements Serializable
     public function setAllKeywords(array $keywords)
     {
         $this->keywords->setAllValues($keywords);
+    }
+
+    public function addUsergroup(Usergroup $usergroup)
+    {
+        array_push($this->usergroups, $usergroup);
+    }
+
+    public function setAllUsergroups(array $usergroups)
+    {
+        $this->usergroups = $usergroups;
     }
 
     /**
