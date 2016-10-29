@@ -24,17 +24,25 @@ abstract class Item implements Serializable
     /** @var Url */
     protected $url;
 
+    /** @var Bonus */
     protected $bonus;
 
+    /** @var SalesFrequency */
     protected $salesFrequency;
 
+    /** @var DateAdded */
     protected $dateAdded;
 
+    /** @var Sort */
     protected $sort;
 
     protected $properties = array();
 
     protected $attributes = array();
+
+    protected $images = array();
+
+    protected $ordernumbers = array();
 
     public function __construct($id)
     {
@@ -102,6 +110,38 @@ abstract class Item implements Serializable
     public function addAttribute(Attribute $attribute)
     {
         $this->attributes[$attribute->getKey()] = $attribute;
+    }
+
+    public function addImage(Image $image)
+    {
+        if (!array_key_exists($image->getUsergroup(), $this->images)) {
+            $this->images[$image->getUsergroup()] = array();
+        }
+
+        array_push($this->images[$image->getUsergroup()], $image);
+    }
+
+    public function setAllImages(array $images)
+    {
+        foreach ($images as $image) {
+            $this->addImage($image);
+        }
+    }
+
+    public function addOrdernumber(Ordernumber $ordernumber)
+    {
+        if (!array_key_exists($ordernumber->getUsergroup(), $this->ordernumbers)) {
+            $this->ordernumbers[$ordernumber->getUsergroup()] = array();
+        }
+
+        array_push($this->ordernumbers[$ordernumber->getUsergroup()], $ordernumber);
+    }
+
+    public function setAllOrdernumbers(array $ordernumbers)
+    {
+        foreach ($ordernumbers as $ordernumber) {
+            $this->addOrdernumber($ordernumber);
+        }
     }
 
     /**

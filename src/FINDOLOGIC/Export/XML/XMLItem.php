@@ -4,7 +4,9 @@ namespace FINDOLOGIC\Export\XML;
 
 
 use FINDOLOGIC\Export\Data\Attribute;
+use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
+use FINDOLOGIC\Export\Data\Ordernumber;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 class XMLItem extends Item
@@ -87,18 +89,40 @@ class XMLItem extends Item
     {
         $allOrdernumbers = XMLHelper::createElement($document, 'allOrdernumbers');
 
-        // TODO
+        foreach ($this->ordernumbers as $usergroup => $ordernumbers) {
+            $usergroupOrdernumbersElem = XMLHelper::createElement($document, 'ordernumbers');
+            if ($usergroup) {
+                $usergroupOrdernumbersElem->setAttribute('usergroup', $usergroup);
+            }
+            $allOrdernumbers->appendChild($usergroupOrdernumbersElem);
+
+            /** @var Ordernumber $ordernumber */
+            foreach ($ordernumbers as $ordernumber) {
+                $usergroupOrdernumbersElem->appendChild($ordernumber->getDomSubtree($document));
+            }
+        }
 
         return $allOrdernumbers;
     }
 
     private function buildImages(\DOMDocument $document)
     {
-        $allImages = XMLHelper::createElement($document, 'allImages');
+        $allImagesElem = XMLHelper::createElement($document, 'allImages');
 
-        // TODO
+        foreach ($this->images as $usergroup => $images) {
+            $usergroupImagesElem = XMLHelper::createElement($document, 'images');
+            if ($usergroup) {
+                $usergroupImagesElem->setAttribute('usergroup', $usergroup);
+            }
+            $allImagesElem->appendChild($usergroupImagesElem);
 
-        return $allImages;
+            /** @var Image $image */
+            foreach ($images as $image) {
+                $usergroupImagesElem->appendChild($image->getDomSubtree($document));
+            }
+        }
+
+        return $allImagesElem;
     }
 
     private function buildKeywords(\DOMDocument $document)

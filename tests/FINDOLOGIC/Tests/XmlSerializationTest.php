@@ -6,7 +6,9 @@ use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
 use FINDOLOGIC\Export\Data\DateAdded;
 use FINDOLOGIC\Export\Data\Description;
+use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Name;
+use FINDOLOGIC\Export\Data\Ordernumber;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\SalesFrequency;
@@ -126,6 +128,37 @@ class XmlSerializationTest extends TestCase
 
         $attribute = new Attribute('&quot;</>', array('&quot;</>', 'regular'));
         $item->addAttribute($attribute);
+
+        $page->addItem($item);
+
+        $this->assertPageIsValid($page);
+    }
+
+    public function testImagesCanBeDefaultAndThumbnail()
+    {
+        $page = new Page(0, 1, 1);
+        $item = $this->getMinimalItem();
+
+        $item->setAllImages(array(
+            new Image('http://example.org/default.png'),
+            new Image('http://example.org/thumbnail.png', Image::TYPE_THUMBNAIL),
+            new Image('http://example.org/ug_default.png', Image::TYPE_DEFAULT, 'usergroup'),
+        ));
+
+        $page->addItem($item);
+
+        $this->assertPageIsValid($page);
+    }
+
+    public function testOrdernumbersSupportUsergroups()
+    {
+        $page = new Page(0, 1, 1);
+        $item = $this->getMinimalItem();
+
+        $item->setAllOrdernumbers(array(
+            new Ordernumber('137-42-23.7'),
+            new Ordernumber('137-42-23.7-A', 'usergroup'),
+        ));
 
         $page->addItem($item);
 
