@@ -17,7 +17,9 @@ use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\XML\Page;
+use FINDOLOGIC\Export\XML\XMLExporter;
 use FINDOLOGIC\Export\XML\XMLItem;
 use PHPUnit\Framework\TestCase;
 
@@ -44,9 +46,17 @@ class XmlSerializationTest extends TestCase
         self::$schema = file_get_contents(self::SCHEMA_URL);
     }
 
+    /** @var XMLExporter */
+    private $exporter;
+
+    public function setUp()
+    {
+        $this->exporter = Exporter::create(Exporter::TYPE_XML);
+    }
+
     private function getMinimalItem()
     {
-        $item = new XMLItem('123');
+        $item = $this->exporter->createItem('123');
 
         $name = new Name();
         $name->setValue('Foobar &quot;</>]]>');
@@ -87,58 +97,55 @@ class XmlSerializationTest extends TestCase
         return $item;
     }
 
-    private function assertPageIsValid(Page $page)
+    private function assertPageIsValid($xmlString)
     {
-        $document = $page->getXml();
+        $xmlDocument = new \DOMDocument('1.0', 'utf-8');
+        $xmlDocument->loadXML($xmlString);
 
-        $this->assertTrue($document->schemaValidateSource(self::$schema));
+        $this->assertTrue($xmlDocument->schemaValidateSource(self::$schema));
     }
 
     public function testEmptyPageIsValid()
     {
-        $page = new Page(0, 20, 0);
+        $page = $this->exporter->serializeItems(array(), 0, 0);
 
         $this->assertPageIsValid($page);
     }
 
     public function testMinimalItemIsValid()
     {
-        $page = new Page(0, 1, 1);
         $item = $this->getMinimalItem();
-        $page->addItem($item);
+        $page = $this->exporter->serializeItems(array($item), 0, 1);
 
         $this->assertPageIsValid($page);
     }
 
     public function testPropertyKeysAndValuesAreCdataWrapped()
     {
-        $page = new Page(0, 1, 1);
         $item = $this->getMinimalItem();
 
         $property = new Property('&quot;</>', array(null => '&quot;</>'));
         $item->addProperty($property);
 
-        $page->addItem($item);
+        $page = $this->exporter->serializeItems(array($item), 0, 1);
 
         $this->assertPageIsValid($page);
     }
 
     public function testAttributesAreCdataWrapped()
     {
-        $page = new Page(0, 1, 1);
         $item = $this->getMinimalItem();
 
         $attribute = new Attribute('&quot;</>', array('&quot;</>', 'regular'));
         $item->addAttribute($attribute);
 
-        $page->addItem($item);
+        $page = $this->exporter->serializeItems(array($item), 0, 1);
 
         $this->assertPageIsValid($page);
     }
 
     public function testImagesCanBeDefaultAndThumbnail()
     {
-        $page = new Page(0, 1, 1);
         $item = $this->getMinimalItem();
 
         $item->setAllImages(array(
@@ -147,14 +154,13 @@ class XmlSerializationTest extends TestCase
             new Image('http://example.org/ug_default.png', Image::TYPE_DEFAULT, 'usergroup'),
         ));
 
-        $page->addItem($item);
+        $page = $this->exporter->serializeItems(array($item), 0, 1);
 
         $this->assertPageIsValid($page);
     }
 
     public function testOrdernumbersSupportUsergroups()
     {
-        $page = new Page(0, 1, 1);
         $item = $this->getMinimalItem();
 
         $item->setAllOrdernumbers(array(
@@ -162,14 +168,13 @@ class XmlSerializationTest extends TestCase
             new Ordernumber('137-42-23.7-A', 'usergroup'),
         ));
 
-        $page->addItem($item);
+        $page = $this->exporter->serializeItems(array($item), 0, 1);
 
         $this->assertPageIsValid($page);
     }
 
     public function testKeywordsSupportUsergroups()
     {
-        $page = new Page(0, 1, 1);
         $item = $this->getMinimalItem();
 
         $item->setAllKeywords(array(
@@ -177,14 +182,13 @@ class XmlSerializationTest extends TestCase
             new Keyword('restricted', 'usergroup'),
         ));
 
-        $page->addItem($item);
+        $page = $this->exporter->serializeItems(array($item), 0, 1);
 
         $this->assertPageIsValid($page);
     }
 
     public function testUsergroupVisibilitiesAreExported()
     {
-        $page = new Page(0, 1, 1);
         $item = $this->getMinimalItem();
 
         $item->setAllUsergroups(array(
@@ -192,7 +196,7 @@ class XmlSerializationTest extends TestCase
             new Usergroup('another group')
         ));
 
-        $page->addItem($item);
+        $page = $this->exporter->serializeItems(array($item), 0, 1);
 
         $this->assertPageIsValid($page);
     }

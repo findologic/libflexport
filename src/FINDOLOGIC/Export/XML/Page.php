@@ -25,6 +25,11 @@ class Page
         array_push($this->items, $item);
     }
 
+    public function setAllItems(array $items)
+    {
+        $this->items = $items;
+    }
+
     public function getXml()
     {
         $document = new \DOMDocument('1.0', 'utf-8');
