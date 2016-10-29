@@ -31,6 +31,14 @@ class Usergroup implements Serializable
         return $usergroupElem;
     }
 
+    /**
+     * No-op, because usergroups are not supported in the CSV export format.
+     */
+    public function getCsvFragment()
+    {
+        return '';
+    }
+
     public function __toString()
     {
         return $this->value;

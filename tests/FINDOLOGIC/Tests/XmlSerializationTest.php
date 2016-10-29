@@ -18,9 +18,7 @@ use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exporter;
-use FINDOLOGIC\Export\XML\Page;
 use FINDOLOGIC\Export\XML\XMLExporter;
-use FINDOLOGIC\Export\XML\XMLItem;
 use PHPUnit\Framework\TestCase;
 
 /**

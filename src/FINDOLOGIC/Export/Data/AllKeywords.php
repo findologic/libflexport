@@ -9,6 +9,6 @@ class AllKeywords extends UsergroupAwareMultiValue
 {
     public function __construct()
     {
-        parent::__construct('allKeywords', 'keywords');
+        parent::__construct('allKeywords', 'keywords', ',');
     }
 }

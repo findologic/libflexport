@@ -21,6 +21,11 @@ abstract class UsergroupAwareSimpleValue implements Serializable
         $this->itemName = $itemName;
     }
 
+    public function getValues()
+    {
+        return $this->values;
+    }
+
     public function setValue($value, $usergroup = '')
     {
         $this->values[$usergroup] = $value;
@@ -43,5 +48,19 @@ abstract class UsergroupAwareSimpleValue implements Serializable
         }
 
         return $collectionElem;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCsvFragment()
+    {
+        if (array_key_exists('', $this->values)) {
+            $value = $this->values[''];
+        } else {
+            $value = '';
+        }
+
+        return $value;
     }
 }

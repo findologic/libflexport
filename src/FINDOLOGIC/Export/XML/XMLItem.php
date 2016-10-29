@@ -14,6 +14,14 @@ class XMLItem extends Item
     /**
      * @inheritdoc
      */
+    public function getCsvFragment()
+    {
+        throw new \BadMethodCallException('CSVItem does not implement XML export.');
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getDomSubtree(\DOMDocument $document)
     {
         $itemElem = XMLHelper::createElement($document, 'item', array('id' => $this->id));

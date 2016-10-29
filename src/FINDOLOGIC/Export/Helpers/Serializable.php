@@ -14,4 +14,9 @@ interface Serializable
      * @return \DOMElement The root element of whatever was generated.
      */
     public function getDomSubtree(\DOMDocument $document);
+
+    /**
+     * @return string A CSV fragment that, combined with other fragments, will finally become an export file.
+     */
+    public function getCsvFragment();
 }

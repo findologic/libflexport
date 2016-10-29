@@ -39,4 +39,12 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
 
         return $valueElem;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCsvFragment()
+    {
+        return $this->value;
+    }
 }

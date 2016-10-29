@@ -65,4 +65,12 @@ class Image implements Serializable
 
         return $imageElem;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCsvFragment()
+    {
+        return $this->url;
+    }
 }
