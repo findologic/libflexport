@@ -1,5 +1,5 @@
 # FINDOLOGIC export toolkit
 
-[![Travis](https://img.shields.io/travis/howard/libflexport.svg)](https://travis-ci.org/howard/libflexport)
+[![Travis](https://img.shields.io/travis/findologic/libflexport.svg)](https://travis-ci.org/findologic/libflexport)
 
 **Highly experimental! Don't use it!**
