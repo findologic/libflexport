@@ -1,0 +1,46 @@
+<?php
+
+namespace CodexFons\FINDOLOGIC\Export\Data;
+
+
+use CodexFons\FINDOLOGIC\Export\Helpers\Serializable;
+use CodexFons\FINDOLOGIC\Export\Helpers\XMLHelper;
+
+class Usergroup implements Serializable
+{
+    /** @var string */
+    private $value;
+
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDomSubtree(\DOMDocument $document)
+    {
+        $usergroupElem = XMLHelper::createElementWithText($document, 'usergroup', $this->value);
+
+        return $usergroupElem;
+    }
+
+    /**
+     * No-op, because usergroups are not supported in the CSV export format.
+     */
+    public function getCsvFragment()
+    {
+        return '';
+    }
+
+    public function __toString()
+    {
+        return $this->value;
+    }
+}
