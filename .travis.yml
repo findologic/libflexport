@@ -1,10 +1,9 @@
 language: php
-dist: trusty
 
 php:
   - 5.6
   - 7.0
-  - hhvm
+  - 7.1
 
 install: composer install
 script: phpunit --configuration phpunit.xml --coverage-text
