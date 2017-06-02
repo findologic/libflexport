@@ -56,6 +56,10 @@ abstract class Item implements Serializable
 
         $this->keywords = new AllKeywords();
         $this->ordernumbers = new AllOrdernumbers();
+        $this->bonus = new Bonus();
+        $this->salesFrequency = new SalesFrequency();
+        $this->dateAdded = new DateAdded();
+        $this->sort = new Sort();
     }
 
     public function setName(Name $name)
