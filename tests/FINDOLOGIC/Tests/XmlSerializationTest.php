@@ -76,22 +76,6 @@ class XmlSerializationTest extends TestCase
         $url->setValue('http://example.org/my-awesome-product.html');
         $item->setUrl($url);
 
-        $bonus = new Bonus();
-        $bonus->setValue(3);
-        $item->setBonus($bonus);
-
-        $salesFrequency = new SalesFrequency();
-        $salesFrequency->setValue(42);
-        $item->setSalesFrequency($salesFrequency);
-
-        $dateAdded = new DateAdded();
-        $dateAdded->setDateValue(new \DateTime());
-        $item->setDateAdded($dateAdded);
-
-        $sort = new Sort();
-        $sort->setValue(2);
-        $item->setSort($sort);
-
         return $item;
     }
 
