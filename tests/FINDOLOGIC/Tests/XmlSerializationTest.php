@@ -3,19 +3,11 @@
 namespace FINDOLOGIC\Tests;
 
 use FINDOLOGIC\Export\Data\Attribute;
-use FINDOLOGIC\Export\Data\Bonus;
-use FINDOLOGIC\Export\Data\DateAdded;
-use FINDOLOGIC\Export\Data\Description;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Keyword;
-use FINDOLOGIC\Export\Data\Name;
 use FINDOLOGIC\Export\Data\Ordernumber;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
-use FINDOLOGIC\Export\Data\SalesFrequency;
-use FINDOLOGIC\Export\Data\Sort;
-use FINDOLOGIC\Export\Data\Summary;
-use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\XML\XMLExporter;
@@ -56,25 +48,9 @@ class XmlSerializationTest extends TestCase
     {
         $item = $this->exporter->createItem('123');
 
-        $name = new Name();
-        $name->setValue('Foobar &quot;</>]]>');
-        $item->setName($name);
-
-        $summary = new Summary();
-        $summary->setValue('This is a summary. &quot;</>]]>');
-        $item->setSummary($summary);
-
-        $description = new Description();
-        $description->setValue('This is a more verbose description. &quot;</>]]>');
-        $item->setDescription($description);
-
         $price = new Price();
         $price->setValue('13.37');
         $item->setPrice($price);
-
-        $url = new Url();
-        $url->setValue('http://example.org/my-awesome-product.html');
-        $item->setUrl($url);
 
         return $item;
     }

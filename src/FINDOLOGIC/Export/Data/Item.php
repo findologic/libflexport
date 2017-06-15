@@ -54,12 +54,16 @@ abstract class Item implements Serializable
     {
         $this->id = $id;
 
-        $this->keywords = new AllKeywords();
-        $this->ordernumbers = new AllOrdernumbers();
+        $this->name = new Name();
+        $this->summary = new Summary();
+        $this->description = new Description();
+        $this->url = new Url();
         $this->bonus = new Bonus();
         $this->salesFrequency = new SalesFrequency();
         $this->dateAdded = new DateAdded();
         $this->sort = new Sort();
+        $this->keywords = new AllKeywords();
+        $this->ordernumbers = new AllOrdernumbers();
     }
 
     public function setName(Name $name)
