@@ -12,14 +12,14 @@ abstract class Exporter
     /**
      * XML-based export format.
      *
-     * @see https://secure.findologic.com/dokuwiki/doku.php?id=fl:modul:direct_integration:xml_schema
+     * @see https://docs.findologic.com/doku.php?id=export_patterns:xml
      */
     const TYPE_XML = 0;
 
     /**
      * CSV-based export format. Does not support usergroups.
      *
-     * @see https://secure.findologic.com/dokuwiki/doku.php?id=fl:csv_format_2_0
+     * @see https://docs.findologic.com/doku.php?id=export_patterns:csv
      */
     const TYPE_CSV = 1;
 
