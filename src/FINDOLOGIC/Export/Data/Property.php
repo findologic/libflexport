@@ -11,13 +11,33 @@ class DuplicateValueForUsergroupException extends \RuntimeException
     }
 }
 
+class PropertyKeyNotAllowedException extends \RuntimeException
+{
+    public function __construct($key)
+    {
+        parent::__construct(sprintf('Property key "%s" is not allowed.', $key));
+    }
+}
+
 class Property
 {
+    const RESERVED_PROPERTY_KEYS = [
+        "/image\d+/",
+        "/thumbnail\d+/",
+        "/ordernumber/"
+    ];
+
     private $key;
     private $values;
 
     public function __construct($key, $values = array())
     {
+        foreach(self::RESERVED_PROPERTY_KEYS as $reservedPropertyKey) {
+            if (preg_match($reservedPropertyKey, $key)) {
+                throw new PropertyKeyNotAllowedException($key);
+            }
+        }
+
         $this->key = $key;
         $this->values = $values;
     }
