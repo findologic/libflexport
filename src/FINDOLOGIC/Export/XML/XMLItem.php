@@ -102,9 +102,11 @@ class XMLItem extends Item
             }
             $allImagesElem->appendChild($usergroupImagesElem);
 
-            /** @var Image $image */
-            foreach ($images as $image) {
-                $usergroupImagesElem->appendChild($image->getDomSubtree($document));
+            if ($this->validateImages($images)){
+                /** @var Image $image */
+                foreach ($images as $image) {
+                    $usergroupImagesElem->appendChild($image->getDomSubtree($document));
+                }
             }
         }
 
@@ -121,5 +123,23 @@ class XMLItem extends Item
         }
 
         return $usergroups;
+    }
+
+    private function validateImages(array $images){
+
+        $valid = false;
+
+        foreach ($images as $image) {
+            if($image->getType() === Image::TYPE_DEFAULT){
+                $valid = true;
+                break;
+            }
+        }
+
+        if (!$valid) {
+            throw new \FINDOLOGIC\Export\Data\BaseImageMissingException();
+        }
+
+        return $valid;
     }
 }

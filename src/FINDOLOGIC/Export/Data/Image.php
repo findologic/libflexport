@@ -2,9 +2,16 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
+
+class BaseImageMissingException extends \RuntimeException
+{
+    public function __construct()
+    {
+        parent::__construct("Base image does not exist!");
+    }
+}
 
 class Image implements Serializable
 {
