@@ -27,4 +27,28 @@ class PropertyTest extends TestCase
         $property->addValue('foobar');
         $property->addValue('foobar');
     }
+
+    /**
+     * @expectedException \FINDOLOGIC\Export\Data\PropertyKeyNotAllowedException
+     */
+    public function testReservedPropertyKeyOrdernumberCausesException()
+    {
+        $property = new Property('ordernumber');
+    }
+
+    /**
+     * @expectedException \FINDOLOGIC\Export\Data\PropertyKeyNotAllowedException
+     */
+    public function testReservedPropertyKeyThumbnailCausesException()
+    {
+        $property = new Property('thumbnail1');
+    }
+
+    /**
+     * @expectedException \FINDOLOGIC\Export\Data\PropertyKeyNotAllowedException
+     */
+    public function testReservedPropertyKeyImageCausesException()
+    {
+        $property = new Property('image1');
+    }
 }
