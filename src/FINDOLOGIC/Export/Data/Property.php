@@ -15,7 +15,7 @@ class PropertyKeyNotAllowedException extends \RuntimeException
 {
     public function __construct($key)
     {
-        parent::__construct(sprintf('Property key "%s" is not allowed.', $key));
+        parent::__construct(sprintf('Property key "%s" is reserved for internal use and overwritten when importing.', $key));
     }
 }
 
