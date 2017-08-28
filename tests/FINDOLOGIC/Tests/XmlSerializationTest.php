@@ -129,7 +129,7 @@ class XmlSerializationTest extends TestCase
             new Image('http://example.org/ug_default.png', Image::TYPE_DEFAULT, 'usergroup'),
         ));
 
-        $page = $this->exporter->serializeItems(array($item), 0, 1);
+        $this->exporter->serializeItems(array($item), 0, 1);
     }
 
     public function testOrdernumbersSupportUsergroups()
