@@ -9,7 +9,7 @@ class BaseImageMissingException extends \RuntimeException
 {
     public function __construct()
     {
-        parent::__construct("Base image does not exist!");
+        parent::__construct('Base image does not exist, exporting a “No Image Available" image is recommended!');
     }
 }
 
