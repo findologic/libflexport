@@ -28,27 +28,28 @@ class PropertyTest extends TestCase
         $property->addValue('foobar');
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\Data\PropertyKeyNotAllowedException
-     */
-    public function testReservedPropertyKeyOrdernumberCausesException()
+    public function propertyKeyProvider()
     {
-        $property = new Property('ordernumber');
+        return array(
+            'reserved property "image\d+"' => array('image0', true),
+            'reserved property "thumbnail\d+"' => array('thumbnail1', true),
+            'reserved property "ordernumber"' => array('ordernumber', true),
+            'non-reserved property key' => array('foobar', false)
+        );
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Data\PropertyKeyNotAllowedException
+     * @dataProvider propertyKeyProvider
      */
-    public function testReservedPropertyKeyThumbnailCausesException()
+    public function testReservedPropertyKeysCausesException($key, $shouldCauseException)
     {
-        $property = new Property('thumbnail1');
-    }
-
-    /**
-     * @expectedException \FINDOLOGIC\Export\Data\PropertyKeyNotAllowedException
-     */
-    public function testReservedPropertyKeyImageCausesException()
-    {
-        $property = new Property('image1');
+        try {
+            new Property($key);
+            if($shouldCauseException) {
+                $this->fail('Using a reserved property key should cause an exception.');
+            }
+        } catch(\Exception $exception) {
+            $this->assertRegExp('/' . $key . '/', $exception->getMessage());
+        }
     }
 }
