@@ -125,6 +125,11 @@ class XMLItem extends Item
         return $usergroups;
     }
 
+    /**
+     * Checks if there is at least one image of type default
+     *
+     * @param array $images
+     */
     private function validateImages(array $images)
     {
         $valid = false;
