@@ -39,7 +39,7 @@ class Property
 
     public function __construct($key, $values = array())
     {
-        foreach(self::RESERVED_PROPERTY_KEYS as $reservedPropertyKey) {
+        foreach (self::RESERVED_PROPERTY_KEYS as $reservedPropertyKey) {
             if (preg_match($reservedPropertyKey, $key)) {
                 throw new PropertyKeyNotAllowedException($key);
             }

@@ -45,10 +45,10 @@ class PropertyTest extends TestCase
     {
         try {
             new Property($key);
-            if($shouldCauseException) {
+            if ($shouldCauseException) {
                 $this->fail('Using a reserved property key should cause an exception.');
             }
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             $this->assertRegExp('/' . $key . '/', $exception->getMessage());
         }
     }
