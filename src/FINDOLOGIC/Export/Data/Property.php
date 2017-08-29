@@ -28,11 +28,11 @@ class Property
      * /thumbnail\d+/: Image URLs of type thumbnail.
      * /ordernumber/: The products first exported ordernumber.
      */
-    const RESERVED_PROPERTY_KEYS = [
+    const RESERVED_PROPERTY_KEYS = array(
         "/image\d+/",
         "/thumbnail\d+/",
         "/ordernumber/"
-    ];
+    );
 
     private $key;
     private $values;
