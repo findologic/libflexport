@@ -14,6 +14,14 @@ class BaseImageMissingException extends \RuntimeException
     }
 }
 
+class ImagesWithoutUsergroupMissingException extends \RuntimeException
+{
+    public function __construct()
+    {
+        parent::__construct('There exist no images without usergroup!');
+    }
+}
+
 class Image implements Serializable
 {
     /**

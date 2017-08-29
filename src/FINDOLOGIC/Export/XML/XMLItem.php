@@ -6,6 +6,7 @@ namespace FINDOLOGIC\Export\XML;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\BaseImageMissingException;
 use FINDOLOGIC\Export\Data\Image;
+use FINDOLOGIC\Export\Data\ImagesWithoutUsergroupMissingException;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
