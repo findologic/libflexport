@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\XML;
 
 
 use FINDOLOGIC\Export\Data\Attribute;
+use FINDOLOGIC\Export\Data\BaseImageMissingException;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Usergroup;
@@ -142,7 +143,7 @@ class XMLItem extends Item
         }
 
         if (!$valid) {
-            throw new \FINDOLOGIC\Export\Data\BaseImageMissingException();
+            throw new BaseImageMissingException();
         }
 
         return $valid;
