@@ -97,18 +97,25 @@ class XMLItem extends Item
     {
         $allImagesElem = XMLHelper::createElement($document, 'allImages');
 
-        foreach ($this->images as $usergroup => $images) {
-            $usergroupImagesElem = XMLHelper::createElement($document, 'images');
-            if ($usergroup) {
-                $usergroupImagesElem->setAttribute('usergroup', $usergroup);
-            }
-            $allImagesElem->appendChild($usergroupImagesElem);
+        if ($this->images) {
+            if (array_key_exists("", $this->images)) {
+                foreach ($this->images as $usergroup => $images) {
+                    $usergroupImagesElem = XMLHelper::createElement($document, 'images');
+                    if ($usergroup) {
+                        $usergroupImagesElem->setAttribute('usergroup', $usergroup);
+                    }
 
-            if ($this->validateImages($images)) {
-                /** @var Image $image */
-                foreach ($images as $image) {
-                    $usergroupImagesElem->appendChild($image->getDomSubtree($document));
+                    $allImagesElem->appendChild($usergroupImagesElem);
+
+                    if ($this->validateImages($images)) {
+                        /** @var Image $image */
+                        foreach ($images as $image) {
+                            $usergroupImagesElem->appendChild($image->getDomSubtree($document));
+                        }
+                    }
                 }
+            } else {
+                throw new ImagesWithoutUsergroupMissingException();
             }
         }
 
