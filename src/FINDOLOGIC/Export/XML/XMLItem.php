@@ -145,7 +145,5 @@ class XMLItem extends Item
         if (!$valid) {
             throw new BaseImageMissingException();
         }
-
-        return $valid;
     }
 }
