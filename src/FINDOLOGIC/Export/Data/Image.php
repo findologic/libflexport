@@ -2,9 +2,25 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
+
+class BaseImageMissingException extends \RuntimeException
+{
+    public function __construct()
+    {
+        $message = 'Base image without usergroup does\'t exist, exporting a “No Image Available" image is recommended!';
+        parent::__construct($message);
+    }
+}
+
+class ImagesWithoutUsergroupMissingException extends \RuntimeException
+{
+    public function __construct()
+    {
+        parent::__construct('There exist no images without usergroup!');
+    }
+}
 
 class Image implements Serializable
 {

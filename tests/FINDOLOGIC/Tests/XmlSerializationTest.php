@@ -117,6 +117,35 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($page);
     }
 
+    /**
+     * @expectedException \FINDOLOGIC\Export\Data\BaseImageMissingException
+     */
+    public function testMissingBaseImageCausesException()
+    {
+        $item = $this->getMinimalItem();
+
+        $item->setAllImages(array(
+            new Image('http://example.org/thumbnail.png', Image::TYPE_THUMBNAIL),
+            new Image('http://example.org/ug_default.png', Image::TYPE_THUMBNAIL, 'usergroup'),
+        ));
+
+        $this->exporter->serializeItems(array($item), 0, 1);
+    }
+
+    /**
+     * @expectedException \FINDOLOGIC\Export\Data\ImagesWithoutUsergroupMissingException
+     */
+    public function testImagesWithoutUsergroupMissingCausesException()
+    {
+        $item = $this->getMinimalItem();
+
+        $item->setAllImages(array(
+            new Image('http://example.org/ug_default.png', Image::TYPE_DEFAULT, 'usergroup'),
+        ));
+
+        $this->exporter->serializeItems(array($item), 0, 1);
+    }
+
     public function testOrdernumbersSupportUsergroups()
     {
         $item = $this->getMinimalItem();
