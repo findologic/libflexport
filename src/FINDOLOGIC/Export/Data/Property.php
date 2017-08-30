@@ -11,13 +11,40 @@ class DuplicateValueForUsergroupException extends \RuntimeException
     }
 }
 
+class PropertyKeyNotAllowedException extends \RuntimeException
+{
+    public function __construct($key)
+    {
+        parent::__construct(sprintf('Property key "%s" is reserved for internal use and overwritten when importing.', $key));
+    }
+}
+
 class Property
 {
+    /**
+     * Reserved property keys for internal use which would be overwritten when importing
+     *
+     * /image\d+/: Image URLs of type default.
+     * /thumbnail\d+/: Image URLs of type thumbnail.
+     * /ordernumber/: The products first exported ordernumber.
+     */
+    const RESERVED_PROPERTY_KEYS = array(
+        "/image\d+/",
+        "/thumbnail\d+/",
+        "/ordernumber/"
+    );
+
     private $key;
     private $values;
 
     public function __construct($key, $values = array())
     {
+        foreach (self::RESERVED_PROPERTY_KEYS as $reservedPropertyKey) {
+            if (preg_match($reservedPropertyKey, $key)) {
+                throw new PropertyKeyNotAllowedException($key);
+            }
+        }
+
         $this->key = $key;
         $this->values = $values;
     }
