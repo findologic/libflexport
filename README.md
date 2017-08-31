@@ -43,7 +43,4 @@ If you want to contribute to this project, feel free to fork the repository. Aft
 
 Tests should be provided if possible.
 
-License
-=======
-
-The contents of this repository are licensed according to the LICENSE file.
+Running `php-cs-fixer` before commiting will reduce style-caused build failures.
