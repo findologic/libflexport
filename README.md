@@ -15,9 +15,9 @@ Using the XML export is recommended by FINDOLOGIC. The XML is easier to read and
 * Using multiple usergroups per product
 * Dynamicly extract the products from the database via `start` and `count` parameter in the url
 
-```PHP
 ## Basic usage
 
+```php
 require_once './vendor/autoload.php';
 
 use \FINDOLOGIC\Export\XML\Exporter;
