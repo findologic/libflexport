@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\XML;
 
-
 use FINDOLOGIC\Export\Exporter;
 
 class XMLExporter extends Exporter
@@ -30,7 +29,6 @@ class XMLExporter extends Exporter
         file_put_contents($targetPath, $xmlString);
 
         return $targetPath;
-
     }
 
     /**

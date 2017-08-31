@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Tests;
 
-
 use FINDOLOGIC\Export\CSV\CSVExporter;
 use FINDOLOGIC\Export\Data\Bonus;
 use FINDOLOGIC\Export\Data\DateAdded;

@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\CSV;
 
-
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Item;
 
@@ -43,9 +42,28 @@ class CSVItem extends Item
         $attributes = $this->buildAttributes();
         $properties = $this->buildProperties();
 
-        $line = sprintf("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
-            $this->id, $ordernumbers, $name, $summary, $description, $price, $instead, $maxPrice, $taxRate,
-            $url, $image, $attributes, $keywords, $groups, $bonus, $salesFrequency, $dateAdded, $sort, $properties);
+        $line = sprintf(
+            "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+            $this->id,
+            $ordernumbers,
+            $name,
+            $summary,
+            $description,
+            $price,
+            $instead,
+            $maxPrice,
+            $taxRate,
+            $url,
+            $image,
+            $attributes,
+            $keywords,
+            $groups,
+            $bonus,
+            $salesFrequency,
+            $dateAdded,
+            $sort,
+            $properties
+        );
 
         return $line;
     }

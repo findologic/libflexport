@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\CSV;
 
-
 use FINDOLOGIC\Export\Exporter;
 
 class CSVExporter extends Exporter

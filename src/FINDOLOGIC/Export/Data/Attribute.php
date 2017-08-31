@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 

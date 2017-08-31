@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export;
 
-
 use FINDOLOGIC\Export\CSV\CSVExporter;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\XML\XMLExporter;
@@ -67,7 +66,7 @@ abstract class Exporter
      * @param int $total The global total of items that could be exported.
      * @return string The items in serialized form.
      */
-    public abstract function serializeItems($items, $start, $total);
+    abstract public function serializeItems($items, $start, $total);
 
     /**
      * Like serializeItems(), but the output is written to filesystem instead of being returned.
@@ -80,7 +79,7 @@ abstract class Exporter
      * @param int $total The global total of items that could be exported.
      * @return string Full path of the written file.
      */
-    public abstract function serializeItemsToFile($targetDirectory, $items, $start, $total);
+    abstract public function serializeItemsToFile($targetDirectory, $items, $start, $total);
 
     /**
      * Creates an export format-specific item instance.
@@ -88,5 +87,5 @@ abstract class Exporter
      * @param string $id Unique ID of the item.
      * @return Item The newly generated item.
      */
-    public abstract function createItem($id);
+    abstract public function createItem($id);
 }

@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
-
 class XMLHelper
 {
     /**

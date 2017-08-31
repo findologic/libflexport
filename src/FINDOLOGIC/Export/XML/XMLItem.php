@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\XML;
 
-
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\BaseImageMissingException;
 use FINDOLOGIC\Export\Data\Image;

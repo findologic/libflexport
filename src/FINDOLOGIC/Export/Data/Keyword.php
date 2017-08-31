@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-
 use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValueItem;
 
 class Keyword extends UsergroupAwareMultiValueItem

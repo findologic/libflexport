@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\XML;
 
-
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 class Page

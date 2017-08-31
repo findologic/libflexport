@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-
 use FINDOLOGIC\Export\Helpers\Serializable;
 
 abstract class Item implements Serializable
@@ -178,5 +177,5 @@ abstract class Item implements Serializable
     /**
      * @inheritdoc
      */
-    public abstract function getDomSubtree(\DOMDocument $document);
+    abstract public function getDomSubtree(\DOMDocument $document);
 }

@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
-
 /**
  * Class UsergroupAwareMultiValue
  * @package FINDOLOGIC\XML\Helpers

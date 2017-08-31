@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
 class DateAdded extends UsergroupAwareSimpleValue

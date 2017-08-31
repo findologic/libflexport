@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
-
 /**
  * Data that is serializable as CSV or XML.
  */

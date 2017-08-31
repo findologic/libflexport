@@ -2,9 +2,7 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-
 use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValue;
-
 
 class AllOrdernumbers extends UsergroupAwareMultiValue
 {
