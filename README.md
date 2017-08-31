@@ -17,6 +17,8 @@ Using the XML export is recommended by FINDOLOGIC. The XML is easier to read and
 
 ## Basic usage
 
+### XML export
+
 ```php
 require_once './vendor/autoload.php';
 
