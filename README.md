@@ -22,7 +22,7 @@ Using the XML export is recommended by FINDOLOGIC. The XML is easier to read and
 ```php
 require_once './vendor/autoload.php';
 
-use \FINDOLOGIC\Export\XML\Exporter;
+use \FINDOLOGIC\Export\XML\XMLExporter;
 use \FINDOLOGIC\Export\Data\Price;
 
 $exporter = Exporter::create(Exporter::TYPE_XML);
