@@ -9,11 +9,17 @@ This project provides a export library for XML and CSV generation according to t
 * XML <https://docs.findologic.com/doku.php?id=export_patterns:xml>
 * CSV <https://docs.findologic.com/doku.php?id=export_patterns:csv>
 
+####Export recommendation
+
 Using the XML export is recommended by FINDOLOGIC. The XML is easier to read and has some advantages over the CSV export like:
 
 * No encoding issues as the encoding attribute is provided in the XML response `<?xml version="1.0" encoding="UTF-8"?>`
-* Using multiple usergroups per product
+* Validation is more reliable
+* Simple escaping of content using the `<![CDATA[...]]>`-tag
+* Standardized structure
 * Dynamically extract the products from the database via `start` and `count` parameter in the url
+* No limited file size for XML because of pagination
+* Using multiple usergroups per product
 
 ## Basic usage
 
