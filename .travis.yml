@@ -13,5 +13,5 @@ script:
   - phpunit --configuration phpunit.xml --coverage-text
   # Run style fixer in test mode on all source files. Will exit with a non-zero
   # return code if something needs changing.
-  - php-cs-fixer fix --dry-run tests
+  - php-cs-fixer fix --dry-run src
   - php-cs-fixer fix --dry-run tests
