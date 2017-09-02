@@ -16,7 +16,11 @@
         }
     ],
     "require": {
-        "goetas-webservices/xsd2php-runtime": "^0.2.2"
+        "goetas-webservices/xsd2php-runtime": "^0.2.2",
+        "symfony/finder": "3.3.6",
+        "symfony/options-resolver": "3.3.6",
+        "symfony/process": "3.3.6",
+        "symfony/stopwatch": "3.3.6"
     },
     "autoload": {
         "psr-0": {
