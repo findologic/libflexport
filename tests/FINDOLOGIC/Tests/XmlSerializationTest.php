@@ -65,7 +65,7 @@ class XmlSerializationTest extends TestCase
 
     public function testEmptyPageIsValid()
     {
-        $page = $this->exporter->serializeItems(array(), 0, 0);
+        $page = $this->exporter->serializeItems(array(), 0, 0, 0);
 
         $this->assertPageIsValid($page);
     }
@@ -73,7 +73,7 @@ class XmlSerializationTest extends TestCase
     public function testMinimalItemIsValid()
     {
         $item = $this->getMinimalItem();
-        $page = $this->exporter->serializeItems(array($item), 0, 1);
+        $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
 
         $this->assertPageIsValid($page);
     }
@@ -85,7 +85,7 @@ class XmlSerializationTest extends TestCase
         $property = new Property('&quot;</>', array(null => '&quot;</>'));
         $item->addProperty($property);
 
-        $page = $this->exporter->serializeItems(array($item), 0, 1);
+        $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
 
         $this->assertPageIsValid($page);
     }
@@ -97,7 +97,7 @@ class XmlSerializationTest extends TestCase
         $attribute = new Attribute('&quot;</>', array('&quot;</>', 'regular'));
         $item->addAttribute($attribute);
 
-        $page = $this->exporter->serializeItems(array($item), 0, 1);
+        $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
 
         $this->assertPageIsValid($page);
     }
@@ -112,7 +112,7 @@ class XmlSerializationTest extends TestCase
             new Image('http://example.org/ug_default.png', Image::TYPE_DEFAULT, 'usergroup'),
         ));
 
-        $page = $this->exporter->serializeItems(array($item), 0, 1);
+        $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
 
         $this->assertPageIsValid($page);
     }
@@ -129,7 +129,7 @@ class XmlSerializationTest extends TestCase
             new Image('http://example.org/ug_default.png', Image::TYPE_THUMBNAIL, 'usergroup'),
         ));
 
-        $this->exporter->serializeItems(array($item), 0, 1);
+        $this->exporter->serializeItems(array($item), 0, 1, 1);
     }
 
     /**
@@ -143,7 +143,7 @@ class XmlSerializationTest extends TestCase
             new Image('http://example.org/ug_default.png', Image::TYPE_DEFAULT, 'usergroup'),
         ));
 
-        $this->exporter->serializeItems(array($item), 0, 1);
+        $this->exporter->serializeItems(array($item), 0, 1, 1);
     }
 
     public function testOrdernumbersSupportUsergroups()
@@ -155,7 +155,7 @@ class XmlSerializationTest extends TestCase
             new Ordernumber('137-42-23.7-A', 'usergroup'),
         ));
 
-        $page = $this->exporter->serializeItems(array($item), 0, 1);
+        $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
 
         $this->assertPageIsValid($page);
     }
@@ -169,7 +169,7 @@ class XmlSerializationTest extends TestCase
             new Keyword('restricted', 'usergroup'),
         ));
 
-        $page = $this->exporter->serializeItems(array($item), 0, 1);
+        $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
 
         $this->assertPageIsValid($page);
     }
@@ -183,7 +183,7 @@ class XmlSerializationTest extends TestCase
             new Usergroup('another group')
         ));
 
-        $page = $this->exporter->serializeItems(array($item), 0, 1);
+        $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
 
         $this->assertPageIsValid($page);
     }
