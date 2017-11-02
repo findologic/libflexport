@@ -71,7 +71,7 @@ class CSVSerializationTest extends TestCase
     public function testMinimalItemIsExported()
     {
         $item = $this->getMinimalItem();
-        $export = $this->exporter->serializeItems(array($item), 0, 1);
+        $export = $this->exporter->serializeItems(array($item), 0, 1, 1);
 
         // TODO assert
     }

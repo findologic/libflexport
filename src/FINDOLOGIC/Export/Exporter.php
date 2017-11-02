@@ -63,10 +63,13 @@ abstract class Exporter
      * @param array $items Array of items to serialize. All of them are serialized, regardless of $start and $total.
      * @param int $start Assuming that $items is a fragment of the total, this is the global index of the first item in
      *      $items.
+     * @param int $count The number of items requested for this export step. Actual number of items can be smaller due
+     *      to errors, and can not be greater than the requested count, because that would indicate that the requested
+     *      count is ignored when generating items.
      * @param int $total The global total of items that could be exported.
      * @return string The items in serialized form.
      */
-    abstract public function serializeItems($items, $start, $total);
+    abstract public function serializeItems($items, $start, $count, $total);
 
     /**
      * Like serializeItems(), but the output is written to filesystem instead of being returned.
@@ -76,10 +79,13 @@ abstract class Exporter
      * @param array $items Array of items to serialize. All of them are serialized, regardless of $start and $total.
      * @param int $start Assuming that $items is a fragment of the total, this is the global index of the first item in
      *      $items.
+     * @param int $count The number of items requested for this export step. Actual number of items can be smaller due
+     *      to errors, and can not be greater than the requested count, because that would indicate that the requested
+     *      count is ignored when generating items.
      * @param int $total The global total of items that could be exported.
      * @return string Full path of the written file.
      */
-    abstract public function serializeItemsToFile($targetDirectory, $items, $start, $total);
+    abstract public function serializeItemsToFile($targetDirectory, $items, $start, $count, $total);
 
     /**
      * Creates an export format-specific item instance.
