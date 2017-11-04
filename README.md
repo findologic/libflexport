@@ -10,7 +10,7 @@ This project provides a export library for XML and CSV generation according to t
 * XML <https://docs.findologic.com/doku.php?id=export_patterns:xml>
 * CSV <https://docs.findologic.com/doku.php?id=export_patterns:csv>
 
-####Export recommendation
+#### Export recommendation
 
 Using the XML export is recommended by FINDOLOGIC. The XML is easier to read and has some advantages over the CSV export like:
 
