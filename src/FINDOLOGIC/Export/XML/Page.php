@@ -4,6 +4,15 @@ namespace FINDOLOGIC\Export\XML;
 
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
+class ItemsExceedCountValueException extends \RuntimeException
+{
+    public function __construct()
+    {
+        $message = 'The number of items must not exceed the count value';
+        parent::__construct($message);
+    }
+}
+
 class Page
 {
     private $items;
@@ -31,6 +40,10 @@ class Page
 
     public function getXml()
     {
+        if (count($this->items) > $this->count) {
+            throw new ItemsExceedCountValueException();
+        }
+
         $document = new \DOMDocument('1.0', 'utf-8');
         $root = XMLHelper::createElement($document, 'findologic', array('version' => '1.0'));
         $document->appendCHild($root);

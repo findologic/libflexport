@@ -78,6 +78,14 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($page);
     }
 
+    /**
+     * @expectedException \FINDOLOGIC\Export\XML\ItemsExceedCountValueException
+     */
+    public function testMoreItemsSuppliedThanCountValueCausesException()
+    {
+        $page = $this->exporter->serializeItems($this->itemGenerator(2), 0, 1, 1);
+    }
+
     public function testPropertyKeysAndValuesAreCdataWrapped()
     {
         $item = $this->getMinimalItem();
@@ -186,5 +194,29 @@ class XmlSerializationTest extends TestCase
         $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
 
         $this->assertPageIsValid($page);
+    }
+
+    /**
+     * Generates minimal XML-items
+     *
+     * @param $numberOfItems The number of items to generate.
+     * @return array The generated items.
+     */
+    public function itemGenerator($numberOfItems)
+    {
+        $items = array();
+
+        for ($i = 0; $i <= $numberOfItems; $i++) {
+            $item = $this->exporter->createItem((string)$i);
+
+            $price = new Price();
+            /* Generate a random price */
+            $price->setValue(rand(1,2000)*1.24);
+            $item->setPrice($price);
+
+            $items[] = $item;
+        }
+
+        return $items;
     }
 }
