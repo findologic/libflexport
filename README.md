@@ -24,6 +24,11 @@ Using the XML export is recommended by FINDOLOGIC. The XML is easier to read and
 
 ## Basic usage
 
+### Setup
+
+1. Include as composer dependency using `composer require findologic/libflexport`
+2. Load `./vendor/autoload.php` into the project
+
 ### XML export
 
 ```php
@@ -42,11 +47,6 @@ $item->setPrice($price);
 
 $exporter->serializeItems(array($item), 0, 1);
 ```
-
-## Setup
-
-1. Include as composer dependency using `composer require findologic/libflexport`
-2. Load `./vendor/autoload.php` into the project
 
 ## Contributors
 
