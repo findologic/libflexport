@@ -27,7 +27,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
 
     public function setValue($value, $usergroup = '')
     {
-        $this->values[$usergroup] = $value;
+        $this->values[$usergroup] = DataHelper::emptyValueCheck($value);
     }
 
     /**
