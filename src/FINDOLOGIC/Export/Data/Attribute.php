@@ -19,7 +19,7 @@ class Attribute implements Serializable
 
     public function addValue($value)
     {
-        array_push($values, $value);
+        array_push($this->values, $value);
     }
 
     public function setValues($values)
