@@ -14,7 +14,7 @@ class Attribute implements Serializable
     public function __construct($key, $values = array())
     {
         $this->key = $key;
-        $this->values = $values;
+        $this->setValues($values);
     }
 
     public function addValue($value)
@@ -24,7 +24,11 @@ class Attribute implements Serializable
 
     public function setValues($values)
     {
-        $this->values = $values;
+        $this->values = array();
+
+        foreach ($values as $value) {
+            $this->addValue($value);
+        }
     }
 
     public function getKey()
