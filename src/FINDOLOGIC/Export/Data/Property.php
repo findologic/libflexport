@@ -45,7 +45,7 @@ class Property
         }
 
         $this->key = $key;
-        $this->values = $values;
+        $this->setValues($values);
     }
 
     public function getKey()
@@ -60,6 +60,13 @@ class Property
         }
 
         $this->values[$usergroup] = $value;
+    public function setValues($values)
+    {
+        $this->values = array();
+
+        foreach ($values as $usergroup => $value) {
+            $this->addValue($value, $usergroup);
+        }
     }
 
     public function getAllValues()
