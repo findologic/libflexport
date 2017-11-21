@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
@@ -13,13 +14,13 @@ class Attribute implements Serializable
 
     public function __construct($key, $values = array())
     {
-        $this->key = $key;
+        $this->key = DataHelper::emptyValueCheck($key);
         $this->setValues($values);
     }
 
     public function addValue($value)
     {
-        array_push($this->values, $value);
+        array_push($this->values, DataHelper::emptyValueCheck($value));
     }
 
     public function setValues($values)
