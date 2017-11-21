@@ -21,7 +21,9 @@ class DataHelper
      */
     public static function emptyValueCheck($value)
     {
-        if (empty($value = trim($value))) throw new EmptyValueNotAllowedException();
+        if (empty($value = trim($value))) {
+            throw new EmptyValueNotAllowedException();
+        }
 
         return $value;
     }
