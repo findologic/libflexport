@@ -10,6 +10,12 @@ class EmptyValueNotAllowedException extends \RuntimeException
     }
 }
 
+/**
+ * Class DataHelper
+ * @package FINDOLOGIC\Export\Helpers
+ *
+ * Collection of helper methods for data elements.
+ */
 class DataHelper
 {
     /**
