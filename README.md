@@ -10,7 +10,7 @@ This project provides a export library for XML and CSV generation according to t
 * XML <https://docs.findologic.com/doku.php?id=export_patterns:xml>
 * CSV <https://docs.findologic.com/doku.php?id=export_patterns:csv>
 
-####Export recommendation
+#### Export recommendation
 
 Using the XML export is recommended by FINDOLOGIC. The XML is easier to read and has some advantages over the CSV export like:
 
@@ -23,6 +23,11 @@ Using the XML export is recommended by FINDOLOGIC. The XML is easier to read and
 * Using multiple usergroups per product
 
 ## Basic usage
+
+### Setup
+
+1. Include as composer dependency using `composer require findologic/libflexport`
+2. Load `./vendor/autoload.php` into the project
 
 ### XML export
 
@@ -42,11 +47,6 @@ $item->setPrice($price);
 
 $exporter->serializeItems(array($item), 0, 1);
 ```
-
-## Setup
-
-1. Include as composer dependency using `composer require findologic/libflexport`
-2. Load `./vendor/autoload.php` into the project
 
 ## Contributors
 

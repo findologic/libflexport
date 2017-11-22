@@ -78,6 +78,27 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($page);
     }
 
+    /**
+     * @expectedException \FINDOLOGIC\Export\XML\ItemsExceedCountValueException
+     */
+    public function testMoreItemsSuppliedThanCountValueCausesException()
+    {
+        $items = array();
+
+        for ($i = 0; $i <= 2; $i++) {
+            $item = $this->exporter->createItem((string)$i);
+
+            $price = new Price();
+            //Generate a random price
+            $price->setValue(rand(1, 2000)*1.24);
+            $item->setPrice($price);
+
+            $items[] = $item;
+        }
+
+        $page = $this->exporter->serializeItems($items, 0, 1, 1);
+    }
+
     public function testPropertyKeysAndValuesAreCdataWrapped()
     {
         $item = $this->getMinimalItem();

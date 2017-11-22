@@ -12,7 +12,7 @@ class CSVExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function serializeItems($items, $start, $count, $total)
+    public function serializeItems($items, $start = 0, $count = 0, $total = 0)
     {
         $export = self::HEADING;
 
@@ -27,7 +27,7 @@ class CSVExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function serializeItemsToFile($targetDirectory, $items, $start, $count, $total)
+    public function serializeItemsToFile($targetDirectory, $items, $start = 0, $count = 0, $total = 0)
     {
         $csvString = $this->serializeItems($items, $start, $count, $total);
         $targetPath = sprintf('%s/findologic.csv', $targetDirectory);
