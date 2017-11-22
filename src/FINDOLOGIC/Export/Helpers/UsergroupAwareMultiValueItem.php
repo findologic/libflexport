@@ -3,8 +3,8 @@
 namespace FINDOLOGIC\Export\Helpers;
 
 /**
- * Class UsergroupAwareMultiValue
- * @package FINDOLOGIC\XML\Helpers
+ * Class UsergroupAwareMultiValueItem
+ * @package FINDOLOGIC\Export\Helpers
  *
  * Single value for a UsergroupAwareMultiValue.
  *

@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Export\Helpers;
 
 /**
  * Class UsergroupAwareSimpleValue
- * @package FINDOLOGIC\XML\Helpers
+ * @package FINDOLOGIC\Export\Helpers
  *
  * Simple values that can differ per usergroup, but have one value at most for each.
  */
