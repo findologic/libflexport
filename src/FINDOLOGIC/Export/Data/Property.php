@@ -70,7 +70,7 @@ class Property
         $this->values[$usergroup] = DataHelper::emptyValueCheck($value);
     }
 
-    public function setValues($values)
+    protected function setValues($values)
     {
         $this->values = array();
 
