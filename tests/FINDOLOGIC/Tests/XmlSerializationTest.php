@@ -39,6 +39,9 @@ class XmlSerializationTest extends TestCase
     /** @var XMLExporter */
     private $exporter;
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function setUp()
     {
         $this->exporter = Exporter::create(Exporter::TYPE_XML);

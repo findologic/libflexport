@@ -29,6 +29,9 @@ class Page
         $this->items = $items;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function getXml()
     {
         $document = new \DOMDocument('1.0', 'utf-8');

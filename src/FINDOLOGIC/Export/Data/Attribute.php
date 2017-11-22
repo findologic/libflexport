@@ -12,12 +12,18 @@ class Attribute implements Serializable
 
     private $values;
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function __construct($key, $values = array())
     {
         $this->key = DataHelper::emptyValueCheck($key);
         $this->setValues($values);
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function addValue($value)
     {
         array_push($this->values, DataHelper::emptyValueCheck($value));
@@ -38,6 +44,7 @@ class Attribute implements Serializable
     }
 
     /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(\DOMDocument $document)

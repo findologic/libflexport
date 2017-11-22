@@ -25,12 +25,16 @@ abstract class UsergroupAwareSimpleValue implements Serializable
         return $this->values;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function setValue($value, $usergroup = '')
     {
         $this->values[$usergroup] = DataHelper::emptyValueCheck($value);
     }
 
     /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(\DOMDocument $document)

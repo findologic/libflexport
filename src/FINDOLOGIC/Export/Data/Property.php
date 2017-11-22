@@ -38,6 +38,9 @@ class Property
     private $key;
     private $values;
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function __construct($key, $values = array())
     {
         foreach (self::RESERVED_PROPERTY_KEYS as $reservedPropertyKey) {
@@ -55,6 +58,9 @@ class Property
         return $this->key;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function addValue($value, $usergroup = null)
     {
         if (array_key_exists($usergroup, $this->values)) {

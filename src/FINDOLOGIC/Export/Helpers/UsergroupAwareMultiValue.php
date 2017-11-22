@@ -37,6 +37,7 @@ abstract class UsergroupAwareMultiValue implements Serializable
     }
 
     /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(\DOMDocument $document)

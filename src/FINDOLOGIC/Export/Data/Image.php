@@ -39,6 +39,9 @@ class Image implements Serializable
     private $type;
     private $usergroup;
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function __construct($url, $type = self::TYPE_DEFAULT, $usergroup = '')
     {
         $this->url = DataHelper::emptyValueCheck($url);
@@ -71,6 +74,7 @@ class Image implements Serializable
     }
 
     /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(\DOMDocument $document)

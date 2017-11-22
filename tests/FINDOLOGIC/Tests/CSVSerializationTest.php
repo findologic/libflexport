@@ -20,6 +20,9 @@ class CSVSerializationTest extends TestCase
     /** @var CSVExporter */
     private $exporter;
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function setUp()
     {
         $this->exporter = Exporter::create(Exporter::TYPE_CSV);

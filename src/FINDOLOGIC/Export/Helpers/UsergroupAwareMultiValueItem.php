@@ -17,6 +17,9 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
     private $value;
     private $usergroup;
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function __construct($itemName, $value, $usergroup)
     {
         $this->value = DataHelper::emptyValueCheck($value);
@@ -30,6 +33,7 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
     }
 
     /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(\DOMDocument $document)
