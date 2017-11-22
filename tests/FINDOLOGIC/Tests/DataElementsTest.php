@@ -20,6 +20,12 @@ use PHPUnit\Framework\TestCase;
 
 class DataElementsTest extends TestCase
 {
+    /**
+     * Provides a data set for testing if initializing elements of type UsergroupAwareMultiValueItem
+     * with an empty value fails.
+     *
+     * @return array
+     */
     public function multiValueItemProvider()
     {
         return array(
@@ -32,11 +38,17 @@ class DataElementsTest extends TestCase
 
     /**
      * @dataProvider multiValueItemProvider
+     * @param string $value
+     * @param string $elementType
+     * @param bool $shouldCauseException
      */
-    public function testAddingEmptyValuesToMultiValueItemCausesException($value = '', $elementtype, $shouldCauseException = true)
-    {
+    public function testAddingEmptyValuesToMultiValueItemCausesException(
+        $value = '',
+        $elementType = '',
+        $shouldCauseException = true
+    ) {
         try {
-            $element = new $elementtype($value);
+            $element = new $elementType($value);
             if ($shouldCauseException) {
                 $this->fail('Adding empty values should cause exception!');
             }
@@ -45,6 +57,11 @@ class DataElementsTest extends TestCase
         }
     }
 
+    /**
+     * Provides a data set for testing if adding empty values to elements of type UsergroupAwareSimpleValue fails.
+     *
+     * @return array
+     */
     public function simpleValueItemProvider()
     {
         return array(
@@ -69,9 +86,15 @@ class DataElementsTest extends TestCase
 
     /**
      * @dataProvider simpleValueItemProvider
+     * @param string $value
+     * @param string $elementType
+     * @param bool $shouldCauseException
      */
-    public function testAddingEmptyValuesToSimpleItemsCausesException($value = '', $elementType, $shouldCauseException = true)
-    {
+    public function testAddingEmptyValuesToSimpleItemsCausesException(
+        $value = '',
+        $elementType = '',
+        $shouldCauseException = true
+    ) {
         try {
             $element = new $elementType();
             $element->setValue($value);
@@ -92,6 +115,11 @@ class DataElementsTest extends TestCase
         $element->setValue("");
     }
 
+    /**
+     * Provides a data set for testing if adding empty keys or values to attribute and property elements fails.
+     *
+     * @return array
+     */
     public function emptyValueProvider()
     {
         return array(
@@ -106,9 +134,17 @@ class DataElementsTest extends TestCase
 
     /**
      * @dataProvider emptyValueProvider
+     * @param string $key
+     * @param string $value
+     * @param string $elementType
+     * @param bool $shouldCauseException
      */
-    public function testAddingEmptyValueCausesException($key = '', $value = '', $elementType, $shouldCauseException = true)
-    {
+    public function testAddingEmptyValueCausesException(
+        $key = '',
+        $value = '',
+        $elementType = '',
+        $shouldCauseException = true
+    ) {
         try {
             $element = new $elementType($key, $value);
             if ($shouldCauseException) {
