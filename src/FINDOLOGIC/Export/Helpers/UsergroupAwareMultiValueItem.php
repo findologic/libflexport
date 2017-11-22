@@ -22,7 +22,7 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
      */
     public function __construct($itemName, $value, $usergroup)
     {
-        $this->value = DataHelper::emptyValueCheck($value);
+        $this->value = DataHelper::checkForEmptyValue($value);
         $this->itemName = $itemName;
         $this->usergroup = $usergroup;
     }

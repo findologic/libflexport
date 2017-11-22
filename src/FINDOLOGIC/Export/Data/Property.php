@@ -49,7 +49,7 @@ class Property
             }
         }
 
-        $this->key = DataHelper::emptyValueCheck($key);
+        $this->key = DataHelper::checkForEmptyValue($key);
         $this->setValues($values);
     }
 
@@ -67,7 +67,7 @@ class Property
             throw new DuplicateValueForUsergroupException($this->key, $usergroup);
         }
 
-        $this->values[$usergroup] = DataHelper::emptyValueCheck($value);
+        $this->values[$usergroup] = DataHelper::checkForEmptyValue($value);
     }
 
     protected function setValues($values)

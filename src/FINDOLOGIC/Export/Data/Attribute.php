@@ -17,7 +17,7 @@ class Attribute implements Serializable
      */
     public function __construct($key, $values = array())
     {
-        $this->key = DataHelper::emptyValueCheck($key);
+        $this->key = DataHelper::checkForEmptyValue($key);
         $this->setValues($values);
     }
 
@@ -26,7 +26,7 @@ class Attribute implements Serializable
      */
     public function addValue($value)
     {
-        array_push($this->values, DataHelper::emptyValueCheck($value));
+        array_push($this->values, DataHelper::checkForEmptyValue($value));
     }
 
     public function setValues($values)

@@ -44,7 +44,7 @@ class Image implements Serializable
      */
     public function __construct($url, $type = self::TYPE_DEFAULT, $usergroup = '')
     {
-        $this->url = DataHelper::emptyValueCheck($url);
+        $this->url = DataHelper::checkForEmptyValue($url);
         $this->type = $type;
         $this->usergroup = $usergroup;
     }

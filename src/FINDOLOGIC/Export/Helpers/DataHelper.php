@@ -25,9 +25,11 @@ class DataHelper
      * @throws EmptyValueNotAllowedException If the value is empty.
      * @return string Returns the value if not empty.
      */
-    public static function emptyValueCheck($value)
+    public static function checkForEmptyValue($value)
     {
-        if (empty($value = trim($value))) {
+        $value = trim($value);
+
+        if (empty($value)) {
             throw new EmptyValueNotAllowedException();
         }
 
