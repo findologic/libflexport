@@ -24,7 +24,7 @@ class DataElementsTest extends TestCase
      * Provides a data set for testing if initializing elements of type UsergroupAwareMultiValueItem
      * with an empty value fails.
      *
-     * @return array
+     * @return array Scenarios with a value, the element class and whether this input should cause an exception.
      */
     public function multiValueItemProvider()
     {
@@ -60,7 +60,7 @@ class DataElementsTest extends TestCase
     /**
      * Provides a data set for testing if adding empty values to elements of type UsergroupAwareSimpleValue fails.
      *
-     * @return array
+     * @return array Scenarios with a value, the element class and whether this input should cause an exception.
      */
     public function simpleValueItemProvider()
     {
@@ -118,7 +118,8 @@ class DataElementsTest extends TestCase
     /**
      * Provides a data set for testing if adding empty keys or values to attribute and property elements fails.
      *
-     * @return array
+     * @return array Scenarios with key, one or more values, the element class and whether this input should cause
+     *      an exception.
      */
     public function emptyValueProvider()
     {
