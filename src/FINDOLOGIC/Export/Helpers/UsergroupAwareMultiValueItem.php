@@ -3,8 +3,8 @@
 namespace FINDOLOGIC\Export\Helpers;
 
 /**
- * Class UsergroupAwareMultiValue
- * @package FINDOLOGIC\XML\Helpers
+ * Class UsergroupAwareMultiValueItem
+ * @package FINDOLOGIC\Export\Helpers
  *
  * Single value for a UsergroupAwareMultiValue.
  *
@@ -17,9 +17,12 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
     private $value;
     private $usergroup;
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function __construct($itemName, $value, $usergroup)
     {
-        $this->value = $value;
+        $this->value = DataHelper::checkForEmptyValue($value);
         $this->itemName = $itemName;
         $this->usergroup = $usergroup;
     }
@@ -30,6 +33,7 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
     }
 
     /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(\DOMDocument $document)

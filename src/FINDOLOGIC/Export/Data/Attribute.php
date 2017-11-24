@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
@@ -11,20 +12,30 @@ class Attribute implements Serializable
 
     private $values;
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function __construct($key, $values = array())
     {
-        $this->key = $key;
-        $this->values = $values;
+        $this->key = DataHelper::checkForEmptyValue($key);
+        $this->setValues($values);
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function addValue($value)
     {
-        array_push($values, $value);
+        array_push($this->values, DataHelper::checkForEmptyValue($value));
     }
 
     public function setValues($values)
     {
-        $this->values = $values;
+        $this->values = array();
+
+        foreach ($values as $value) {
+            $this->addValue($value);
+        }
     }
 
     public function getKey()
@@ -33,6 +44,7 @@ class Attribute implements Serializable
     }
 
     /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(\DOMDocument $document)

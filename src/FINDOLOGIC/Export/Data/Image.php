@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
@@ -38,9 +39,12 @@ class Image implements Serializable
     private $type;
     private $usergroup;
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function __construct($url, $type = self::TYPE_DEFAULT, $usergroup = '')
     {
-        $this->url = $url;
+        $this->url = DataHelper::checkForEmptyValue($url);
         $this->type = $type;
         $this->usergroup = $usergroup;
     }
@@ -70,6 +74,7 @@ class Image implements Serializable
     }
 
     /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(\DOMDocument $document)

@@ -2,6 +2,8 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use FINDOLOGIC\Export\Helpers\DataHelper;
+
 class DuplicateValueForUsergroupException extends \RuntimeException
 {
     public function __construct($key, $usergroup)
@@ -36,6 +38,9 @@ class Property
     private $key;
     private $values;
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function __construct($key, $values = array())
     {
         foreach (self::RESERVED_PROPERTY_KEYS as $reservedPropertyKey) {
@@ -44,8 +49,8 @@ class Property
             }
         }
 
-        $this->key = $key;
-        $this->values = $values;
+        $this->key = DataHelper::checkForEmptyValue($key);
+        $this->setValues($values);
     }
 
     public function getKey()
@@ -53,13 +58,25 @@ class Property
         return $this->key;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function addValue($value, $usergroup = null)
     {
         if (array_key_exists($usergroup, $this->values)) {
             throw new DuplicateValueForUsergroupException($this->key, $usergroup);
         }
 
-        $this->values[$usergroup] = $value;
+        $this->values[$usergroup] = DataHelper::checkForEmptyValue($value);
+    }
+
+    protected function setValues($values)
+    {
+        $this->values = array();
+
+        foreach ($values as $usergroup => $value) {
+            $this->addValue($value, $usergroup);
+        }
     }
 
     public function getAllValues()

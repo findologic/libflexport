@@ -38,6 +38,9 @@ class Page
         $this->items = $items;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function getXml()
     {
         if (count($this->items) > $this->count) {
