@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Export\Helpers;
 
 /**
  * Class UsergroupAwareSimpleValue
- * @package FINDOLOGIC\XML\Helpers
+ * @package FINDOLOGIC\Export\Helpers
  *
  * Simple values that can differ per usergroup, but have one value at most for each.
  */
@@ -25,12 +25,16 @@ abstract class UsergroupAwareSimpleValue implements Serializable
         return $this->values;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function setValue($value, $usergroup = '')
     {
-        $this->values[$usergroup] = $value;
+        $this->values[$usergroup] = DataHelper::checkForEmptyValue($value);
     }
 
     /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(\DOMDocument $document)

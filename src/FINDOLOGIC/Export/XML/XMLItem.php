@@ -21,6 +21,7 @@ class XMLItem extends Item
     }
 
     /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(\DOMDocument $document)
@@ -48,6 +49,9 @@ class XMLItem extends Item
         return $itemElem;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     private function buildProperties(\DOMDocument $document)
     {
         $allProps = XMLHelper::createElement($document, 'allProperties');
@@ -74,6 +78,9 @@ class XMLItem extends Item
         return $allProps;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     private function buildAttributes(\DOMDocument $document)
     {
         $allAttributes = XMLHelper::createElement($document, 'allAttributes');
@@ -92,6 +99,9 @@ class XMLItem extends Item
         return $allAttributes;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     private function buildImages(\DOMDocument $document)
     {
         $allImagesElem = XMLHelper::createElement($document, 'allImages');
@@ -121,6 +131,9 @@ class XMLItem extends Item
         return $allImagesElem;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     private function buildUsergroups(\DOMDocument $document)
     {
         $usergroups = XMLHelper::createElement($document, 'usergroups');

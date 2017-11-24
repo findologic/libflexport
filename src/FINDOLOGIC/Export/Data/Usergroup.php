@@ -21,6 +21,7 @@ class Usergroup implements Serializable
     }
 
     /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(\DOMDocument $document)

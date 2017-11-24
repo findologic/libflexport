@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Export\Helpers;
 
 /**
  * Class UsergroupAwareMultiValue
- * @package FINDOLOGIC\XML\Helpers
+ * @package FINDOLOGIC\Export\Helpers
  *
  * Multi values that can differ per usergroup, and have multiple values for each.
  */
@@ -37,6 +37,7 @@ abstract class UsergroupAwareMultiValue implements Serializable
     }
 
     /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(\DOMDocument $document)
