@@ -6,7 +6,7 @@
         "phpunit/phpunit": "~5.6",
         "goetas-webservices/xsd2php":"^0.2",
         "symfony/console": "v3.2.9",
-        "friendsofphp/php-cs-fixer": "^2.5"
+        "friendsofphp/php-cs-fixer": "v2.8.2"
     },
     "license": "MIT",
     "authors": [
