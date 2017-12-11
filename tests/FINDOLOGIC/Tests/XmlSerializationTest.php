@@ -153,7 +153,7 @@ class XmlSerializationTest extends TestCase
 
         $document = new \DOMDocument('1.0', 'utf-8');
         $root = XMLHelper::createElement($document, 'findologic', array('version' => '1.0'));
-        $document->appendCHild($root);
+        $document->appendChild($root);
 
         $xmlItems = XMLHelper::createElement($document, 'items', array(
             'start' => 0,
