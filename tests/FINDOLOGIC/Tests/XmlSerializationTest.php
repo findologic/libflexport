@@ -10,6 +10,7 @@ use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exporter;
+use FINDOLOGIC\Export\Helpers\XMLHelper;
 use FINDOLOGIC\Export\XML\XMLExporter;
 use PHPUnit\Framework\TestCase;
 
@@ -139,6 +140,35 @@ class XmlSerializationTest extends TestCase
         $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
 
         $this->assertPageIsValid($page);
+    }
+
+    public function testBaseImageCanBeExported()
+    {
+        $item = $this->getMinimalItem();
+
+        $imageUrl = 'http://example.org/thumbnail.png';
+        $item->setAllImages(array(
+            new Image($imageUrl),
+        ));
+
+        $document = new \DOMDocument('1.0', 'utf-8');
+        $root = XMLHelper::createElement($document, 'findologic', array('version' => '1.0'));
+        $document->appendChild($root);
+
+        $xmlItems = XMLHelper::createElement($document, 'items', array(
+            'start' => 0,
+            'count' => 1,
+            'total' => 1
+        ));
+        $root->appendChild($xmlItems);
+
+        $itemDom = $item->getDomSubtree($document);
+
+        foreach ($itemDom->childNodes as $node) {
+            if ($node->nodeName === 'allImages') {
+                $this->assertEquals($imageUrl, $node->nodeValue);
+            }
+        }
     }
 
     /**

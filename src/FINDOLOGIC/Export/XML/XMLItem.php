@@ -149,7 +149,8 @@ class XMLItem extends Item
     /**
      * Checks if there is at least one image of type default
      *
-     * @param array $images
+     * @param array $images The images to validate.
+     * @return boolean Whether the images are valid or not.
      */
     private function validateImages(array $images)
     {
@@ -165,5 +166,7 @@ class XMLItem extends Item
         if (!$valid) {
             throw new BaseImageMissingException();
         }
+
+        return $valid;
     }
 }
