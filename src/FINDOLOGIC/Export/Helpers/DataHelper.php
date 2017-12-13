@@ -21,7 +21,7 @@ class DataHelper
     /**
      * Checks if the provided value is empty.
      *
-     * @param string $value The value to check.
+     * @param string|int|float $value The value to check. Regardless of type, it is coerced into a string.
      * @throws EmptyValueNotAllowedException If the value is empty.
      * @return string Returns the value if not empty.
      */
@@ -29,7 +29,7 @@ class DataHelper
     {
         $value = trim($value);
 
-        if (empty($value)) {
+        if ($value === '') {
             throw new EmptyValueNotAllowedException();
         }
 

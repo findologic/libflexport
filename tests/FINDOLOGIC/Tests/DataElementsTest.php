@@ -73,6 +73,7 @@ class DataElementsTest extends TestCase
             'Name with value' => array('value', Name::class, false),
             'Price with empty value' => array('', Price::class, true),
             'Price with value' => array('value', Price::class, false),
+            'Price zero' => array(0, Price::class, false),
             'SalesFrequency with empty value' => array('', SalesFrequency::class, true),
             'SalesFrequency with value' => array('value', SalesFrequency::class, false),
             'Sort with empty value' => array('', Sort::class, true),
