@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Export\Data;
 
 use FINDOLOGIC\Export\Helpers\DataHelper;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
 class DuplicateValueForUsergroupException extends \RuntimeException
 {
@@ -49,7 +50,7 @@ class Property
             }
         }
 
-        $this->key = DataHelper::checkForEmptyValue($key);
+        $this->key = UsergroupAwareSimpleValue::validate($key);
         $this->setValues($values);
     }
 
@@ -67,7 +68,7 @@ class Property
             throw new DuplicateValueForUsergroupException($this->key, $usergroup);
         }
 
-        $this->values[$usergroup] = DataHelper::checkForEmptyValue($value);
+        $this->values[$usergroup] = UsergroupAwareSimpleValue::validate($value);
     }
 
     protected function setValues($values)

@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-use FINDOLOGIC\Export\Helpers\DataHelper;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
@@ -17,7 +17,7 @@ class Attribute implements Serializable
      */
     public function __construct($key, $values = array())
     {
-        $this->key = DataHelper::checkForEmptyValue($key);
+        $this->key = UsergroupAwareSimpleValue::validate($key);
         $this->setValues($values);
     }
 
@@ -26,7 +26,7 @@ class Attribute implements Serializable
      */
     public function addValue($value)
     {
-        array_push($this->values, DataHelper::checkForEmptyValue($value));
+        array_push($this->values, UsergroupAwareSimpleValue::validate($value));
     }
 
     public function setValues($values)
