@@ -12,7 +12,7 @@ class Bonus extends UsergroupAwareSimpleValue
         parent::__construct('bonuses', 'bonus');
     }
 
-    static function validate($value)
+    public static function validate($value)
     {
         return UsergroupAwareNumericValue::validate($value);
     }

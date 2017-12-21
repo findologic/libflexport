@@ -12,7 +12,7 @@ class Sort extends UsergroupAwareSimpleValue
         parent::__construct('sorts', 'sort');
     }
 
-    static function validate($value)
+    public static function validate($value)
     {
         return UsergroupAwareNumericValue::validate($value);
     }

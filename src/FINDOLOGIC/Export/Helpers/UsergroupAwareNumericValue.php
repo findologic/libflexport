@@ -12,7 +12,7 @@ class ValueIsNotNumericException extends EmptyValueNotAllowedException
 
 class UsergroupAwareNumericValue
 {
-    static function validate($value)
+    public static function validate($value)
     {
         $value = trim($value);
 

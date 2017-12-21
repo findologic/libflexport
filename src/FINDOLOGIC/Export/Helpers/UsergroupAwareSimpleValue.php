@@ -53,7 +53,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
      * @return string string|int
      * @throws EmptyValueNotAllowedException
      */
-    static function validate($value)
+    public static function validate($value)
     {
         $value = trim($value);
 

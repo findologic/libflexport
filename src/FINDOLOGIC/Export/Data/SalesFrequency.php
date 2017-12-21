@@ -12,7 +12,7 @@ class SalesFrequency extends UsergroupAwareSimpleValue
         parent::__construct('salesFrequencies', 'salesFrequency');
     }
 
-    static function validate($value)
+    public static function validate($value)
     {
         return UsergroupAwareNumericValue::validate($value);
     }
