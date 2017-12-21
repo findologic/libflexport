@@ -2,8 +2,6 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
-use Throwable;
-
 class EmptyValueNotAllowedException extends \RuntimeException
 {
     public function __construct()
