@@ -2,9 +2,10 @@
 
 namespace FINDOLOGIC\Tests;
 
-use FINDOLOGIC\Export\Helpers\DataHelper;
+use FINDOLOGIC\Export\Data\Price;
+use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
-use FINDOLOGIC\Export\Helpers\InvalidPriceException;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 use PHPUnit\Framework\TestCase;
 
 class DataHelperTest extends TestCase
@@ -12,13 +13,13 @@ class DataHelperTest extends TestCase
     /**
      * @dataProvider emptyValueProvider
      *
-     * @param $value
-     * @param $shouldCauseException
+     * @param $value string|int value that should be checked.
+     * @param $shouldCauseException bool should an exception be caused by given parameter.
      */
     public function testEmptyValueDetectsEmptyStringsOnly($value, $shouldCauseException)
     {
         try {
-            DataHelper::checkForEmptyValue($value);
+            UsergroupAwareSimpleValue::validate($value);
 
             if ($shouldCauseException) {
                 $this->fail('Should be detected as empty value.');
@@ -52,18 +53,18 @@ class DataHelperTest extends TestCase
     /**
      * @dataProvider priceValueProvider
      *
-     * @param $value
-     * @param $shouldCauseException
+     * @param $value string|int value that should be checked.
+     * @param $shouldCauseException bool should an exception be caused by given parameter.
      */
-    public function testPriceValueDetectsFloatsOnly($value, $shouldCauseException)
+    public function testPriceValueDetectsNumericsOnly($value, $shouldCauseException)
     {
         try {
-            DataHelper::checkForValidPrice($value);
+            Price::validate($value);
 
             if ($shouldCauseException) {
                 $this->fail('Should be detected as numeric value.');
             }
-        } catch (InvalidPriceException $e) {
+        } catch (ValueIsNotNumericException $e) {
             if (!$shouldCauseException) {
                 $this->fail('Should not be detected as numeric value.');
             }
