@@ -67,7 +67,7 @@ class DataElementsTest extends TestCase
     {
         return array(
             'Bonus with empty value' => array('', Bonus::class, true),
-            'Bonus with value' => array('value', Bonus::class, false),
+            'Bonus with value' => array(1337, Bonus::class, false),
             'Description with empty value' => array('', Description::class, true),
             'Description with value' => array('value', Description::class, false),
             'Name with empty value' => array('', Name::class, true),
@@ -76,9 +76,9 @@ class DataElementsTest extends TestCase
             'Price with numeric value' => array(1337, Price::class, false),
             'Price zero' => array(0, Price::class, false),
             'SalesFrequency with empty value' => array('', SalesFrequency::class, true),
-            'SalesFrequency with value' => array('value', SalesFrequency::class, false),
+            'SalesFrequency with value' => array(1337, SalesFrequency::class, false),
             'Sort with empty value' => array('', Sort::class, true),
-            'Sort with value' => array('value', Sort::class, false),
+            'Sort with value' => array(1337, Sort::class, false),
             'Summary with empty value' => array('', Summary::class, true),
             'Summary with value' => array('value', Summary::class, false),
             'Url with empty value' => array('', Url::class, true),
