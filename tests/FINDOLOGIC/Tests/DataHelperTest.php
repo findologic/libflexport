@@ -47,4 +47,37 @@ class DataHelperTest extends TestCase
             'false' => [false, true]
         ];
     }
+
+    /**
+     * @dataProvider priceValueProvider
+     *
+     * @param $value
+     * @param $shouldCauseException
+     */
+    public function testPriceValueDetectsFloatsOnly($value, $shouldCauseException)
+    {
+        try {
+            DataHelper::checkForValidPrice($value);
+
+            if ($shouldCauseException) {
+                $this->fail('Should be detected as numeric value.');
+            }
+        } catch (EmptyValueNotAllowedException $e) {
+            if (!$shouldCauseException) {
+                $this->fail('Should not be detected as numeric value.');
+            }
+        }
+    }
+
+    public function priceValueProvider()
+    {
+        return [
+            'string' => ['blubbergurke', true],
+            'non-zero integer' => [123, false],
+            'zero as integer' => [0, false],
+            'non-zero float' => [12.3, false],
+            'zero as float' => [0.0, false],
+            'zero as string' => ['0', false]
+        ];
+    }
 }

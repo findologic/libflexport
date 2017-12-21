@@ -13,11 +13,13 @@ abstract class UsergroupAwareSimpleValue implements Serializable
     private $collectionName;
     private $itemName;
     private $values = array();
+    private $price;
 
-    public function __construct($collectionName, $itemName)
+    public function __construct($collectionName, $itemName, $price = false)
     {
         $this->collectionName = $collectionName;
         $this->itemName = $itemName;
+        $this->price = $price;
     }
 
     public function getValues()
@@ -31,6 +33,9 @@ abstract class UsergroupAwareSimpleValue implements Serializable
     public function setValue($value, $usergroup = '')
     {
         $this->values[$usergroup] = DataHelper::checkForEmptyValue($value);
+        if ($this->price === true) {
+            DataHelper::checkForValidPrice($value);
+        }
     }
 
     /**

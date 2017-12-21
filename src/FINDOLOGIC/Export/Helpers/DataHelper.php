@@ -2,11 +2,20 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
+use Throwable;
+
 class EmptyValueNotAllowedException extends \RuntimeException
 {
     public function __construct()
     {
         parent::__construct('Empty values are not allowed!');
+    }
+}
+class InvalidPriceException extends \RuntimeException
+{
+    public function __construct()
+    {
+        parent::__construct('Price is not a valid float value!');
     }
 }
 
@@ -34,5 +43,22 @@ class DataHelper
         }
 
         return $value;
+    }
+
+    /**
+     * Checks if the provided price is a numeric number.
+     *
+     * @param $value int $value The value to check.
+     * @return bool Returns true if the price is a valid numeric number.
+     */
+    public static function checkForValidPrice($value)
+    {
+        $value = trim($value);
+
+        if (!is_numeric($value)) {
+            throw new InvalidPriceException();
+        }
+
+        return true;
     }
 }
