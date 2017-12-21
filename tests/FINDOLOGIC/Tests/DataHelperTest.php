@@ -70,6 +70,11 @@ class DataHelperTest extends TestCase
         }
     }
 
+    /**
+     * Scenarios for numeric price value validation.
+     *
+     * @return array Cases with the value to check and whether it should cause a validation issue.
+     */
     public function priceValueProvider()
     {
         return [
