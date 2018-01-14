@@ -3,17 +3,11 @@
 namespace FINDOLOGIC\Export\Data;
 
 use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
-use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
-class Price extends UsergroupAwareSimpleValue
+class Price extends UsergroupAwareNumericValue
 {
     public function __construct()
     {
         parent::__construct('prices', 'price');
-    }
-
-    public static function validate($value)
-    {
-        return UsergroupAwareNumericValue::validate($value);
     }
 }

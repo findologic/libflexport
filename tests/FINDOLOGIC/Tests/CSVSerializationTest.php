@@ -76,6 +76,6 @@ class CSVSerializationTest extends TestCase
         $item = $this->getMinimalItem();
         $export = $this->exporter->serializeItems(array($item));
 
-        // TODO assert
+        $this->assertInternalType('string', $export);
     }
 }

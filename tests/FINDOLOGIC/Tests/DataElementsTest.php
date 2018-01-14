@@ -52,6 +52,10 @@ class DataElementsTest extends TestCase
             $element = new $elementType($value);
             if ($shouldCauseException) {
                 $this->fail('Adding empty values should cause exception!');
+            } else {
+                // The following assertion exists mostly to ensure that PHPUnit does not lament
+                // the lack of assertions in this successful test.
+                $this->assertNotNull($element);
             }
         } catch (\Exception $exception) {
             $this->assertEquals(EmptyValueNotAllowedException::class, get_class($exception));
@@ -102,6 +106,10 @@ class DataElementsTest extends TestCase
             $element->setValue($value);
             if ($shouldCauseException) {
                 $this->fail('Adding empty values should cause exception!');
+            } else {
+                // The following assertion exists mostly to ensure that PHPUnit does not lament
+                // the lack of assertions in this successful test.
+                $this->assertNotNull($element);
             }
         } catch (\Exception $exception) {
             $this->assertEquals(EmptyValueNotAllowedException::class, get_class($exception));
@@ -152,6 +160,10 @@ class DataElementsTest extends TestCase
             $element = new $elementType($key, $value);
             if ($shouldCauseException) {
                 $this->fail('Adding empty values should cause exception!');
+            } else {
+                // The following assertion exists mostly to ensure that PHPUnit does not lament
+                // the lack of assertions in this successful test.
+                $this->assertNotNull($element);
             }
         } catch (\Exception $exception) {
             $this->assertEquals(EmptyValueNotAllowedException::class, get_class($exception));

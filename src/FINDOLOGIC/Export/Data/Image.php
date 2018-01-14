@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
+use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
@@ -44,7 +44,7 @@ class Image implements Serializable
      */
     public function __construct($url, $type = self::TYPE_DEFAULT, $usergroup = '')
     {
-        $this->url = UsergroupAwareSimpleValue::validate($url);
+        $this->url = DataHelper::checkForEmptyValue($url);
         $this->type = $type;
         $this->usergroup = $usergroup;
     }

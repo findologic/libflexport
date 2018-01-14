@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
-class ValueIsNotNumericException extends EmptyValueNotAllowedException
+class ValueIsNotNumericException extends \RuntimeException
 {
     public function __construct()
     {
@@ -10,15 +10,12 @@ class ValueIsNotNumericException extends EmptyValueNotAllowedException
     }
 }
 
-class UsergroupAwareNumericValue
+class UsergroupAwareNumericValue extends UsergroupAwareSimpleValue
 {
-    public static function validate($value)
+    protected function validate($value)
     {
-        $value = trim($value);
+        $value = parent::validate($value);
 
-        if ($value === '') {
-            throw new EmptyValueNotAllowedException();
-        }
         if (!is_numeric($value)) {
             throw new ValueIsNotNumericException();
         }
