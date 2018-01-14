@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Tests;
+namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;

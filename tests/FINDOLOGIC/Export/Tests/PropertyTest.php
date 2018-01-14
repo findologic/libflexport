@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Tests;
+namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Data\Property;
 use PHPUnit\Framework\TestCase;

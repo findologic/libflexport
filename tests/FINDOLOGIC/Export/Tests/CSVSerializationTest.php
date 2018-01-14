@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Tests;
+namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\CSV\CSVExporter;
 use FINDOLOGIC\Export\Data\Bonus;
