@@ -92,9 +92,9 @@ class CSVSerializationTest extends TestCase
     {
         $item = $this->getMinimalItem();
 
-        $expectedXml = $this->exporter->serializeItems([$item], 0, 1, 1);
+        $expectedCsvContent = $this->exporter->serializeItems([$item], 0, 1, 1);
         $this->exporter->serializeItemsToFile('/tmp', [$item], 0, 1, 1);
 
-        self::assertEquals($expectedXml, file_get_contents('/tmp/findologic.csv'));
+        self::assertEquals($expectedCsvContent, file_get_contents('/tmp/findologic.csv'));
     }
 }

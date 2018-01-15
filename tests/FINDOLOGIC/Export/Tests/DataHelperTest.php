@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
-use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
 use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
@@ -60,21 +59,21 @@ class DataHelperTest extends TestCase
     /**
      * @dataProvider numericValueProvider
      *
-     * @param $value string|int value that should be checked.
+     * @param $value string|int|bool value that should be checked.
      * @param $shouldCauseException bool should an exception be caused by given parameter.
      */
     public function testNumericValuesAreValidated($value, $shouldCauseException)
     {
         try {
-            $price = new UsergroupAwareNumericValue('dummies', 'dummy');
-            $price->setValue($value);
+            $numericValueElement = new UsergroupAwareNumericValue('dummies', 'dummy');
+            $numericValueElement->setValue($value);
 
             if ($shouldCauseException) {
                 $this->fail('Should be detected as numeric value.');
             } else {
                 // The following assertion exists mostly to ensure that PHPUnit does not lament
                 // the lack of assertions in this successful test.
-                $this->assertNotNull($price);
+                $this->assertNotNull($numericValueElement);
             }
         } catch (ValueIsNotNumericException $e) {
             if (!$shouldCauseException) {

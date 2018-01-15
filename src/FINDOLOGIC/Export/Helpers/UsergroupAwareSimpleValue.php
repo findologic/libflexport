@@ -30,8 +30,6 @@ abstract class UsergroupAwareSimpleValue implements Serializable
      */
     public function setValue($value, $usergroup = '')
     {
-        $this->validate($value);
-
         $this->values[$usergroup] = $this->validate($value);
     }
 
