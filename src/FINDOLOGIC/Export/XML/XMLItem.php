@@ -17,7 +17,7 @@ class XMLItem extends Item
      */
     public function getCsvFragment()
     {
-        throw new \BadMethodCallException('CSVItem does not implement XML export.');
+        throw new \BadMethodCallException('XMLItem does not implement CSV export.');
     }
 
     /**
@@ -26,7 +26,7 @@ class XMLItem extends Item
      */
     public function getDomSubtree(\DOMDocument $document)
     {
-        $itemElem = XMLHelper::createElement($document, 'item', array('id' => $this->id));
+        $itemElem = XMLHelper::createElement($document, 'item', ['id' => $this->id]);
         $document->appendChild($itemElem);
 
         $itemElem->appendChild($this->name->getDomSubtree($document));

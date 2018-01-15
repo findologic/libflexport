@@ -12,6 +12,7 @@ use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 use FINDOLOGIC\Export\XML\XMLExporter;
+use FINDOLOGIC\Export\XML\XMLItem;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -35,6 +36,15 @@ class XmlSerializationTest extends TestCase
 
         // Download the schema once for the whole test case for speed as compared to downloading it for each test.
         self::$schema = file_get_contents(self::SCHEMA_URL);
+    }
+
+    public function tearDown()
+    {
+        try {
+            unlink('/tmp/findologic_0_1.xml');
+        } catch (\Exception $e) {
+            // No need to delete a written file if the test didn't write it.
+        }
     }
 
     /** @var XMLExporter */
@@ -69,7 +79,7 @@ class XmlSerializationTest extends TestCase
 
     public function testEmptyPageIsValid()
     {
-        $page = $this->exporter->serializeItems(array(), 0, 0, 0);
+        $page = $this->exporter->serializeItems([], 0, 0, 0);
 
         $this->assertPageIsValid($page);
     }
@@ -77,7 +87,7 @@ class XmlSerializationTest extends TestCase
     public function testMinimalItemIsValid()
     {
         $item = $this->getMinimalItem();
-        $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
+        $page = $this->exporter->serializeItems([$item], 0, 1, 1);
 
         $this->assertPageIsValid($page);
     }
@@ -87,7 +97,7 @@ class XmlSerializationTest extends TestCase
      */
     public function testMoreItemsSuppliedThanCountValueCausesException()
     {
-        $items = array();
+        $items = [];
 
         for ($i = 0; $i <= 2; $i++) {
             $item = $this->exporter->createItem((string)$i);
@@ -100,17 +110,17 @@ class XmlSerializationTest extends TestCase
             $items[] = $item;
         }
 
-        $page = $this->exporter->serializeItems($items, 0, 1, 1);
+        $this->exporter->serializeItems($items, 0, 1, 1);
     }
 
     public function testPropertyKeysAndValuesAreCdataWrapped()
     {
         $item = $this->getMinimalItem();
 
-        $property = new Property('&quot;</>', array(null => '&quot;</>'));
+        $property = new Property('&quot;</>', [null => '&quot;</>']);
         $item->addProperty($property);
 
-        $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
+        $page = $this->exporter->serializeItems([$item], 0, 1, 1);
 
         $this->assertPageIsValid($page);
     }
@@ -119,10 +129,10 @@ class XmlSerializationTest extends TestCase
     {
         $item = $this->getMinimalItem();
 
-        $attribute = new Attribute('&quot;</>', array('&quot;</>', 'regular'));
+        $attribute = new Attribute('&quot;</>', ['&quot;</>', 'regular']);
         $item->addAttribute($attribute);
 
-        $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
+        $page = $this->exporter->serializeItems([$item], 0, 1, 1);
 
         $this->assertPageIsValid($page);
     }
@@ -131,13 +141,13 @@ class XmlSerializationTest extends TestCase
     {
         $item = $this->getMinimalItem();
 
-        $item->setAllImages(array(
+        $item->setAllImages([
             new Image('http://example.org/default.png'),
             new Image('http://example.org/thumbnail.png', Image::TYPE_THUMBNAIL),
             new Image('http://example.org/ug_default.png', Image::TYPE_DEFAULT, 'usergroup'),
-        ));
+        ]);
 
-        $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
+        $page = $this->exporter->serializeItems([$item], 0, 1, 1);
 
         $this->assertPageIsValid($page);
     }
@@ -147,19 +157,19 @@ class XmlSerializationTest extends TestCase
         $item = $this->getMinimalItem();
 
         $imageUrl = 'http://example.org/thumbnail.png';
-        $item->setAllImages(array(
+        $item->setAllImages([
             new Image($imageUrl),
-        ));
+        ]);
 
         $document = new \DOMDocument('1.0', 'utf-8');
-        $root = XMLHelper::createElement($document, 'findologic', array('version' => '1.0'));
+        $root = XMLHelper::createElement($document, 'findologic', ['version' => '1.0']);
         $document->appendChild($root);
 
-        $xmlItems = XMLHelper::createElement($document, 'items', array(
+        $xmlItems = XMLHelper::createElement($document, 'items', [
             'start' => 0,
             'count' => 1,
             'total' => 1
-        ));
+        ]);
         $root->appendChild($xmlItems);
 
         $itemDom = $item->getDomSubtree($document);
@@ -178,12 +188,12 @@ class XmlSerializationTest extends TestCase
     {
         $item = $this->getMinimalItem();
 
-        $item->setAllImages(array(
+        $item->setAllImages([
             new Image('http://example.org/thumbnail.png', Image::TYPE_THUMBNAIL),
             new Image('http://example.org/ug_default.png', Image::TYPE_THUMBNAIL, 'usergroup'),
-        ));
+        ]);
 
-        $this->exporter->serializeItems(array($item), 0, 1, 1);
+        $this->exporter->serializeItems([$item], 0, 1, 1);
     }
 
     /**
@@ -193,23 +203,23 @@ class XmlSerializationTest extends TestCase
     {
         $item = $this->getMinimalItem();
 
-        $item->setAllImages(array(
+        $item->setAllImages([
             new Image('http://example.org/ug_default.png', Image::TYPE_DEFAULT, 'usergroup'),
-        ));
+        ]);
 
-        $this->exporter->serializeItems(array($item), 0, 1, 1);
+        $this->exporter->serializeItems([$item], 0, 1, 1);
     }
 
     public function testOrdernumbersSupportUsergroups()
     {
         $item = $this->getMinimalItem();
 
-        $item->setAllOrdernumbers(array(
+        $item->setAllOrdernumbers([
             new Ordernumber('137-42-23.7'),
             new Ordernumber('137-42-23.7-A', 'usergroup'),
-        ));
+        ]);
 
-        $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
+        $page = $this->exporter->serializeItems([$item], 0, 1, 1);
 
         $this->assertPageIsValid($page);
     }
@@ -218,12 +228,12 @@ class XmlSerializationTest extends TestCase
     {
         $item = $this->getMinimalItem();
 
-        $item->setAllKeywords(array(
+        $item->setAllKeywords([
             new Keyword('awesome &quot;</>]]>7'),
             new Keyword('restricted', 'usergroup'),
-        ));
+        ]);
 
-        $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
+        $page = $this->exporter->serializeItems([$item], 0, 1, 1);
 
         $this->assertPageIsValid($page);
     }
@@ -232,13 +242,34 @@ class XmlSerializationTest extends TestCase
     {
         $item = $this->getMinimalItem();
 
-        $item->setAllUsergroups(array(
+        $item->setAllUsergroups([
             new Usergroup('one group'),
             new Usergroup('another group')
-        ));
+        ]);
 
-        $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
+        $page = $this->exporter->serializeItems([$item], 0, 1, 1);
 
         $this->assertPageIsValid($page);
+    }
+
+    public function testXmlCanBeWrittenDirectlyToFile()
+    {
+        $item = $this->getMinimalItem();
+
+        $expectedXml = $this->exporter->serializeItems([$item], 0, 1, 1);
+        $this->exporter->serializeItemsToFile('/tmp', [$item], 0, 1, 1);
+
+        self::assertEquals($expectedXml, file_get_contents('/tmp/findologic_0_1.xml'));
+    }
+
+    public function testAttemptingToGetCsvFromAnXmlItemResultsInAnException()
+    {
+        $item = new XMLItem(123);
+
+        try {
+            $item->getCsvFragment();
+        } catch (\BadMethodCallException $e) {
+            $this->assertEquals('XMLItem does not implement CSV export.', $e->getMessage());
+        }
     }
 }

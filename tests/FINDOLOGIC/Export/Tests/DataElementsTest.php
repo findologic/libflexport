@@ -28,12 +28,12 @@ class DataElementsTest extends TestCase
      */
     public function multiValueItemProvider()
     {
-        return array(
-            'Keyword with empty value' => array('', Keyword::class, true),
-            'Keyword with value' => array('value', Keyword::class, false),
-            'Ordernumber with empty value' => array('', Ordernumber::class, true),
-            'Ordernumber with value' => array('value', Ordernumber::class, false)
-        );
+        return [
+            'Keyword with empty value' => ['', Keyword::class, true],
+            'Keyword with value' => ['value', Keyword::class, false],
+            'Ordernumber with empty value' => ['', Ordernumber::class, true],
+            'Ordernumber with value' => ['value', Ordernumber::class, false]
+        ];
     }
 
     /**
@@ -48,7 +48,7 @@ class DataElementsTest extends TestCase
         $shouldCauseException = true
     ) {
         try {
-            $element = new $elementType($value);
+            new $elementType($value);
             if ($shouldCauseException) {
                 $this->fail('Adding empty values should cause exception!');
             }
@@ -64,25 +64,25 @@ class DataElementsTest extends TestCase
      */
     public function simpleValueItemProvider()
     {
-        return array(
-            'Bonus with empty value' => array('', Bonus::class, true),
-            'Bonus with value' => array('value', Bonus::class, false),
-            'Description with empty value' => array('', Description::class, true),
-            'Description with value' => array('value', Description::class, false),
-            'Name with empty value' => array('', Name::class, true),
-            'Name with value' => array('value', Name::class, false),
-            'Price with empty value' => array('', Price::class, true),
-            'Price with value' => array('value', Price::class, false),
-            'Price zero' => array(0, Price::class, false),
-            'SalesFrequency with empty value' => array('', SalesFrequency::class, true),
-            'SalesFrequency with value' => array('value', SalesFrequency::class, false),
-            'Sort with empty value' => array('', Sort::class, true),
-            'Sort with value' => array('value', Sort::class, false),
-            'Summary with empty value' => array('', Summary::class, true),
-            'Summary with value' => array('value', Summary::class, false),
-            'Url with empty value' => array('', Url::class, true),
-            'Url with value' => array('value', Url::class, false)
-        );
+        return [
+            'Bonus with empty value' => ['', Bonus::class, true],
+            'Bonus with value' => ['value', Bonus::class, false],
+            'Description with empty value' => ['', Description::class, true],
+            'Description with value' => ['value', Description::class, false],
+            'Name with empty value' => ['', Name::class, true],
+            'Name with value' => ['value', Name::class, false],
+            'Price with empty value' => ['', Price::class, true],
+            'Price with value' => ['value', Price::class, false],
+            'Price zero' => [0, Price::class, false],
+            'SalesFrequency with empty value' => ['', SalesFrequency::class, true],
+            'SalesFrequency with value' => ['value', SalesFrequency::class, false],
+            'Sort with empty value' => ['', Sort::class, true],
+            'Sort with value' => ['value', Sort::class, false],
+            'Summary with empty value' => ['', Summary::class, true],
+            'Summary with value' => ['value', Summary::class, false],
+            'Url with empty value' => ['', Url::class, true],
+            'Url with value' => ['value', Url::class, false]
+        ];
     }
 
     /**
@@ -124,14 +124,14 @@ class DataElementsTest extends TestCase
      */
     public function emptyValueProvider()
     {
-        return array(
-            'Attribute with empty key' => array('', array('value'), Attribute::class, true),
-            'Attribute with empty value' => array('key', array(''), Attribute::class, true),
-            'Attribute with valid key and value' => array('key', array('value'), Attribute::class, false),
-            'Property with empty key' => array('', array('value'), Property::class, true),
-            'Property with empty value' => array('key', array(''), Property::class, true),
-            'Property with valid key and value' => array('key', array('value'), Property::class, false)
-        );
+        return [
+            'Attribute with empty key' => ['', ['value'], Attribute::class, true],
+            'Attribute with empty value' => ['key', [''], Attribute::class, true],
+            'Attribute with valid key and value' => ['key', ['value'], Attribute::class, false],
+            'Property with empty key' => ['',['value'], Property::class, true],
+            'Property with empty value' => ['key', [''], Property::class, true],
+            'Property with valid key and value' => ['key', ['value'], Property::class, false]
+        ];
     }
 
     /**

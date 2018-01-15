@@ -25,7 +25,7 @@ class Page
         $this->start = $start;
         $this->count = $count;
         $this->total = $total;
-        $this->items = array();
+        $this->items = [];
     }
 
     public function addItem(XMLItem $item)
@@ -48,14 +48,14 @@ class Page
         }
 
         $document = new \DOMDocument('1.0', 'utf-8');
-        $root = XMLHelper::createElement($document, 'findologic', array('version' => '1.0'));
+        $root = XMLHelper::createElement($document, 'findologic', ['version' => '1.0']);
         $document->appendCHild($root);
 
-        $items = XMLHelper::createElement($document, 'items', array(
+        $items = XMLHelper::createElement($document, 'items', [
             'start' => $this->start,
             'count' => $this->count,
             'total' => $this->total
-        ));
+        ]);
         $root->appendChild($items);
 
         /** @var XMLItem $item */
