@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Tests;
+namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;

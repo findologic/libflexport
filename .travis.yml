@@ -11,8 +11,11 @@ env:
 
 install: composer install
 script:
-  - phpunit --configuration phpunit.xml --coverage-text
+  - phpunit --configuration phpunit.xml --coverage-text --coverage-clover=coverage.xml
   # Run style fixer in test mode on all source files. Will exit with a non-zero
   # return code if something needs changing.
   - php-cs-fixer fix --dry-run src
   - php-cs-fixer fix --dry-run tests
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
