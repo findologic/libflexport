@@ -17,7 +17,7 @@ class ExporterTest extends TestCase
         }
     }
 
-    public function testUnexportedExporterTypeMustThrowException()
+    public function testUUnknownExporterTypeMustThrowException()
     {
         try {
             Exporter::create(123, 20);
