@@ -29,11 +29,11 @@ class Property
      * /thumbnail\d+/: Image URLs of type thumbnail.
      * /ordernumber/: The products first exported ordernumber.
      */
-    const RESERVED_PROPERTY_KEYS = array(
+    const RESERVED_PROPERTY_KEYS = [
         "/image\d+/",
         "/thumbnail\d+/",
         "/ordernumber/"
-    );
+    ];
 
     private $key;
     private $values;
@@ -41,7 +41,7 @@ class Property
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function __construct($key, $values = array())
+    public function __construct($key, $values = [])
     {
         foreach (self::RESERVED_PROPERTY_KEYS as $reservedPropertyKey) {
             if (preg_match($reservedPropertyKey, $key)) {
@@ -72,7 +72,7 @@ class Property
 
     protected function setValues($values)
     {
-        $this->values = array();
+        $this->values = [];
 
         foreach ($values as $usergroup => $value) {
             $this->addValue($value, $usergroup);

@@ -46,7 +46,7 @@ $price = new Price();
 $price->setValue('13.37');
 $item->setPrice($price);
 
-$exporter->serializeItems(array($item), 0, 1);
+$exporter->serializeItems([$item], 0, 1);
 ```
 
 ## Contributors

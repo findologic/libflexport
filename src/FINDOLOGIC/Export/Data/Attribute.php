@@ -15,7 +15,7 @@ class Attribute implements Serializable
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function __construct($key, $values = array())
+    public function __construct($key, $values = [])
     {
         $this->key = DataHelper::checkForEmptyValue($key);
         $this->setValues($values);
@@ -31,7 +31,7 @@ class Attribute implements Serializable
 
     public function setValues($values)
     {
-        $this->values = array();
+        $this->values = [];
 
         foreach ($values as $value) {
             $this->addValue($value);

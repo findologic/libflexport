@@ -41,13 +41,13 @@ abstract class Item implements Serializable
     /** @var AllOrdernumbers */
     protected $ordernumbers;
 
-    protected $properties = array();
+    protected $properties = [];
 
-    protected $attributes = array();
+    protected $attributes = [];
 
-    protected $images = array();
+    protected $images = [];
 
-    protected $usergroups = array();
+    protected $usergroups = [];
 
     public function __construct($id)
     {
@@ -114,7 +114,7 @@ abstract class Item implements Serializable
     {
         foreach ($property->getAllValues() as $usergroup => $value) {
             if (!array_key_exists($usergroup, $this->properties)) {
-                $this->properties[$usergroup] = array();
+                $this->properties[$usergroup] = [];
             }
             // No need to check if there are duplicate values for a single property and usergroup, because
             // Property::addValue() already takes care of that.
@@ -131,7 +131,7 @@ abstract class Item implements Serializable
     public function addImage(Image $image)
     {
         if (!array_key_exists($image->getUsergroup(), $this->images)) {
-            $this->images[$image->getUsergroup()] = array();
+            $this->images[$image->getUsergroup()] = [];
         }
 
         array_push($this->images[$image->getUsergroup()], $image);

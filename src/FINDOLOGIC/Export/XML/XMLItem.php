@@ -26,7 +26,7 @@ class XMLItem extends Item
      */
     public function getDomSubtree(\DOMDocument $document)
     {
-        $itemElem = XMLHelper::createElement($document, 'item', array('id' => $this->id));
+        $itemElem = XMLHelper::createElement($document, 'item', ['id' => $this->id]);
         $document->appendChild($itemElem);
 
         $itemElem->appendChild($this->name->getDomSubtree($document));
