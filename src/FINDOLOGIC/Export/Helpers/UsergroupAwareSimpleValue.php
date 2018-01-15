@@ -12,7 +12,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
 {
     private $collectionName;
     private $itemName;
-    private $values = array();
+    private $values = [];
 
     public function __construct($collectionName, $itemName)
     {

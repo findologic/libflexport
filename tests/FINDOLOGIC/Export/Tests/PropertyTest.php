@@ -29,12 +29,12 @@ class PropertyTest extends TestCase
 
     public function propertyKeyProvider()
     {
-        return array(
-            'reserved property "image\d+"' => array('image0', true),
-            'reserved property "thumbnail\d+"' => array('thumbnail1', true),
-            'reserved property "ordernumber"' => array('ordernumber', true),
-            'non-reserved property key' => array('foobar', false)
-        );
+        return [
+            'reserved property "image\d+"' => ['image0', true],
+            'reserved property "thumbnail\d+"' => ['thumbnail1', true],
+            'reserved property "ordernumber"' => ['ordernumber', true],
+            'non-reserved property key' => ['foobar', false]
+        ];
     }
 
     /**
