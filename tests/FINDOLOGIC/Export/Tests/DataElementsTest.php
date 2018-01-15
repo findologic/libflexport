@@ -48,7 +48,7 @@ class DataElementsTest extends TestCase
         $shouldCauseException = true
     ) {
         try {
-            $element = new $elementType($value);
+            new $elementType($value);
             if ($shouldCauseException) {
                 $this->fail('Adding empty values should cause exception!');
             }

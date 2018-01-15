@@ -17,7 +17,7 @@ class XMLItem extends Item
      */
     public function getCsvFragment()
     {
-        throw new \BadMethodCallException('CSVItem does not implement XML export.');
+        throw new \BadMethodCallException('XMLItem does not implement CSV export.');
     }
 
     /**

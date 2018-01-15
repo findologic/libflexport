@@ -12,6 +12,7 @@ use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 use FINDOLOGIC\Export\XML\XMLExporter;
+use FINDOLOGIC\Export\XML\XMLItem;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -35,6 +36,15 @@ class XmlSerializationTest extends TestCase
 
         // Download the schema once for the whole test case for speed as compared to downloading it for each test.
         self::$schema = file_get_contents(self::SCHEMA_URL);
+    }
+
+    public function tearDown()
+    {
+        try{
+            unlink('/tmp/findologic_0_1.xml');
+        } catch (\Exception $e) {
+            // No need to delete a written file if the test didn't write it.
+        }
     }
 
     /** @var XMLExporter */
@@ -100,7 +110,7 @@ class XmlSerializationTest extends TestCase
             $items[] = $item;
         }
 
-        $page = $this->exporter->serializeItems($items, 0, 1, 1);
+        $this->exporter->serializeItems($items, 0, 1, 1);
     }
 
     public function testPropertyKeysAndValuesAreCdataWrapped()
@@ -240,5 +250,26 @@ class XmlSerializationTest extends TestCase
         $page = $this->exporter->serializeItems(array($item), 0, 1, 1);
 
         $this->assertPageIsValid($page);
+    }
+
+    public function testXmlCanBeWrittenDirectlyToFile()
+    {
+        $item = $this->getMinimalItem();
+
+        $expectedXml = $this->exporter->serializeItems([$item], 0, 1, 1);
+        $this->exporter->serializeItemsToFile('/tmp', [$item], 0, 1, 1);
+
+        self::assertEquals($expectedXml, file_get_contents('/tmp/findologic_0_1.xml'));
+    }
+
+    public function testAttemptingToGetCsvFromAnXmlItemResultsInAnException()
+    {
+        $item = new XMLItem(123);
+
+        try {
+            $item->getCsvFragment();
+        } catch (\BadMethodCallException $e) {
+            $this->assertEquals('XMLItem does not implement CSV export.', $e->getMessage());
+        }
     }
 }
