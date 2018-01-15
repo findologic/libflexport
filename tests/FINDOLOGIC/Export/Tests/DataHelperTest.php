@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Data\Price;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
 use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
@@ -57,15 +58,15 @@ class DataHelperTest extends TestCase
     }
 
     /**
-     * @dataProvider priceValueProvider
+     * @dataProvider numericValueProvider
      *
      * @param $value string|int value that should be checked.
      * @param $shouldCauseException bool should an exception be caused by given parameter.
      */
-    public function testPriceValueDetectsNumericsOnly($value, $shouldCauseException)
+    public function testNumericValuesAreValidated($value, $shouldCauseException)
     {
         try {
-            $price = new Price();
+            $price = new UsergroupAwareNumericValue('dummies', 'dummy');
             $price->setValue($value);
 
             if ($shouldCauseException) {
@@ -85,11 +86,11 @@ class DataHelperTest extends TestCase
     }
 
     /**
-     * Scenarios for numeric price value validation.
+     * Scenarios for numeric value validation.
      *
      * @return array Cases with the value to check and whether it should cause a validation issue.
      */
-    public function priceValueProvider()
+    public function numericValueProvider()
     {
         return [
             'string' => ['blubbergurke', true],
