@@ -40,7 +40,7 @@ class XmlSerializationTest extends TestCase
 
     public function tearDown()
     {
-        try{
+        try {
             unlink('/tmp/findologic_0_1.xml');
         } catch (\Exception $e) {
             // No need to delete a written file if the test didn't write it.

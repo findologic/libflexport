@@ -30,7 +30,7 @@ class CSVSerializationTest extends TestCase
 
     public function tearDown()
     {
-        try{
+        try {
             unlink('/tmp/findologic.csv');
         } catch (\Exception $e) {
             // No need to delete a written file if the test didn't write it.
