@@ -13,7 +13,7 @@ abstract class UsergroupAwareMultiValue implements Serializable
     private $rootCollectionName;
     private $usergroupCollectionName;
     private $csvDelimiter;
-    private $values = array();
+    private $values = [];
 
     public function __construct($rootCollectionName, $usergroupCollectionName, $csvDelimiter)
     {
@@ -25,7 +25,7 @@ abstract class UsergroupAwareMultiValue implements Serializable
     public function addValue(UsergroupAwareMultiValueItem $value)
     {
         if (!array_key_exists($value->getUsergroup(), $this->values)) {
-            $this->values[$value->getUsergroup()] = array();
+            $this->values[$value->getUsergroup()] = [];
         }
 
         array_push($this->values[$value->getUsergroup()], $value);

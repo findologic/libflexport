@@ -12,7 +12,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
 {
     private $collectionName;
     private $itemName;
-    private $values = array();
+    private $values = [];
 
     public function __construct($collectionName, $itemName)
     {
@@ -30,7 +30,30 @@ abstract class UsergroupAwareSimpleValue implements Serializable
      */
     public function setValue($value, $usergroup = '')
     {
-        $this->values[$usergroup] = DataHelper::checkForEmptyValue($value);
+        $this->values[$usergroup] = $this->validate($value);
+    }
+
+    /**
+     * Validates given value.
+     * Basic implementation is validating against an empty string,
+     * but is overridden when checking values more specific.
+     *
+     * When valid returns given value.
+     * When not valid an exception is thrown.
+     *
+     * @param $value string|int Validated value.
+     * @return string string|int
+     * @throws EmptyValueNotAllowedException
+     */
+    protected function validate($value)
+    {
+        $value = trim($value);
+
+        if ($value === '') {
+            throw new EmptyValueNotAllowedException();
+        }
+
+        return $value;
     }
 
     /**

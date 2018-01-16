@@ -28,6 +28,15 @@ class CSVSerializationTest extends TestCase
         $this->exporter = Exporter::create(Exporter::TYPE_CSV);
     }
 
+    public function tearDown()
+    {
+        try {
+            unlink('/tmp/findologic.csv');
+        } catch (\Exception $e) {
+            // No need to delete a written file if the test didn't write it.
+        }
+    }
+
     private function getMinimalItem()
     {
         $item = $this->exporter->createItem('123');
@@ -74,8 +83,18 @@ class CSVSerializationTest extends TestCase
     public function testMinimalItemIsExported()
     {
         $item = $this->getMinimalItem();
-        $export = $this->exporter->serializeItems(array($item));
+        $export = $this->exporter->serializeItems([$item]);
 
-        // TODO assert
+        $this->assertInternalType('string', $export);
+    }
+
+    public function testCsvCanBeWrittenDirectlyToFile()
+    {
+        $item = $this->getMinimalItem();
+
+        $expectedCsvContent = $this->exporter->serializeItems([$item], 0, 1, 1);
+        $this->exporter->serializeItemsToFile('/tmp', [$item], 0, 1, 1);
+
+        self::assertEquals($expectedCsvContent, file_get_contents('/tmp/findologic.csv'));
     }
 }
