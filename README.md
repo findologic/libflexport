@@ -46,8 +46,12 @@ $price = new Price();
 $price->setValue('13.37');
 $item->setPrice($price);
 
-echo $exporter->serializeItems(array($item), 0, 1, 1);
+$xmlOutput = $exporter->serializeItems([$item], 0, 1, 1);
 ```
+
+### Examples
+
+For more specific examples, please have a look at the examples directory.
 
 ## Contributors
 
