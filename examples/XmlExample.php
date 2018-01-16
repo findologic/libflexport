@@ -394,5 +394,3 @@ $example = new XmlExample();
 
 // Echo the xml content
 echo $example->createExport();
-
-
