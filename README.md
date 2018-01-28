@@ -2,8 +2,8 @@
 
 [![Travis](https://img.shields.io/travis/findologic/libflexport.svg)](https://travis-ci.org/findologic/libflexport)
 [![Latest Stable Version](https://poser.pugx.org/findologic/libflexport/v/stable)](https://packagist.org/packages/findologic/libflexport)
-[![Code Coverage](https://codeclimate.com/github/findologic/libflexport.svg)](https://codeclimate.com/github/findologic/libflexport)
-[![codecov](https://codecov.io/gh/findologic/libflexport/branch/master/graph/badge.svg)](https://codecov.io/gh/findologic/libflexport)
+[![Code Climate](https://codeclimate.com/github/findologic/libflexport.svg)](https://codeclimate.com/github/findologic/libflexport)
+[![Codecov](https://codecov.io/gh/findologic/libflexport/branch/develop/graph/badge.svg)](https://codecov.io/gh/findologic/libflexport)
 
 ## Synopsis
 
@@ -35,7 +35,7 @@ Using the XML export is recommended by FINDOLOGIC. The XML is easier to read and
 ```php
 require_once './vendor/autoload.php';
 
-use \FINDOLOGIC\Export\XML\XMLExporter;
+use \FINDOLOGIC\Export\Exporter;
 use \FINDOLOGIC\Export\Data\Price;
 
 $exporter = Exporter::create(Exporter::TYPE_XML);
@@ -46,8 +46,12 @@ $price = new Price();
 $price->setValue('13.37');
 $item->setPrice($price);
 
-$exporter->serializeItems([$item], 0, 1);
+$xmlOutput = $exporter->serializeItems([$item], 0, 1, 1);
 ```
+
+### Examples
+
+For more specific examples, please have a look at the examples directory.
 
 ## Contributors
 
