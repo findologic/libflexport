@@ -2,9 +2,9 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
 
-class Price extends UsergroupAwareSimpleValue
+class Price extends UsergroupAwareNumericValue
 {
     public function __construct()
     {

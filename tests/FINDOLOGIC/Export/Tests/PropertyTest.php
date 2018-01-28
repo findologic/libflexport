@@ -29,12 +29,12 @@ class PropertyTest extends TestCase
 
     public function propertyKeyProvider()
     {
-        return array(
-            'reserved property "image\d+"' => array('image0', true),
-            'reserved property "thumbnail\d+"' => array('thumbnail1', true),
-            'reserved property "ordernumber"' => array('ordernumber', true),
-            'non-reserved property key' => array('foobar', false)
-        );
+        return [
+            'reserved property "image\d+"' => ['image0', true],
+            'reserved property "thumbnail\d+"' => ['thumbnail1', true],
+            'reserved property "ordernumber"' => ['ordernumber', true],
+            'non-reserved property key' => ['foobar', false]
+        ];
     }
 
     /**
@@ -43,9 +43,13 @@ class PropertyTest extends TestCase
     public function testReservedPropertyKeysCausesException($key, $shouldCauseException)
     {
         try {
-            new Property($key);
+            $property = new Property($key);
             if ($shouldCauseException) {
                 $this->fail('Using a reserved property key should cause an exception.');
+            } else {
+                // The following assertion exists mostly to ensure that PHPUnit does not lament
+                // the lack of assertions in this successful test.
+                $this->assertNotNull($property);
             }
         } catch (\Exception $exception) {
             $this->assertRegExp('/' . $key . '/', $exception->getMessage());
