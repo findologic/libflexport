@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
+use DateTime;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Keyword;
@@ -271,5 +272,82 @@ class XmlSerializationTest extends TestCase
         } catch (\BadMethodCallException $e) {
             $this->assertEquals('XMLItem does not implement CSV export.', $e->getMessage());
         }
+    }
+
+    /**
+     * @return array Name of add method to call in a test to add a certain value, and an array of values with
+     *      usergroup names as key.
+     */
+    public function simpleValueAddingShortcutProvider()
+    {
+        $stringValuesWithUsergroupKeys = [
+            '' => 'No usergroup',
+            'foo' => 'One usergroup',
+            'bar' => 'Another usergroup'
+        ];
+
+        $integerValuesWithUsergroupKeys = [
+            '' => 0,
+            'foo' => 3,
+            'bar' => 10
+        ];
+
+        return [
+            'name' => ['Name', $stringValuesWithUsergroupKeys],
+            'summary' => ['Summary', $stringValuesWithUsergroupKeys],
+            'description' => ['Description', $stringValuesWithUsergroupKeys],
+            'price' => ['Price', [
+                '' => 13.37,
+                'foo' => 42,
+                'bar' => 12.00
+            ]],
+            'url' => ['Url', [
+                '' => 'https://example.org/product.html',
+                'foo' => 'https://example.org/product.html?group=foo',
+                'bar' => 'https://example.org/product.html?group=bar'
+            ]],
+            'bonus' => ['Bonus', $integerValuesWithUsergroupKeys],
+            'sales frequency' => ['SalesFrequency', $integerValuesWithUsergroupKeys],
+            'sort' => ['Sort', $integerValuesWithUsergroupKeys],
+        ];
+    }
+
+    /**
+     * @dataProvider simpleValueAddingShortcutProvider
+     *
+     * @param string $valueType
+     * @param array $values
+     */
+    public function testSimpleValuesAddedToItemViaShortcutAccumulate($valueType, array $values)
+    {
+        $item = new XMLItem(123);
+
+        foreach ($values as $usergroup => $value) {
+            $item->{'add' . $valueType}($value, $usergroup);
+        }
+
+        $this->assertEquals($values, $item->{'get' . $valueType}()->getValues());
+    }
+
+    public function testDateValuesAddedToItemViaShortcutAccumulate()
+    {
+        $values = [
+            '' => new DateTime('today midnight'),
+            'foo' => new DateTime('yesterday midnight'),
+            'bar' => new DateTime('tomorrow midnight')
+        ];
+
+        // On assignment, dates are converted to strings according to the format set in the schema.
+        $expectedValues = array_map(function (DateTime $date) {
+            return $date->format(DATE_ATOM);
+        }, $values);
+
+        $item = new XMLItem(123);
+
+        foreach ($values as $usergroup => $value) {
+            $item->addDateAdded($value, $usergroup);
+        }
+
+        $this->assertEquals($expectedValues, $item->getDateAdded()->getValues());
     }
 }

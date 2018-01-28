@@ -35,18 +35,20 @@ Using the XML export is recommended by FINDOLOGIC. The XML is easier to read and
 ```php
 require_once './vendor/autoload.php';
 
-use \FINDOLOGIC\Export\XML\XMLExporter;
+use \FINDOLOGIC\Export\Exporter;
 use \FINDOLOGIC\Export\Data\Price;
 
 $exporter = Exporter::create(Exporter::TYPE_XML);
 
 $item = $exporter->createItem('123');
 
-$price = new Price();
-$price->setValue('13.37');
-$item->setPrice($price);
+$item->addPrice(13.37);
+// Alternative long form:
+// $price = new Price();
+// $price->setValue(13.37);
+// $item->setPrice($price);
 
-$exporter->serializeItems([$item], 0, 1);
+$exporter->serializeItems([$item], 0, 1, 1);
 ```
 
 ## Contributors
