@@ -2,8 +2,8 @@
 
 [![Travis](https://img.shields.io/travis/findologic/libflexport.svg)](https://travis-ci.org/findologic/libflexport)
 [![Latest Stable Version](https://poser.pugx.org/findologic/libflexport/v/stable)](https://packagist.org/packages/findologic/libflexport)
-[![Code Coverage](https://codeclimate.com/github/findologic/libflexport.svg)](https://codeclimate.com/github/findologic/libflexport)
-[![codecov](https://codecov.io/gh/findologic/libflexport/branch/master/graph/badge.svg)](https://codecov.io/gh/findologic/libflexport)
+[![Code Climate](https://codeclimate.com/github/findologic/libflexport.svg)](https://codeclimate.com/github/findologic/libflexport)
+[![Codecov](https://codecov.io/gh/findologic/libflexport/branch/develop/graph/badge.svg)](https://codecov.io/gh/findologic/libflexport)
 
 ## Synopsis
 
@@ -48,8 +48,12 @@ $item->addPrice(13.37);
 // $price->setValue(13.37);
 // $item->setPrice($price);
 
-$exporter->serializeItems([$item], 0, 1, 1);
+$xmlOutput = $exporter->serializeItems([$item], 0, 1, 1);
 ```
+
+### Examples
+
+For more specific examples, please have a look at the examples directory.
 
 ## Contributors
 
