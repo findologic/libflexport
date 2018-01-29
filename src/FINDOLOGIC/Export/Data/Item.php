@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use DateTime;
 use FINDOLOGIC\Export\Helpers\Serializable;
 
 abstract class Item implements Serializable
@@ -65,9 +66,24 @@ abstract class Item implements Serializable
         $this->ordernumbers = new AllOrdernumbers();
     }
 
+    public function getName()
+    {
+        return $this->name;
+    }
+
     public function setName(Name $name)
     {
         $this->name = $name;
+    }
+
+    public function addName($name, $usergroup = '')
+    {
+        $this->name->setValue($name, $usergroup);
+    }
+
+    public function getSummary()
+    {
+        return $this->summary;
     }
 
     public function setSummary(Summary $summary)
@@ -75,9 +91,29 @@ abstract class Item implements Serializable
         $this->summary = $summary;
     }
 
+    public function addSummary($summary, $usergroup = '')
+    {
+        $this->summary->setValue($summary, $usergroup);
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
     public function setDescription(Description $description)
     {
         $this->description = $description;
+    }
+
+    public function addDescription($description, $usergroup = '')
+    {
+        $this->description->setValue($description, $usergroup);
+    }
+
+    public function getPrice()
+    {
+        return $this->price;
     }
 
     public function setPrice(Price $price)
@@ -85,9 +121,33 @@ abstract class Item implements Serializable
         $this->price = $price;
     }
 
+    public function addPrice($price, $usergroup = '')
+    {
+        if ($this->price === null) {
+            $this->price = new Price();
+        }
+
+        $this->price->setValue($price, $usergroup);
+    }
+
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
     public function setUrl(Url $url)
     {
         $this->url = $url;
+    }
+
+    public function addUrl($url, $usergroup = '')
+    {
+        $this->url->setValue($url, $usergroup);
+    }
+
+    public function getBonus()
+    {
+        return $this->bonus;
     }
 
     public function setBonus(Bonus $bonus)
@@ -95,9 +155,29 @@ abstract class Item implements Serializable
         $this->bonus = $bonus;
     }
 
+    public function addBonus($bonus, $usergroup = '')
+    {
+        $this->bonus->setValue($bonus, $usergroup);
+    }
+
+    public function getSalesFrequency()
+    {
+        return $this->salesFrequency;
+    }
+
     public function setSalesFrequency(SalesFrequency $salesFrequency)
     {
         $this->salesFrequency = $salesFrequency;
+    }
+
+    public function addSalesFrequency($salesFrequency, $usergroup = '')
+    {
+        $this->salesFrequency->setValue($salesFrequency, $usergroup);
+    }
+
+    public function getDateAdded()
+    {
+        return $this->dateAdded;
     }
 
     public function setDateAdded(DateAdded $dateAdded)
@@ -105,9 +185,24 @@ abstract class Item implements Serializable
         $this->dateAdded = $dateAdded;
     }
 
+    public function addDateAdded(DateTime $dateAdded, $usergroup = '')
+    {
+        $this->dateAdded->setDateValue($dateAdded, $usergroup);
+    }
+
+    public function getSort()
+    {
+        return $this->sort;
+    }
+
     public function setSort(Sort $sort)
     {
         $this->sort = $sort;
+    }
+
+    public function addSort($sort, $usergroup = '')
+    {
+        $this->sort->setValue($sort, $usergroup);
     }
 
     public function addProperty(Property $property)

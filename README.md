@@ -42,9 +42,11 @@ $exporter = Exporter::create(Exporter::TYPE_XML);
 
 $item = $exporter->createItem('123');
 
-$price = new Price();
-$price->setValue('13.37');
-$item->setPrice($price);
+$item->addPrice(13.37);
+// Alternative long form:
+// $price = new Price();
+// $price->setValue(13.37);
+// $item->setPrice($price);
 
 $xmlOutput = $exporter->serializeItems([$item], 0, 1, 1);
 ```

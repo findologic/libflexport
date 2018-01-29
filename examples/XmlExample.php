@@ -1,23 +1,15 @@
 <?php
 
-require_once '../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-use \FINDOLOGIC\Export\Exporter;
-use \FINDOLOGIC\Export\Data\Ordernumber;
-use \FINDOLOGIC\Export\Data\Name;
-use \FINDOLOGIC\Export\Data\Summary;
-use \FINDOLOGIC\Export\Data\Description;
-use \FINDOLOGIC\Export\Data\Price;
-use \FINDOLOGIC\Export\Data\Url;
-use \FINDOLOGIC\Export\Data\Image;
-use \FINDOLOGIC\Export\Data\Attribute;
-use \FINDOLOGIC\Export\Data\Keyword;
-use \FINDOLOGIC\Export\Data\Usergroup;
-use \FINDOLOGIC\Export\Data\Bonus;
-use \FINDOLOGIC\Export\Data\SalesFrequency;
-use \FINDOLOGIC\Export\Data\DateAdded;
-use \FINDOLOGIC\Export\Data\Sort;
-use \FINDOLOGIC\Export\Data\Property;
+use FINDOLOGIC\Export\Data\Item;
+use FINDOLOGIC\Export\Exporter;
+use FINDOLOGIC\Export\Data\Ordernumber;
+use FINDOLOGIC\Export\Data\Image;
+use FINDOLOGIC\Export\Data\Attribute;
+use FINDOLOGIC\Export\Data\Keyword;
+use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Data\Property;
 
 /**
  * This example class builds a xml export based on the example of the FINDOLOGIC documentation, which can be found
@@ -59,7 +51,7 @@ class XmlExample
         return $exporter->serializeItems($itemsToExport, 0, 1, 1);
     }
 
-    private function addAttributes($item, $itemData)
+    private function addAttributes(Item $item, $itemData)
     {
         $attributesData = [
             'cat' => [
@@ -86,73 +78,28 @@ class XmlExample
         }
     }
 
-    private function addBonuses($item, $itemData)
+    private function addBonuses(Item $item, $itemData)
     {
-        $bonusesData = [
-            '' => [
-                3
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                5
-            ]
-        ];
-
-        $bonusElement = new Bonus();
-
-        foreach ($bonusesData as $usergroup => $bonuses) {
-            foreach ($bonuses as $bonus) {
-                $bonusElement->setValue($bonus, $usergroup);
-            }
-        }
-
-        $item->setBonus($bonusElement);
+        $item->addBonus(3);
+        $item->addBonus(5, 'LNrLF7BRVJ0toQ==');
     }
 
-    private function addDateAddeds($item, $itemData)
+    private function addDateAddeds(Item $item, $itemData)
     {
-        $dateAddedsData = [
-            '' => [
-                new \DateTime()
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                new \DateTime()
-            ]
-        ];
-
-        $dateAddedElement = new DateAdded();
-
-        foreach ($dateAddedsData as $usergroup => $dateAddeds) {
-            foreach ($dateAddeds as $dateAdded) {
-                $dateAddedElement->setDateValue($dateAdded, $usergroup);
-            }
-        }
-
-        $item->setDateAdded($dateAddedElement);
+        $item->addDateAdded(new \DateTime());
+        $item->addDateAdded(new \DateTime(), 'LNrLF7BRVJ0toQ==');
     }
 
-    private function addDescriptions($item, $itemData)
+    private function addDescriptions(Item $item, $itemData)
     {
-        $descriptionsData = [
-            '' => [
-                'With this sneaker you will walk in style. It\'s available in green and blue.'
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                'With this men\'s sneaker you will walk in style. It\'s comes in various sizes and colors.'
-            ]
-        ];
-
-        $descriptionElement = new Description();
-
-        foreach ($descriptionsData as $usergroup => $descriptions) {
-            foreach ($descriptions as $description) {
-                $descriptionElement->setValue($description, $usergroup);
-            }
-        }
-
-        $item->setDescription($descriptionElement);
+        $item->addDescription('With this sneaker you will walk in style. It\'s available in green and blue.');
+        $item->addDescription(
+            'With this men\'s sneaker you will walk in style. It\'s comes in various sizes and colors.',
+            'LNrLF7BRVJ0toQ=='
+        );
     }
 
-    private function addOrdernumbers($item, $itemData)
+    private function addOrdernumbers(Item $item, $itemData)
     {
         $ordernumbersData = [
             '' => [
@@ -171,7 +118,7 @@ class XmlExample
         }
     }
 
-    private function addImages($item, $itemData)
+    private function addImages(Item $item, $itemData)
     {
         $imagesData = [
             '' => [
@@ -191,7 +138,7 @@ class XmlExample
         }
     }
 
-    private function addKeywords($item, $itemData)
+    private function addKeywords(Item $item, $itemData)
     {
         $keywordsData = [
             '' => [
@@ -210,51 +157,19 @@ class XmlExample
         }
     }
 
-    private function addNames($item, $itemData)
+    private function addNames(Item $item, $itemData)
     {
-        $namesData = [
-            '' => [
-                'Adidas Sneaker'
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                'Adidas Men\'s Sneaker'
-            ]
-        ];
-
-        $nameElement = new Name();
-
-        foreach ($namesData as $usergroup => $names) {
-            foreach ($names as $name) {
-                $nameElement->setValue($name, $usergroup);
-            }
-        }
-
-        $item->setName($nameElement);
+        $item->addName('Adidas Sneaker');
+        $item->addName('Adidas Men\'s Sneaker', 'LNrLF7BRVJ0toQ==');
     }
 
-    private function addPrices($item, $itemData)
+    private function addPrices(Item $item, $itemData)
     {
-        $pricesData = [
-            '' => [
-                44.8
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                45.9
-            ]
-        ];
-
-        $priceElement = new Price();
-
-        foreach ($pricesData as $usergroup => $prices) {
-            foreach ($prices as $price) {
-                $priceElement->setValue($price, $usergroup);
-            }
-        }
-
-        $item->setPrice($priceElement);
+        $item->addPrice(44.8);
+        $item->addPrice(45.9, 'LNrLF7BRVJ0toQ==');
     }
 
-    private function addProperties($item, $itemData)
+    private function addProperties(Item $item, $itemData)
     {
         $propertiesData = [
             'sale' => [
@@ -289,95 +204,31 @@ class XmlExample
         }
     }
 
-    private function addSalesFrequencies($item, $itemData)
+    private function addSalesFrequencies(Item $item, $itemData)
     {
-        $salesFrequenciesData = [
-            '' => [
-                5
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                5
-            ]
-        ];
-
-        $salesFrequencyElement = new SalesFrequency();
-
-        foreach ($salesFrequenciesData as $usergroup => $salesFrequencies) {
-            foreach ($salesFrequencies as $salesFrequency) {
-                $salesFrequencyElement->setValue($salesFrequency, $usergroup);
-            }
-        }
-
-        $item->setSalesFrequency($salesFrequencyElement);
+        $item->addSalesFrequency(5);
+        $item->addSalesFrequency(10, 'LNrLF7BRVJ0toQ==');
     }
 
-    private function addSorts($item, $itemData)
+    private function addSorts(Item $item, $itemData)
     {
-        $sortsData = [
-            '' => [
-                5
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                7
-            ]
-        ];
-
-        $sortElement = new Sort();
-
-        foreach ($sortsData as $usergroup => $sorts) {
-            foreach ($sorts as $sort) {
-                $sortElement->setValue($sort, $usergroup);
-            }
-        }
-
-        $item->setSort($sortElement);
+        $item->addSort(5);
+        $item->addSort(7, 'LNrLF7BRVJ0toQ==');
     }
 
-    private function addSummaries($item, $itemData)
+    private function addSummaries(Item $item, $itemData)
     {
-        $summariesData = [
-            '' => [
-                'A cool and fashionable sneaker'
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                'A cool and fashionable sneaker for men'
-            ]
-        ];
-
-        $summaryElement = new Summary();
-
-        foreach ($summariesData as $usergroup => $summaries) {
-            foreach ($summaries as $summary) {
-                $summaryElement->setValue($summary, $usergroup);
-            }
-        }
-
-        $item->setSummary($summaryElement);
+        $item->addSummary('A cool and fashionable sneaker');
+        $item->addSummary('A cool and fashionable sneaker for men', 'LNrLF7BRVJ0toQ==');
     }
 
-    private function addUrls($item, $itemData)
+    private function addUrls(Item $item, $itemData)
     {
-        $urlsData = [
-            '' => [
-                'https://www.store.com/sneakers/adidas.html'
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                'https://www.store.com/sneakers/mens/adidas.html'
-            ]
-        ];
-
-        $urlElement = new Url();
-
-        foreach ($urlsData as $usergroup => $urls) {
-            foreach ($urls as $url) {
-                $urlElement->setValue($url, $usergroup);
-            }
-        }
-
-        $item->setUrl($urlElement);
+        $item->addUrl('https://www.store.com/sneakers/adidas.html');
+        $item->addUrl('https://www.store.com/sneakers/mens/adidas.html', 'LNrLF7BRVJ0toQ==');
     }
 
-    private function addUsergroups($item, $itemData)
+    private function addUsergroups(Item $item, $itemData)
     {
         $usergroups = [
             'LNrLF7BRVJ0toQ==',
