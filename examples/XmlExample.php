@@ -3,13 +3,13 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use FINDOLOGIC\Export\Data\Item;
-use \FINDOLOGIC\Export\Exporter;
-use \FINDOLOGIC\Export\Data\Ordernumber;
-use \FINDOLOGIC\Export\Data\Image;
-use \FINDOLOGIC\Export\Data\Attribute;
-use \FINDOLOGIC\Export\Data\Keyword;
-use \FINDOLOGIC\Export\Data\Usergroup;
-use \FINDOLOGIC\Export\Data\Property;
+use FINDOLOGIC\Export\Exporter;
+use FINDOLOGIC\Export\Data\Ordernumber;
+use FINDOLOGIC\Export\Data\Image;
+use FINDOLOGIC\Export\Data\Attribute;
+use FINDOLOGIC\Export\Data\Keyword;
+use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Data\Property;
 
 /**
  * This example class builds a xml export based on the example of the FINDOLOGIC documentation, which can be found
@@ -86,8 +86,8 @@ class XmlExample
 
     private function addDateAddeds(Item $item, $itemData)
     {
-        $item->addDateAdded(new DateTime());
-        $item->addDateAdded(new DateTime(), 'LNrLF7BRVJ0toQ==');
+        $item->addDateAdded(new \DateTime());
+        $item->addDateAdded(new \DateTime(), 'LNrLF7BRVJ0toQ==');
     }
 
     private function addDescriptions(Item $item, $itemData)
@@ -95,7 +95,8 @@ class XmlExample
         $item->addDescription('With this sneaker you will walk in style. It\'s available in green and blue.');
         $item->addDescription(
             'With this men\'s sneaker you will walk in style. It\'s comes in various sizes and colors.',
-            'LNrLF7BRVJ0toQ==');
+            'LNrLF7BRVJ0toQ=='
+        );
     }
 
     private function addOrdernumbers(Item $item, $itemData)
