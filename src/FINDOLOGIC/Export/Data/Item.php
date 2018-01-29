@@ -21,6 +21,19 @@ abstract class Item implements Serializable
     /** @var Price */
     protected $price;
 
+    /** @var float */
+    protected $insteadPrice;
+
+    /**
+     * @var float
+     */
+    protected $maxPrice;
+
+    /**
+     * @var float
+     */
+    protected $taxRate;
+
     /** @var Url */
     protected $url;
 
@@ -128,6 +141,36 @@ abstract class Item implements Serializable
         }
 
         $this->price->setValue($price, $usergroup);
+    }
+
+    public function getInsteadPrice()
+    {
+        return $this->insteadPrice;
+    }
+
+    public function setInsteadPrice($insteadPrice)
+    {
+        $this->insteadPrice = $insteadPrice;
+    }
+
+    public function getMaxPrice()
+    {
+        return $this->maxPrice;
+    }
+
+    public function setMaxPrice($maxPrice)
+    {
+        $this->maxPrice= $maxPrice;
+    }
+
+    public function getTaxRate()
+    {
+        return $this->taxRate;
+    }
+
+    public function setTaxRate($taxRate)
+    {
+        $this->taxRate = $taxRate;
     }
 
     public function getUrl()

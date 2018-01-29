@@ -32,11 +32,11 @@ class Usergroup implements Serializable
     }
 
     /**
-     * No-op, because usergroups are not supported in the CSV export format.
+     * @inheritdoc
      */
-    public function getCsvFragment()
+    public function getCsvFragment(array $availableProperties = [])
     {
-        return '';
+        return $this->value;
     }
 
     public function __toString()

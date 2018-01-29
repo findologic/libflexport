@@ -68,16 +68,14 @@ class Attribute implements Serializable
     /**
      * @inheritdoc
      */
-    public function getCsvFragment()
+    public function getCsvFragment(array $availableProperties = [])
     {
-        $encoded = '';
+        $attributeParts = [];
 
         foreach ($this->values as $value) {
-            $encoded .= sprintf('%s=%s&', urlencode($this->key), urlencode($value));
+            $attributeParts []= sprintf('%s=%s', urlencode($this->key), urlencode($value));
         }
 
-        $encoded = rtrim($encoded, '&');
-
-        return $encoded;
+        return implode('&', $attributeParts);
     }
 }
