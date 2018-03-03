@@ -2,9 +2,9 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareUrlValue;
 
-class Url extends UsergroupAwareSimpleValue
+class Url extends UsergroupAwareUrlValue
 {
     public function __construct()
     {

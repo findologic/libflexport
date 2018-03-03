@@ -6,6 +6,7 @@ use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
 use FINDOLOGIC\Export\Data\DateAdded;
 use FINDOLOGIC\Export\Data\Description;
+use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Name;
 use FINDOLOGIC\Export\Data\Ordernumber;
@@ -17,6 +18,7 @@ use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
+use FINDOLOGIC\Export\Helpers\ValueIsNotUrlException;
 use PHPUnit\Framework\TestCase;
 
 class DataElementsTest extends TestCase
@@ -93,7 +95,8 @@ class DataElementsTest extends TestCase
             'Summary with empty value' => ['', Summary::class, EmptyValueNotAllowedException::class],
             'Summary with value' => ['value', Summary::class, null],
             'Url with empty value' => ['', Url::class, EmptyValueNotAllowedException::class],
-            'Url with value' => ['value', Url::class, null]
+            'Url with value' => ['value', Url::class, ValueIsNotUrlException::class],
+            'Url with correct input' => ['https://www.store.com/images/thumbnails/277KTLmen.png', Url::class, null]
         ];
     }
 
@@ -175,5 +178,13 @@ class DataElementsTest extends TestCase
         } catch (\Exception $exception) {
             $this->assertEquals(EmptyValueNotAllowedException::class, get_class($exception));
         }
+    }
+
+    /**
+     * @expectedException \FINDOLOGIC\Export\Data\ValueIsNotUrlException
+     */
+    public function testAddingInvalidUrlToImageElementCausesException()
+    {
+        $image = new Image('www.store.com/images/277KTL.png');
     }
 }

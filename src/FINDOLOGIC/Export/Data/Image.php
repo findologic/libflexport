@@ -15,6 +15,14 @@ class BaseImageMissingException extends \RuntimeException
     }
 }
 
+class ValueIsNotUrlException extends \RuntimeException
+{
+    public function __construct()
+    {
+        parent::__construct('Value is not a valid url!');
+    }
+}
+
 class ImagesWithoutUsergroupMissingException extends \RuntimeException
 {
     public function __construct()
@@ -44,7 +52,7 @@ class Image implements Serializable
      */
     public function __construct($url, $type = self::TYPE_DEFAULT, $usergroup = '')
     {
-        $this->url = DataHelper::checkForEmptyValue($url);
+        $this->setUrl($url);
         $this->type = $type;
         $this->usergroup = $usergroup;
     }
@@ -55,6 +63,17 @@ class Image implements Serializable
     public function getUrl()
     {
         return $this->url;
+    }
+
+    private function setUrl($url)
+    {
+        $url = DataHelper::checkForEmptyValue($url);
+
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            throw new ValueIsNotUrlException();
+        }
+
+        $this->url = $url;
     }
 
     /**
