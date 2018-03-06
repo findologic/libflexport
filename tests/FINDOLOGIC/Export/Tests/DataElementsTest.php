@@ -96,7 +96,9 @@ class DataElementsTest extends TestCase
             'Summary with value' => ['value', Summary::class, null],
             'Url with empty value' => ['', Url::class, EmptyValueNotAllowedException::class],
             'Url with value' => ['value', Url::class, ValueIsNotUrlException::class],
-            'Url with correct input' => ['https://www.store.com/images/thumbnails/277KTLmen.png', Url::class, null]
+            'Url without schema' => ['www.store.com/images/thumbnails/277KTLmen.png', Url::class, ValueIsNotUrlException::class],
+            'Url without wrong schema' => ['tcp://www.store.com/images/thumbnails/277KTLmen.png', Url::class, ValueIsNotUrlException::class],
+            'Url with correct input' => ['https://www.store.com/images/thumbnails/277KTLmen.png', Url::class]
         ];
     }
 
@@ -181,7 +183,7 @@ class DataElementsTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Data\ValueIsNotUrlException
+     * @expectedException \FINDOLOGIC\Export\Helpers\ValueIsNotUrlException
      */
     public function testAddingInvalidUrlToImageElementCausesException()
     {
