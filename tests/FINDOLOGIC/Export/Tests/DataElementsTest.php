@@ -15,6 +15,7 @@ use FINDOLOGIC\Export\Data\SalesFrequency;
 use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
+use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
 use PHPUnit\Framework\TestCase;
@@ -175,5 +176,13 @@ class DataElementsTest extends TestCase
         } catch (\Exception $exception) {
             $this->assertEquals(EmptyValueNotAllowedException::class, get_class($exception));
         }
+    }
+
+    /**
+     * @expectedException \FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException
+     */
+    public function testAddingEmptyUsergroupCausesException()
+    {
+        $element = new Usergroup('');
     }
 }
