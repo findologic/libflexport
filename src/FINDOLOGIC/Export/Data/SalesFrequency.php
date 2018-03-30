@@ -5,11 +5,11 @@ namespace FINDOLOGIC\Export\Data;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
 
-class ValueIsNotPositivIntegerException extends \RuntimeException
+class ValueIsNotPositiveIntegerException extends \RuntimeException
 {
-    public function __construct()
+    public function __construct($value)
     {
-        parent::__construct('Value is not a positiv integer!');
+        parent::__construct(sprintf('%s is not an positive integer!', $value));
     }
 }
 
@@ -27,7 +27,7 @@ class SalesFrequency extends UsergroupAwareSimpleValue
         }
 
         if (!is_int($value) || $value < 0) {
-            throw new ValueIsNotPositivIntegerException();
+            throw new ValueIsNotPositiveIntegerException($value);
         }
 
         return $value;
