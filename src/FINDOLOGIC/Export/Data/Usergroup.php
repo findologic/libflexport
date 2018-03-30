@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\Data;
 
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
+use FINDOLOGIC\Export\Helpers\DataHelper;
 
 class Usergroup implements Serializable
 {
@@ -12,7 +13,7 @@ class Usergroup implements Serializable
 
     public function __construct($value)
     {
-        $this->value = $value;
+        $this->value = DataHelper::checkForEmptyValue($value);
     }
 
     public function getValue()
