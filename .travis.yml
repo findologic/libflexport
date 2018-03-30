@@ -8,8 +8,10 @@ php:
 
 env:
   matrix:
-    - PHPUNIT_VERSION="5.6"
+    - PHPUNIT_VERSION="5.7"
     - PHPUNIT_VERSION="6.5"
+    - PHPUNIT_VERSION="7.0"
+
   global:
     - PATH=$PATH:vendor/bin
 
@@ -17,9 +19,13 @@ matrix:
   exclude:
   - php: 5.6
     env: PHPUNIT_VERSION="6.5"
+    env: PHPUNIT_VERSION="7.0"
+  - php: 7.0
+    env: PHPUNIT_VERSION="7.0"
 
 install:
   - if [[ "$PHPUNIT_VERSION" = "6.5" ]]; then composer require --dev --no-update phpunit/phpunit:~6.5; fi
+  - if [[ "$PHPUNIT_VERSION" = "7.0" ]]; then composer require --dev --no-update phpunit/phpunit:~7.0; fi
   - composer install
 script:
   - phpunit --configuration phpunit.xml --coverage-text --coverage-clover=coverage.xml
