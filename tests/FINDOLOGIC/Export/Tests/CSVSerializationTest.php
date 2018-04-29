@@ -24,6 +24,9 @@ use PHPUnit\Framework\TestCase;
 
 class CSVSerializationTest extends TestCase
 {
+    const DEFAULT_CSV_HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\tinstead\tmaxprice\ttaxrate\t" .
+        "url\timage\tattributes\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
+
     /** @var CSVExporter */
     private $exporter;
 
@@ -44,9 +47,13 @@ class CSVSerializationTest extends TestCase
         }
     }
 
-    private function getMinimalItem()
+    private function getMinimalItem($exporter = null)
     {
-        $item = $this->exporter->createItem('123');
+        if ($exporter === null) {
+            $exporter = $this->exporter;
+        }
+
+        $item = $exporter->createItem('123');
 
         $name = new Name();
         $name->setValue('Foobar &quot;</>]]>');
@@ -122,7 +129,7 @@ class CSVSerializationTest extends TestCase
         $expectedAttributes = [
             'cat' => ['Bikes', 'Bikes_Racing Bikes'],
             'vendor' => ['Ultrabikes'],
-            'use' => ['Outdoor', 'Race', "&=<>=%\t"]
+            'use' => ['Outdoor', 'Race', "&=<>=%"]
         ];
         $expectedKeywords = ['bike', 'race', 'velobike', 'ultrabikes'];
         $expectedGroups = [1, 2, 3];
@@ -144,9 +151,10 @@ class CSVSerializationTest extends TestCase
         }
         $expectedAttributeString = implode('&', $expectedAttributeArray);
 
-        var_dump(implode(',', $expectedGroups));
+        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $expectedPropertyKeys);
 
-        $expectedCsvLine = sprintf("%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%d\t%d\t%d\t%s\t%d\t%s\n",
+        $expectedCsvLine = sprintf(
+            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%d\t%d\t%s\t%d\t%s\n",
             $expectedId,
             implode('|', $expectedOrdernumbers),
             $expectedName,
@@ -168,7 +176,7 @@ class CSVSerializationTest extends TestCase
             implode("\t", array_values($expectedProperties))
         );
 
-        $item = new CSVItem($expectedId);
+        $item = $exporter->createItem($expectedId);
 
         foreach ($expectedOrdernumbers as $ordernumber) {
             $item->addOrdernumber(new Ordernumber($ordernumber));
@@ -208,5 +216,46 @@ class CSVSerializationTest extends TestCase
         $item->addName($expectedName);
 
         $this->assertEquals($expectedCsvLine, $item->getCsvFragment($expectedPropertyKeys));
+    }
+
+    public function testItemsCanHaveVaryingProperties()
+    {
+        $firstPropertyName = 'only first item';
+        $secondPropertyName = 'all items';
+        $thirdPropertyName = 'second and third item';
+
+        $exporter = Exporter::create(
+            Exporter::TYPE_CSV,
+            20,
+            [
+                $firstPropertyName, $secondPropertyName, $thirdPropertyName]
+        );
+
+        $firstItem = $this->getMinimalItem($exporter);
+        $firstItem->addProperty(new Property($firstPropertyName, [null => 'first value']));
+        $firstItem->addProperty(new Property($secondPropertyName, [null => 'second value']));
+
+        $secondItem = $this->getMinimalItem($exporter);
+        $secondItem->addProperty(new Property($secondPropertyName, [null => 'second value']));
+        $secondItem->addProperty(new Property($thirdPropertyName, [null => 'third value']));
+
+        $thirdItem = $this->getMinimalItem($exporter);
+        $thirdItem->addProperty(new Property($thirdPropertyName, [null => 'third value']));
+        $thirdItem->addProperty(new Property($secondPropertyName, [null => 'second value']));
+
+        $items = [$firstItem, $secondItem, $thirdItem];
+        $csv = $exporter->serializeItems($items, 0, count($items), count($items));
+        $lines = explode("\n", $csv);
+
+        $expectedCsvHeading = sprintf(
+            "%s\t%s\t%s\t%s",
+            self::DEFAULT_CSV_HEADING,
+            $firstPropertyName,
+            $secondPropertyName,
+            $thirdPropertyName
+        );
+        $this->assertEquals($expectedCsvHeading, $lines[0]);
+
+        echo $csv;
     }
 }

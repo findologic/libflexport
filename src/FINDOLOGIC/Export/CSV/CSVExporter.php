@@ -3,11 +3,24 @@
 namespace FINDOLOGIC\Export\CSV;
 
 use FINDOLOGIC\Export\Exporter;
+use PhpCollection\Set;
 
 class CSVExporter extends Exporter
 {
     const HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\tinstead\tmaxprice\ttaxrate\turl\timage\t" .
-        "attributes\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort\n";
+        "attributes\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
+
+    /**
+     * @var array Names of properties; used for alignment of extra columns containing property values.
+     */
+    private $propertyKeys;
+
+    public function __construct($itemsPerPage, $propertyKeys)
+    {
+        parent::__construct($itemsPerPage);
+
+        $this->propertyKeys = $propertyKeys;
+    }
 
     /**
      * @inheritdoc
@@ -15,10 +28,14 @@ class CSVExporter extends Exporter
     public function serializeItems($items, $start = 0, $count = 0, $total = 0)
     {
         $export = self::HEADING;
+        foreach ($this->propertyKeys as $propertyKey) {
+            $export .= "\t" . $propertyKey;
+        }
+        $export .= "\n";
 
         /** @var CSVItem $item */
         foreach ($items as $item) {
-            $export .= $item->getCsvFragment();
+            $export .= $item->getCsvFragment($this->propertyKeys);
         }
 
         return $export;

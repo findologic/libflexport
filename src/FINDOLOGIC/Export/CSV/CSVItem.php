@@ -49,7 +49,7 @@ class CSVItem extends Item
         $properties = $this->buildProperties($availableProperties);
 
         $line = sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s\n",
             $this->id,
             $ordernumbers,
             $name,
@@ -80,13 +80,13 @@ class CSVItem extends Item
 
         foreach ($availableProperties as $availableProperty) {
             if (array_key_exists($availableProperty, $this->properties[''])) {
-                $propertiesString .= $this->sanitize($this->properties[''][$availableProperty] . "\t");
+                $propertiesString .= "\t" . $this->sanitize($this->properties[''][$availableProperty]);
             } else {
                 $propertiesString .= "\t";
             }
         }
 
-        return '';
+        return $propertiesString;
     }
 
     private function buildAttributes()
@@ -112,7 +112,8 @@ class CSVItem extends Item
             } else {
                 throw new \InvalidArgumentException(
                     'Zero or multiple images without usergroup associated with item. ' .
-                    'Cannot generate CSV if there is not one definitive image set.');
+                    'Cannot generate CSV if there is not one definitive image set.'
+                );
             }
         } else {
             $imageUrl = '';
