@@ -12,6 +12,7 @@ use FINDOLOGIC\Export\Data\Ordernumber;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\SalesFrequency;
+use FINDOLOGIC\Export\Data\ValueIsNotIntegerException;
 use FINDOLOGIC\Export\Data\ValueIsNotPositiveIntegerException;
 use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
@@ -92,8 +93,9 @@ class DataElementsTest extends TestCase
             'SalesFrequency with non integer value' => ['test', SalesFrequency::class,
                 ValueIsNotPositiveIntegerException::class],
             'Sort with empty value' => ['', Sort::class, EmptyValueNotAllowedException::class],
-            'Sort with value' => [1337, Sort::class, null],
-            'Sort with non-numeric value' => ['test', Sort::class, ValueIsNotNumericException::class],
+            'Sort with integer' => [1337, Sort::class, null],
+            'Sort with string' => ['test', Sort::class, ValueIsNotIntegerException::class],
+            'Sort with float' => [5.4, Sort::class, ValueIsNotIntegerException::class],
             'Summary with empty value' => ['', Summary::class, EmptyValueNotAllowedException::class],
             'Summary with value' => ['value', Summary::class, null],
             'Url with empty value' => ['', Url::class, EmptyValueNotAllowedException::class],
