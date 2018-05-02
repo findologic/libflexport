@@ -13,9 +13,12 @@ use FINDOLOGIC\Export\Data\Ordernumber;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\SalesFrequency;
+use FINDOLOGIC\Export\Data\ValueIsNotIntegerException;
+use FINDOLOGIC\Export\Data\ValueIsNotPositiveIntegerException;
 use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
+use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
 use PHPUnit\Framework\TestCase;
@@ -86,12 +89,15 @@ class DataElementsTest extends TestCase
             'Price with non-numeric value' => ['test', Price::class, ValueIsNotNumericException::class],
             'SalesFrequency with empty value' => ['', SalesFrequency::class,
                 EmptyValueNotAllowedException::class],
-            'SalesFrequency with value' => [1337, SalesFrequency::class, null],
-            'SalesFrequency with non-numeric value' => ['test', SalesFrequency::class,
-                ValueIsNotNumericException::class],
+            'SalesFrequency with positive integer value' => [1337, SalesFrequency::class, null],
+            'SalesFrequency with negative integer value' => [-1, SalesFrequency::class,
+                ValueIsNotPositiveIntegerException::class],
+            'SalesFrequency with non integer value' => ['test', SalesFrequency::class,
+                ValueIsNotPositiveIntegerException::class],
             'Sort with empty value' => ['', Sort::class, EmptyValueNotAllowedException::class],
-            'Sort with value' => [1337, Sort::class, null],
-            'Sort with non-numeric value' => ['test', Sort::class, ValueIsNotNumericException::class],
+            'Sort with integer' => [1337, Sort::class, null],
+            'Sort with string' => ['test', Sort::class, ValueIsNotIntegerException::class],
+            'Sort with float' => [5.4, Sort::class, ValueIsNotIntegerException::class],
             'Summary with empty value' => ['', Summary::class, EmptyValueNotAllowedException::class],
             'Summary with value' => ['value', Summary::class, null],
             'Url with empty value' => ['', Url::class, EmptyValueNotAllowedException::class],
@@ -185,5 +191,13 @@ class DataElementsTest extends TestCase
     public function testAddingInvalidUrlToImageElementCausesException()
     {
         $image = new Image('www.store.com/images/277KTL.png');
+    }
+
+    /**
+     * @expectedException \FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException
+     */
+    public function testAddingEmptyUsergroupCausesException()
+    {
+        $element = new Usergroup('');
     }
 }
