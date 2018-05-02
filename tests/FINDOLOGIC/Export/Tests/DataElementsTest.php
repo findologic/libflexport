@@ -18,7 +18,6 @@ use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
-use FINDOLOGIC\Export\Helpers\ValueIsNotUrlException;
 use PHPUnit\Framework\TestCase;
 
 class DataElementsTest extends TestCase
@@ -65,7 +64,8 @@ class DataElementsTest extends TestCase
     }
 
     /**
-     * Provides a data set for testing if adding empty values to elements of type UsergroupAwareSimpleValue fails.
+     * Provides a data set for testing if adding empty or wrong values to elements of type UsergroupAwareSimpleValue
+     * fails.
      *
      * @return array Scenarios with a value, the element class and the expected exception, or null if none is supposed
      *      to be thrown.
@@ -95,9 +95,6 @@ class DataElementsTest extends TestCase
             'Summary with empty value' => ['', Summary::class, EmptyValueNotAllowedException::class],
             'Summary with value' => ['value', Summary::class, null],
             'Url with empty value' => ['', Url::class, EmptyValueNotAllowedException::class],
-            'Url with value' => ['value', Url::class, ValueIsNotUrlException::class],
-            'Url without schema' => ['www.store.com/images/thumbnails/277KTLmen.png', Url::class, ValueIsNotUrlException::class],
-            'Url without wrong schema' => ['tcp://www.store.com/images/thumbnails/277KTLmen.png', Url::class, ValueIsNotUrlException::class],
             'Url with correct input' => ['https://www.store.com/images/thumbnails/277KTLmen.png', Url::class]
         ];
     }

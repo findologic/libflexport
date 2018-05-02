@@ -9,8 +9,10 @@ use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Ordernumber;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
+use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exporter;
+use FINDOLOGIC\Export\Helpers\ValueIsNotUrlException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 use FINDOLOGIC\Export\XML\XMLExporter;
 use FINDOLOGIC\Export\XML\XMLItem;
@@ -349,5 +351,30 @@ class XmlSerializationTest extends TestCase
         }
 
         $this->assertEquals($expectedValues, $item->getDateAdded()->getValues());
+    }
+
+    /**
+     * Provides a data set for testing if adding wrong url values to elements of type UsergroupAwareSimpleValue fails.
+     *
+     * @return array Scenarios with a value and the expected exception
+     */
+    public function urlValidationProvider()
+    {
+        return [
+            'Url with value' => ['value', ValueIsNotUrlException::class],
+            'Url without schema' => ['www.store.com/images/thumbnails/277KTLmen.png', ValueIsNotUrlException::class],
+            'Url without wrong schema' => ['tcp://www.store.com/images/thumbnails/277KTLmen.png', ValueIsNotUrlException::class],
+        ];
+    }
+
+    public function testUrlValidationWorks($value = '', $expectedException = null)
+    {
+        try {
+            $item = $this->getMinimalItem();
+            $url =  new Url($value);
+            $item->setUrl($url);
+        } catch (\Exception $e) {
+            $this->assertEquals($expectedException, get_class($e));
+        }
     }
 }

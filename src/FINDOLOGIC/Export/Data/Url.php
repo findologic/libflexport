@@ -12,12 +12,12 @@ class Url extends UsergroupAwareSimpleValue
         parent::__construct('urls', 'url');
     }
 
-    protected function validate($value)
+    public function getDomSubtree(\DOMDocument $document)
     {
-        $value = parent::validate($value);
+        foreach ($this->getValues() as $value) {
+            DataHelper::validateUrl($value);
+        }
 
-        $value = DataHelper::validateUrl($value);
-
-        return $value;
+        return parent::getDomSubtree($document);
     }
 }
