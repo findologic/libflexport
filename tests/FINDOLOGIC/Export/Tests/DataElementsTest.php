@@ -188,6 +188,13 @@ class DataElementsTest extends TestCase
      */
     public function testAddingEmptyUsergroupCausesException()
     {
-        $element = new Usergroup('');
+        new Usergroup('');
+    }
+
+    public function testUsergroupStringRepresentationIsTheUsergroupValue()
+    {
+        $usergroup = new Usergroup('test');
+
+        $this->assertEquals($usergroup->getValue(), (string) $usergroup);
     }
 }

@@ -297,4 +297,24 @@ class CSVSerializationTest extends TestCase
 
         $exporter->serializeItems([$item], 0, 1, 1);
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSettingMoreThanOneImagePerItemCausesException()
+    {
+        $item = $this->getMinimalItem();
+        $item->addImage(new Image('https://example.org/some_image.png', Image::TYPE_DEFAULT));
+        $item->addImage(new Image('https://example.org/some_image.png', Image::TYPE_THUMBNAIL));
+
+        $this->exporter->serializeItems([$item], 0, 1, 1);
+    }
+
+    /**
+     * @expectedException \BadMethodCallException
+     */
+    public function testAttemptingToGetXmlVersionForACSVItemCausesAnException()
+    {
+        $this->getMinimalItem()->getDomSubtree(new \DOMDocument());
+    }
 }

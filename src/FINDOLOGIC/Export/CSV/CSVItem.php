@@ -109,7 +109,7 @@ class CSVItem extends Item
         // exists, cause an error because it's no longer certain which one is intended to be used.
         if (array_key_exists('', $this->images)) {
             if (count($this->images['']) === 1) {
-                $imageUrl = $this->images[''][0]->getUrl();
+                $imageUrl = $this->images[''][0]->getCsvFragment();
             } else {
                 throw new \InvalidArgumentException(
                     'Zero or multiple images without usergroup associated with item. ' .
