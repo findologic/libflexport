@@ -61,8 +61,6 @@ class Image implements Serializable
     {
         $url = DataHelper::checkForEmptyValue($url);
 
-        $url = DataHelper::validateUrl($url);
-
         $this->url = $url;
     }
 
@@ -88,7 +86,7 @@ class Image implements Serializable
      */
     public function getDomSubtree(\DOMDocument $document)
     {
-        $imageElem = XMLHelper::createElementWithText($document, 'image', $this->url);
+        $imageElem = XMLHelper::createElementWithText($document, 'image', DataHelper::validateUrl($this->getUrl()));
         if ($this->type) {
             $imageElem->setAttribute('type', $this->type);
         }

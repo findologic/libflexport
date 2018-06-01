@@ -12,7 +12,7 @@ use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exporter;
-use FINDOLOGIC\Export\Helpers\ValueIsNotUrlException;
+use FINDOLOGIC\Export\Helpers\InvalidUrlException;
 use FINDOLOGIC\Export\Helpers\UnsupportedValueException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 use FINDOLOGIC\Export\XML\Page;
@@ -363,9 +363,9 @@ class XmlSerializationTest extends TestCase
     public function urlValidationProvider()
     {
         return [
-            'Url with value' => ['value', ValueIsNotUrlException::class],
-            'Url without schema' => ['www.store.com/images/thumbnails/277KTLmen.png', ValueIsNotUrlException::class],
-            'Url without wrong schema' => ['tcp://www.store.com/images/thumbnails/277KTLmen.png', ValueIsNotUrlException::class],
+            'Url with value' => ['value', InvalidUrlException::class],
+            'Url without schema' => ['www.store.com/images/thumbnails/277KTLmen.png', InvalidUrlException::class],
+            'Url without wrong schema' => ['tcp://www.store.com/images/thumbnails/277KTLmen.png', InvalidUrlException::class],
         ];
     }
 
@@ -414,5 +414,16 @@ class XmlSerializationTest extends TestCase
         } else {
             $item->{$method}($parameter);
         }
+    }
+
+
+
+    /**
+     * @expectedException \FINDOLOGIC\Export\Helpers\InvalidUrlException
+     */
+    public function testAddingInvalidUrlToImageElementCausesException()
+    {
+        $image = new Image('www.store.com/images/277KTL.png');
+        $image->getDomSubtree(new \DOMDocument());
     }
 }

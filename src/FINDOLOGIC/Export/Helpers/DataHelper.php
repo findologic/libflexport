@@ -10,7 +10,7 @@ class EmptyValueNotAllowedException extends \RuntimeException
     }
 }
 
-class ValueIsNotUrlException extends \RuntimeException
+class InvalidUrlException extends \RuntimeException
 {
     public function __construct()
     {
@@ -75,13 +75,13 @@ class DataHelper
      * See https://docs.findologic.com/doku.php?id=export_patterns:xml#urls
      *
      * @param string $url The input to check.
-     * @throws ValueIsNotUrlException If the input is no url.
+     * @throws InvalidUrlException If the input is no url.
      * @return string Returns the url if valid.
      */
     public static function validateUrl($url)
     {
         if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/http[s]?:\/\/.*/', $url)) {
-            throw new ValueIsNotUrlException();
+            throw new InvalidUrlException();
         }
 
         return $url;

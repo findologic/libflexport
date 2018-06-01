@@ -6,7 +6,6 @@ use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
 use FINDOLOGIC\Export\Data\DateAdded;
 use FINDOLOGIC\Export\Data\Description;
-use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Name;
 use FINDOLOGIC\Export\Data\Ordernumber;
@@ -183,14 +182,6 @@ class DataElementsTest extends TestCase
         } catch (\Exception $exception) {
             $this->assertEquals(EmptyValueNotAllowedException::class, get_class($exception));
         }
-    }
-
-    /**
-     * @expectedException \FINDOLOGIC\Export\Helpers\ValueIsNotUrlException
-     */
-    public function testAddingInvalidUrlToImageElementCausesException()
-    {
-        $image = new Image('www.store.com/images/277KTL.png');
     }
 
     /**
