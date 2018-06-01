@@ -28,9 +28,10 @@ abstract class Exporter
      * @param self::TYPE_XML|self::TYPE_CSV $type The type of export format to choose.
      * @param int $itemsPerPage Number of items being exported at once. Respecting this parameter is at the exporter
      *      implementation's discretion.
+     * @param array $csvProperties Properties/extra columns for CSV export. Has no effect for XML export.
      * @return Exporter The exporter for the desired output format.
      */
-    public static function create($type, $itemsPerPage = 20)
+    public static function create($type, $itemsPerPage = 20, $csvProperties = [])
     {
         if ($itemsPerPage < 1) {
             throw new \InvalidArgumentException('At least one item must be exported per page.');
@@ -41,7 +42,7 @@ abstract class Exporter
                 $exporter = new XMLExporter($itemsPerPage);
                 break;
             case self::TYPE_CSV:
-                $exporter = new CSVExporter($itemsPerPage);
+                $exporter = new CSVExporter($itemsPerPage, $csvProperties);
                 break;
             default:
                 throw new \InvalidArgumentException('Unsupported exporter type.');

@@ -13,7 +13,7 @@ abstract class UsergroupAwareMultiValue implements Serializable
     private $rootCollectionName;
     private $usergroupCollectionName;
     private $csvDelimiter;
-    private $values = [];
+    protected $values = [];
 
     public function __construct($rootCollectionName, $usergroupCollectionName, $csvDelimiter)
     {
@@ -58,25 +58,5 @@ abstract class UsergroupAwareMultiValue implements Serializable
         }
 
         return $rootCollectionElem;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getCsvFragment()
-    {
-        $mergedValues = '';
-
-        if (array_key_exists('', $this->values)) {
-            foreach ($this->values[''] as $value) {
-                $escapedValue = preg_replace('/' . $this->csvDelimiter . '/', ' ', $value);
-
-                $mergedValues .= $escapedValue . $this->csvDelimiter;
-            }
-        }
-
-        $trimmedMergedValues = rtrim($mergedValues, $this->csvDelimiter);
-
-        return $trimmedMergedValues;
     }
 }

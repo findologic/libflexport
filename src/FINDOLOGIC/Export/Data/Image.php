@@ -99,7 +99,7 @@ class Image implements Serializable
     /**
      * @inheritdoc
      */
-    public function getCsvFragment()
+    public function getCsvFragment(array $availableProperties = [])
     {
         return $this->url;
     }

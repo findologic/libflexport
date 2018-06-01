@@ -12,7 +12,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
 {
     private $collectionName;
     private $itemName;
-    private $values = [];
+    protected $values = [];
 
     public function __construct($collectionName, $itemName)
     {
@@ -79,7 +79,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
     /**
      * @inheritdoc
      */
-    public function getCsvFragment()
+    public function getCsvFragment(array $availableProperties = [])
     {
         if (array_key_exists('', $this->values)) {
             $value = $this->values[''];

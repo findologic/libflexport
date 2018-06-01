@@ -27,6 +27,11 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
         $this->usergroup = $usergroup;
     }
 
+    public function getValue()
+    {
+        return $this->value;
+    }
+
     public function getUsergroup()
     {
         return $this->usergroup;
@@ -46,8 +51,8 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
     /**
      * @inheritdoc
      */
-    public function getCsvFragment()
+    public function getCsvFragment(array $availableProperties = [])
     {
-        return $this->value;
+        return $this->getValue();
     }
 }
