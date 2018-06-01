@@ -14,8 +14,10 @@ class UnsupportedValueException extends \BadMethodCallException
 {
     public function __construct($unsupportedValueName)
     {
-        parent::__construct(sprintf('%s is not a supported value for the XML export format. Use a property instead.'),
-            $unsupportedValueName);
+        parent::__construct(
+            sprintf('%s is not a supported value for the XML export format. Use a property instead.'),
+            $unsupportedValueName
+        );
     }
 }
 
@@ -28,7 +30,8 @@ class BadPropertyKeyException extends \RuntimeException
     {
         parent::__construct(sprintf(
             'Tabs and line feed characters are not allowed in property key "%s", as they would break the format.',
-            $propertyKey));
+            $propertyKey
+        ));
     }
 }
 
