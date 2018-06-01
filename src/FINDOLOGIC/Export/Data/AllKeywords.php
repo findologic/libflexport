@@ -20,7 +20,7 @@ class AllKeywords extends UsergroupAwareMultiValue
     {
         if (array_key_exists('', $this->values)) {
             return implode(',', array_map(function ($keyword) {
-                return $keyword->getValue();
+                return $keyword->getCsvFragment();
             }, $this->values['']));
         } else {
             return '';
