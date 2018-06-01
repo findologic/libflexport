@@ -28,7 +28,12 @@ class CSVExporter extends Exporter
      */
     public function serializeItems($items, $start = 0, $count = 0, $total = 0)
     {
-        $export = self::HEADING;
+        $export = '';
+        // To enable pagination, don't write the heading if it's anything but the first page.
+        if ($start === 0) {
+            $export = self::HEADING;
+        }
+
         foreach ($this->propertyKeys as $propertyKey) {
             DataHelper::checkForIllegalCsvPropertyKeys($propertyKey);
 

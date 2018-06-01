@@ -10,19 +10,25 @@
 This project provides a export library for XML and CSV generation according to the FINDOLOGIC export patterns.
 * XML <https://docs.findologic.com/doku.php?id=export_patterns:xml>
 * CSV <https://docs.findologic.com/doku.php?id=export_patterns:csv>
-  * Note that CSV support is experimental and not intended for production use yet.
+  * Note that CSV support is still relatively new. Consider it beta-quality.
 
 #### Export recommendation
 
 Using the XML export is recommended by FINDOLOGIC. The XML is easier to read and has some advantages over the CSV export like:
 
-* No encoding issues as the encoding attribute is provided in the XML response `<?xml version="1.0" encoding="UTF-8"?>`
-* Validation is more reliable
-* Simple escaping of content using the `<![CDATA[...]]>`-tag
-* Standardized structure
-* Dynamically extract the products from the database via `start` and `count` parameter in the url
-* No limited file size for XML because of pagination
-* Using multiple usergroups per product
+* No encoding issues as the encoding attribute is provided in the XML response `<?xml version="1.0" encoding="UTF-8"?>`.
+* Validation is more reliable.
+* Simple escaping of content using the `<![CDATA[...]]>`-tag.
+* Standardized structure.
+* Dynamically extract the products from the database via `start` and `count` parameter in the url.
+* No limited file size for XML because of pagination.
+* Using multiple usergroups per product.
+
+The key advantage for CSV is that it is possible to use way more groups than XML usergroups. On the other hand:
+
+* Groups only regulate visibility - it's not possible to show different values per group.
+* The format is prone to encoding issues if non-UTF-8 data is fed into it.
+* Total export size is limited by file size, while XML pagination theoretically allows exports of arbitrary size. 
 
 ## Basic usage
 
@@ -50,6 +56,30 @@ $item->addPrice(13.37);
 // $item->setPrice($price);
 
 $xmlOutput = $exporter->serializeItems([$item], 0, 1, 1);
+```
+
+### CSV export
+
+```php
+require_once './vendor/autoload.php';
+
+use \FINDOLOGIC\Export\Exporter;
+use \FINDOLOGIC\Export\Data\Price;
+
+$exporter = Exporter::create(Exporter::TYPE_CSV);
+
+$item = $exporter->createItem('123');
+
+$item->addPrice(13.37);
+// Alternative long form:
+// $price = new Price();
+// $price->setValue(13.37);
+// $item->setPrice($price);
+
+// Date is mandatory for CSV.
+$item->addDateAdded(new \DateTime());
+
+$csvOutput = $exporter->serializeItems([$item], 0, 1, 1);
 ```
 
 ### Examples

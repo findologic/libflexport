@@ -18,7 +18,7 @@ class AllOrdernumbers extends UsergroupAwareMultiValue
     {
         if (array_key_exists('', $this->values)) {
             return implode('|', array_map(function ($ordernumber) {
-                return $ordernumber->getValue();
+                return $ordernumber->getCsvFragment();
             }, $this->values['']));
         } else {
             return '';

@@ -12,14 +12,16 @@ use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Data\Property;
 
 /**
- * This example class builds a xml export based on the example of the FINDOLOGIC documentation, which can be found
- * under the following link https://docs.findologic.com/doku.php?id=export_patterns:xml#example_xml
+ * This example class builds a CSV export inspired the FINDOLOGIC documentation, which can be found at
+ * https://docs.findologic.com/doku.php?id=export_patterns:csv .
  */
-class XmlExample
+class CsvExample
 {
     public function createExport()
     {
-        $exporter = Exporter::create(Exporter::TYPE_XML);
+        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, [
+            'sale', 'novelty', 'logo', 'availability', 'old_price', 'Basic_rate_price'
+        ]);
 
         $itemsToExport = [];
 
@@ -81,22 +83,16 @@ class XmlExample
     private function addBonuses(Item $item, $itemData)
     {
         $item->addBonus(3);
-        $item->addBonus(5, 'LNrLF7BRVJ0toQ==');
     }
 
     private function addDateAddeds(Item $item, $itemData)
     {
         $item->addDateAdded(new \DateTime());
-        $item->addDateAdded(new \DateTime(), 'LNrLF7BRVJ0toQ==');
     }
 
     private function addDescriptions(Item $item, $itemData)
     {
         $item->addDescription('With this sneaker you will walk in style. It\'s available in green and blue.');
-        $item->addDescription(
-            'With this men\'s sneaker you will walk in style. It\'s comes in various sizes and colors.',
-            'LNrLF7BRVJ0toQ=='
-        );
     }
 
     private function addOrdernumbers(Item $item, $itemData)
@@ -105,9 +101,6 @@ class XmlExample
             '' => [
                 '277KTL',
                 '4987123846879'
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                '377KTL'
             ]
         ];
 
@@ -122,12 +115,7 @@ class XmlExample
     {
         $imagesData = [
             '' => [
-                'https://www.store.com/images/277KTL.png' => Image::TYPE_DEFAULT,
-                'https://www.store.com/images/thumbnails/277KTL.png' => Image::TYPE_THUMBNAIL
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                'https://www.store.com/images/277KTLmen.png' => Image::TYPE_DEFAULT,
-                'https://www.store.com/images/thumbnails/277KTLmen.png' => Image::TYPE_THUMBNAIL
+                'https://www.store.com/images/277KTL.png' => Image::TYPE_DEFAULT
             ]
         ];
 
@@ -144,9 +132,6 @@ class XmlExample
             '' => [
                 '277KTL',
                 '4987123846879'
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                '377KTL'
             ]
         ];
 
@@ -160,41 +145,33 @@ class XmlExample
     private function addNames(Item $item, $itemData)
     {
         $item->addName('Adidas Sneaker');
-        $item->addName('Adidas Men\'s Sneaker', 'LNrLF7BRVJ0toQ==');
     }
 
     private function addPrices(Item $item, $itemData)
     {
         $item->addPrice(44.8);
-        $item->addPrice(45.9, 'LNrLF7BRVJ0toQ==');
     }
 
     private function addProperties(Item $item, $itemData)
     {
         $propertiesData = [
             'sale' => [
-                '' => 1,
-                'LNrLF7BRVJ0toQ==' => 0
+                '' => 1
             ],
             'novelty' => [
-                '' => 0,
-                'LNrLF7BRVJ0toQ==' => 0
+                '' => 0
             ],
             'logo' => [
-                '' => 'http://www.shop.de/brand.png',
-                'LNrLF7BRVJ0toQ==' => 'http://www.shop.de/brand.png'
+                '' => 'http://www.shop.de/brand.png'
             ],
             'availability' => [
-                '' => '<span style="color: green;">4 days</span>',
-                'LNrLF7BRVJ0toQ==' => '<span style="color: green;">3 days</span>'
+                '' => '<span style="color: green;">4 days</span>'
             ],
             'old_price' => [
-                '' => 99.9,
-                'LNrLF7BRVJ0toQ==' => 99.9
+                '' => 99.9
             ],
             'Basic_rate_price' => [
-                '' => 99.9,
-                'LNrLF7BRVJ0toQ==' => 89.9
+                '' => 99.9
             ]
         ];
 
@@ -207,25 +184,21 @@ class XmlExample
     private function addSalesFrequencies(Item $item, $itemData)
     {
         $item->addSalesFrequency(5);
-        $item->addSalesFrequency(10, 'LNrLF7BRVJ0toQ==');
     }
 
     private function addSorts(Item $item, $itemData)
     {
         $item->addSort(5);
-        $item->addSort(7, 'LNrLF7BRVJ0toQ==');
     }
 
     private function addSummaries(Item $item, $itemData)
     {
         $item->addSummary('A cool and fashionable sneaker');
-        $item->addSummary('A cool and fashionable sneaker for men', 'LNrLF7BRVJ0toQ==');
     }
 
     private function addUrls(Item $item, $itemData)
     {
         $item->addUrl('https://www.store.com/sneakers/adidas.html');
-        $item->addUrl('https://www.store.com/sneakers/mens/adidas.html', 'LNrLF7BRVJ0toQ==');
     }
 
     private function addUsergroups(Item $item, $itemData)
@@ -241,7 +214,7 @@ class XmlExample
     }
 }
 
-$example = new XmlExample();
+$example = new CsvExample();
 
-// Echo the XML content.
+// Echo the CSV content.
 echo $example->createExport();

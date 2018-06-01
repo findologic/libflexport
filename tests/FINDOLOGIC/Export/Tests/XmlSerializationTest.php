@@ -13,7 +13,9 @@ use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\Helpers\ValueIsNotUrlException;
+use FINDOLOGIC\Export\Helpers\UnsupportedValueException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
+use FINDOLOGIC\Export\XML\Page;
 use FINDOLOGIC\Export\XML\XMLExporter;
 use FINDOLOGIC\Export\XML\XMLItem;
 use PHPUnit\Framework\TestCase;
@@ -375,6 +377,42 @@ class XmlSerializationTest extends TestCase
             $item->setUrl($url);
         } catch (\Exception $e) {
             $this->assertEquals($expectedException, get_class($e));
+        }
+    }
+
+    public function testItemsCanBeAddedToXmlPageAsWell()
+    {
+        $page = new Page(0, 1, 1);
+        $page->addItem($this->getMinimalItem());
+    }
+
+    public function unsupportedValueProvider()
+    {
+        return [
+            'getInsteadPrice' => ['getInsteadPrice', null],
+            'setInsteadPrice' => ['setInsteadPrice', 13.37],
+            'getMaxPrice' => ['getMaxPrice', null],
+            'setMaxPrice' => ['setMaxPrice', 42.00],
+            'getTaxRate' => ['getTaxRate', null],
+            'setTaxRate' => ['setTaxRate', 20.0],
+        ];
+    }
+
+    /**
+     * @expectedException \FINDOLOGIC\Export\Helpers\UnsupportedValueException
+     * @dataProvider unsupportedValueProvider
+     *
+     * @param string $method Name of the method to call to interact with an unsupported value.
+     * @param mixed $parameter The parameter in case of a setter.
+     */
+    public function testUsingValuesUnsupportedByXmlCauseExceptions($method, $parameter)
+    {
+        $item = $this->getMinimalItem();
+
+        if ($parameter === null) {
+            $item->{$method}();
+        } else {
+            $item->{$method}($parameter);
         }
     }
 }
