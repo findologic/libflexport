@@ -36,7 +36,7 @@ abstract class UsergroupAwareMultiValue implements Serializable
         $this->values = [];
 
         /* @var UsergroupAwareMultiValueItem $value */
-        foreach($values as $value) {
+        foreach ($values as $value) {
             $this->addValue($value);
         }
     }
