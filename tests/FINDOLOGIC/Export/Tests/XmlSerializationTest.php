@@ -388,4 +388,14 @@ class XmlSerializationTest extends TestCase
             $item->{$method}($parameter);
         }
     }
+
+    public function testAddingPropertyWithUsergroupWorksAsExpected()
+    {
+        $item = $this->getMinimalItem();
+
+        $item->addUsergroup(new Usergroup('myusergroup'));
+        $item->addProperty(new Property('property1', ['myusergroup' => 'usergroupvalue']));
+
+        $this->assertPageIsValid($this->exporter->serializeItems([$item], 0, 1, 1));
+    }
 }
