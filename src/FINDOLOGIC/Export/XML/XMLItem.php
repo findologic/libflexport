@@ -8,6 +8,7 @@ use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\ImagesWithoutUsergroupMissingException;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Helpers\UnsupportedValueException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 class XMLItem extends Item
@@ -15,7 +16,7 @@ class XMLItem extends Item
     /**
      * @inheritdoc
      */
-    public function getCsvFragment()
+    public function getCsvFragment(array $availableProperties = [])
     {
         throw new \BadMethodCallException('XMLItem does not implement CSV export.');
     }
@@ -168,5 +169,35 @@ class XMLItem extends Item
         }
 
         return $valid;
+    }
+    
+    public function getInsteadPrice()
+    {
+        throw new UnsupportedValueException('insteadPrice');
+    }
+
+    public function setInsteadPrice($insteadPrice)
+    {
+        throw new UnsupportedValueException('insteadPrice');
+    }
+    
+    public function getMaxPrice()
+    {
+        throw new UnsupportedValueException('maxPrice');
+    }
+
+    public function setMaxPrice($insteadPrice)
+    {
+        throw new UnsupportedValueException('maxPrice');
+    }
+    
+    public function getTaxRate()
+    {
+        throw new UnsupportedValueException('taxRate');
+    }
+
+    public function setTaxRate($insteadPrice)
+    {
+        throw new UnsupportedValueException('taxRate');
     }
 }

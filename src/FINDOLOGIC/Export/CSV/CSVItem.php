@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\CSV;
 
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Item;
+use FINDOLOGIC\Export\Data\Usergroup;
 
 class CSVItem extends Item
 {
@@ -18,9 +19,11 @@ class CSVItem extends Item
     /**
      * @inheritdoc
      */
-    public function getCsvFragment()
+    public function getCsvFragment(array $availableProperties = [])
     {
-        $ordernumbers = $this->ordernumbers->getCsvFragment();
+        $that = $this; // Used in closure.
+
+        $ordernumbers = $this->sanitize($this->ordernumbers->getCsvFragment());
         $name = $this->sanitize($this->name->getCsvFragment());
         $summary = $this->sanitize($this->summary->getCsvFragment());
         $description = $this->sanitize($this->description->getCsvFragment());
@@ -32,18 +35,21 @@ class CSVItem extends Item
         $dateAdded = $this->sanitize($this->dateAdded->getCsvFragment());
         $sort = $this->sanitize($this->sort->getCsvFragment());
 
-        $instead = ''; // TODO
-        $maxPrice = ''; // TODO
-        $taxRate = ''; // TODO
-        $groups = ''; // TODO
+        $instead = $this->getInsteadPrice();
+        $maxPrice = $this->getMaxPrice();
+        $taxRate = $this->getTaxRate();
+        $groups = implode(',', array_map(function ($group) use ($that) {
+            /** @var $group Usergroup */
+            return $that->sanitize($group->getCsvFragment());
+        }, $this->usergroups));
 
 
         $image = $this->buildImages();
         $attributes = $this->buildAttributes();
-        $properties = $this->buildProperties();
+        $properties = $this->buildProperties($availableProperties);
 
         $line = sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s\n",
             $this->id,
             $ordernumbers,
             $name,
@@ -68,11 +74,19 @@ class CSVItem extends Item
         return $line;
     }
 
-    private function buildProperties()
+    private function buildProperties($availableProperties)
     {
-        // TODO
+        $propertiesString = '';
 
-        return '';
+        foreach ($availableProperties as $availableProperty) {
+            if (array_key_exists($availableProperty, $this->properties[''])) {
+                $propertiesString .= "\t" . $this->sanitize($this->properties[''][$availableProperty]);
+            } else {
+                $propertiesString .= "\t";
+            }
+        }
+
+        return $propertiesString;
     }
 
     private function buildAttributes()
@@ -91,9 +105,17 @@ class CSVItem extends Item
 
     private function buildImages()
     {
-        // Use the first available image that is not restricted by usergroup.
-        if (array_key_exists('', $this->images) && count($this->images['']) > 0) {
-            $imageUrl = $this->images[''][0];
+        // Use the first available image that is not restricted by usergroup. If more than one usergroup-less image
+        // exists, cause an error because it's no longer certain which one is intended to be used.
+        if (array_key_exists('', $this->images)) {
+            if (count($this->images['']) === 1) {
+                $imageUrl = $this->images[''][0]->getUrl();
+            } else {
+                throw new \InvalidArgumentException(
+                    'Zero or multiple images without usergroup associated with item. ' .
+                    'Cannot generate CSV if there is not one definitive image set.'
+                );
+            }
         } else {
             $imageUrl = '';
         }
