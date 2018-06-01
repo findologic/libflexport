@@ -170,19 +170,34 @@ class XMLItem extends Item
 
         return $valid;
     }
+    
+    public function getInsteadPrice()
+    {
+        throw new UnsupportedValueException('insteadPrice');
+    }
 
     public function setInsteadPrice($insteadPrice)
     {
-        throw new UnsupportedValueException("insteadPrice");
+        throw new UnsupportedValueException('insteadPrice');
+    }
+    
+    public function getMaxPrice()
+    {
+        throw new UnsupportedValueException('maxPrice');
     }
 
     public function setMaxPrice($insteadPrice)
     {
-        throw new UnsupportedValueException("maxPrice");
+        throw new UnsupportedValueException('maxPrice');
+    }
+    
+    public function getTaxRate()
+    {
+        throw new UnsupportedValueException('taxRate');
     }
 
     public function setTaxRate($insteadPrice)
     {
-        throw new UnsupportedValueException("taxRate");
+        throw new UnsupportedValueException('taxRate');
     }
 }

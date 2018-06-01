@@ -53,6 +53,6 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
      */
     public function getCsvFragment(array $availableProperties = [])
     {
-        return $this->value;
+        return $this->getValue();
     }
 }

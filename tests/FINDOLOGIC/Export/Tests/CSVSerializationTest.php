@@ -3,7 +3,6 @@
 namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\CSV\CSVExporter;
-use FINDOLOGIC\Export\CSV\CSVItem;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
 use FINDOLOGIC\Export\Data\DateAdded;
@@ -20,6 +19,7 @@ use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exporter;
+use FINDOLOGIC\Export\Helpers\BadPropertyKeyException;
 use PHPUnit\Framework\TestCase;
 
 class CSVSerializationTest extends TestCase
@@ -255,7 +255,33 @@ class CSVSerializationTest extends TestCase
             $thirdPropertyName
         );
         $this->assertEquals($expectedCsvHeading, $lines[0]);
+    }
 
-        echo $csv;
+    public function illegalPropertyProvider()
+    {
+        return [
+            'tab' => [new Property("This\tcontains\ttabs", [null => 'some value'])],
+            'line feed' => [new Property("This\ncontains\nline\nfeeds", [null => 'some value'])]
+        ];
+    }
+
+    /**
+     * @expectedException \FINDOLOGIC\Export\Helpers\BadPropertyKeyException
+     * @dataProvider illegalPropertyProvider
+     *
+     * @param Property $property The property with an illegal key to test.
+     */
+    public function testFormatBreakingCharactersAreNotAllowedInPropertyKeys(Property $property)
+    {
+        $exporter = Exporter::create(
+            Exporter::TYPE_CSV,
+            20,
+            [$property->getKey()]
+        );
+
+        $item = $this->getMinimalItem($exporter);
+        $item->addProperty($property);
+
+        $exporter->serializeItems([$item], 0, 1, 1);
     }
 }

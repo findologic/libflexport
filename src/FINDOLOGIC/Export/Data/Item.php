@@ -24,14 +24,10 @@ abstract class Item implements Serializable
     /** @var float */
     protected $insteadPrice;
 
-    /**
-     * @var float
-     */
+    /** @var float */
     protected $maxPrice;
 
-    /**
-     * @var float
-     */
+    /** @var float */
     protected $taxRate;
 
     /** @var Url */
@@ -160,7 +156,7 @@ abstract class Item implements Serializable
 
     public function setMaxPrice($maxPrice)
     {
-        $this->maxPrice= $maxPrice;
+        $this->maxPrice = $maxPrice;
     }
 
     public function getTaxRate()

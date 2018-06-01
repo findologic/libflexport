@@ -3,7 +3,8 @@
 namespace FINDOLOGIC\Export\CSV;
 
 use FINDOLOGIC\Export\Exporter;
-use PhpCollection\Set;
+use FINDOLOGIC\Export\Helpers\BadPropertyKeyException;
+use FINDOLOGIC\Export\Helpers\DataHelper;
 
 class CSVExporter extends Exporter
 {
@@ -29,6 +30,8 @@ class CSVExporter extends Exporter
     {
         $export = self::HEADING;
         foreach ($this->propertyKeys as $propertyKey) {
+            DataHelper::checkForIllegalCsvPropertyKeys($propertyKey);
+
             $export .= "\t" . $propertyKey;
         }
         $export .= "\n";

@@ -21,9 +21,9 @@ class CSVItem extends Item
      */
     public function getCsvFragment(array $availableProperties = [])
     {
-        $that = $this;
+        $that = $this; // Used in closure.
 
-        $ordernumbers = $this->ordernumbers->getCsvFragment();
+        $ordernumbers = $this->sanitize($this->ordernumbers->getCsvFragment());
         $name = $this->sanitize($this->name->getCsvFragment());
         $summary = $this->sanitize($this->summary->getCsvFragment());
         $description = $this->sanitize($this->description->getCsvFragment());
@@ -105,7 +105,8 @@ class CSVItem extends Item
 
     private function buildImages()
     {
-        // Use the first available image that is not restricted by usergroup.
+        // Use the first available image that is not restricted by usergroup. If more than one usergroup-less image
+        // exists, cause an error because it's no longer certain which one is intended to be used.
         if (array_key_exists('', $this->images)) {
             if (count($this->images['']) === 1) {
                 $imageUrl = $this->images[''][0]->getUrl();

@@ -73,7 +73,7 @@ class Attribute implements Serializable
         $attributeParts = [];
 
         foreach ($this->values as $value) {
-            $attributeParts []= sprintf('%s=%s', urlencode($this->key), urlencode($value));
+            $attributeParts[] = sprintf('%s=%s', urlencode($this->key), urlencode($value));
         }
 
         return implode('&', $attributeParts);
