@@ -24,7 +24,7 @@ Using the XML export is recommended by FINDOLOGIC. The XML is easier to read and
 * No limited file size for XML because of pagination.
 * Using multiple usergroups per product.
 
-The key advantage for CSV is that it is possible to use way more groups and XML usergroups. On the other hand:
+The key advantage for CSV is that it is possible to use way more groups than XML usergroups. On the other hand:
 
 * Groups only regulate visibility - it's not possible to show different values per group.
 * The format is prone to encoding issues if non-UTF-8 data is fed into it.

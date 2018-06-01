@@ -19,7 +19,9 @@ class CsvExample
 {
     public function createExport()
     {
-        $exporter = Exporter::create(Exporter::TYPE_CSV);
+        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, [
+            'sale', 'novelty', 'logo', 'availability', 'old_price', 'Basic_rate_price'
+        ]);
 
         $itemsToExport = [];
 
@@ -214,5 +216,5 @@ class CsvExample
 
 $example = new CsvExample();
 
-// Echo the xml content
+// Echo the CSV content.
 echo $example->createExport();

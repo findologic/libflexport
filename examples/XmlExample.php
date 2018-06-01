@@ -243,5 +243,5 @@ class XmlExample
 
 $example = new XmlExample();
 
-// Echo the xml content
+// Echo the XML content.
 echo $example->createExport();

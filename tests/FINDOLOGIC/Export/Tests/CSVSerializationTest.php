@@ -102,6 +102,19 @@ class CSVSerializationTest extends TestCase
         $this->assertInternalType('string', $export);
     }
 
+    public function testHeadingIsOnlyWrittenForFirstPage()
+    {
+        $item = $this->getMinimalItem();
+        $export = $this->exporter->serializeItems([$item], 0, 1, 2);
+
+        $this->assertContains(CSVExporter::HEADING, $export);
+
+        $item = $this->getMinimalItem();
+        $export = $this->exporter->serializeItems([$item], 1, 1, 2);
+
+        $this->assertNotContains(CSVExporter::HEADING, $export);
+    }
+
     public function testCsvCanBeWrittenDirectlyToFile()
     {
         $item = $this->getMinimalItem();
