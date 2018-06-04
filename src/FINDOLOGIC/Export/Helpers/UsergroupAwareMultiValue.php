@@ -22,6 +22,9 @@ abstract class UsergroupAwareMultiValue implements Serializable
         $this->csvDelimiter = $csvDelimiter;
     }
 
+    /**
+     * @param UsergroupAwareMultiValueItem $value The element to add the the collection.
+     */
     public function addValue(UsergroupAwareMultiValueItem $value)
     {
         if (!array_key_exists($value->getUsergroup(), $this->getValues())) {
@@ -31,6 +34,9 @@ abstract class UsergroupAwareMultiValue implements Serializable
         array_push($this->values[$value->getUsergroup()], $value);
     }
 
+    /**
+     * @param array $values Array of elements to be added to the collection.
+     */
     public function setAllValues($values)
     {
         $this->values = [];
