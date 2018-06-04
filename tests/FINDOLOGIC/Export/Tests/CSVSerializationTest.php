@@ -317,4 +317,12 @@ class CSVSerializationTest extends TestCase
     {
         $this->getMinimalItem()->getDomSubtree(new \DOMDocument());
     }
+
+    public function testAddingRelativeUrlIsNotCausingAnException()
+    {
+        $imageWithRelativePath = '/media/images/image.jpg';
+        $image = new Image($imageWithRelativePath);
+
+        $this->assertEquals($imageWithRelativePath, $image->getCsvFragment());
+    }
 }

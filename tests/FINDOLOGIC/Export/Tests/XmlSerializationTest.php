@@ -9,8 +9,10 @@ use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Ordernumber;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
+use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exporter;
+use FINDOLOGIC\Export\Helpers\InvalidUrlException;
 use FINDOLOGIC\Export\Helpers\UnsupportedValueException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 use FINDOLOGIC\Export\XML\Page;
@@ -353,6 +355,31 @@ class XmlSerializationTest extends TestCase
         $this->assertEquals($expectedValues, $item->getDateAdded()->getValues());
     }
 
+    /**
+     * Provides a data set for testing if adding wrong url values to elements of type UsergroupAwareSimpleValue fails.
+     *
+     * @return array Scenarios with a value and the expected exception
+     */
+    public function urlValidationProvider()
+    {
+        return [
+            'Url with value' => ['value', InvalidUrlException::class],
+            'Url without schema' => ['www.store.com/images/thumbnails/277KTLmen.png', InvalidUrlException::class],
+            'Url without wrong schema' => ['tcp://www.store.com/images/thumbnails/277KTLmen.png', InvalidUrlException::class],
+        ];
+    }
+
+    public function testUrlValidationWorks($value = '', $expectedException = null)
+    {
+        try {
+            $item = $this->getMinimalItem();
+            $url =  new Url($value);
+            $item->setUrl($url);
+        } catch (\Exception $e) {
+            $this->assertEquals($expectedException, get_class($e));
+        }
+    }
+
     public function testItemsCanBeAddedToXmlPageAsWell()
     {
         $page = new Page(0, 1, 1);
@@ -372,7 +399,7 @@ class XmlSerializationTest extends TestCase
     }
 
     /**
-     * @expectedException FINDOLOGIC\Export\Helpers\UnsupportedValueException
+     * @expectedException \FINDOLOGIC\Export\Helpers\UnsupportedValueException
      * @dataProvider unsupportedValueProvider
      *
      * @param string $method Name of the method to call to interact with an unsupported value.
@@ -397,5 +424,15 @@ class XmlSerializationTest extends TestCase
         $item->addProperty(new Property('property1', ['myusergroup' => 'usergroupvalue']));
 
         $this->assertPageIsValid($this->exporter->serializeItems([$item], 0, 1, 1));
+    }
+
+
+    /**
+     * @expectedException \FINDOLOGIC\Export\Helpers\InvalidUrlException
+     */
+    public function testAddingInvalidUrlToImageElementCausesException()
+    {
+        $image = new Image('www.store.com/images/277KTL.png');
+        $image->getDomSubtree(new \DOMDocument());
     }
 }
