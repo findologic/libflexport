@@ -12,7 +12,7 @@ use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Data\Property;
 
 /**
- * This example class builds a CSV export inspired the FINDOLOGIC documentation, which can be found at
+ * This example class builds a CSV export inspired by the FINDOLOGIC documentation, which can be found at
  * https://docs.findologic.com/doku.php?id=export_patterns:csv .
  */
 class CsvExample
@@ -150,6 +150,9 @@ class CsvExample
     private function addPrices(Item $item, $itemData)
     {
         $item->addPrice(44.8);
+        $item->setInsteadPrice(50);
+        $item->setMaxPrice(47);
+        $item->setTaxRate(20);
     }
 
     private function addProperties(Item $item, $itemData)
@@ -216,5 +219,5 @@ class CsvExample
 
 $example = new CsvExample();
 
-// Echo the CSV content.
+// Output the CSV content.
 echo $example->createExport();
