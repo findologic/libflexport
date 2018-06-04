@@ -63,8 +63,8 @@ class Property
      */
     public function addValue($value, $usergroup = null)
     {
-        if (array_key_exists($usergroup, $this->values)) {
-            throw new DuplicateValueForUsergroupException($this->key, $usergroup);
+        if (array_key_exists($usergroup, $this->getAllValues())) {
+            throw new DuplicateValueForUsergroupException($this->getKey(), $usergroup);
         }
 
         $this->values[$usergroup] = DataHelper::checkForEmptyValue($value);

@@ -24,7 +24,7 @@ abstract class UsergroupAwareMultiValue implements Serializable
 
     public function addValue(UsergroupAwareMultiValueItem $value)
     {
-        if (!array_key_exists($value->getUsergroup(), $this->values)) {
+        if (!array_key_exists($value->getUsergroup(), $this->getValues())) {
             $this->values[$value->getUsergroup()] = [];
         }
 
@@ -41,6 +41,11 @@ abstract class UsergroupAwareMultiValue implements Serializable
         }
     }
 
+    public function getValues()
+    {
+        return $this->values;
+    }
+
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
@@ -49,7 +54,7 @@ abstract class UsergroupAwareMultiValue implements Serializable
     {
         $rootCollectionElem = XMLHelper::createElement($document, $this->rootCollectionName);
 
-        foreach ($this->values as $usergroup => $usergroupValues) {
+        foreach ($this->getValues() as $usergroup => $usergroupValues) {
             $usergroupCollectionElem = XMLHelper::createElement($document, $this->usergroupCollectionName);
             if ($usergroup) {
                 $usergroupCollectionElem->setAttribute('usergroup', $usergroup);

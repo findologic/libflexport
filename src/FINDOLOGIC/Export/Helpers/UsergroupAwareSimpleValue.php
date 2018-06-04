@@ -64,7 +64,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
     {
         $collectionElem = XMLHelper::createElement($document, $this->collectionName);
 
-        foreach ($this->values as $usergroup => $value) {
+        foreach ($this->getValues() as $usergroup => $value) {
             $itemElem = XMLHelper::createElementWithText($document, $this->itemName, $value);
             $collectionElem->appendChild($itemElem);
 

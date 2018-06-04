@@ -38,6 +38,11 @@ class Attribute implements Serializable
         }
     }
 
+    public function getValues()
+    {
+        return $this->values;
+    }
+
     public function getKey()
     {
         return $this->key;
@@ -51,13 +56,13 @@ class Attribute implements Serializable
     {
         $attributeElem = XMLHelper::createElement($document, 'attribute');
 
-        $keyElem = XMLHelper::createElementWithText($document, 'key', $this->key);
+        $keyElem = XMLHelper::createElementWithText($document, 'key', $this->getKey());
         $attributeElem->appendChild($keyElem);
 
         $valuesElem = XMLHelper::createElement($document, 'values');
         $attributeElem->appendChild($valuesElem);
 
-        foreach ($this->values as $value) {
+        foreach ($this->getValues() as $value) {
             $valueElem = XMLHelper::createElementWithText($document, 'value', $value);
             $valuesElem->appendChild($valueElem);
         }
@@ -72,8 +77,8 @@ class Attribute implements Serializable
     {
         $attributeParts = [];
 
-        foreach ($this->values as $value) {
-            $attributeParts[] = sprintf('%s=%s', urlencode($this->key), urlencode($value));
+        foreach ($this->getValues() as $value) {
+            $attributeParts[] = sprintf('%s=%s', urlencode($this->getKey()), urlencode($value));
         }
 
         return implode('&', $attributeParts);
