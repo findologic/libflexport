@@ -87,8 +87,8 @@ class Image implements Serializable
     public function getDomSubtree(\DOMDocument $document)
     {
         $imageElem = XMLHelper::createElementWithText($document, 'image', DataHelper::validateUrl($this->getUrl()));
-        if ($this->type) {
-            $imageElem->setAttribute('type', $this->type);
+        if ($this->getType()) {
+            $imageElem->setAttribute('type', $this->getType());
         }
 
         return $imageElem;
@@ -99,6 +99,6 @@ class Image implements Serializable
      */
     public function getCsvFragment(array $availableProperties = [])
     {
-        return $this->url;
+        return $this->getUrl();
     }
 }

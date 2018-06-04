@@ -33,7 +33,12 @@ abstract class UsergroupAwareMultiValue implements Serializable
 
     public function setAllValues($values)
     {
-        $this->values = $values;
+        $this->values = [];
+
+        /* @var UsergroupAwareMultiValueItem $value */
+        foreach ($values as $value) {
+            $this->addValue($value);
+        }
     }
 
     /**

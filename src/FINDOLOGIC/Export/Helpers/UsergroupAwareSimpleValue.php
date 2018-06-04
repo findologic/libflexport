@@ -81,10 +81,10 @@ abstract class UsergroupAwareSimpleValue implements Serializable
      */
     public function getCsvFragment(array $availableProperties = [])
     {
-        if (array_key_exists('', $this->values)) {
-            $value = $this->values[''];
-        } else {
-            $value = '';
+        $value = '';
+
+        if (array_key_exists('', $this->getValues())) {
+            $value = $this->getValues()[''];
         }
 
         return $value;
