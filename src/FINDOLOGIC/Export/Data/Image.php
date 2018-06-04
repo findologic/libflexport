@@ -44,7 +44,7 @@ class Image implements Serializable
      */
     public function __construct($url, $type = self::TYPE_DEFAULT, $usergroup = '')
     {
-        $this->url = DataHelper::checkForEmptyValue($url);
+        $this->setUrl($url);
         $this->type = $type;
         $this->usergroup = $usergroup;
     }
@@ -55,6 +55,13 @@ class Image implements Serializable
     public function getUrl()
     {
         return $this->url;
+    }
+
+    private function setUrl($url)
+    {
+        $url = DataHelper::checkForEmptyValue($url);
+
+        $this->url = $url;
     }
 
     /**
@@ -79,7 +86,7 @@ class Image implements Serializable
      */
     public function getDomSubtree(\DOMDocument $document)
     {
-        $imageElem = XMLHelper::createElementWithText($document, 'image', $this->url);
+        $imageElem = XMLHelper::createElementWithText($document, 'image', DataHelper::validateUrl($this->getUrl()));
         if ($this->type) {
             $imageElem->setAttribute('type', $this->type);
         }

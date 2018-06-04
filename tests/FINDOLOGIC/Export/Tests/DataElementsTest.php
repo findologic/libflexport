@@ -66,7 +66,8 @@ class DataElementsTest extends TestCase
     }
 
     /**
-     * Provides a data set for testing if adding empty values to elements of type UsergroupAwareSimpleValue fails.
+     * Provides a data set for testing if adding empty or wrong values to elements of type UsergroupAwareSimpleValue
+     * fails.
      *
      * @return array Scenarios with a value, the element class and the expected exception, or null if none is supposed
      *      to be thrown.
@@ -99,7 +100,7 @@ class DataElementsTest extends TestCase
             'Summary with empty value' => ['', Summary::class, EmptyValueNotAllowedException::class],
             'Summary with value' => ['value', Summary::class, null],
             'Url with empty value' => ['', Url::class, EmptyValueNotAllowedException::class],
-            'Url with value' => ['value', Url::class, null]
+            'Url with correct input' => ['https://www.store.com/images/thumbnails/277KTLmen.png', Url::class]
         ];
     }
 
