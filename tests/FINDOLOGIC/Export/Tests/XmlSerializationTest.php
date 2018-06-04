@@ -435,4 +435,13 @@ class XmlSerializationTest extends TestCase
         $image = new Image('www.store.com/images/277KTL.png');
         $image->getDomSubtree(new \DOMDocument());
     }
+
+    public function testAddingUrlsToXmlDomWorksAsExpected()
+    {
+        $item = $this->getMinimalItem();
+
+        $item->addUrl('https://www.store.com/images/277KTL.png');
+
+        $this->assertPageIsValid($this->exporter->serializeItems([$item], 0, 1, 1));
+    }
 }
