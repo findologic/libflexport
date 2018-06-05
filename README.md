@@ -30,6 +30,15 @@ The key advantage for CSV is that it is possible to use way more groups than XML
 * The format is prone to encoding issues if non-UTF-8 data is fed into it.
 * Total export size is limited by file size, while XML pagination theoretically allows exports of arbitrary size. 
 
+#### Limitations
+
+Currently, only input text encoded in UTF-8 is supported. To use this library with other types of encoding, one of the
+following is necessary:
+
+* Convert all text to UTF-8 prior to passing it to `libflexport`.
+* Use the XML exporter and modify the library to change the XML header to contain the required encoding.
+  * FINDOLOGIC is capable of handling most encodings, but only with XML.
+
 ## Basic usage
 
 ### Setup
