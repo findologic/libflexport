@@ -37,7 +37,7 @@ following is necessary:
 
 * Convert all text to UTF-8 prior to passing it to `libflexport`.
 * Use the XML exporter and modify the library to change the XML header to contain the required encoding.
-  * FINDOLOGIC is capable for handling most encodings, but only with XML.
+  * FINDOLOGIC is capable of handling most encodings, but only with XML.
 
 ## Basic usage
 
