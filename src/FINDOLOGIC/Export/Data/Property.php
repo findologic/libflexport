@@ -39,7 +39,11 @@ class Property
     private $values;
 
     /**
+     * Property constructor.
+     *
      * @SuppressWarnings(PHPMD.StaticAccess)
+     * @param string $key The property key.
+     * @param array $values The values of the property.
      */
     public function __construct($key, $values = [])
     {
@@ -59,12 +63,16 @@ class Property
     }
 
     /**
+     * Add a value to the property element.
+     *
      * @SuppressWarnings(PHPMD.StaticAccess)
+     * @param string $value The value to add to the property element.
+     * @param string|null $usergroup The usergroup of the property value.
      */
     public function addValue($value, $usergroup = null)
     {
-        if (array_key_exists($usergroup, $this->values)) {
-            throw new DuplicateValueForUsergroupException($this->key, $usergroup);
+        if (array_key_exists($usergroup, $this->getAllValues())) {
+            throw new DuplicateValueForUsergroupException($this->getKey(), $usergroup);
         }
 
         $this->values[$usergroup] = DataHelper::checkForEmptyValue($value);

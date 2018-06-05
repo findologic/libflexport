@@ -27,7 +27,7 @@ class Usergroup implements Serializable
      */
     public function getDomSubtree(\DOMDocument $document)
     {
-        $usergroupElem = XMLHelper::createElementWithText($document, 'usergroup', $this->value);
+        $usergroupElem = XMLHelper::createElementWithText($document, 'usergroup', $this->getValue());
 
         return $usergroupElem;
     }
@@ -37,11 +37,11 @@ class Usergroup implements Serializable
      */
     public function getCsvFragment(array $availableProperties = [])
     {
-        return $this->value;
+        return $this->getValue();
     }
 
     public function __toString()
     {
-        return $this->value;
+        return $this->getValue();
     }
 }
