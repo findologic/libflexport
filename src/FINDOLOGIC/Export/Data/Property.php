@@ -71,6 +71,8 @@ class Property
      */
     public function addValue($value, $usergroup = null)
     {
+        DataHelper::checkForObjectType($value);
+
         if (array_key_exists($usergroup, $this->getAllValues())) {
             throw new DuplicateValueForUsergroupException($this->getKey(), $usergroup);
         }

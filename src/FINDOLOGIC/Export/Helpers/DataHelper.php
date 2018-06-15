@@ -10,6 +10,14 @@ class EmptyValueNotAllowedException extends \RuntimeException
     }
 }
 
+class ObjectNotAllowedException extends \RuntimeException
+{
+    public function __construct($message = "Objects as values are not allowed!")
+    {
+        parent::__construct($message);
+    }
+}
+
 class InvalidUrlException extends \RuntimeException
 {
     public function __construct()
@@ -97,6 +105,19 @@ class DataHelper
     {
         if (strpos($propertyKey, "\t") !== false || strpos($propertyKey, "\n") !== false) {
             throw new BadPropertyKeyException($propertyKey);
+        }
+    }
+
+    /**
+     * Verifies that the provided value is not a object.
+     *
+     * @param mixed $value The value to check.
+     * @throw ObjectNotAllowedException In case the provided value is a object.
+     */
+    public static function checkForObjectType($value)
+    {
+        if (is_object($value)) {
+            throw new ObjectNotAllowedException();
         }
     }
 }

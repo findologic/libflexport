@@ -45,17 +45,14 @@ abstract class UsergroupAwareSimpleValue implements Serializable
      *
      * @param $value string|int Validated value.
      * @return string string|int
+     * @throws ObjectNotAllowedException
      * @throws EmptyValueNotAllowedException
      */
     protected function validate($value)
     {
-        $value = trim($value);
+        DataHelper::checkForObjectType($value);
 
-        if ($value === '') {
-            throw new EmptyValueNotAllowedException();
-        }
-
-        return $value;
+        return DataHelper::checkForEmptyValue($value);
     }
 
     /**

@@ -13,12 +13,19 @@ class Usergroup implements Serializable
 
     public function __construct($value)
     {
-        $this->value = DataHelper::checkForEmptyValue($value);
+        $this->setValue($value);
     }
 
     public function getValue()
     {
         return $this->value;
+    }
+
+    public function setValue($value)
+    {
+        DataHelper::checkForObjectType($value);
+
+        $this->value = DataHelper::checkForEmptyValue($value);
     }
 
     /**

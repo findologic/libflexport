@@ -26,6 +26,8 @@ class Attribute implements Serializable
      */
     public function addValue($value)
     {
+        DataHelper::checkForObjectType($value);
+
         array_push($this->values, DataHelper::checkForEmptyValue($value));
     }
 

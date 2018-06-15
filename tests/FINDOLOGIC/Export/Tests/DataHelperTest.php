@@ -57,6 +57,16 @@ class DataHelperTest extends TestCase
     }
 
     /**
+     * @expectedException \FINDOLOGIC\Export\Helpers\ObjectNotAllowedException
+     */
+    public function testObjectValueThrowsException()
+    {
+        $object = new \stdClass();
+
+        DataHelper::checkForObjectType($object);
+    }
+
+    /**
      * @dataProvider numericValueProvider
      *
      * @param $value string|int|bool value that should be checked.
