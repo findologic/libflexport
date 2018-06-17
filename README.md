@@ -5,9 +5,21 @@
 [![Code Climate](https://codeclimate.com/github/findologic/libflexport.svg)](https://codeclimate.com/github/findologic/libflexport)
 [![Codecov](https://codecov.io/gh/findologic/libflexport/branch/develop/graph/badge.svg)](https://codecov.io/gh/findologic/libflexport)
 
+## Table of Contents
+
+1. [Synopsis](#synopsis)
+2. [Export recommendation](#export-recommendation)
+3. [Limitations](#limitations)
+4. [Basic usage](#basic-usage)
+    1. [Setup](#setup)
+    2. [XML Export](#xml-export)
+    3. [CSV Export](#csv-export)
+5. [Examples](#examples)
+6. [Contributors](#contributors)
+
 ## Synopsis
 
-This project provides a export library for XML and CSV generation according to the FINDOLOGIC export patterns.
+This project provides an export library for XML and CSV generation according to the FINDOLOGIC export patterns.
 * XML <https://docs.findologic.com/doku.php?id=export_patterns:xml>
 * CSV <https://docs.findologic.com/doku.php?id=export_patterns:csv>
   * Note that CSV support is still relatively new. Consider it beta-quality.
@@ -52,14 +64,13 @@ following is necessary:
 require_once './vendor/autoload.php';
 
 use \FINDOLOGIC\Export\Exporter;
-use \FINDOLOGIC\Export\Data\Price;
 
 $exporter = Exporter::create(Exporter::TYPE_XML);
 
 $item = $exporter->createItem('123');
 
 $item->addPrice(13.37);
-// Alternative long form:
+// Obsolete long form:
 // $price = new Price();
 // $price->setValue(13.37);
 // $item->setPrice($price);
@@ -67,20 +78,21 @@ $item->addPrice(13.37);
 $xmlOutput = $exporter->serializeItems([$item], 0, 1, 1);
 ```
 
+You may want to include the header `header('Content-type: text/xml')`.
+
 ### CSV export
 
 ```php
 require_once './vendor/autoload.php';
 
 use \FINDOLOGIC\Export\Exporter;
-use \FINDOLOGIC\Export\Data\Price;
 
 $exporter = Exporter::create(Exporter::TYPE_CSV);
 
 $item = $exporter->createItem('123');
 
 $item->addPrice(13.37);
-// Alternative long form:
+// Obsolete long form:
 // $price = new Price();
 // $price->setValue(13.37);
 // $item->setPrice($price);
@@ -101,4 +113,4 @@ If you want to contribute to this project, feel free to fork the repository. Aft
 
 Tests should be provided if possible.
 
-Running `php-cs-fixer` before commiting will reduce style-caused build failures.
+Running `php-cs-fixer` before committing will reduce style-caused build failures.
