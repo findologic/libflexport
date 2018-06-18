@@ -70,7 +70,7 @@ $exporter = Exporter::create(Exporter::TYPE_XML);
 $item = $exporter->createItem('123');
 
 $item->addPrice(13.37);
-// Obsolete long form:
+// Alternative long form:
 // $price = new Price();
 // $price->setValue(13.37);
 // $item->setPrice($price);
@@ -92,7 +92,7 @@ $exporter = Exporter::create(Exporter::TYPE_CSV);
 $item = $exporter->createItem('123');
 
 $item->addPrice(13.37);
-// Obsolete long form:
+// Alternative long form:
 // $price = new Price();
 // $price->setValue(13.37);
 // $item->setPrice($price);
