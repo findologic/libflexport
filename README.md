@@ -78,8 +78,6 @@ $item->addPrice(13.37);
 $xmlOutput = $exporter->serializeItems([$item], 0, 1, 1);
 ```
 
-You may want to include the header `header('Content-type: text/xml')`.
-
 ### CSV export
 
 ```php
