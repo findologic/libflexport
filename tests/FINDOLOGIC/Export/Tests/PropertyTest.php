@@ -55,4 +55,12 @@ class PropertyTest extends TestCase
             $this->assertRegExp('/' . $key . '/', $exception->getMessage());
         }
     }
+
+    /**
+     * @expectedException \FINDOLOGIC\Export\Data\NonAssociativePropertyValueException
+     */
+    public function testNonAssociativePropertyValueCausesException()
+    {
+        $property = new Property('foo', ['bar']);
+    }
 }
