@@ -20,15 +20,6 @@ class PropertyKeyNotAllowedException extends \RuntimeException
     }
 }
 
-class NonAssociativePropertyValueException extends \RuntimeException
-{
-    public function __construct($key)
-    {
-        $format = 'Property values have to be associative, like $key => $value. The key "%s" has to be a string, integer given.';
-        parent::__construct(sprintf($format, $key));
-    }
-}
-
 class Property
 {
     /**
@@ -91,7 +82,16 @@ class Property
     {
         $this->values = [];
 
-        array_walk($values, array($this, 'checkIsAssociativeArray'));
+        /**
+         * As we can not check if the values of the given array is associative,
+         * we trigger a notice if the array keys are not a string.
+         */
+        array_walk($values, function ($item, $key) {
+            if (!is_string($key)) {
+                $format = 'Property values have to be associative, like $key => $value. The key "%s" has to be a string, integer given.';
+                trigger_error(sprintf($format, $key), E_USER_WARNING);
+            }
+        });
 
         foreach ($values as $usergroup => $value) {
             $this->addValue($value, $usergroup);
@@ -101,16 +101,5 @@ class Property
     public function getAllValues()
     {
         return $this->values;
-    }
-
-    private function checkIsAssociativeArray($item, $key)
-    {
-        /**
-         * The key of a sequential array is an integer. This makes sure
-         * that the key of the array is a string like an associative array.
-         */
-        if (!is_string($key)) {
-            throw new NonAssociativePropertyValueException($key);
-        }
     }
 }

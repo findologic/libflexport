@@ -57,7 +57,7 @@ class PropertyTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Data\NonAssociativePropertyValueException
+     * @expectedException \PHPUnit_Framework_Error_Warning
      */
     public function testNonAssociativePropertyValueCausesException()
     {
