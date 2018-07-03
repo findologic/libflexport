@@ -152,8 +152,8 @@ class DataElementsTest extends TestCase
             'Attribute with empty value' => ['key', [''], Attribute::class, true],
             'Attribute with valid key and value' => ['key', ['value'], Attribute::class, false],
             'Property with empty key' => ['',['value'], Property::class, true],
-            'Property with empty value' => ['key', [''], Property::class, true],
-            'Property with valid key and value' => ['key', ['value'], Property::class, false]
+            'Property with empty value' => ['key', ['foo' => ''], Property::class, true],
+            'Property with valid key and value' => ['key', ['foo' => 'bar'], Property::class, false]
         ];
     }
 
