@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
+use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
 use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
@@ -99,5 +100,20 @@ class DataHelperTest extends TestCase
             'zero as float' => [0.0, false],
             'zero as string' => ['0', false]
         ];
+    }
+
+    /**
+     * @expectedException \FINDOLOGIC\Export\Helpers\ValueExceedsInternalCharacterLimitException
+     */
+    public function testValueNotExceedingCharacterLimit()
+    {
+        $attribute = new Attribute('attribute_with_very_long_value');
+
+        $value = '';
+        for ($i = 0; $i < 16384; $i++) {
+            $value .= 'a';
+        }
+
+        $attribute->addValue($value);
     }
 }
