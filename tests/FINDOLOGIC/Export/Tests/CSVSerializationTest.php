@@ -325,4 +325,22 @@ class CSVSerializationTest extends TestCase
 
         $this->assertEquals($imageWithRelativePath, $image->getCsvFragment());
     }
+
+    public function testNewLineCharactersAreRemoved()
+    {
+        $item = $this->getMinimalItem();
+
+        /**
+         * No need for testing the other fields as all of the data elements
+         * are put together with the same sanitze() method
+         */
+        $descriptionWithNewLineCharacter = new Description();
+        $descriptionWithNewLineCharacter->setValue("Items long description with new line character \n in the text.");
+
+        $item->setDescription($descriptionWithNewLineCharacter);
+
+        $csvLine = $item->getCsvFragment();
+
+        $this->assertEquals(1, preg_match_all('/\n/', $csvLine));
+    }
 }
