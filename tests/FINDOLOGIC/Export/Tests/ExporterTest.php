@@ -27,7 +27,7 @@ class ExporterTest extends TestCase
         }
     }
 
-    public function testCsvHeadingIsNotWrittenToOutputWhenStartIsqNotZero()
+    public function testCsvHeadingIsNotWrittenToOutputWhenStartIsNonZero()
     {
         $exporter = Exporter::create(Exporter::TYPE_CSV);
 
