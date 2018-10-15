@@ -123,7 +123,7 @@ class DataHelper
      */
     public static function checkAttributeValueNotExceedingCharacterLimit($attributeName, $attributeValue)
     {
-        if (strlen($attributeValue) > self::CHARACTER_LIMIT) {
+        if (mb_strlen($attributeValue) > self::CHARACTER_LIMIT) {
             throw new AttributeValueLengthException($attributeName, self::CHARACTER_LIMIT);
         }
     }
