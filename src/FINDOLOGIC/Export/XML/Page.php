@@ -35,7 +35,11 @@ class Page
 
     public function setAllItems(array $items)
     {
-        $this->items = $items;
+        $this->items = [];
+
+        foreach ($items as $item) {
+            $this->addItem($item);
+        }
     }
 
     /**
