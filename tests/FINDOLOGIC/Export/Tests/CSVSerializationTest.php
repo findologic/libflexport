@@ -326,21 +326,47 @@ class CSVSerializationTest extends TestCase
         $this->assertEquals($imageWithRelativePath, $image->getCsvFragment());
     }
 
-    public function testNewLineCharactersAreRemoved()
+    /**
+     * Provides a dataset for testing if tab and new line characters which are removed by the sanitize method
+     * don't break the CSV export.
+     *
+     * @return array Scenarios with value, the element class and the elements setter method name.
+     */
+    public function csvSanitizedElementsInputProvider()
+    {
+        return [
+            'Ordernumber with invalid characters' => ["ordernumber\t\n", Ordernumber::class, 'addOrdernumber'],
+            'Name with invalid characters' => ["Product title\t\n", Name::class, 'setName'],
+            'Summary with invalid characters' => ["Short product summary\t\n", Summary::class, 'setSummary'],
+            'Description with invalid characters' =>
+                ["Long product description\t\n", Description::class, 'setDescription'],
+            'Url with invalid characters' => ["https://www.example.org/url\t\n", Url::class, 'setUrl'],
+            'Keyword with invalid characters' => ["ImportantKeyword\t\n", Keyword::class, 'addKeyword']
+        ];
+    }
+
+    /**
+     * @dataProvider csvSanitizedElementsInputProvider
+     * @param string $value
+     * @param string $elementType
+     * @param string $setterMethodName
+     */
+    public function testSanitizingOfElementsWorks($value = '', $elementType = '', $setterMethodName = '')
     {
         $item = $this->getMinimalItem();
 
-        /**
-         * No need for testing the other fields as all of the data elements
-         * are put together with the same sanitze() method
-         */
-        $descriptionWithNewLineCharacter = new Description();
-        $descriptionWithNewLineCharacter->setValue("Items long description with new line character \n in the text.");
-
-        $item->setDescription($descriptionWithNewLineCharacter);
+        if (get_parent_class($elementType) === 'FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValueItem') {
+            $element = new $elementType($value);
+            $item->$setterMethodName($element);
+        } else {
+            $element = new $elementType();
+            $element->setValue($value);
+            $item->$setterMethodName($element);
+        }
 
         $csvLine = $item->getCsvFragment();
 
         $this->assertEquals(1, preg_match_all('/\n/', $csvLine));
+        $this->assertEquals(17, preg_match_all('/\t/', $csvLine));
     }
 }
