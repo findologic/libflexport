@@ -43,19 +43,14 @@ class BadPropertyKeyException extends \RuntimeException
     }
 }
 
-class ValueExceedsInternalCharacterLimitException extends \RuntimeException
+class AttributeValueLengthException extends \RuntimeException
 {
-    /*
-     * Internal character limit for attribute values.
-     */
-    const CHARACTER_LIMIT = 16383;
-
-    public function __construct($attributeName)
+    public function __construct($attributeName, $characterLimit)
     {
         parent::__construct(sprintf(
             'Value of attribute "%s" exceeds the internal character limit of %d!',
             $attributeName,
-            self::CHARACTER_LIMIT
+            $characterLimit
         ));
     }
 }
@@ -126,10 +121,10 @@ class DataHelper
      * @param string $attributeName Attribute name to output in exception.
      * @param string $attributeValue Attribute value to check if it exceeds character limit.
      */
-    public static function checkValueNotExceedingCharacterLimit($attributeName, $attributeValue)
+    public static function checkAttributeValueNotExceedingCharacterLimit($attributeName, $attributeValue)
     {
         if (strlen($attributeValue) > self::CHARACTER_LIMIT) {
-            throw new ValueExceedsInternalCharacterLimitException($attributeName);
+            throw new AttributeValueLengthException($attributeName, self::CHARACTER_LIMIT);
         }
     }
 }

@@ -103,17 +103,14 @@ class DataHelperTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Helpers\ValueExceedsInternalCharacterLimitException
+     * Test if character limit of data helper causes exception when called outside attribute class.
+     *
+     * @expectedException \FINDOLOGIC\Export\Helpers\AttributeValueLengthException
      */
-    public function testValueNotExceedingCharacterLimit()
+    public function testCharacterLimitCausesException()
     {
-        $attribute = new Attribute('attribute_with_very_long_value');
+        $value = implode('', array_fill(0, 16384, 'a'));
 
-        $value = '';
-        for ($i = 0; $i < 16384; $i++) {
-            $value .= 'a';
-        }
-
-        $attribute->addValue($value);
+        DataHelper::checkAttributeValueNotExceedingCharacterLimit('some attribute', $value);
     }
 }
