@@ -109,7 +109,7 @@ class DataHelperTest extends TestCase
      */
     public function testCharacterLimitCausesException()
     {
-        $value = implode('', array_fill(0, 16384, 'a'));
+        $value = implode('', array_fill(0, 16384, '©'));
 
         DataHelper::checkAttributeValueNotExceedingCharacterLimit('some attribute', $value);
     }
