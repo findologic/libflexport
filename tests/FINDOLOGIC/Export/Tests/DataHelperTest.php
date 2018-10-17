@@ -13,8 +13,8 @@ class DataHelperTest extends TestCase
     /**
      * @dataProvider emptyValueProvider
      *
-     * @param $value string|int value that should be checked.
-     * @param $shouldCauseException bool should an exception be caused by given parameter.
+     * @param string|int $value Value that should be checked.
+     * @param bool $shouldCauseException Whether the value should cause an exception or not.
      */
     public function testEmptyValueDetectsEmptyStringsOnly($value, $shouldCauseException)
     {
@@ -59,10 +59,10 @@ class DataHelperTest extends TestCase
     /**
      * @dataProvider numericValueProvider
      *
-     * @param $value string|int|bool value that should be checked.
-     * @param $shouldCauseException bool should an exception be caused by given parameter.
+     * @param string|int|bool $value Value that should be checked.
+     * @param bool $shouldCauseException Whether the value should cause an exception or not.
      */
-    public function testNumericValuesAreValidated($value, $shouldCauseException)
+    public function testNumericValuesAreValidated($value, bool $shouldCauseException)
     {
         try {
             $numericValueElement = new UsergroupAwareNumericValue('dummies', 'dummy');

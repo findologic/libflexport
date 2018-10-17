@@ -47,9 +47,9 @@ class DataElementsTest extends TestCase
      * @param bool $shouldCauseException
      */
     public function testAddingEmptyValuesToMultiValueItemCausesException(
-        $value = '',
-        $elementType = '',
-        $shouldCauseException = true
+        string $value = '',
+        string $elementType = '',
+        bool $shouldCauseException = true
     ) {
         try {
             $element = new $elementType($value);
@@ -106,14 +106,14 @@ class DataElementsTest extends TestCase
 
     /**
      * @dataProvider simpleValueItemProvider
-     * @param string $value
+     * @param string|float|int $value
      * @param string $elementType
      * @param \Exception|null $expectedException
      */
     public function testAddingEmptyValuesToSimpleItemsCausesException(
-        $value = '',
-        $elementType = '',
-        $expectedException = null
+        $value,
+        string $elementType,
+        ?string $expectedException = null
     ) {
         try {
             $element = new $elementType();
@@ -151,7 +151,7 @@ class DataElementsTest extends TestCase
             'Attribute with empty key' => ['', ['value'], Attribute::class, true],
             'Attribute with empty value' => ['key', [''], Attribute::class, true],
             'Attribute with valid key and value' => ['key', ['value'], Attribute::class, false],
-            'Property with empty key' => ['',['value'], Property::class, true],
+            'Property with empty key' => ['', ['value'], Property::class, true],
             'Property with empty value' => ['key', ['foo' => ''], Property::class, true],
             'Property with valid key and value' => ['key', ['foo' => 'bar'], Property::class, false]
         ];
@@ -160,15 +160,15 @@ class DataElementsTest extends TestCase
     /**
      * @dataProvider emptyValueProvider
      * @param string $key
-     * @param string $value
+     * @param array $value
      * @param string $elementType
      * @param bool $shouldCauseException
      */
     public function testAddingEmptyValueCausesException(
-        $key = '',
-        $value = '',
-        $elementType = '',
-        $shouldCauseException = true
+        string $key,
+        array $value,
+        string $elementType,
+        bool $shouldCauseException
     ) {
         try {
             $element = new $elementType($key, $value);

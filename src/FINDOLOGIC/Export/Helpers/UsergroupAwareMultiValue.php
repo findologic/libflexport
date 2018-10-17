@@ -37,7 +37,7 @@ abstract class UsergroupAwareMultiValue implements Serializable
     /**
      * @param array $values Array of elements to be added to the collection.
      */
-    public function setAllValues($values)
+    public function setAllValues(array $values)
     {
         $this->values = [];
 

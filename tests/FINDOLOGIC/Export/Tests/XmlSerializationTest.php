@@ -322,7 +322,7 @@ class XmlSerializationTest extends TestCase
      * @param string $valueType
      * @param array $values
      */
-    public function testSimpleValuesAddedToItemViaShortcutAccumulate($valueType, array $values)
+    public function testSimpleValuesAddedToItemViaShortcutAccumulate(string $valueType, array $values)
     {
         $item = new XMLItem(123);
 
@@ -369,7 +369,7 @@ class XmlSerializationTest extends TestCase
         ];
     }
 
-    public function testUrlValidationWorks($value = '', $expectedException = null)
+    public function testUrlValidationWorks(string $value = '', ?string $expectedException = null)
     {
         try {
             $item = $this->getMinimalItem();
@@ -409,7 +409,7 @@ class XmlSerializationTest extends TestCase
      * @param string $method Name of the method to call to interact with an unsupported value.
      * @param mixed $parameter The parameter in case of a setter.
      */
-    public function testUsingValuesUnsupportedByXmlCauseExceptions($method, $parameter)
+    public function testUsingValuesUnsupportedByXmlCauseExceptions(string $method, $parameter)
     {
         $item = $this->getMinimalItem();
 

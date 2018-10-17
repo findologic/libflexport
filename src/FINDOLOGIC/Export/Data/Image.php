@@ -41,8 +41,11 @@ class Image implements Serializable
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
+     * @param string $url The image url of the element.
+     * @param self::TYPE_DEFAULT|self::TYPE_THUMBNAIL $type The image type to use.
+     * @param string $usergroup The usergroup of the image element.
      */
-    public function __construct($url, $type = self::TYPE_DEFAULT, $usergroup = '')
+    public function __construct(string $url, string $type = self::TYPE_DEFAULT, string $usergroup = '')
     {
         $this->setUrl($url);
         $this->type = $type;
@@ -57,7 +60,7 @@ class Image implements Serializable
         return $this->url;
     }
 
-    private function setUrl($url)
+    private function setUrl(string $url)
     {
         $url = DataHelper::checkForEmptyValue($url);
 

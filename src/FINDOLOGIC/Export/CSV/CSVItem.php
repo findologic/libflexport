@@ -74,7 +74,7 @@ class CSVItem extends Item
         return $line;
     }
 
-    private function buildProperties($availableProperties)
+    private function buildProperties(array $availableProperties)
     {
         $propertiesString = '';
 

@@ -26,7 +26,7 @@ class CSVExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function serializeItems($items, $start = 0, $count = 0, $total = 0)
+    public function serializeItems(array $items, int $start = 0, int $count = 0, int $total = 0)
     {
         $export = '';
         // To enable pagination, don't write the heading if it's anything but the first page.
@@ -52,7 +52,7 @@ class CSVExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function serializeItemsToFile($targetDirectory, $items, $start = 0, $count = 0, $total = 0)
+    public function serializeItemsToFile(string $targetDirectory, array $items, int $start = 0, int $count = 0, int $total = 0)
     {
         $csvString = $this->serializeItems($items, $start, $count, $total);
         $targetPath = sprintf('%s/findologic.csv', $targetDirectory);

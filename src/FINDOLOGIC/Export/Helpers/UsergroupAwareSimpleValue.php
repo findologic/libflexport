@@ -27,10 +27,10 @@ abstract class UsergroupAwareSimpleValue implements Serializable
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
-     * @param $value The value of the element.
+     * @param mixed $value The value of the element.
      * @param string $usergroup The usergroup of the element.
      */
-    public function setValue($value, $usergroup = '')
+    public function setValue($value, string $usergroup = '')
     {
         $this->values[$usergroup] = $this->validate($value);
     }
@@ -43,7 +43,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
      * When valid returns given value.
      * When not valid an exception is thrown.
      *
-     * @param $value string|int Validated value.
+     * @param string|int $value Validated value.
      * @return string string|int
      * @throws EmptyValueNotAllowedException
      */
