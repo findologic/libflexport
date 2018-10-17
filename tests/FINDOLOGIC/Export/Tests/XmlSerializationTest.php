@@ -369,6 +369,12 @@ class XmlSerializationTest extends TestCase
         ];
     }
 
+    /**
+     * @dataProvider urlValidationProvider
+     *
+     * @param string $value
+     * @param \Exception|null $expectedException
+     */
     public function testUrlValidationWorks($value = '', $expectedException = null)
     {
         try {
