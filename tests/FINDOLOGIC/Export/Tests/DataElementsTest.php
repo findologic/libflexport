@@ -206,7 +206,7 @@ class DataElementsTest extends TestCase
     {
         $attribute = new Attribute('attribute_with_very_long_value');
 
-        $value = implode('', array_fill(0, 16384, 'a'));
+        $value = implode('', array_fill(0, 16384, '©'));
 
         $attribute->addValue($value);
     }
