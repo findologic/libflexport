@@ -26,6 +26,7 @@ class Attribute implements Serializable
      */
     public function addValue($value)
     {
+        DataHelper::checkAttributeValueNotExceedingCharacterLimit($this->getKey(), $value);
         array_push($this->values, DataHelper::checkForEmptyValue($value));
     }
 

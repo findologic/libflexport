@@ -198,4 +198,16 @@ class DataElementsTest extends TestCase
 
         $this->assertEquals($usergroup->getValue(), (string) $usergroup);
     }
+
+    /**
+     * @expectedException \FINDOLOGIC\Export\Helpers\AttributeValueLengthException
+     */
+    public function testVeryLongAttributeValueCausesException()
+    {
+        $attribute = new Attribute('attribute_with_very_long_value');
+
+        $value = implode('', array_fill(0, 16384, '©'));
+
+        $attribute->addValue($value);
+    }
 }
