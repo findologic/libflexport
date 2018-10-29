@@ -170,33 +170,33 @@ class XMLItem extends Item
 
         return $valid;
     }
-    
+
     public function getInsteadPrice()
     {
         throw new UnsupportedValueException('insteadPrice');
     }
 
-    public function setInsteadPrice($insteadPrice)
+    public function setInsteadPrice(float $insteadPrice)
     {
         throw new UnsupportedValueException('insteadPrice');
     }
-    
+
     public function getMaxPrice()
     {
         throw new UnsupportedValueException('maxPrice');
     }
 
-    public function setMaxPrice($insteadPrice)
+    public function setMaxPrice(float $insteadPrice)
     {
         throw new UnsupportedValueException('maxPrice');
     }
-    
+
     public function getTaxRate()
     {
         throw new UnsupportedValueException('taxRate');
     }
 
-    public function setTaxRate($insteadPrice)
+    public function setTaxRate(float $insteadPrice)
     {
         throw new UnsupportedValueException('taxRate');
     }
