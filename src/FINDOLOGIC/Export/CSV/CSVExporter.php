@@ -32,14 +32,14 @@ class CSVExporter extends Exporter
         // To enable pagination, don't write the heading if it's anything but the first page.
         if ($start === 0) {
             $export = self::HEADING;
-        }
 
-        foreach ($this->propertyKeys as $propertyKey) {
-            DataHelper::checkForIllegalCsvPropertyKeys($propertyKey);
+            foreach ($this->propertyKeys as $propertyKey) {
+                DataHelper::checkForIllegalCsvPropertyKeys($propertyKey);
 
-            $export .= "\t" . $propertyKey;
+                $export .= "\t" . $propertyKey;
+            }
+            $export .= "\n";
         }
-        $export .= "\n";
 
         /** @var CSVItem $item */
         foreach ($items as $item) {

@@ -26,4 +26,13 @@ class ExporterTest extends TestCase
             $this->assertEquals('Unsupported exporter type.', $e->getMessage());
         }
     }
+
+    public function testCsvHeadingIsNotWrittenToOutputWhenStartIsNonZero()
+    {
+        $exporter = Exporter::create(Exporter::TYPE_CSV);
+
+        $output = $exporter->serializeItems([], 1, 1, 1);
+
+        $this->assertEquals('', $output);
+    }
 }
