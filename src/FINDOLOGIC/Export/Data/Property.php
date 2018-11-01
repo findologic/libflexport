@@ -29,7 +29,7 @@ class Property
      * /thumbnail\d+/: Image URLs of type thumbnail.
      * /ordernumber/: The products first exported ordernumber.
      */
-    const RESERVED_PROPERTY_KEYS = [
+    private const RESERVED_PROPERTY_KEYS = [
         "/image\d+/",
         "/thumbnail\d+/",
         "/ordernumber/"

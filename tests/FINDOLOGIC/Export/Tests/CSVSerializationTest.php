@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
 
 class CSVSerializationTest extends TestCase
 {
-    const DEFAULT_CSV_HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\tinstead\tmaxprice\ttaxrate\t" .
+    private const DEFAULT_CSV_HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\tinstead\tmaxprice\ttaxrate\t" .
         "url\timage\tattributes\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
 
     /** @var CSVExporter */
@@ -107,12 +107,12 @@ class CSVSerializationTest extends TestCase
         $item = $this->getMinimalItem();
         $export = $this->exporter->serializeItems([$item], 0, 1, 2);
 
-        $this->assertContains(CSVExporter::HEADING, $export);
+        $this->assertContains(self::DEFAULT_CSV_HEADING, $export);
 
         $item = $this->getMinimalItem();
         $export = $this->exporter->serializeItems([$item], 1, 1, 2);
 
-        $this->assertNotContains(CSVExporter::HEADING, $export);
+        $this->assertNotContains(self::DEFAULT_CSV_HEADING, $export);
     }
 
     public function testCsvCanBeWrittenDirectlyToFile()

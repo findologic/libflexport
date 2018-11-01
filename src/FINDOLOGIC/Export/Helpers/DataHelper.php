@@ -66,7 +66,7 @@ class DataHelper
     /*
      * Internal character limit for attribute values.
      */
-    const CHARACTER_LIMIT = 16383;
+    private const CHARACTER_LIMIT = 16383;
 
     /**
      * Checks if the provided value is empty.

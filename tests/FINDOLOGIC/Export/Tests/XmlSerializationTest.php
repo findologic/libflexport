@@ -31,7 +31,7 @@ use PHPUnit\Framework\TestCase;
  */
 class XmlSerializationTest extends TestCase
 {
-    const SCHEMA_URL = 'https://raw.githubusercontent.com/findologic/xml-export/master/src/main/resources/findologic.xsd';
+    private const SCHEMA_URL = 'https://raw.githubusercontent.com/findologic/xml-export/master/src/main/resources/findologic.xsd';
 
     private static $schema;
 
