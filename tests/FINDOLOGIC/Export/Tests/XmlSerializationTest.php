@@ -375,6 +375,8 @@ class XmlSerializationTest extends TestCase
             $item = $this->getMinimalItem();
             $url =  new Url($value);
             $item->setUrl($url);
+
+            $this->assertNotNull($url);
         } catch (\Exception $e) {
             $this->assertEquals($expectedException, get_class($e));
         }
@@ -384,6 +386,8 @@ class XmlSerializationTest extends TestCase
     {
         $page = new Page(0, 1, 1);
         $page->addItem($this->getMinimalItem());
+
+        $this->assertNotNull($page);
     }
 
     public function unsupportedValueProvider()
