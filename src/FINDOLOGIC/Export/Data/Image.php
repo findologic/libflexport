@@ -28,12 +28,12 @@ class Image implements Serializable
     /**
      * Main, full-size image type.
      */
-    const TYPE_DEFAULT = '';
+    public const TYPE_DEFAULT = '';
 
     /**
      * Scaled-down thumbnail image type.
      */
-    const TYPE_THUMBNAIL = 'thumbnail';
+    public const TYPE_THUMBNAIL = 'thumbnail';
 
     private $url;
     private $type;

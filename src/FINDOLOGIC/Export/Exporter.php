@@ -13,14 +13,14 @@ abstract class Exporter
      *
      * @see https://docs.findologic.com/doku.php?id=export_patterns:xml
      */
-    const TYPE_XML = 0;
+    public const TYPE_XML = 0;
 
     /**
      * CSV-based export format. Does not support usergroups.
      *
      * @see https://docs.findologic.com/doku.php?id=export_patterns:csv
      */
-    const TYPE_CSV = 1;
+    public const TYPE_CSV = 1;
 
     /**
      * Creates an exporter for the desired output format.
