@@ -348,6 +348,10 @@ abstract class Item implements Serializable
      */
     public function addProperty(Property $property)
     {
+        if (count($property->getAllValues()) === 0) {
+            throw new EmptyElementsNotAllowedException('Property', $property->getKey());
+        }
+
         foreach ($property->getAllValues() as $usergroup => $value) {
             if (!array_key_exists($usergroup, $this->properties)) {
                 $this->properties[$usergroup] = [];
