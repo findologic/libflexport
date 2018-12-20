@@ -16,7 +16,7 @@ class DataHelperTest extends TestCase
      * @param string|int $value Value that should be checked.
      * @param bool $shouldCauseException Whether the value should cause an exception or not.
      */
-    public function testEmptyValueDetectsEmptyStringsOnly($value, $shouldCauseException)
+    public function testEmptyValueDetectsEmptyStringsOnly($value, bool $shouldCauseException)
     {
         try {
             $value = DataHelper::checkForEmptyValue($value);

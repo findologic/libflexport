@@ -254,10 +254,10 @@ abstract class Item implements Serializable
     /**
      * Shortcut to easily add the bonus of the item. The value must be a numeric.
      *
-     * @param float|string $bonus The bonus value of the item.
+     * @param float $bonus The bonus value of the item.
      * @param string $usergroup The usergroup of the bonus value.
      */
-    public function addBonus($bonus, string $usergroup = '')
+    public function addBonus(float $bonus, string $usergroup = '')
     {
         $this->bonus->setValue($bonus, $usergroup);
     }
