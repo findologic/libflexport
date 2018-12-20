@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Data\Attribute;
+use FINDOLOGIC\Export\Data\EmptyElementsNotAllowedException;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Exporter;
@@ -34,23 +35,27 @@ class ItemTest extends TestCase
         return $item;
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\Data\EmptyElementsNotAllowedException
-     */
     public function testAddingEmptyAttributesCauseException()
     {
-        $item = $this->getMinimalItem();
-        $attribute = new Attribute('empty attribute', []);
-        $item->addAttribute($attribute);
+        try {
+            $item = $this->getMinimalItem();
+            $attribute = new Attribute('empty attribute', []);
+            $item->addAttribute($attribute);
+        } catch(EmptyElementsNotAllowedException $e) {
+            $expectedMessage = "Elements with empty values are not allowed. 'Attribute' with the name 'empty attribute'";
+            $this->assertEquals($expectedMessage, $e->getMessage());
+        }
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\Data\EmptyElementsNotAllowedException
-     */
     public function testAddingEmptyPropertiesCauseException()
     {
-        $item = $this->getMinimalItem();
-        $property = new Property('empty property', []);
-        $item->addProperty($property);
+        try {
+            $item = $this->getMinimalItem();
+            $property = new Property('empty property', []);
+            $item->addProperty($property);
+        } catch(EmptyElementsNotAllowedException $e) {
+            $expectedMessage = "Elements with empty values are not allowed. 'Property' with the name 'empty property'";
+            $this->assertEquals($expectedMessage, $e->getMessage());
+        }
     }
 }
