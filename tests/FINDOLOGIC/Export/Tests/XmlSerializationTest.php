@@ -369,12 +369,18 @@ class XmlSerializationTest extends TestCase
         ];
     }
 
-    public function testUrlValidationWorks($value = '', $expectedException = null)
+    /**
+     * @dataProvider urlValidationProvider
+     *
+     * @param string $value
+     * @param \Exception|null $expectedException
+     */
+    public function testUrlValidationWorks($value, $expectedException)
     {
         try {
-            $item = $this->getMinimalItem();
-            $url =  new Url($value);
-            $item->setUrl($url);
+            $url =  new Url();
+            $url->setValue($value);
+            $url->getDomSubtree(new \DOMDocument());
         } catch (\Exception $e) {
             $this->assertEquals($expectedException, get_class($e));
         }
@@ -384,6 +390,7 @@ class XmlSerializationTest extends TestCase
     {
         $page = new Page(0, 1, 1);
         $page->addItem($this->getMinimalItem());
+        $this->assertNotNull($page->getXml());
     }
 
     public function unsupportedValueProvider()
