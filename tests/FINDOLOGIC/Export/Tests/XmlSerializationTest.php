@@ -31,7 +31,8 @@ use PHPUnit\Framework\TestCase;
  */
 class XmlSerializationTest extends TestCase
 {
-    const SCHEMA_URL = 'https://raw.githubusercontent.com/findologic/xml-export/master/src/main/resources/findologic.xsd';
+    const SCHEMA_URL = 'https://raw.githubusercontent.com/findologic/xml-export/master/src/main/resources/' .
+        'findologic.xsd';
 
     private static $schema;
 
@@ -365,7 +366,10 @@ class XmlSerializationTest extends TestCase
         return [
             'Url with value' => ['value', InvalidUrlException::class],
             'Url without schema' => ['www.store.com/images/thumbnails/277KTLmen.png', InvalidUrlException::class],
-            'Url without wrong schema' => ['tcp://www.store.com/images/thumbnails/277KTLmen.png', InvalidUrlException::class],
+            'Url without wrong schema' => [
+                'tcp://www.store.com/images/thumbnails/277KTLmen.png',
+                InvalidUrlException::class
+            ],
         ];
     }
 

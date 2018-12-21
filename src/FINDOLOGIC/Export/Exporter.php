@@ -67,7 +67,8 @@ abstract class Exporter
      * @param int $count The number of items requested for this export step. Actual number of items can be smaller due
      *      to errors, and can not be greater than the requested count, because that would indicate that the requested
      *      count is ignored when generating items. This value is ignored when using CSV exporter.
-     * @param int $total The global total of items that could be exported. This value is ignored when using CSV exporter.
+     * @param int $total The global total of items that could be exported. This value is ignored when using CSV
+     *      exporter.
      * @return string The items in serialized form.
      */
     abstract public function serializeItems($items, $start, $count, $total);
@@ -83,7 +84,8 @@ abstract class Exporter
      * @param int $count The number of items requested for this export step. Actual number of items can be smaller due
      *      to errors, and can not be greater than the requested count, because that would indicate that the requested
      *      count is ignored when generating items. This value is ignored when using CSV exporter.
-     * @param int $total The global total of items that could be exported. This value is ignored when using CSV exporter.
+     * @param int $total The global total of items that could be exported. This value is ignored when using CSV
+     *      exporter.
      * @return string Full path of the written file.
      */
     abstract public function serializeItemsToFile($targetDirectory, $items, $start, $count, $total);

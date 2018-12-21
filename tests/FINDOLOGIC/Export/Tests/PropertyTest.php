@@ -61,7 +61,8 @@ class PropertyTest extends TestCase
         try {
             $property = new Property('foo', ['bar']);
         } catch (\Exception $exception) {
-            $warningMessage = 'Property values have to be associative, like $key => $value. The key "0" has to be a string, integer given.';
+            $warningMessage = 'Property values have to be associative, like $key => $value. The key "0" has to be a ' .
+                'string, integer given.';
             $this->assertEquals($exception->getMessage(), $warningMessage);
         }
     }

@@ -16,7 +16,8 @@ class PropertyKeyNotAllowedException extends \RuntimeException
 {
     public function __construct($key)
     {
-        parent::__construct(sprintf('Property key "%s" is reserved for internal use and overwritten when importing.', $key));
+        $format = 'Property key "%s" is reserved for internal use and overwritten when importing.';
+        parent::__construct(sprintf($format, $key));
     }
 }
 
@@ -88,7 +89,8 @@ class Property
          */
         array_walk($values, function ($item, $key) {
             if (!is_string($key)) {
-                $format = 'Property values have to be associative, like $key => $value. The key "%s" has to be a string, integer given.';
+                $format = 'Property values have to be associative, like $key => $value. The key "%s" has to be a ' .
+                    'string, integer given.';
                 trigger_error(sprintf($format, $key), E_USER_WARNING);
             }
         });
