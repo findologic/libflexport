@@ -20,7 +20,7 @@ class Page
     private $count;
     private $total;
 
-    public function __construct($start, $count, $total)
+    public function __construct(int $start, int $count, int $total)
     {
         $this->start = $start;
         $this->count = $count;

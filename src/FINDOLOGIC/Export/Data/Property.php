@@ -45,7 +45,7 @@ class Property
      * @param string $key The property key.
      * @param array $values The values of the property.
      */
-    public function __construct($key, $values = [])
+    public function __construct(string $key, array $values = [])
     {
         foreach (self::RESERVED_PROPERTY_KEYS as $reservedPropertyKey) {
             if (preg_match($reservedPropertyKey, $key)) {
@@ -69,7 +69,7 @@ class Property
      * @param string $value The value to add to the property element.
      * @param string|null $usergroup The usergroup of the property value.
      */
-    public function addValue($value, $usergroup = null)
+    public function addValue(string $value, ?string $usergroup = null)
     {
         if (array_key_exists($usergroup, $this->getAllValues())) {
             throw new DuplicateValueForUsergroupException($this->getKey(), $usergroup);
@@ -78,7 +78,7 @@ class Property
         $this->values[$usergroup] = DataHelper::checkForEmptyValue($value);
     }
 
-    protected function setValues($values)
+    protected function setValues(array $values)
     {
         $this->values = [];
 

@@ -31,7 +31,7 @@ abstract class Exporter
      * @param array $csvProperties Properties/extra columns for CSV export. Has no effect for XML export.
      * @return Exporter The exporter for the desired output format.
      */
-    public static function create($type, $itemsPerPage = 20, $csvProperties = [])
+    public static function create(int $type, int $itemsPerPage = 20, array $csvProperties = [])
     {
         if ($itemsPerPage < 1) {
             throw new \InvalidArgumentException('At least one item must be exported per page.');
@@ -70,7 +70,7 @@ abstract class Exporter
      * @param int $total The global total of items that could be exported. This value is ignored when using CSV exporter.
      * @return string The items in serialized form.
      */
-    abstract public function serializeItems($items, $start, $count, $total);
+    abstract public function serializeItems(array $items, int $start, int $count, int $total);
 
     /**
      * Like serializeItems(), but the output is written to filesystem instead of being returned.
@@ -86,7 +86,7 @@ abstract class Exporter
      * @param int $total The global total of items that could be exported. This value is ignored when using CSV exporter.
      * @return string Full path of the written file.
      */
-    abstract public function serializeItemsToFile($targetDirectory, $items, $start, $count, $total);
+    abstract public function serializeItemsToFile(string $targetDirectory, array $items, int $start, int $count, int $total);
 
     /**
      * Creates an export format-specific item instance.

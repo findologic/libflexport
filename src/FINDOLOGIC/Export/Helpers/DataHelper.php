@@ -95,7 +95,7 @@ class DataHelper
      * @throws InvalidUrlException If the input is no url.
      * @return string Returns the url if valid.
      */
-    public static function validateUrl($url)
+    public static function validateUrl(string $url)
     {
         if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/http[s]?:\/\/.*/', $url)) {
             throw new InvalidUrlException();
@@ -110,7 +110,7 @@ class DataHelper
      * @param string $propertyKey The property key to check.
      * @throw BadPropertyKeyException In case the property key contains dangerous characters.
      */
-    public static function checkForIllegalCsvPropertyKeys($propertyKey)
+    public static function checkForIllegalCsvPropertyKeys(string $propertyKey)
     {
         if (strpos($propertyKey, "\t") !== false || strpos($propertyKey, "\n") !== false) {
             throw new BadPropertyKeyException($propertyKey);

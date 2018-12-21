@@ -9,7 +9,7 @@ class XMLExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function serializeItems($items, $start, $count, $total)
+    public function serializeItems(array $items, int $start, int $count, int $total)
     {
         $page = new Page($start, $count, $total);
         $page->setAllItems($items);
@@ -21,7 +21,7 @@ class XMLExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function serializeItemsToFile($targetDirectory, $items, $start, $count, $total)
+    public function serializeItemsToFile(string $targetDirectory, array $items, int $start, int $count, int $total)
     {
         $xmlString = $this->serializeItems($items, $start, $count, $total);
         $targetPath = sprintf('%s/findologic_%d_%d.xml', $targetDirectory, $start, $count);

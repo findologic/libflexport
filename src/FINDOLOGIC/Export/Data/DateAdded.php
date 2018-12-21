@@ -12,12 +12,12 @@ class DateAdded extends UsergroupAwareSimpleValue
         parent::__construct('dateAddeds', 'dateAdded');
     }
 
-    public function setValue($value, $usergroup = '')
+    public function setValue($value, string $usergroup = '')
     {
         throw new \BadMethodCallException('Assign DateAdded values by passing a \DateTime to setDateValue()');
     }
 
-    public function setDateValue(DateTime $value, $usergroup = '')
+    public function setDateValue(DateTime $value, string $usergroup = '')
     {
         $formatted = $value->format(DateTime::ATOM);
 

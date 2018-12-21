@@ -94,7 +94,7 @@ abstract class Item implements Serializable
      * @param string $name The name of the item.
      * @param string $usergroup The usergroup of the name element.
      */
-    public function addName($name, $usergroup = '')
+    public function addName(string $name, string $usergroup = '')
     {
         $this->name->setValue($name, $usergroup);
     }
@@ -118,7 +118,7 @@ abstract class Item implements Serializable
      * @param string $summary The summary of the item.
      * @param string $usergroup The usergroup of the summary.
      */
-    public function addSummary($summary, $usergroup = '')
+    public function addSummary(string $summary, string $usergroup = '')
     {
         $this->summary->setValue($summary, $usergroup);
     }
@@ -142,7 +142,7 @@ abstract class Item implements Serializable
      * @param string $description The description of the item.
      * @param string $usergroup The usergroup of the description.
      */
-    public function addDescription($description, $usergroup = '')
+    public function addDescription(string $description, string $usergroup = '')
     {
         $this->description->setValue($description, $usergroup);
     }
@@ -185,7 +185,7 @@ abstract class Item implements Serializable
      *
      * @param float $insteadPrice The instead price of the item.
      */
-    public function setInsteadPrice($insteadPrice)
+    public function setInsteadPrice(float $insteadPrice)
     {
         $this->insteadPrice = $insteadPrice;
     }
@@ -200,7 +200,7 @@ abstract class Item implements Serializable
      *
      * @param float $maxPrice The instead price of the item.
      */
-    public function setMaxPrice($maxPrice)
+    public function setMaxPrice(float $maxPrice)
     {
         $this->maxPrice = $maxPrice;
     }
@@ -215,7 +215,7 @@ abstract class Item implements Serializable
      *
      * @param float $taxRate The tax rate of the item.
      */
-    public function setTaxRate($taxRate)
+    public function setTaxRate(float $taxRate)
     {
         $this->taxRate = $taxRate;
     }
@@ -233,7 +233,7 @@ abstract class Item implements Serializable
         $this->url = $url;
     }
 
-    public function addUrl($url, $usergroup = '')
+    public function addUrl(string $url, string $usergroup = '')
     {
         $this->url->setValue($url, $usergroup);
     }
@@ -254,10 +254,10 @@ abstract class Item implements Serializable
     /**
      * Shortcut to easily add the bonus of the item. The value must be a numeric.
      *
-     * @param float|string $bonus The bonus value of the item.
+     * @param float $bonus The bonus value of the item.
      * @param string $usergroup The usergroup of the bonus value.
      */
-    public function addBonus($bonus, $usergroup = '')
+    public function addBonus(float $bonus, string $usergroup = '')
     {
         $this->bonus->setValue($bonus, $usergroup);
     }
@@ -278,10 +278,10 @@ abstract class Item implements Serializable
     /**
      * Shortcut to easily add the sales frequency of the item. The value must be a positive integer.
      *
-     * @param integer $salesFrequency The sales frequency of the item.
+     * @param int $salesFrequency The sales frequency of the item.
      * @param string $usergroup The usergroup of the sales frequency.
      */
-    public function addSalesFrequency($salesFrequency, $usergroup = '')
+    public function addSalesFrequency(int $salesFrequency, string $usergroup = '')
     {
         $this->salesFrequency->setValue($salesFrequency, $usergroup);
     }
@@ -305,7 +305,7 @@ abstract class Item implements Serializable
      * @param DateTime $dateAdded The date on which the item was added to the ecommerce system.
      * @param string $usergroup The usergroup of the date added value.
      */
-    public function addDateAdded(DateTime $dateAdded, $usergroup = '')
+    public function addDateAdded(DateTime $dateAdded, string $usergroup = '')
     {
         $this->dateAdded->setDateValue($dateAdded, $usergroup);
     }
@@ -326,10 +326,10 @@ abstract class Item implements Serializable
     /**
      * Shortcut to easily add the sort value of the item.
      *
-     * @param integer $sort The sort value of the item.
+     * @param int $sort The sort value of the item.
      * @param string $usergroup The usergroup of the sort value.
      */
-    public function addSort($sort, $usergroup = '')
+    public function addSort(int $sort, string $usergroup = '')
     {
         $this->sort->setValue($sort, $usergroup);
     }

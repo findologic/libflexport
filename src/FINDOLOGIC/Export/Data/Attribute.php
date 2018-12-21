@@ -14,8 +14,10 @@ class Attribute implements Serializable
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
+     * @var string $key The name of the attribute.
+     * @var array $values The attribute values to set.
      */
-    public function __construct($key, $values = [])
+    public function __construct(string $key, array $values = [])
     {
         $this->key = DataHelper::checkForEmptyValue($key);
         $this->setValues($values);
@@ -30,7 +32,7 @@ class Attribute implements Serializable
         array_push($this->values, DataHelper::checkForEmptyValue($value));
     }
 
-    public function setValues($values)
+    public function setValues(array $values)
     {
         $this->values = [];
 
