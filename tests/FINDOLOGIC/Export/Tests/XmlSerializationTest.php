@@ -188,7 +188,7 @@ class XmlSerializationTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Data\Exceptions\BaseImageMissingException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\BaseImageMissingException
      */
     public function testMissingBaseImageCausesException()
     {
@@ -439,7 +439,7 @@ class XmlSerializationTest extends TestCase
 
 
     /**
-     * @expectedException InvalidUrlException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\InvalidUrlException
      */
     public function testAddingInvalidUrlToImageElementCausesException()
     {
