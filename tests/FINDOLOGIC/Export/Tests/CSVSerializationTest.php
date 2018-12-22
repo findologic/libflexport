@@ -19,7 +19,7 @@ use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exporter;
-use FINDOLOGIC\Export\Helpers\BadPropertyKeyException;
+use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
 use PHPUnit\Framework\TestCase;
 
 class CSVSerializationTest extends TestCase
@@ -279,7 +279,7 @@ class CSVSerializationTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Helpers\BadPropertyKeyException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\BadPropertyKeyException
      * @dataProvider illegalPropertyProvider
      *
      * @param Property $property The property with an illegal key to test.

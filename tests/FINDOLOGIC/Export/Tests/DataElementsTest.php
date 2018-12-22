@@ -12,14 +12,14 @@ use FINDOLOGIC\Export\Data\Ordernumber;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\SalesFrequency;
-use FINDOLOGIC\Export\Data\ValueIsNotIntegerException;
-use FINDOLOGIC\Export\Data\ValueIsNotPositiveIntegerException;
+use FINDOLOGIC\Export\Data\Exceptions\ValueIsNotIntegerException;
+use FINDOLOGIC\Export\Data\Exceptions\ValueIsNotPositiveIntegerException;
 use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
-use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
-use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
+use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
+use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
 use PHPUnit\Framework\TestCase;
 
 class DataElementsTest extends TestCase
@@ -185,7 +185,7 @@ class DataElementsTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException
+     * @expectedException EmptyValueNotAllowedException
      */
     public function testAddingEmptyUsergroupCausesException()
     {
@@ -200,7 +200,7 @@ class DataElementsTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Helpers\AttributeValueLengthException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\AttributeValueLengthException
      */
     public function testVeryLongAttributeValueCausesException()
     {

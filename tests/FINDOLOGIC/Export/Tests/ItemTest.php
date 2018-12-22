@@ -3,7 +3,7 @@
 namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Data\Attribute;
-use FINDOLOGIC\Export\Data\EmptyElementsNotAllowedException;
+use FINDOLOGIC\Export\Data\Exceptions\EmptyElementsNotAllowedException;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Exporter;

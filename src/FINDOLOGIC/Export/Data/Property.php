@@ -2,24 +2,9 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException;
+use FINDOLOGIC\Export\Exceptions\PropertyKeyNotAllowedException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
-
-class DuplicateValueForUsergroupException extends \RuntimeException
-{
-    public function __construct($key, $usergroup)
-    {
-        parent::__construct(sprintf('Property "%s" already has a value for usergroup "%s".', $key, $usergroup));
-    }
-}
-
-class PropertyKeyNotAllowedException extends \RuntimeException
-{
-    public function __construct($key)
-    {
-        $format = 'Property key "%s" is reserved for internal use and overwritten when importing.';
-        parent::__construct(sprintf($format, $key));
-    }
-}
 
 class Property
 {

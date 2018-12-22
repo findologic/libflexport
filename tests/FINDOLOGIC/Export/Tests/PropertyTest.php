@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 class PropertyTest extends TestCase
 {
     /**
-     * @expectedException \FINDOLOGIC\Export\Data\DuplicateValueForUsergroupException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException
      */
     public function testAddingMultipleValuesPerUsergroupCausesException()
     {
@@ -18,7 +18,7 @@ class PropertyTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Data\DuplicateValueForUsergroupException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException
      */
     public function testAddingMultipleValuesWithoutUsergroupCausesException()
     {

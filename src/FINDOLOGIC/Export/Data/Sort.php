@@ -3,15 +3,8 @@
 namespace FINDOLOGIC\Export\Data;
 
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
-use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
-
-class ValueIsNotIntegerException extends \RuntimeException
-{
-    public function __construct($value)
-    {
-        parent::__construct(sprintf('%s is not an integer!', $value));
-    }
-}
+use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
+use FINDOLOGIC\Export\Exceptions\ValueIsNotIntegerException;
 
 class Sort extends UsergroupAwareSimpleValue
 {

@@ -2,13 +2,7 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
-class ValueIsNotNumericException extends \RuntimeException
-{
-    public function __construct()
-    {
-        parent::__construct('Value is not a valid number!');
-    }
-}
+use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
 
 class UsergroupAwareNumericValue extends UsergroupAwareSimpleValue
 {

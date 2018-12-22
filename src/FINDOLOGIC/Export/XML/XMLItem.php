@@ -3,12 +3,12 @@
 namespace FINDOLOGIC\Export\XML;
 
 use FINDOLOGIC\Export\Data\Attribute;
-use FINDOLOGIC\Export\Data\BaseImageMissingException;
 use FINDOLOGIC\Export\Data\Image;
-use FINDOLOGIC\Export\Data\ImagesWithoutUsergroupMissingException;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Usergroup;
-use FINDOLOGIC\Export\Helpers\UnsupportedValueException;
+use FINDOLOGIC\Export\Exceptions\BaseImageMissingException;
+use FINDOLOGIC\Export\Exceptions\ImagesWithoutUsergroupMissingException;
+use FINDOLOGIC\Export\Exceptions\UnsupportedValueException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 class XMLItem extends Item
@@ -170,7 +170,7 @@ class XMLItem extends Item
 
         return $valid;
     }
-    
+
     public function getInsteadPrice()
     {
         throw new UnsupportedValueException('insteadPrice');
@@ -180,7 +180,7 @@ class XMLItem extends Item
     {
         throw new UnsupportedValueException('insteadPrice');
     }
-    
+
     public function getMaxPrice()
     {
         throw new UnsupportedValueException('maxPrice');
@@ -190,7 +190,7 @@ class XMLItem extends Item
     {
         throw new UnsupportedValueException('maxPrice');
     }
-    
+
     public function getTaxRate()
     {
         throw new UnsupportedValueException('taxRate');
