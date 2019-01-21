@@ -15,9 +15,9 @@
     <ini name="memory_limit" value="128M"/>
 
     <!--
-       Include all sniffs in the PEAR standard. Note that the
+       Include all sniffs in the PSR2 standard. Note that the
        path to the standard does not have to be specified as the
-       PEAR standard exists inside the PHP_CodeSniffer install
+       PSR2 standard exists inside the PHP_CodeSniffer install
        directory.
     -->
     <rule ref="PSR2"/>
