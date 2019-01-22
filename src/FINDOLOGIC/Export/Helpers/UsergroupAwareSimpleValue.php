@@ -12,8 +12,13 @@ use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
  */
 abstract class UsergroupAwareSimpleValue implements Serializable
 {
+    /** @var string */
     private $collectionName;
+
+    /** @var string */
     private $itemName;
+
+    /** @var array */
     protected $values = [];
 
     public function __construct($collectionName, $itemName)
@@ -22,7 +27,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
         $this->itemName = $itemName;
     }
 
-    public function getValues()
+    public function getValues(): array
     {
         return $this->values;
     }
@@ -32,7 +37,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
      * @param string|int|float $value The value of the element.
      * @param string $usergroup The usergroup of the element.
      */
-    public function setValue($value, string $usergroup = '')
+    public function setValue($value, string $usergroup = ''): void
     {
         $this->values[$usergroup] = $this->validate($value);
     }
@@ -46,7 +51,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
      * When not valid an exception is thrown.
      *
      * @param string|int $value Validated value.
-     * @return string string|int
+     * @return string
      * @throws EmptyValueNotAllowedException
      */
     protected function validate($value)
@@ -64,7 +69,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document)
+    public function getDomSubtree(\DOMDocument $document): \DOMElement
     {
         $collectionElem = XMLHelper::createElement($document, $this->collectionName);
 
@@ -83,7 +88,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [])
+    public function getCsvFragment(array $availableProperties = []): string
     {
         $value = '';
 

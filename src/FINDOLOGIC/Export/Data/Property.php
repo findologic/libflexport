@@ -21,7 +21,10 @@ class Property
         "/ordernumber/"
     ];
 
+    /** @var string */
     private $key;
+
+    /** @var array */
     private $values;
 
     /**
@@ -43,7 +46,7 @@ class Property
         $this->setValues($values);
     }
 
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -55,7 +58,7 @@ class Property
      * @param string $value The value to add to the property element.
      * @param string|null $usergroup The usergroup of the property value.
      */
-    public function addValue(string $value, ?string $usergroup = null)
+    public function addValue(string $value, ?string $usergroup = null): void
     {
         if (array_key_exists($usergroup, $this->getAllValues())) {
             throw new DuplicateValueForUsergroupException($this->getKey(), $usergroup);
@@ -64,7 +67,7 @@ class Property
         $this->values[$usergroup] = DataHelper::checkForEmptyValue($value);
     }
 
-    protected function setValues(array $values)
+    protected function setValues(array $values): void
     {
         $this->values = [];
 
@@ -85,7 +88,7 @@ class Property
         }
     }
 
-    public function getAllValues()
+    public function getAllValues(): array
     {
         return $this->values;
     }

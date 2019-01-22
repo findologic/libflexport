@@ -16,7 +16,7 @@ class Usergroup implements Serializable
         $this->value = DataHelper::checkForEmptyValue($value);
     }
 
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -25,7 +25,7 @@ class Usergroup implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document)
+    public function getDomSubtree(\DOMDocument $document): \DOMElement
     {
         $usergroupElem = XMLHelper::createElementWithText($document, 'usergroup', $this->getValue());
 
@@ -35,12 +35,12 @@ class Usergroup implements Serializable
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [])
+    public function getCsvFragment(array $availableProperties = []): string
     {
         return $this->getValue();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getValue();
     }

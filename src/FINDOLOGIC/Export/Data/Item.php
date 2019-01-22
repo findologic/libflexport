@@ -76,7 +76,7 @@ abstract class Item implements Serializable
         $this->ordernumbers = new AllOrdernumbers();
     }
 
-    public function getName()
+    public function getName(): Name
     {
         return $this->name;
     }
@@ -84,7 +84,7 @@ abstract class Item implements Serializable
     /**
      * @param Name $name The name element to add to the item.
      */
-    public function setName(Name $name)
+    public function setName(Name $name): void
     {
         $this->name = $name;
     }
@@ -95,12 +95,12 @@ abstract class Item implements Serializable
      * @param string $name The name of the item.
      * @param string $usergroup The usergroup of the name element.
      */
-    public function addName(string $name, string $usergroup = '')
+    public function addName(string $name, string $usergroup = ''): void
     {
         $this->name->setValue($name, $usergroup);
     }
 
-    public function getSummary()
+    public function getSummary(): Summary
     {
         return $this->summary;
     }
@@ -108,7 +108,7 @@ abstract class Item implements Serializable
     /**
      * @param Summary $summary The summary element to add to the item.
      */
-    public function setSummary(Summary $summary)
+    public function setSummary(Summary $summary): void
     {
         $this->summary = $summary;
     }
@@ -119,12 +119,12 @@ abstract class Item implements Serializable
      * @param string $summary The summary of the item.
      * @param string $usergroup The usergroup of the summary.
      */
-    public function addSummary(string $summary, string $usergroup = '')
+    public function addSummary(string $summary, string $usergroup = ''): void
     {
         $this->summary->setValue($summary, $usergroup);
     }
 
-    public function getDescription()
+    public function getDescription(): Description
     {
         return $this->description;
     }
@@ -132,7 +132,7 @@ abstract class Item implements Serializable
     /**
      * @param Description $description The description element to add to the item.
      */
-    public function setDescription(Description $description)
+    public function setDescription(Description $description): void
     {
         $this->description = $description;
     }
@@ -143,12 +143,12 @@ abstract class Item implements Serializable
      * @param string $description The description of the item.
      * @param string $usergroup The usergroup of the description.
      */
-    public function addDescription(string $description, string $usergroup = '')
+    public function addDescription(string $description, string $usergroup = ''): void
     {
         $this->description->setValue($description, $usergroup);
     }
 
-    public function getPrice()
+    public function getPrice(): Price
     {
         return $this->price;
     }
@@ -156,7 +156,7 @@ abstract class Item implements Serializable
     /**
      * @param Price $price The price element to add to the item.
      */
-    public function setPrice(Price $price)
+    public function setPrice(Price $price): void
     {
         $this->price = $price;
     }
@@ -167,7 +167,7 @@ abstract class Item implements Serializable
      * @param string $price The price of the item.
      * @param string $usergroup The usergroup of the price.
      */
-    public function addPrice($price, $usergroup = '')
+    public function addPrice($price, $usergroup = ''): void
     {
         if ($this->price === null) {
             $this->price = new Price();
@@ -176,7 +176,7 @@ abstract class Item implements Serializable
         $this->price->setValue($price, $usergroup);
     }
 
-    public function getInsteadPrice()
+    public function getInsteadPrice(): float
     {
         return $this->insteadPrice;
     }
@@ -186,12 +186,12 @@ abstract class Item implements Serializable
      *
      * @param float $insteadPrice The instead price of the item.
      */
-    public function setInsteadPrice(float $insteadPrice)
+    public function setInsteadPrice(float $insteadPrice): void
     {
         $this->insteadPrice = $insteadPrice;
     }
 
-    public function getMaxPrice()
+    public function getMaxPrice(): float
     {
         return $this->maxPrice;
     }
@@ -201,12 +201,12 @@ abstract class Item implements Serializable
      *
      * @param float $maxPrice The instead price of the item.
      */
-    public function setMaxPrice(float $maxPrice)
+    public function setMaxPrice(float $maxPrice): void
     {
         $this->maxPrice = $maxPrice;
     }
 
-    public function getTaxRate()
+    public function getTaxRate(): float
     {
         return $this->taxRate;
     }
@@ -216,12 +216,12 @@ abstract class Item implements Serializable
      *
      * @param float $taxRate The tax rate of the item.
      */
-    public function setTaxRate(float $taxRate)
+    public function setTaxRate(float $taxRate): void
     {
         $this->taxRate = $taxRate;
     }
 
-    public function getUrl()
+    public function getUrl(): Url
     {
         return $this->url;
     }
@@ -229,17 +229,17 @@ abstract class Item implements Serializable
     /**
      * @param Url $url The url element to add to the item.
      */
-    public function setUrl(Url $url)
+    public function setUrl(Url $url): void
     {
         $this->url = $url;
     }
 
-    public function addUrl(string $url, string $usergroup = '')
+    public function addUrl(string $url, string $usergroup = ''): void
     {
         $this->url->setValue($url, $usergroup);
     }
 
-    public function getBonus()
+    public function getBonus(): Bonus
     {
         return $this->bonus;
     }
@@ -247,7 +247,7 @@ abstract class Item implements Serializable
     /**
      * @param Bonus $bonus The bonus element to add to the item.
      */
-    public function setBonus(Bonus $bonus)
+    public function setBonus(Bonus $bonus): void
     {
         $this->bonus = $bonus;
     }
@@ -258,12 +258,12 @@ abstract class Item implements Serializable
      * @param float $bonus The bonus value of the item.
      * @param string $usergroup The usergroup of the bonus value.
      */
-    public function addBonus(float $bonus, string $usergroup = '')
+    public function addBonus(float $bonus, string $usergroup = ''): void
     {
         $this->bonus->setValue($bonus, $usergroup);
     }
 
-    public function getSalesFrequency()
+    public function getSalesFrequency(): SalesFrequency
     {
         return $this->salesFrequency;
     }
@@ -271,7 +271,7 @@ abstract class Item implements Serializable
     /**
      * @param SalesFrequency $salesFrequency The sales frequency element to add to the item.
      */
-    public function setSalesFrequency(SalesFrequency $salesFrequency)
+    public function setSalesFrequency(SalesFrequency $salesFrequency): void
     {
         $this->salesFrequency = $salesFrequency;
     }
@@ -282,12 +282,12 @@ abstract class Item implements Serializable
      * @param int $salesFrequency The sales frequency of the item.
      * @param string $usergroup The usergroup of the sales frequency.
      */
-    public function addSalesFrequency(int $salesFrequency, string $usergroup = '')
+    public function addSalesFrequency(int $salesFrequency, string $usergroup = ''): void
     {
         $this->salesFrequency->setValue($salesFrequency, $usergroup);
     }
 
-    public function getDateAdded()
+    public function getDateAdded(): DateAdded
     {
         return $this->dateAdded;
     }
@@ -295,7 +295,7 @@ abstract class Item implements Serializable
     /**
      * @param DateAdded $dateAdded The date added element to add to the item.
      */
-    public function setDateAdded(DateAdded $dateAdded)
+    public function setDateAdded(DateAdded $dateAdded): void
     {
         $this->dateAdded = $dateAdded;
     }
@@ -306,12 +306,12 @@ abstract class Item implements Serializable
      * @param DateTime $dateAdded The date on which the item was added to the ecommerce system.
      * @param string $usergroup The usergroup of the date added value.
      */
-    public function addDateAdded(DateTime $dateAdded, string $usergroup = '')
+    public function addDateAdded(DateTime $dateAdded, string $usergroup = ''): void
     {
         $this->dateAdded->setDateValue($dateAdded, $usergroup);
     }
 
-    public function getSort()
+    public function getSort(): Sort
     {
         return $this->sort;
     }
@@ -319,7 +319,7 @@ abstract class Item implements Serializable
     /**
      * @param Sort $sort The sort element to add to the item.
      */
-    public function setSort(Sort $sort)
+    public function setSort(Sort $sort): void
     {
         $this->sort = $sort;
     }
@@ -330,7 +330,7 @@ abstract class Item implements Serializable
      * @param int $sort The sort value of the item.
      * @param string $usergroup The usergroup of the sort value.
      */
-    public function addSort(int $sort, string $usergroup = '')
+    public function addSort(int $sort, string $usergroup = ''): void
     {
         $this->sort->setValue($sort, $usergroup);
     }
@@ -338,7 +338,7 @@ abstract class Item implements Serializable
     /**
      * @param Property $property The property element to add to the item.
      */
-    public function addProperty(Property $property)
+    public function addProperty(Property $property): void
     {
         if (count($property->getAllValues()) === 0) {
             throw new EmptyElementsNotAllowedException('Property', $property->getKey());
@@ -358,7 +358,7 @@ abstract class Item implements Serializable
     /**
      * @param Attribute $attribute The attribute element to add to the item.
      */
-    public function addAttribute(Attribute $attribute)
+    public function addAttribute(Attribute $attribute): void
     {
         if (count($attribute->getValues()) === 0) {
             throw new EmptyElementsNotAllowedException('Attribute', $attribute->getKey());
@@ -370,7 +370,7 @@ abstract class Item implements Serializable
     /**
      * @param Image $image The image element to add to the item.
      */
-    public function addImage(Image $image)
+    public function addImage(Image $image): void
     {
         if (!array_key_exists($image->getUsergroup(), $this->images)) {
             $this->images[$image->getUsergroup()] = [];
@@ -382,7 +382,7 @@ abstract class Item implements Serializable
     /**
      * @param array $images Array of image elements which should be added to the item.
      */
-    public function setAllImages(array $images)
+    public function setAllImages(array $images): void
     {
         foreach ($images as $image) {
             $this->addImage($image);
@@ -392,7 +392,7 @@ abstract class Item implements Serializable
     /**
      * @param Ordernumber $ordernumber The ordernumber element to add to the item.
      */
-    public function addOrdernumber(Ordernumber $ordernumber)
+    public function addOrdernumber(Ordernumber $ordernumber): void
     {
         $this->ordernumbers->addValue($ordernumber);
     }
@@ -400,7 +400,7 @@ abstract class Item implements Serializable
     /**
      * @param array $ordernumbers Array of ordernumber elements which should be added to the item.
      */
-    public function setAllOrdernumbers(array $ordernumbers)
+    public function setAllOrdernumbers(array $ordernumbers): void
     {
         $this->ordernumbers->setAllValues($ordernumbers);
     }
@@ -408,7 +408,7 @@ abstract class Item implements Serializable
     /**
      * @param Keyword $keyword The keyword element to add to the item.
      */
-    public function addKeyword(Keyword $keyword)
+    public function addKeyword(Keyword $keyword): void
     {
         $this->keywords->addValue($keyword);
     }
@@ -416,7 +416,7 @@ abstract class Item implements Serializable
     /**
      * @param array $keywords Array of keyword elements which should be added to the item.
      */
-    public function setAllKeywords(array $keywords)
+    public function setAllKeywords(array $keywords): void
     {
         $this->keywords->setAllValues($keywords);
     }
@@ -424,7 +424,7 @@ abstract class Item implements Serializable
     /**
      * @param Usergroup $usergroup The usergroup element to add to the item.
      */
-    public function addUsergroup(Usergroup $usergroup)
+    public function addUsergroup(Usergroup $usergroup): void
     {
         array_push($this->usergroups, $usergroup);
     }
@@ -432,7 +432,7 @@ abstract class Item implements Serializable
     /**
      * @param array $usergroups Array of usergroup elements which should be added to the item.
      */
-    public function setAllUsergroups(array $usergroups)
+    public function setAllUsergroups(array $usergroups): void
     {
         $this->usergroups = $usergroups;
     }

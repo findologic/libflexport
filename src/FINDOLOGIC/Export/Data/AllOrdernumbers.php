@@ -14,7 +14,7 @@ class AllOrdernumbers extends UsergroupAwareMultiValue
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [])
+    public function getCsvFragment(array $availableProperties = []): string
     {
         if (array_key_exists('', $this->values)) {
             return implode('|', array_map(function ($ordernumber) {

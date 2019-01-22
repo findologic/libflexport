@@ -8,8 +8,10 @@ use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 class Attribute implements Serializable
 {
+    /** @var string */
     private $key;
 
+    /** @var array */
     private $values;
 
     /**
@@ -26,13 +28,13 @@ class Attribute implements Serializable
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function addValue($value)
+    public function addValue($value): void
     {
         DataHelper::checkAttributeValueNotExceedingCharacterLimit($this->getKey(), $value);
         array_push($this->values, DataHelper::checkForEmptyValue($value));
     }
 
-    public function setValues(array $values)
+    public function setValues(array $values): void
     {
         $this->values = [];
 
@@ -41,12 +43,12 @@ class Attribute implements Serializable
         }
     }
 
-    public function getValues()
+    public function getValues(): array
     {
         return $this->values;
     }
 
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -55,7 +57,7 @@ class Attribute implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document)
+    public function getDomSubtree(\DOMDocument $document): \DOMElement
     {
         $attributeElem = XMLHelper::createElement($document, 'attribute');
 
@@ -76,7 +78,7 @@ class Attribute implements Serializable
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [])
+    public function getCsvFragment(array $availableProperties = []): string
     {
         $attributeParts = [];
 

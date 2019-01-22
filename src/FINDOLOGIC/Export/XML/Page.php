@@ -20,12 +20,12 @@ class Page
         $this->items = [];
     }
 
-    public function addItem(XMLItem $item)
+    public function addItem(XMLItem $item): void
     {
         array_push($this->items, $item);
     }
 
-    public function setAllItems(array $items)
+    public function setAllItems(array $items): void
     {
         $this->items = [];
 
@@ -37,7 +37,7 @@ class Page
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function getXml()
+    public function getXml(): \DOMDocument
     {
         if (count($this->items) > $this->count) {
             throw new ItemsExceedCountValueException();
