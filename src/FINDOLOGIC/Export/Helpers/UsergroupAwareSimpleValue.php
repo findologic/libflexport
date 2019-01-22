@@ -27,7 +27,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
-     * @param $value The value of the element.
+     * @param string|int|float $value The value of the element.
      * @param string $usergroup The usergroup of the element.
      */
     public function setValue($value, $usergroup = '')
