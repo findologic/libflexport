@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Data\Attribute;
+use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
@@ -19,12 +20,12 @@ class ItemTest extends TestCase
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->exporter = Exporter::create(Exporter::TYPE_XML);
     }
 
-    private function getMinimalItem()
+    private function getMinimalItem(): Item
     {
         $item = $this->exporter->createItem('123');
 
@@ -35,7 +36,7 @@ class ItemTest extends TestCase
         return $item;
     }
 
-    public function testAddingEmptyAttributesCauseException()
+    public function testAddingEmptyAttributesCauseException(): void
     {
         try {
             $item = $this->getMinimalItem();
@@ -49,7 +50,7 @@ class ItemTest extends TestCase
         }
     }
 
-    public function testAddingEmptyPropertiesCauseException()
+    public function testAddingEmptyPropertiesCauseException(): void
     {
         try {
             $item = $this->getMinimalItem();
