@@ -5,6 +5,15 @@ namespace FINDOLOGIC\Export\Data;
 use DateTime;
 use FINDOLOGIC\Export\Helpers\Serializable;
 
+class EmptyElementsNotAllowedException extends \RuntimeException
+{
+    public function __construct($elementType, $elementKey)
+    {
+        $message = "Elements with empty values are not allowed. '{$elementType}' with the name '{$elementKey}'";
+        parent::__construct($message);
+    }
+}
+
 abstract class Item implements Serializable
 {
     protected $id;
@@ -339,6 +348,10 @@ abstract class Item implements Serializable
      */
     public function addProperty(Property $property)
     {
+        if (count($property->getAllValues()) === 0) {
+            throw new EmptyElementsNotAllowedException('Property', $property->getKey());
+        }
+
         foreach ($property->getAllValues() as $usergroup => $value) {
             if (!array_key_exists($usergroup, $this->properties)) {
                 $this->properties[$usergroup] = [];
@@ -355,6 +368,10 @@ abstract class Item implements Serializable
      */
     public function addAttribute(Attribute $attribute)
     {
+        if (count($attribute->getValues()) === 0) {
+            throw new EmptyElementsNotAllowedException('Attribute', $attribute->getKey());
+        }
+
         $this->attributes[$attribute->getKey()] = $attribute;
     }
 
