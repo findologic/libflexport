@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
-use DateTime;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Keyword;
@@ -336,13 +335,13 @@ class XmlSerializationTest extends TestCase
     public function testDateValuesAddedToItemViaShortcutAccumulate()
     {
         $values = [
-            '' => new DateTime('today midnight'),
-            'foo' => new DateTime('yesterday midnight'),
-            'bar' => new DateTime('tomorrow midnight')
+            '' => new \DateTime('today midnight'),
+            'foo' => new \DateTime('yesterday midnight'),
+            'bar' => new \DateTime('tomorrow midnight')
         ];
 
         // On assignment, dates are converted to strings according to the format set in the schema.
-        $expectedValues = array_map(function (DateTime $date) {
+        $expectedValues = array_map(function (\DateTime $date) {
             return $date->format(DATE_ATOM);
         }, $values);
 
