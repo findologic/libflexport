@@ -2,6 +2,8 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
+use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
+
 /**
  * Class UsergroupAwareSimpleValue
  * @package FINDOLOGIC\Export\Helpers

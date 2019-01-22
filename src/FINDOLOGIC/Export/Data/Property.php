@@ -2,23 +2,9 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException;
+use FINDOLOGIC\Export\Exceptions\PropertyKeyNotAllowedException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
-
-class DuplicateValueForUsergroupException extends \RuntimeException
-{
-    public function __construct($key, $usergroup)
-    {
-        parent::__construct(sprintf('Property "%s" already has a value for usergroup "%s".', $key, $usergroup));
-    }
-}
-
-class PropertyKeyNotAllowedException extends \RuntimeException
-{
-    public function __construct($key)
-    {
-        parent::__construct(sprintf('Property key "%s" is reserved for internal use and overwritten when importing.', $key));
-    }
-}
 
 class Property
 {
@@ -88,7 +74,8 @@ class Property
          */
         array_walk($values, function ($item, $key) {
             if (!is_string($key)) {
-                $format = 'Property values have to be associative, like $key => $value. The key "%s" has to be a string, integer given.';
+                $format = 'Property values have to be associative, like $key => $value. The key "%s" has to be a ' .
+                    'string, integer given.';
                 trigger_error(sprintf($format, $key), E_USER_WARNING);
             }
         });

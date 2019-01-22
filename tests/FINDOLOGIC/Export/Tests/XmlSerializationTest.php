@@ -12,8 +12,8 @@ use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exporter;
-use FINDOLOGIC\Export\Helpers\InvalidUrlException;
-use FINDOLOGIC\Export\Helpers\UnsupportedValueException;
+use FINDOLOGIC\Export\Exceptions\InvalidUrlException;
+use FINDOLOGIC\Export\Exceptions\UnsupportedValueException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 use FINDOLOGIC\Export\XML\Page;
 use FINDOLOGIC\Export\XML\XMLExporter;
@@ -31,7 +31,8 @@ use PHPUnit\Framework\TestCase;
  */
 class XmlSerializationTest extends TestCase
 {
-    private const SCHEMA_URL = 'https://raw.githubusercontent.com/findologic/xml-export/master/src/main/resources/findologic.xsd';
+    private const SCHEMA_URL = 'https://raw.githubusercontent.com/findologic/xml-export/master/src/main/resources/' .
+        'findologic.xsd';
 
     private static $schema;
 
@@ -98,7 +99,7 @@ class XmlSerializationTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\XML\ItemsExceedCountValueException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\ItemsExceedCountValueException
      */
     public function testMoreItemsSuppliedThanCountValueCausesException()
     {
@@ -187,7 +188,7 @@ class XmlSerializationTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Data\BaseImageMissingException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\BaseImageMissingException
      */
     public function testMissingBaseImageCausesException()
     {
@@ -202,7 +203,7 @@ class XmlSerializationTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Data\ImagesWithoutUsergroupMissingException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\ImagesWithoutUsergroupMissingException
      */
     public function testImagesWithoutUsergroupMissingCausesException()
     {
@@ -365,7 +366,10 @@ class XmlSerializationTest extends TestCase
         return [
             'Url with value' => ['value', InvalidUrlException::class],
             'Url without schema' => ['www.store.com/images/thumbnails/277KTLmen.png', InvalidUrlException::class],
-            'Url without wrong schema' => ['tcp://www.store.com/images/thumbnails/277KTLmen.png', InvalidUrlException::class],
+            'Url without wrong schema' => [
+                'tcp://www.store.com/images/thumbnails/277KTLmen.png',
+                InvalidUrlException::class
+            ],
         ];
     }
 
@@ -406,7 +410,7 @@ class XmlSerializationTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Helpers\UnsupportedValueException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\UnsupportedValueException
      * @dataProvider unsupportedValueProvider
      *
      * @param string $method Name of the method to call to interact with an unsupported value.
@@ -435,7 +439,7 @@ class XmlSerializationTest extends TestCase
 
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Helpers\InvalidUrlException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\InvalidUrlException
      */
     public function testAddingInvalidUrlToImageElementCausesException()
     {

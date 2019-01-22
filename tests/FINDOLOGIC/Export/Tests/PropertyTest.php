@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 class PropertyTest extends TestCase
 {
     /**
-     * @expectedException \FINDOLOGIC\Export\Data\DuplicateValueForUsergroupException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException
      */
     public function testAddingMultipleValuesPerUsergroupCausesException()
     {
@@ -18,7 +18,7 @@ class PropertyTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Data\DuplicateValueForUsergroupException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException
      */
     public function testAddingMultipleValuesWithoutUsergroupCausesException()
     {
@@ -61,7 +61,8 @@ class PropertyTest extends TestCase
         try {
             $property = new Property('foo', ['bar']);
         } catch (\Exception $exception) {
-            $warningMessage = 'Property values have to be associative, like $key => $value. The key "0" has to be a string, integer given.';
+            $warningMessage = 'Property values have to be associative, like $key => $value. The key "0" has to be a ' .
+                'string, integer given.';
             $this->assertEquals($exception->getMessage(), $warningMessage);
         }
     }

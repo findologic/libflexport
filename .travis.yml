@@ -9,9 +9,8 @@ install:
 script:
   # Run style fixer in test mode on all source files. Will exit with a non-zero
   # return code if something needs changing.
-  - ./vendor/bin/php-cs-fixer fix --dry-run src
-  - ./vendor/bin/php-cs-fixer fix --dry-run tests
-  - ./vendor/bin/phpunit --configuration phpunit.xml --coverage-text --coverage-clover=coverage.xml
+  - composer lint
+  - composer test
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)

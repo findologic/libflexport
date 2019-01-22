@@ -4,8 +4,8 @@ namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
-use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
-use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
+use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
+use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use PHPUnit\Framework\TestCase;
 
@@ -105,7 +105,7 @@ class DataHelperTest extends TestCase
     /**
      * Test if character limit of data helper causes exception when called outside attribute class.
      *
-     * @expectedException \FINDOLOGIC\Export\Helpers\AttributeValueLengthException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\AttributeValueLengthException
      */
     public function testCharacterLimitCausesException()
     {

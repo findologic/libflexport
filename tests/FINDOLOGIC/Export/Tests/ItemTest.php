@@ -3,7 +3,7 @@
 namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Data\Attribute;
-use FINDOLOGIC\Export\Data\EmptyElementsNotAllowedException;
+use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Exporter;
@@ -43,7 +43,8 @@ class ItemTest extends TestCase
             $item->addAttribute($attribute);
             $this->fail('Assigning attributes with empty values should cause an exception!');
         } catch (EmptyElementsNotAllowedException $e) {
-            $expectedMessage = "Elements with empty values are not allowed. 'Attribute' with the name 'empty attribute'";
+            $expectedMessage = "Elements with empty values are not allowed. 'Attribute' with the name " .
+                "'empty attribute'";
             $this->assertEquals($expectedMessage, $e->getMessage());
         }
     }

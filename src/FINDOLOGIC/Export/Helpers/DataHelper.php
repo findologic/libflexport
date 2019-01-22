@@ -2,58 +2,10 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
-class EmptyValueNotAllowedException extends \RuntimeException
-{
-    public function __construct($message = 'Empty values are not allowed!')
-    {
-        parent::__construct($message);
-    }
-}
-
-class InvalidUrlException extends \RuntimeException
-{
-    public function __construct()
-    {
-        parent::__construct('Value is not a valid url!');
-    }
-}
-
-class UnsupportedValueException extends \BadMethodCallException
-{
-    public function __construct($unsupportedValueName)
-    {
-        parent::__construct(sprintf(
-            '%s is not a supported value for the XML export format. Use a property instead.',
-            $unsupportedValueName
-        ));
-    }
-}
-
-/**
- * Thrown in case a property key is used for CSV export containing characters that would break the format.
- */
-class BadPropertyKeyException extends \RuntimeException
-{
-    public function __construct($propertyKey)
-    {
-        parent::__construct(sprintf(
-            'Tabs and line feed characters are not allowed in property key "%s", as they would break the format.',
-            $propertyKey
-        ));
-    }
-}
-
-class AttributeValueLengthException extends \RuntimeException
-{
-    public function __construct($attributeName, $characterLimit)
-    {
-        parent::__construct(sprintf(
-            'Value of attribute "%s" exceeds the internal character limit of %d!',
-            $attributeName,
-            $characterLimit
-        ));
-    }
-}
+use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
+use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
+use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
+use FINDOLOGIC\Export\Exceptions\InvalidUrlException;
 
 /**
  * Class DataHelper
