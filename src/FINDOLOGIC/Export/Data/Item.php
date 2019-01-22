@@ -176,7 +176,7 @@ abstract class Item implements Serializable
         $this->price->setValue($price, $usergroup);
     }
 
-    public function getInsteadPrice(): float
+    public function getInsteadPrice()
     {
         return $this->insteadPrice;
     }
@@ -191,7 +191,7 @@ abstract class Item implements Serializable
         $this->insteadPrice = $insteadPrice;
     }
 
-    public function getMaxPrice(): float
+    public function getMaxPrice()
     {
         return $this->maxPrice;
     }
@@ -206,7 +206,7 @@ abstract class Item implements Serializable
         $this->maxPrice = $maxPrice;
     }
 
-    public function getTaxRate(): float
+    public function getTaxRate()
     {
         return $this->taxRate;
     }
