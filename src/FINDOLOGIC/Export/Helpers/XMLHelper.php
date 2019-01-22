@@ -12,7 +12,7 @@ class XMLHelper
      * @param array $attributes String-to-string mapping of attributes to set on the element.
      * @return \DOMElement The newly constructed independent DOM element.
      */
-    public static function createElement(\DOMDocument $document, $name, array $attributes = [])
+    public static function createElement(\DOMDocument $document, $name, array $attributes = []): \DOMElement
     {
         $element = $document->createElement($name);
 
@@ -32,8 +32,12 @@ class XMLHelper
      * @param array $attributes String-to-string mapping of attributes to set on the element.
      * @return \DOMElement The newly constructed independent DOM element.
      */
-    public static function createElementWithText(\DOMDocument $document, $name, $text, array $attributes = [])
-    {
+    public static function createElementWithText(
+        \DOMDocument $document,
+        string $name,
+        string $text,
+        array $attributes = []
+    ): \DOMElement {
         $element = self::createElement($document, $name, $attributes);
         $wrappedText = $document->createCDATASection($text);
         $element->appendChild($wrappedText);

@@ -17,7 +17,7 @@ class DataHelperTest extends TestCase
      * @param string|int $value Value that should be checked.
      * @param bool $shouldCauseException Whether the value should cause an exception or not.
      */
-    public function testEmptyValueDetectsEmptyStringsOnly($value, bool $shouldCauseException)
+    public function testEmptyValueDetectsEmptyStringsOnly($value, bool $shouldCauseException): void
     {
         try {
             $value = DataHelper::checkForEmptyValue($value);
@@ -43,7 +43,7 @@ class DataHelperTest extends TestCase
      *
      * @return array Cases with the value to check and whether it should cause a validation issue.
      */
-    public function emptyValueProvider()
+    public function emptyValueProvider(): array
     {
         return [
             'empty string' => ['', true],
@@ -63,7 +63,7 @@ class DataHelperTest extends TestCase
      * @param string|int|bool $value Value that should be checked.
      * @param bool $shouldCauseException Whether the value should cause an exception or not.
      */
-    public function testNumericValuesAreValidated($value, bool $shouldCauseException)
+    public function testNumericValuesAreValidated($value, bool $shouldCauseException): void
     {
         try {
             $numericValueElement = new UsergroupAwareNumericValue('dummies', 'dummy');
@@ -90,7 +90,7 @@ class DataHelperTest extends TestCase
      *
      * @return array Cases with the value to check and whether it should cause a validation issue.
      */
-    public function numericValueProvider()
+    public function numericValueProvider(): array
     {
         return [
             'string' => ['blubbergurke', true],
@@ -107,7 +107,7 @@ class DataHelperTest extends TestCase
      *
      * @expectedException \FINDOLOGIC\Export\Exceptions\AttributeValueLengthException
      */
-    public function testCharacterLimitCausesException()
+    public function testCharacterLimitCausesException(): void
     {
         $value = implode('', array_fill(0, 16384, '©'));
 

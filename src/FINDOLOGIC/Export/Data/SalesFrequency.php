@@ -13,7 +13,7 @@ class SalesFrequency extends UsergroupAwareSimpleValue
         parent::__construct('salesFrequencies', 'salesFrequency');
     }
 
-    protected function validate($value)
+    protected function validate($value): int
     {
         if ($value === '') {
             throw new EmptyValueNotAllowedException();

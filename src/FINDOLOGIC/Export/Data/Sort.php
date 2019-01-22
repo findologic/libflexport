@@ -13,7 +13,7 @@ class Sort extends UsergroupAwareSimpleValue
         parent::__construct('sorts', 'sort');
     }
 
-    protected function validate($value)
+    protected function validate($value): int
     {
         if ($value === '') {
             throw new EmptyValueNotAllowedException();

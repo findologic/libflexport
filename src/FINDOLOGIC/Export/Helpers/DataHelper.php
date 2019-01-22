@@ -27,7 +27,7 @@ class DataHelper
      * @throws EmptyValueNotAllowedException If the value is empty.
      * @return string Returns the value if not empty.
      */
-    public static function checkForEmptyValue($value)
+    public static function checkForEmptyValue($value): string
     {
         $value = trim($value);
 
@@ -47,7 +47,7 @@ class DataHelper
      * @throws InvalidUrlException If the input is no url.
      * @return string Returns the url if valid.
      */
-    public static function validateUrl(string $url)
+    public static function validateUrl(string $url): string
     {
         if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/http[s]?:\/\/.*/', $url)) {
             throw new InvalidUrlException();
@@ -62,7 +62,7 @@ class DataHelper
      * @param string $propertyKey The property key to check.
      * @throw BadPropertyKeyException In case the property key contains dangerous characters.
      */
-    public static function checkForIllegalCsvPropertyKeys(string $propertyKey)
+    public static function checkForIllegalCsvPropertyKeys(string $propertyKey): void
     {
         if (strpos($propertyKey, "\t") !== false || strpos($propertyKey, "\n") !== false) {
             throw new BadPropertyKeyException($propertyKey);
@@ -73,7 +73,7 @@ class DataHelper
      * @param string $attributeName Attribute name to output in exception.
      * @param string $attributeValue Attribute value to check if it exceeds character limit.
      */
-    public static function checkAttributeValueNotExceedingCharacterLimit($attributeName, $attributeValue)
+    public static function checkAttributeValueNotExceedingCharacterLimit($attributeName, $attributeValue): void
     {
         if (mb_strlen($attributeValue) > self::CHARACTER_LIMIT) {
             throw new AttributeValueLengthException($attributeName, self::CHARACTER_LIMIT);

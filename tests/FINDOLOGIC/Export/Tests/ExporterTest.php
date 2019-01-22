@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class ExporterTest extends TestCase
 {
-    public function testItemsPerPageMustBeGreaterThanZero()
+    public function testItemsPerPageMustBeGreaterThanZero(): void
     {
         try {
             Exporter::create(Exporter::TYPE_XML, 0);
@@ -17,7 +17,7 @@ class ExporterTest extends TestCase
         }
     }
 
-    public function testUnknownExporterTypeMustThrowException()
+    public function testUnknownExporterTypeMustThrowException(): void
     {
         try {
             Exporter::create(123, 20);
@@ -27,7 +27,7 @@ class ExporterTest extends TestCase
         }
     }
 
-    public function testCsvHeadingIsNotWrittenToOutputWhenStartIsNonZero()
+    public function testCsvHeadingIsNotWrittenToOutputWhenStartIsNonZero(): void
     {
         $exporter = Exporter::create(Exporter::TYPE_CSV);
 

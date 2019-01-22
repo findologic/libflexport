@@ -16,7 +16,7 @@ class XMLItem extends Item
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [])
+    public function getCsvFragment(array $availableProperties = []): void
     {
         throw new \BadMethodCallException('XMLItem does not implement CSV export.');
     }
@@ -25,7 +25,7 @@ class XMLItem extends Item
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document)
+    public function getDomSubtree(\DOMDocument $document): \DOMElement
     {
         $itemElem = XMLHelper::createElement($document, 'item', ['id' => $this->id]);
         $document->appendChild($itemElem);
@@ -53,7 +53,7 @@ class XMLItem extends Item
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    private function buildProperties(\DOMDocument $document)
+    private function buildProperties(\DOMDocument $document): \DOMElement
     {
         $allProps = XMLHelper::createElement($document, 'allProperties');
 
@@ -82,7 +82,7 @@ class XMLItem extends Item
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    private function buildAttributes(\DOMDocument $document)
+    private function buildAttributes(\DOMDocument $document): \DOMElement
     {
         $allAttributes = XMLHelper::createElement($document, 'allAttributes');
 
@@ -103,7 +103,7 @@ class XMLItem extends Item
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    private function buildImages(\DOMDocument $document)
+    private function buildImages(\DOMDocument $document): \DOMElement
     {
         $allImagesElem = XMLHelper::createElement($document, 'allImages');
 
@@ -135,7 +135,7 @@ class XMLItem extends Item
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    private function buildUsergroups(\DOMDocument $document)
+    private function buildUsergroups(\DOMDocument $document): \DOMElement
     {
         $usergroups = XMLHelper::createElement($document, 'usergroups');
 
@@ -153,7 +153,7 @@ class XMLItem extends Item
      * @param array $images The images to validate.
      * @return boolean Whether the images are valid or not.
      */
-    private function validateImages(array $images)
+    private function validateImages(array $images): bool
     {
         $valid = false;
 
@@ -171,32 +171,32 @@ class XMLItem extends Item
         return $valid;
     }
 
-    public function getInsteadPrice()
+    public function getInsteadPrice(): void
     {
         throw new UnsupportedValueException('insteadPrice');
     }
 
-    public function setInsteadPrice(float $insteadPrice)
+    public function setInsteadPrice(float $insteadPrice): void
     {
         throw new UnsupportedValueException('insteadPrice');
     }
 
-    public function getMaxPrice()
+    public function getMaxPrice(): void
     {
         throw new UnsupportedValueException('maxPrice');
     }
 
-    public function setMaxPrice(float $insteadPrice)
+    public function setMaxPrice(float $insteadPrice): void
     {
         throw new UnsupportedValueException('maxPrice');
     }
 
-    public function getTaxRate()
+    public function getTaxRate(): void
     {
         throw new UnsupportedValueException('taxRate');
     }
 
-    public function setTaxRate(float $insteadPrice)
+    public function setTaxRate(float $insteadPrice): void
     {
         throw new UnsupportedValueException('taxRate');
     }

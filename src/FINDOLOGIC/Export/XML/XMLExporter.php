@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\XML;
 
+use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Exporter;
 
 class XMLExporter extends Exporter
@@ -9,7 +10,7 @@ class XMLExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function serializeItems(array $items, int $start, int $count, int $total)
+    public function serializeItems(array $items, int $start, int $count, int $total): string
     {
         $page = new Page($start, $count, $total);
         $page->setAllItems($items);
@@ -21,8 +22,13 @@ class XMLExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function serializeItemsToFile(string $targetDirectory, array $items, int $start, int $count, int $total)
-    {
+    public function serializeItemsToFile(
+        string $targetDirectory,
+        array $items,
+        int $start,
+        int $count,
+        int $total
+    ): string {
         $xmlString = $this->serializeItems($items, $start, $count, $total);
         $targetPath = sprintf('%s/findologic_%d_%d.xml', $targetDirectory, $start, $count);
 
@@ -34,7 +40,7 @@ class XMLExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function createItem($id)
+    public function createItem($id): Item
     {
         return new XMLItem($id);
     }

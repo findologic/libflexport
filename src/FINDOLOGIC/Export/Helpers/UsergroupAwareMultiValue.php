@@ -10,9 +10,16 @@ namespace FINDOLOGIC\Export\Helpers;
  */
 abstract class UsergroupAwareMultiValue implements Serializable
 {
+    /** @var string */
     private $rootCollectionName;
+
+    /** @var string */
     private $usergroupCollectionName;
+
+    /** @var string */
     private $csvDelimiter;
+
+    /** @var array */
     protected $values = [];
 
     public function __construct($rootCollectionName, $usergroupCollectionName, $csvDelimiter)
@@ -25,7 +32,7 @@ abstract class UsergroupAwareMultiValue implements Serializable
     /**
      * @param UsergroupAwareMultiValueItem $value The element to add the the collection.
      */
-    public function addValue(UsergroupAwareMultiValueItem $value)
+    public function addValue(UsergroupAwareMultiValueItem $value): void
     {
         if (!array_key_exists($value->getUsergroup(), $this->getValues())) {
             $this->values[$value->getUsergroup()] = [];
@@ -37,7 +44,7 @@ abstract class UsergroupAwareMultiValue implements Serializable
     /**
      * @param array $values Array of elements to be added to the collection.
      */
-    public function setAllValues(array $values)
+    public function setAllValues(array $values): void
     {
         $this->values = [];
 
@@ -47,7 +54,7 @@ abstract class UsergroupAwareMultiValue implements Serializable
         }
     }
 
-    public function getValues()
+    public function getValues(): array
     {
         return $this->values;
     }
@@ -56,7 +63,7 @@ abstract class UsergroupAwareMultiValue implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document)
+    public function getDomSubtree(\DOMDocument $document): \DOMElement
     {
         $rootCollectionElem = XMLHelper::createElement($document, $this->rootCollectionName);
 

@@ -18,8 +18,13 @@ class Image implements Serializable
      */
     public const TYPE_THUMBNAIL = 'thumbnail';
 
+    /** @var string */
     private $url;
+
+    /** @var string */
     private $type;
+
+    /** @var string */
     private $usergroup;
 
     /**
@@ -38,12 +43,12 @@ class Image implements Serializable
     /**
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    private function setUrl(string $url)
+    private function setUrl(string $url): void
     {
         $url = DataHelper::checkForEmptyValue($url);
 
@@ -53,7 +58,7 @@ class Image implements Serializable
     /**
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -61,7 +66,7 @@ class Image implements Serializable
     /**
      * @return string
      */
-    public function getUsergroup()
+    public function getUsergroup(): string
     {
         return $this->usergroup;
     }
@@ -70,7 +75,7 @@ class Image implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document)
+    public function getDomSubtree(\DOMDocument $document): \DOMElement
     {
         $imageElem = XMLHelper::createElementWithText($document, 'image', DataHelper::validateUrl($this->getUrl()));
         if ($this->getType()) {
@@ -83,7 +88,7 @@ class Image implements Serializable
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [])
+    public function getCsvFragment(array $availableProperties = []): string
     {
         return $this->getUrl();
     }

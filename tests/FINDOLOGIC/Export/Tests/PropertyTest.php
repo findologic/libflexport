@@ -10,7 +10,7 @@ class PropertyTest extends TestCase
     /**
      * @expectedException \FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException
      */
-    public function testAddingMultipleValuesPerUsergroupCausesException()
+    public function testAddingMultipleValuesPerUsergroupCausesException(): void
     {
         $property = new Property('prop');
         $property->addValue('foobar', 'usergroup');
@@ -20,14 +20,14 @@ class PropertyTest extends TestCase
     /**
      * @expectedException \FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException
      */
-    public function testAddingMultipleValuesWithoutUsergroupCausesException()
+    public function testAddingMultipleValuesWithoutUsergroupCausesException(): void
     {
         $property = new Property('prop');
         $property->addValue('foobar');
         $property->addValue('foobar');
     }
 
-    public function propertyKeyProvider()
+    public function propertyKeyProvider(): array
     {
         return [
             'reserved property "image\d+"' => ['image0', true],
@@ -39,8 +39,10 @@ class PropertyTest extends TestCase
 
     /**
      * @dataProvider propertyKeyProvider
+     * @param string $key
+     * @param bool $shouldCauseException
      */
-    public function testReservedPropertyKeysCausesException($key, $shouldCauseException)
+    public function testReservedPropertyKeysCausesException(string $key, bool $shouldCauseException): void
     {
         try {
             $property = new Property($key);
@@ -56,7 +58,7 @@ class PropertyTest extends TestCase
         }
     }
 
-    public function testNonAssociativePropertyValueCausesException()
+    public function testNonAssociativePropertyValueCausesException(): void
     {
         try {
             $property = new Property('foo', ['bar']);

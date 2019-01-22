@@ -30,7 +30,7 @@ class DataElementsTest extends TestCase
      *
      * @return array Scenarios with a value, the element class and whether this input should cause an exception.
      */
-    public function multiValueItemProvider()
+    public function multiValueItemProvider(): array
     {
         return [
             'Keyword with empty value' => ['', Keyword::class, true],
@@ -50,7 +50,7 @@ class DataElementsTest extends TestCase
         string $value = '',
         string $elementType = '',
         bool $shouldCauseException = true
-    ) {
+    ): void {
         try {
             $element = new $elementType($value);
             if ($shouldCauseException) {
@@ -72,7 +72,7 @@ class DataElementsTest extends TestCase
      * @return array Scenarios with a value, the element class and the expected exception, or null if none is supposed
      *      to be thrown.
      */
-    public function simpleValueItemProvider()
+    public function simpleValueItemProvider(): array
     {
         return [
             'Bonus with empty value' => ['', Bonus::class, EmptyValueNotAllowedException::class],
@@ -114,7 +114,7 @@ class DataElementsTest extends TestCase
         $value,
         string $elementType,
         ?string $expectedException = null
-    ) {
+    ): void {
         try {
             $element = new $elementType();
             $element->setValue($value);
@@ -133,7 +133,7 @@ class DataElementsTest extends TestCase
     /**
      * @expectedException \BadMethodCallException
      */
-    public function testCallingSetValueMethodOfDateAddedClassCausesException()
+    public function testCallingSetValueMethodOfDateAddedClassCausesException(): void
     {
         $element = new DateAdded();
         $element->setValue("");
@@ -145,7 +145,7 @@ class DataElementsTest extends TestCase
      * @return array Scenarios with key, one or more values, the element class and whether this input should cause
      *      an exception.
      */
-    public function emptyValueProvider()
+    public function emptyValueProvider(): array
     {
         return [
             'Attribute with empty key' => ['', ['value'], Attribute::class, true],
@@ -169,7 +169,7 @@ class DataElementsTest extends TestCase
         array $value,
         string $elementType,
         bool $shouldCauseException
-    ) {
+    ): void {
         try {
             $element = new $elementType($key, $value);
             if ($shouldCauseException) {
@@ -187,12 +187,12 @@ class DataElementsTest extends TestCase
     /**
      * @expectedException \FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException
      */
-    public function testAddingEmptyUsergroupCausesException()
+    public function testAddingEmptyUsergroupCausesException(): void
     {
-        new Usergroup('');
+        $usergroup = new Usergroup('');
     }
 
-    public function testUsergroupStringRepresentationIsTheUsergroupValue()
+    public function testUsergroupStringRepresentationIsTheUsergroupValue(): void
     {
         $usergroup = new Usergroup('test');
 
@@ -202,7 +202,7 @@ class DataElementsTest extends TestCase
     /**
      * @expectedException \FINDOLOGIC\Export\Exceptions\AttributeValueLengthException
      */
-    public function testVeryLongAttributeValueCausesException()
+    public function testVeryLongAttributeValueCausesException(): void
     {
         $attribute = new Attribute('attribute_with_very_long_value');
 

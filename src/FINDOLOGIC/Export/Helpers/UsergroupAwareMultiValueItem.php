@@ -13,8 +13,13 @@ namespace FINDOLOGIC\Export\Helpers;
  */
 abstract class UsergroupAwareMultiValueItem implements Serializable
 {
+    /** @var string */
     private $itemName;
+
+    /** @var string */
     private $value;
+
+    /** @var string */
     private $usergroup;
 
     /**
@@ -27,12 +32,12 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
         $this->usergroup = $usergroup;
     }
 
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    public function getUsergroup()
+    public function getUsergroup(): string
     {
         return $this->usergroup;
     }
@@ -41,7 +46,7 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document)
+    public function getDomSubtree(\DOMDocument $document): \DOMElement
     {
         $valueElem = XMLHelper::createElementWithText($document, $this->itemName, $this->getValue());
 
@@ -51,7 +56,7 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [])
+    public function getCsvFragment(array $availableProperties = []): string
     {
         return $this->getValue();
     }
