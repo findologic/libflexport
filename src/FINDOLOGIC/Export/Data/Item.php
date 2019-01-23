@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\Data;
 
 use DateTime;
 use FINDOLOGIC\Export\Helpers\Serializable;
+use FINDOLOGIC\Export\Helpers\DataHelper;
 
 class EmptyElementsNotAllowedException extends \RuntimeException
 {
@@ -70,7 +71,7 @@ abstract class Item implements Serializable
 
     public function __construct($id)
     {
-        $this->id = $id;
+        $this->setId($id);
 
         $this->name = new Name();
         $this->summary = new Summary();
@@ -82,6 +83,20 @@ abstract class Item implements Serializable
         $this->sort = new Sort();
         $this->keywords = new AllKeywords();
         $this->ordernumbers = new AllOrdernumbers();
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id The id of the item to set
+     */
+    public function setId($id)
+    {
+        DataHelper::checkItemIdNotExceedingCharacterLimit($id);
+        $this->id = $id;
     }
 
     public function getName()

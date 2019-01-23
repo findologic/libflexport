@@ -23,6 +23,7 @@ class CSVItem extends Item
     {
         $that = $this; // Used in closure.
 
+        $id = $this->getId();
         $ordernumbers = $this->sanitize($this->ordernumbers->getCsvFragment());
         $name = $this->sanitize($this->name->getCsvFragment());
         $summary = $this->sanitize($this->summary->getCsvFragment());
@@ -50,7 +51,7 @@ class CSVItem extends Item
 
         $line = sprintf(
             "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s\n",
-            $this->id,
+            $id,
             $ordernumbers,
             $name,
             $summary,

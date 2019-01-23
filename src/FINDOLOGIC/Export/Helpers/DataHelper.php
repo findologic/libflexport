@@ -55,6 +55,18 @@ class AttributeValueLengthException extends \RuntimeException
     }
 }
 
+class ItemIdValueLengthException extends \RuntimeException
+{
+    public function __construct($id, $characterLimit)
+    {
+        parent::__construct(sprintf(
+            'Item with id "%s" exceeds the internal character limit of %d!',
+            $id,
+            $characterLimit
+        ));
+    }
+}
+
 /**
  * Class DataHelper
  * @package FINDOLOGIC\Export\Helpers
@@ -66,7 +78,12 @@ class DataHelper
     /*
      * Internal character limit for attribute values.
      */
-    const CHARACTER_LIMIT = 16383;
+    const ATTRIBUTE_CHARACTER_LIMIT = 16383;
+
+    /*
+     * Internal character limit for item id.
+     */
+    const ITEM_ID_CHARACTER_LIMIT = 255;
 
     /**
      * Checks if the provided value is empty.
@@ -123,8 +140,20 @@ class DataHelper
      */
     public static function checkAttributeValueNotExceedingCharacterLimit($attributeName, $attributeValue)
     {
-        if (mb_strlen($attributeValue) > self::CHARACTER_LIMIT) {
-            throw new AttributeValueLengthException($attributeName, self::CHARACTER_LIMIT);
+        if (mb_strlen($attributeValue) > self::ATTRIBUTE_CHARACTER_LIMIT) {
+            throw new AttributeValueLengthException($attributeName, self::ATTRIBUTE_CHARACTER_LIMIT);
+        }
+    }
+
+
+
+    /**
+     * @param string $id Attribute value to check if it exceeds character limit.
+     */
+    public static function checkItemIdNotExceedingCharacterLimit($id)
+    {
+        if (mb_strlen($id) > self::ITEM_ID_CHARACTER_LIMIT) {
+            throw new ItemIdValueLengthException($id, self::ITEM_ID_CHARACTER_LIMIT);
         }
     }
 }
