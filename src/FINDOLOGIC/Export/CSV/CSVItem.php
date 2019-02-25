@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Export\CSV;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Helpers\DataHelper;
 
 class CSVItem extends Item
 {
@@ -41,7 +42,9 @@ class CSVItem extends Item
         $taxRate = $this->getTaxRate();
         $groups = implode(',', array_map(function ($group) use ($that) {
             /** @var $group Usergroup */
-            return $that->sanitize($group->getCsvFragment());
+            $groupName = $group->getCsvFragment();
+            DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
+            return $that->sanitize($groupName);
         }, $this->usergroups));
 
 
