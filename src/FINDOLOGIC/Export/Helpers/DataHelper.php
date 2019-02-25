@@ -67,6 +67,18 @@ class ItemIdValueLengthException extends \RuntimeException
     }
 }
 
+class GroupNameValueLengthException extends \RuntimeException
+{
+    public function __construct($group, $characterLimit)
+    {
+        parent::__construct(sprintf(
+            'Group with name "%s" exceeds the internal character limit of %d!',
+            $group,
+            $characterLimit
+        ));
+    }
+}
+
 /**
  * Class DataHelper
  * @package FINDOLOGIC\Export\Helpers
@@ -84,6 +96,11 @@ class DataHelper
      * Internal character limit for item id.
      */
     const ITEM_ID_CHARACTER_LIMIT = 255;
+
+    /*
+     * Internal character limit for group names of CSV export.
+     */
+    const CSV_GROUP_CHARACTER_LIMIT = 255;
 
     /**
      * Checks if the provided value is empty.
@@ -145,8 +162,6 @@ class DataHelper
         }
     }
 
-
-
     /**
      * @param string $id Attribute value to check if it exceeds character limit.
      */
@@ -154,6 +169,16 @@ class DataHelper
     {
         if (mb_strlen($id) > self::ITEM_ID_CHARACTER_LIMIT) {
             throw new ItemIdValueLengthException($id, self::ITEM_ID_CHARACTER_LIMIT);
+        }
+    }
+
+    /**
+     * @param string $group Group name to check if it exceeds character limit.
+     */
+    public static function checkCsvGroupNameNotExceedingCharacterLimit($group)
+    {
+        if (mb_strlen($group) > self::CSV_GROUP_CHARACTER_LIMIT) {
+            throw new GroupNameValueLengthException($group, self::CSV_GROUP_CHARACTER_LIMIT);
         }
     }
 }
