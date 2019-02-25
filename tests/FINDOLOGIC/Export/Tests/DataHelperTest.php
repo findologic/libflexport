@@ -116,7 +116,7 @@ class DataHelperTest extends TestCase
     /**
      * Test if item id character limit of data helper causes exception when called outside item class.
      *
-     * @expectedException \FINDOLOGIC\Export\Helpers\ItemIdValueLengthException
+     * @expectedException \FINDOLOGIC\Export\Helpers\ItemIdLengthException
      */
     public function testItemIdCharacterLimitCausesException()
     {
@@ -128,12 +128,24 @@ class DataHelperTest extends TestCase
     /**
      * Test if group name character limit of data helper causes exception when called outside item class.
      *
-     * @expectedException \FINDOLOGIC\Export\Helpers\GroupNameValueLengthException
+     * @expectedException \FINDOLOGIC\Export\Helpers\GroupNameLengthException
      */
     public function testGroupNameCharacterLimitCausesException()
     {
         $group = implode('', array_fill(0, 256, 'a'));
 
         DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($group);
+    }
+
+    /**
+     * Test if attribute key character limit of data helper causes exception when called outside item class.
+     *
+     * @expectedException \FINDOLOGIC\Export\Helpers\AttributeKeyLengthException
+     */
+    public function testAttributeKeyCharacterLimitCausesException()
+    {
+        $attributeKey = implode('', array_fill(0, 248, 'a'));
+
+        DataHelper::checkCsvAttributeKeyNotExceedingCharacterLimit($attributeKey);
     }
 }
