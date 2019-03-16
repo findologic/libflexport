@@ -2,9 +2,9 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotIntegerException;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
 class Sort extends UsergroupAwareSimpleValue
 {

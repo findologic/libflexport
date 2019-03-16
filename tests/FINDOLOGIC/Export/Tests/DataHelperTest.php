@@ -3,10 +3,10 @@
 namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
-use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
-use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
+use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
 use PHPUnit\Framework\TestCase;
 
 class DataHelperTest extends TestCase

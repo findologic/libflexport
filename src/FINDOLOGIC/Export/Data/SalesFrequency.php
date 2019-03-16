@@ -2,9 +2,9 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotPositiveIntegerException;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
 class SalesFrequency extends UsergroupAwareSimpleValue
 {

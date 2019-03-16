@@ -2,9 +2,9 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
-use FINDOLOGIC\Export\Helpers\DataHelper;
 
 class Usergroup implements Serializable
 {
