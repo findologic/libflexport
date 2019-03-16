@@ -111,11 +111,11 @@ class DataHelperTest extends TestCase
      */
     public function testAttributeValueCharacterLimitCausesException()
     {
+        $this->expectException(AttributeValueLengthException::class);
+
         $value = Utility::generateMultiByteCharacterString(16384);
 
         DataHelper::checkAttributeValueNotExceedingCharacterLimit('some attribute', $value);
-
-        $this->expectException(AttributeValueLengthException::class);
     }
 
     /**
@@ -123,11 +123,11 @@ class DataHelperTest extends TestCase
      */
     public function testItemIdCharacterLimitCausesException()
     {
+        $this->expectException(ItemIdLengthException::class);
+
         $id = Utility::generateMultiByteCharacterString(256);
 
         DataHelper::checkItemIdNotExceedingCharacterLimit($id);
-
-        $this->expectException(ItemIdLengthException::class);
     }
 
     /**
@@ -135,11 +135,11 @@ class DataHelperTest extends TestCase
      */
     public function testGroupNameCharacterLimitCausesException()
     {
+        $this->expectException(GroupNameLengthException::class);
+
         $group = Utility::generateMultiByteCharacterString(256);
 
         DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($group);
-
-        $this->expectException(GroupNameLengthException::class);
     }
 
     /**
@@ -147,10 +147,10 @@ class DataHelperTest extends TestCase
      */
     public function testAttributeKeyCharacterLimitCausesException()
     {
+        $this->expectException(AttributeKeyLengthException::class);
+
         $attributeKey = Utility::generateMultiByteCharacterString(248);
 
         DataHelper::checkCsvAttributeKeyNotExceedingCharacterLimit($attributeKey);
-
-        $this->expectException(AttributeKeyLengthException::class);
     }
 }

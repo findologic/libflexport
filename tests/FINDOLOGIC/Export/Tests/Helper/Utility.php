@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\Tests\Helper;
 
-
 /**
  * Class Utility
  * @package FINDOLOGIC\Export\Tests\Helper
