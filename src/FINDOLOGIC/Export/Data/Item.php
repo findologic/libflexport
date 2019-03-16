@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-use \DateTime;
+use DateTime;
 use FINDOLOGIC\Export\Helpers\Serializable;
 
 class EmptyElementsNotAllowedException extends \RuntimeException
