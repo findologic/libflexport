@@ -19,7 +19,7 @@ class AllKeywords extends UsergroupAwareMultiValue
     public function getCsvFragment(array $availableProperties = []): string
     {
         if (array_key_exists('', $this->values)) {
-            return implode(',', array_map(function ($keyword) {
+            return implode(',', array_map(function (Keyword $keyword): string {
                 return $keyword->getCsvFragment();
             }, $this->values['']));
         } else {

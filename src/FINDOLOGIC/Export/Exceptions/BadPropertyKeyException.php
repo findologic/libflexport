@@ -7,7 +7,7 @@ namespace FINDOLOGIC\Export\Exceptions;
  */
 class BadPropertyKeyException extends \RuntimeException
 {
-    public function __construct($propertyKey)
+    public function __construct(string $propertyKey)
     {
         parent::__construct(sprintf(
             'Tabs and line feed characters are not allowed in property key "%s", as they would break the format.',

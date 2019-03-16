@@ -38,7 +38,7 @@ class CSVItem extends Item
         $instead = $this->getInsteadPrice();
         $maxPrice = $this->getMaxPrice();
         $taxRate = $this->getTaxRate();
-        $groups = implode(',', array_map(function ($group) use ($that) {
+        $groups = implode(',', array_map(function (Usergroup $group) use ($that): string {
             /** @var $group Usergroup */
             return $that->sanitize($group->getCsvFragment());
         }, $this->usergroups));

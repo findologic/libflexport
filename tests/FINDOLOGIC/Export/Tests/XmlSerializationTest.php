@@ -344,7 +344,7 @@ class XmlSerializationTest extends TestCase
         ];
 
         // On assignment, dates are converted to strings according to the format set in the schema.
-        $expectedValues = array_map(function (DateTime $date) {
+        $expectedValues = array_map(function (DateTime $date): string {
             return $date->format(DATE_ATOM);
         }, $values);
 
