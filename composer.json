@@ -13,7 +13,7 @@
     "scripts": {
         "lint": "phpcs",
         "fix": "phpcbf",
-        "test": "phpunit -c phpunit.xml --coverage-text --coverage-clover=coverage.xml"
+        "test": "phpunit -c phpunit.xml.dist"
     },
     "license": "MIT",
     "authors": [
