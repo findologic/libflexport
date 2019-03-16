@@ -2,8 +2,8 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
 class ValueIsNotPositiveIntegerException extends \RuntimeException
 {
