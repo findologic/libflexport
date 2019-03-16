@@ -44,8 +44,8 @@ class ItemTest extends TestCase
             $item->addAttribute($attribute);
             $this->fail('Assigning attributes with empty values should cause an exception!');
         } catch (EmptyElementsNotAllowedException $e) {
-            $expectedMessage = "Elements with empty values are not allowed. 'Attribute' with the name " .
-                "'empty attribute'";
+            $expectedMessage = 'Elements with empty values are not allowed. "Attribute" with the name ' .
+                '"empty attribute"';
             $this->assertEquals($expectedMessage, $e->getMessage());
         }
     }
@@ -58,7 +58,7 @@ class ItemTest extends TestCase
             $item->addProperty($property);
             $this->fail('Assigning properties with empty values should cause an exception!');
         } catch (EmptyElementsNotAllowedException $e) {
-            $expectedMessage = "Elements with empty values are not allowed. 'Property' with the name 'empty property'";
+            $expectedMessage = 'Elements with empty values are not allowed. "Property" with the name "empty property"';
             $this->assertEquals($expectedMessage, $e->getMessage());
         }
     }

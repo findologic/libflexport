@@ -6,7 +6,12 @@ class EmptyElementsNotAllowedException extends \RuntimeException
 {
     public function __construct(string $elementType, string $elementKey)
     {
-        $message = "Elements with empty values are not allowed. '{$elementType}' with the name '{$elementKey}'";
-        parent::__construct($message);
+        parent::__construct(
+            sprintf(
+                'Elements with empty values are not allowed. "%s" with the name "%s"',
+                $elementType,
+                $elementKey
+            )
+        );
     }
 }
