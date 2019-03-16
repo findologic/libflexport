@@ -91,14 +91,14 @@ class CSVItem extends Item
 
     private function buildAttributes()
     {
-        $attributes = '';
+        $attributes = [];
 
         /** @var Attribute $attribute */
         foreach ($this->attributes as $attribute) {
-            $attributes .= sprintf('%s&', $attribute->getCsvFragment());
+            $attributes[] = $attribute->getCsvFragment();
         }
 
-        $attributes = rtrim($attributes, '&');
+        $attributes = implode('&', $attributes);
 
         return $attributes;
     }

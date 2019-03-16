@@ -2,11 +2,10 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
-use FINDOLOGIC\Export\Data\Attribute;
+use FINDOLOGIC\Export\Helpers\DataHelper;
+use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
 use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
-use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
-use FINDOLOGIC\Export\Helpers\DataHelper;
 use PHPUnit\Framework\TestCase;
 
 class DataHelperTest extends TestCase

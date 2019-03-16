@@ -3,7 +3,6 @@
 namespace FINDOLOGIC\Export\CSV;
 
 use FINDOLOGIC\Export\Exporter;
-use FINDOLOGIC\Export\Helpers\BadPropertyKeyException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 
 class CSVExporter extends Exporter

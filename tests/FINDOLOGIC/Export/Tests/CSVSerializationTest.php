@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
+use DateTime;
 use FINDOLOGIC\Export\CSV\CSVExporter;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
@@ -19,7 +20,6 @@ use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exporter;
-use FINDOLOGIC\Export\Helpers\BadPropertyKeyException;
 use PHPUnit\Framework\TestCase;
 
 class CSVSerializationTest extends TestCase
@@ -84,7 +84,7 @@ class CSVSerializationTest extends TestCase
         $item->setSalesFrequency($salesFrequency);
 
         $dateAdded = new DateAdded();
-        $dateAdded->setDateValue(new \DateTime());
+        $dateAdded->setDateValue(new DateTime());
         $item->setDateAdded($dateAdded);
 
         $sort = new Sort();
@@ -148,7 +148,7 @@ class CSVSerializationTest extends TestCase
         $expectedGroups = [1, 2, 3];
         $expectedBonus = 3;
         $expectedSalesFrequency = 123;
-        $expectedDateAdded = new \DateTime();
+        $expectedDateAdded = new DateTime();
         $expectedSort = 0;
         $expectedPropertyKeys = ['availability', 'sale'];
         $expectedProperties = [
