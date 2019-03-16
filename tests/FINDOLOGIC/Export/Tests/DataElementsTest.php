@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
+use BadMethodCallException;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
 use FINDOLOGIC\Export\Data\DateAdded;
@@ -16,6 +17,7 @@ use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotIntegerException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
@@ -130,11 +132,10 @@ class DataElementsTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     */
     public function testCallingSetValueMethodOfDateAddedClassCausesException(): void
     {
+        $this->expectException(BadMethodCallException::class);
+
         $element = new DateAdded();
         $element->setValue("");
     }
@@ -184,11 +185,10 @@ class DataElementsTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException
-     */
     public function testAddingEmptyUsergroupCausesException(): void
     {
+        $this->expectException(EmptyValueNotAllowedException::class);
+
         $usergroup = new Usergroup('');
     }
 
@@ -199,11 +199,10 @@ class DataElementsTest extends TestCase
         $this->assertEquals($usergroup->getValue(), (string) $usergroup);
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\Exceptions\AttributeValueLengthException
-     */
     public function testVeryLongAttributeValueCausesException(): void
     {
+        $this->expectException(AttributeValueLengthException::class);
+
         $attribute = new Attribute('attribute_with_very_long_value');
 
         $value = implode('', array_fill(0, 16384, '©'));

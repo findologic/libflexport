@@ -3,25 +3,24 @@
 namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Data\Property;
+use FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException;
 use PHPUnit\Framework\TestCase;
 
 class PropertyTest extends TestCase
 {
-    /**
-     * @expectedException \FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException
-     */
     public function testAddingMultipleValuesPerUsergroupCausesException(): void
     {
+        $this->expectException(DuplicateValueForUsergroupException::class);
+
         $property = new Property('prop');
         $property->addValue('foobar', 'usergroup');
         $property->addValue('foobar', 'usergroup');
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException
-     */
     public function testAddingMultipleValuesWithoutUsergroupCausesException(): void
     {
+        $this->expectException(DuplicateValueForUsergroupException::class);
+
         $property = new Property('prop');
         $property->addValue('foobar');
         $property->addValue('foobar');

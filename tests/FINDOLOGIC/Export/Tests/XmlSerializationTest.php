@@ -12,6 +12,9 @@ use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Exceptions\BaseImageMissingException;
+use FINDOLOGIC\Export\Exceptions\ImagesWithoutUsergroupMissingException;
+use FINDOLOGIC\Export\Exceptions\ItemsExceedCountValueException;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\Exceptions\InvalidUrlException;
 use FINDOLOGIC\Export\Exceptions\UnsupportedValueException;
@@ -99,11 +102,10 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($page);
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\Exceptions\ItemsExceedCountValueException
-     */
     public function testMoreItemsSuppliedThanCountValueCausesException(): void
     {
+        $this->expectException(ItemsExceedCountValueException::class);
+
         $items = [];
 
         for ($i = 0; $i <= 2; $i++) {
@@ -188,11 +190,10 @@ class XmlSerializationTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\Exceptions\BaseImageMissingException
-     */
     public function testMissingBaseImageCausesException(): void
     {
+        $this->expectException(BaseImageMissingException::class);
+
         $item = $this->getMinimalItem();
 
         $item->setAllImages([
@@ -203,11 +204,10 @@ class XmlSerializationTest extends TestCase
         $this->exporter->serializeItems([$item], 0, 1, 1);
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\Exceptions\ImagesWithoutUsergroupMissingException
-     */
     public function testImagesWithoutUsergroupMissingCausesException(): void
     {
+        $this->expectException(ImagesWithoutUsergroupMissingException::class);
+
         $item = $this->getMinimalItem();
 
         $item->setAllImages([
@@ -411,7 +411,6 @@ class XmlSerializationTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Exceptions\UnsupportedValueException
      * @dataProvider unsupportedValueProvider
      *
      * @param string $method Name of the method to call to interact with an unsupported value.
@@ -419,6 +418,8 @@ class XmlSerializationTest extends TestCase
      */
     public function testUsingValuesUnsupportedByXmlCauseExceptions(string $method, ?float $parameter): void
     {
+        $this->expectException(UnsupportedValueException::class);
+
         $item = $this->getMinimalItem();
 
         if ($parameter === null) {
@@ -438,12 +439,10 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($this->exporter->serializeItems([$item], 0, 1, 1));
     }
 
-
-    /**
-     * @expectedException \FINDOLOGIC\Export\Exceptions\InvalidUrlException
-     */
     public function testAddingInvalidUrlToImageElementCausesException(): void
     {
+        $this->expectException(InvalidUrlException::class);
+
         $image = new Image('www.store.com/images/277KTL.png');
         $image->getDomSubtree(new \DOMDocument());
     }

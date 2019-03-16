@@ -2,6 +2,8 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
+use BadMethodCallException;
+use InvalidArgumentException;
 use FINDOLOGIC\Export\CSV\CSVExporter;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
@@ -19,6 +21,7 @@ use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
 use FINDOLOGIC\Export\Exporter;
 use PHPUnit\Framework\TestCase;
 
@@ -279,13 +282,13 @@ class CSVSerializationTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Exceptions\BadPropertyKeyException
      * @dataProvider illegalPropertyProvider
      *
      * @param Property $property The property with an illegal key to test.
      */
     public function testFormatBreakingCharactersAreNotAllowedInPropertyKeys(Property $property): void
     {
+        $this->expectException(BadPropertyKeyException::class);
         $exporter = Exporter::create(
             Exporter::TYPE_CSV,
             20,
@@ -298,11 +301,9 @@ class CSVSerializationTest extends TestCase
         $exporter->serializeItems([$item], 0, 1, 1);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSettingMoreThanOneImagePerItemCausesException(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $item = $this->getMinimalItem();
         $item->addImage(new Image('https://example.org/some_image.png', Image::TYPE_DEFAULT));
         $item->addImage(new Image('https://example.org/some_image.png', Image::TYPE_THUMBNAIL));
@@ -310,11 +311,10 @@ class CSVSerializationTest extends TestCase
         $this->exporter->serializeItems([$item], 0, 1, 1);
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     */
     public function testAttemptingToGetXmlVersionForACSVItemCausesAnException(): void
     {
+        $this->expectException(BadMethodCallException::class);
+
         $this->getMinimalItem()->getDomSubtree(new \DOMDocument());
     }
 
