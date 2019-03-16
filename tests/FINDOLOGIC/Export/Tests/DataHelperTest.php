@@ -2,10 +2,15 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
+use FINDOLOGIC\Export\Helpers\AttributeKeyLengthException;
+use FINDOLOGIC\Export\Helpers\AttributeValueLengthException;
+use FINDOLOGIC\Export\Helpers\GroupNameLengthException;
+use FINDOLOGIC\Export\Helpers\ItemIdLengthException;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
 use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
+use FINDOLOGIC\Export\Tests\Helper\Utility;
 use PHPUnit\Framework\TestCase;
 
 class DataHelperTest extends TestCase
@@ -108,9 +113,11 @@ class DataHelperTest extends TestCase
      */
     public function testAttributeValueCharacterLimitCausesException()
     {
-        $value = implode('', array_fill(0, 16384, '©'));
+        $value = Utility::generateMultiByteCharacterString(16384);
 
         DataHelper::checkAttributeValueNotExceedingCharacterLimit('some attribute', $value);
+
+        $this->expectException(AttributeValueLengthException::class);
     }
 
     /**
@@ -120,9 +127,11 @@ class DataHelperTest extends TestCase
      */
     public function testItemIdCharacterLimitCausesException()
     {
-        $id = implode('', array_fill(0, 256, 'a'));
+        $id = Utility::generateMultiByteCharacterString(256);
 
         DataHelper::checkItemIdNotExceedingCharacterLimit($id);
+
+        $this->expectException(ItemIdLengthException::class);
     }
 
     /**
@@ -132,9 +141,11 @@ class DataHelperTest extends TestCase
      */
     public function testGroupNameCharacterLimitCausesException()
     {
-        $group = implode('', array_fill(0, 256, 'a'));
+        $group = Utility::generateMultiByteCharacterString(256);
 
         DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($group);
+
+        $this->expectException(GroupNameLengthException::class);
     }
 
     /**
@@ -144,8 +155,10 @@ class DataHelperTest extends TestCase
      */
     public function testAttributeKeyCharacterLimitCausesException()
     {
-        $attributeKey = implode('', array_fill(0, 248, 'a'));
+        $attributeKey = Utility::generateMultiByteCharacterString(248);
 
         DataHelper::checkCsvAttributeKeyNotExceedingCharacterLimit($attributeKey);
+
+        $this->expectException(AttributeKeyLengthException::class);
     }
 }
