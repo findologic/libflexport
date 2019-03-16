@@ -10,7 +10,6 @@ use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
 use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
-use FINDOLOGIC\Export\Tests\Helper\Utility;
 use PHPUnit\Framework\TestCase;
 
 class DataHelperTest extends TestCase
@@ -113,7 +112,7 @@ class DataHelperTest extends TestCase
     {
         $this->expectException(AttributeValueLengthException::class);
 
-        $value = Utility::generateMultiByteCharacterString(16384);
+        $value = $this->generateMultiByteCharacterString(16384);
 
         DataHelper::checkAttributeValueNotExceedingCharacterLimit('some attribute', $value);
     }
@@ -125,7 +124,7 @@ class DataHelperTest extends TestCase
     {
         $this->expectException(ItemIdLengthException::class);
 
-        $id = Utility::generateMultiByteCharacterString(256);
+        $id = $this->generateMultiByteCharacterString(256);
 
         DataHelper::checkItemIdNotExceedingCharacterLimit($id);
     }
@@ -137,7 +136,7 @@ class DataHelperTest extends TestCase
     {
         $this->expectException(GroupNameLengthException::class);
 
-        $group = Utility::generateMultiByteCharacterString(256);
+        $group = $this->generateMultiByteCharacterString(256);
 
         DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($group);
     }
@@ -149,8 +148,19 @@ class DataHelperTest extends TestCase
     {
         $this->expectException(AttributeKeyLengthException::class);
 
-        $attributeKey = Utility::generateMultiByteCharacterString(248);
+        $attributeKey = $this->generateMultiByteCharacterString(248);
 
         DataHelper::checkCsvAttributeKeyNotExceedingCharacterLimit($attributeKey);
+    }
+
+    /**
+     * Generate a multi byte character string.
+     *
+     * @param int $stringLength The string length to generate.
+     * @return string The multi byte character string.
+     */
+    public function generateMultiByteCharacterString($stringLength)
+    {
+        return implode('', array_fill(0, $stringLength, '©'));
     }
 }
