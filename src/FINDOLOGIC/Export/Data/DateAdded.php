@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use \DateTime;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
 class DateAdded extends UsergroupAwareSimpleValue
@@ -16,16 +17,16 @@ class DateAdded extends UsergroupAwareSimpleValue
         throw new \BadMethodCallException('Assign DateAdded values by passing a \DateTime to setDateValue()');
     }
 
-    public function setDateValue(\DateTime $value, $usergroup = '')
+    public function setDateValue(DateTime $value, $usergroup = '')
     {
-        $formatted = $value->format(\DateTime::ATOM);
+        $formatted = $value->format(DateTime::ATOM);
 
         parent::setValue($formatted, $usergroup);
     }
 
     public function getCsvFragment(array $availableProperties = [])
     {
-        $date = \DateTime::createFromFormat(DATE_ATOM, $this->getValues()['']);
+        $date = DateTime::createFromFormat(DATE_ATOM, $this->getValues()['']);
 
         return $date->format('U');
     }
