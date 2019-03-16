@@ -2,10 +2,10 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
-use FINDOLOGIC\Export\Helpers\AttributeKeyLengthException;
-use FINDOLOGIC\Export\Helpers\AttributeValueLengthException;
-use FINDOLOGIC\Export\Helpers\GroupNameLengthException;
-use FINDOLOGIC\Export\Helpers\ItemIdLengthException;
+use FINDOLOGIC\Export\Exceptions\AttributeKeyLengthException;
+use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
+use FINDOLOGIC\Export\Exceptions\ItemIdLengthException;
+use FINDOLOGIC\Export\Exceptions\GroupNameLengthException;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
 use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
@@ -108,8 +108,6 @@ class DataHelperTest extends TestCase
 
     /**
      * Test if character limit of data helper causes exception when called outside attribute class.
-     *
-     * @expectedException \FINDOLOGIC\Export\Helpers\AttributeValueLengthException
      */
     public function testAttributeValueCharacterLimitCausesException()
     {
@@ -122,8 +120,6 @@ class DataHelperTest extends TestCase
 
     /**
      * Test if item id character limit of data helper causes exception when called outside item class.
-     *
-     * @expectedException \FINDOLOGIC\Export\Helpers\ItemIdLengthException
      */
     public function testItemIdCharacterLimitCausesException()
     {
@@ -136,8 +132,6 @@ class DataHelperTest extends TestCase
 
     /**
      * Test if group name character limit of data helper causes exception when called outside item class.
-     *
-     * @expectedException \FINDOLOGIC\Export\Helpers\GroupNameLengthException
      */
     public function testGroupNameCharacterLimitCausesException()
     {
@@ -150,8 +144,6 @@ class DataHelperTest extends TestCase
 
     /**
      * Test if attribute key character limit of data helper causes exception when called outside item class.
-     *
-     * @expectedException \FINDOLOGIC\Export\Helpers\AttributeKeyLengthException
      */
     public function testAttributeKeyCharacterLimitCausesException()
     {

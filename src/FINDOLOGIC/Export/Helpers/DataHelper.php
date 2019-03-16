@@ -2,6 +2,11 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
+use FINDOLOGIC\Export\Exceptions\AttributeKeyLengthException;
+use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
+use FINDOLOGIC\Export\Exceptions\ItemIdLengthException;
+use FINDOLOGIC\Export\Exceptions\GroupNameLengthException;
+
 class EmptyValueNotAllowedException extends \RuntimeException
 {
     public function __construct($message = 'Empty values are not allowed!')
@@ -43,53 +48,6 @@ class BadPropertyKeyException extends \RuntimeException
     }
 }
 
-class AttributeValueLengthException extends \RuntimeException
-{
-    public function __construct($attributeName, $characterLimit)
-    {
-        parent::__construct(sprintf(
-            'Value of attribute "%s" exceeds the internal character limit of %d!',
-            $attributeName,
-            $characterLimit
-        ));
-    }
-}
-
-class ItemIdLengthException extends \RuntimeException
-{
-    public function __construct($id, $characterLimit)
-    {
-        parent::__construct(sprintf(
-            'Item with id "%s" exceeds the internal character limit of %d!',
-            $id,
-            $characterLimit
-        ));
-    }
-}
-
-class GroupNameLengthException extends \RuntimeException
-{
-    public function __construct($group, $characterLimit)
-    {
-        parent::__construct(sprintf(
-            'Group with name "%s" exceeds the internal character limit of %d!',
-            $group,
-            $characterLimit
-        ));
-    }
-}
-
-class AttributeKeyLengthException extends \RuntimeException
-{
-    public function __construct($attributeKey, $characterLimit)
-    {
-        parent::__construct(sprintf(
-            'Attribute with name "%s" exceeds the internal character limit of %d!',
-            $attributeKey,
-            $characterLimit
-        ));
-    }
-}
 
 /**
  * Class DataHelper
