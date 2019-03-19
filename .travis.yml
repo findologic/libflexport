@@ -5,20 +5,11 @@ php:
   - 7.2
   - 7.3
 
-stages:
-  - test
-  - lint
-
 install:
   - composer install
+script:
+  - composer test
+  - composer lint
 
-jobs:
-  include:
-    - stage: test
-      script:
-        - composer test
-      after_success:
-        - bash <(curl -s https://codecov.io/bash)
-    - stage: lint
-      script:
-        - composer lint
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
