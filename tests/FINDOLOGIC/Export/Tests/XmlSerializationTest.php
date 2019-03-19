@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Export\Tests;
 
 use DateTime;
+use FINDOLOGIC\Export\Constant;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
@@ -35,17 +36,12 @@ use PHPUnit\Framework\TestCase;
  */
 class XmlSerializationTest extends TestCase
 {
-    private const SCHEMA_URL = 'https://raw.githubusercontent.com/findologic/xml-export/master/src/main/resources/' .
-        'findologic.xsd';
-
     private static $schema;
 
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-
-        // Download the schema once for the whole test case for speed as compared to downloading it for each test.
-        self::$schema = file_get_contents(self::SCHEMA_URL);
+        self::$schema = file_get_contents(Constant::$XSD_SCHEMA_PATH);
     }
 
     public function tearDown(): void
