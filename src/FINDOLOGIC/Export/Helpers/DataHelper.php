@@ -2,6 +2,11 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
+use FINDOLOGIC\Export\Exceptions\AttributeKeyLengthException;
+use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
+use FINDOLOGIC\Export\Exceptions\ItemIdLengthException;
+use FINDOLOGIC\Export\Exceptions\GroupNameLengthException;
+
 class EmptyValueNotAllowedException extends \RuntimeException
 {
     public function __construct($message = 'Empty values are not allowed!')
@@ -43,17 +48,6 @@ class BadPropertyKeyException extends \RuntimeException
     }
 }
 
-class AttributeValueLengthException extends \RuntimeException
-{
-    public function __construct($attributeName, $characterLimit)
-    {
-        parent::__construct(sprintf(
-            'Value of attribute "%s" exceeds the internal character limit of %d!',
-            $attributeName,
-            $characterLimit
-        ));
-    }
-}
 
 /**
  * Class DataHelper
@@ -66,7 +60,22 @@ class DataHelper
     /*
      * Internal character limit for attribute values.
      */
-    const CHARACTER_LIMIT = 16383;
+    const ATTRIBUTE_CHARACTER_LIMIT = 16383;
+
+    /*
+     * Internal character limit for item id.
+     */
+    const ITEM_ID_CHARACTER_LIMIT = 255;
+
+    /*
+     * Internal character limit for group names of CSV export.
+     */
+    const CSV_GROUP_CHARACTER_LIMIT = 255;
+
+    /*
+     * Internal character limit for attribute key names of CSV export.
+     */
+    const CSV_ATTRIBUTE_KEY_CHARACTER_LIMIT = 247;
 
     /**
      * Checks if the provided value is empty.
@@ -123,8 +132,38 @@ class DataHelper
      */
     public static function checkAttributeValueNotExceedingCharacterLimit($attributeName, $attributeValue)
     {
-        if (mb_strlen($attributeValue) > self::CHARACTER_LIMIT) {
-            throw new AttributeValueLengthException($attributeName, self::CHARACTER_LIMIT);
+        if (mb_strlen($attributeValue) > self::ATTRIBUTE_CHARACTER_LIMIT) {
+            throw new AttributeValueLengthException($attributeName, self::ATTRIBUTE_CHARACTER_LIMIT);
+        }
+    }
+
+    /**
+     * @param string $id Attribute value to check if it exceeds character limit.
+     */
+    public static function checkItemIdNotExceedingCharacterLimit($id)
+    {
+        if (mb_strlen($id) > self::ITEM_ID_CHARACTER_LIMIT) {
+            throw new ItemIdLengthException($id, self::ITEM_ID_CHARACTER_LIMIT);
+        }
+    }
+
+    /**
+     * @param string $group Group name to check if it exceeds character limit.
+     */
+    public static function checkCsvGroupNameNotExceedingCharacterLimit($group)
+    {
+        if (mb_strlen($group) > self::CSV_GROUP_CHARACTER_LIMIT) {
+            throw new GroupNameLengthException($group, self::CSV_GROUP_CHARACTER_LIMIT);
+        }
+    }
+
+    /**
+     * @param string $group Group name to check if it exceeds character limit.
+     */
+    public static function checkCsvAttributeKeyNotExceedingCharacterLimit($group)
+    {
+        if (mb_strlen($group) > self::CSV_ATTRIBUTE_KEY_CHARACTER_LIMIT) {
+            throw new AttributeKeyLengthException($group, self::CSV_ATTRIBUTE_KEY_CHARACTER_LIMIT);
         }
     }
 }

@@ -200,7 +200,7 @@ class DataElementsTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Helpers\AttributeValueLengthException
+     * @expectedException \FINDOLOGIC\Export\Exceptions\AttributeValueLengthException
      */
     public function testVeryLongAttributeValueCausesException()
     {

@@ -2,6 +2,10 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
+use FINDOLOGIC\Export\Exceptions\AttributeKeyLengthException;
+use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
+use FINDOLOGIC\Export\Exceptions\GroupNameLengthException;
+use FINDOLOGIC\Export\Exceptions\ItemIdLengthException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
@@ -103,13 +107,60 @@ class DataHelperTest extends TestCase
 
     /**
      * Test if character limit of data helper causes exception when called outside attribute class.
-     *
-     * @expectedException \FINDOLOGIC\Export\Helpers\AttributeValueLengthException
      */
-    public function testCharacterLimitCausesException()
+    public function testAttributeValueCharacterLimitCausesException()
     {
-        $value = implode('', array_fill(0, 16384, '©'));
+        $this->expectException(AttributeValueLengthException::class);
+
+        $value = $this->generateMultiByteCharacterString(16384);
 
         DataHelper::checkAttributeValueNotExceedingCharacterLimit('some attribute', $value);
+    }
+
+    /**
+     * Test if item id character limit of data helper causes exception when called outside item class.
+     */
+    public function testItemIdCharacterLimitCausesException()
+    {
+        $this->expectException(ItemIdLengthException::class);
+
+        $id = $this->generateMultiByteCharacterString(256);
+
+        DataHelper::checkItemIdNotExceedingCharacterLimit($id);
+    }
+
+    /**
+     * Test if group name character limit of data helper causes exception when called outside item class.
+     */
+    public function testGroupNameCharacterLimitCausesException()
+    {
+        $this->expectException(GroupNameLengthException::class);
+
+        $group = $this->generateMultiByteCharacterString(256);
+
+        DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($group);
+    }
+
+    /**
+     * Test if attribute key character limit of data helper causes exception when called outside item class.
+     */
+    public function testAttributeKeyCharacterLimitCausesException()
+    {
+        $this->expectException(AttributeKeyLengthException::class);
+
+        $attributeKey = $this->generateMultiByteCharacterString(248);
+
+        DataHelper::checkCsvAttributeKeyNotExceedingCharacterLimit($attributeKey);
+    }
+
+    /**
+     * Generate a multi byte character string.
+     *
+     * @param int $stringLength The string length to generate.
+     * @return string The multi byte character string.
+     */
+    public function generateMultiByteCharacterString($stringLength)
+    {
+        return implode('', array_fill(0, $stringLength, '©'));
     }
 }
