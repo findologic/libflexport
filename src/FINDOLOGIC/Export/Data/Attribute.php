@@ -83,6 +83,7 @@ class Attribute implements Serializable
         $attributeParts = [];
 
         foreach ($this->getValues() as $value) {
+            DataHelper::checkCsvAttributeKeyNotExceedingCharacterLimit($this->getKey());
             $attributeParts[] = sprintf('%s=%s', urlencode($this->getKey()), urlencode($value));
         }
 

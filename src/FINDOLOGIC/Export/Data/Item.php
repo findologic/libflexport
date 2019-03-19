@@ -5,9 +5,11 @@ namespace FINDOLOGIC\Export\Data;
 use DateTime;
 use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
 use FINDOLOGIC\Export\Helpers\Serializable;
+use FINDOLOGIC\Export\Helpers\DataHelper;
 
 abstract class Item implements Serializable
 {
+    /** @var string */
     protected $id;
 
     /** @var Name */
@@ -62,7 +64,7 @@ abstract class Item implements Serializable
 
     public function __construct($id)
     {
-        $this->id = $id;
+        $this->setId($id);
 
         $this->name = new Name();
         $this->summary = new Summary();
@@ -74,6 +76,23 @@ abstract class Item implements Serializable
         $this->sort = new Sort();
         $this->keywords = new AllKeywords();
         $this->ordernumbers = new AllOrdernumbers();
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id The id of the item to set
+     */
+    public function setId(string $id): void
+    {
+        DataHelper::checkItemIdNotExceedingCharacterLimit($id);
+        $this->id = $id;
     }
 
     public function getName(): Name
