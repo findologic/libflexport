@@ -4,6 +4,8 @@ namespace FINDOLOGIC\Export\Tests;
 
 use BadMethodCallException;
 use DateTime;
+use DOMDocument;
+use Exception;
 use FINDOLOGIC\Export\CSV\CSVExporter;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
@@ -46,7 +48,7 @@ class CSVSerializationTest extends TestCase
     {
         try {
             unlink('/tmp/findologic.csv');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // No need to delete a written file if the test didn't write it.
         }
     }
@@ -316,7 +318,7 @@ class CSVSerializationTest extends TestCase
     {
         $this->expectException(BadMethodCallException::class);
 
-        $this->getMinimalItem()->getDomSubtree(new \DOMDocument());
+        $this->getMinimalItem()->getDomSubtree(new DOMDocument());
     }
 
     public function testAddingRelativeUrlIsNotCausingAnException(): void

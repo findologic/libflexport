@@ -2,6 +2,8 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use DOMDocument;
+use DOMElement;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
@@ -57,7 +59,7 @@ class Attribute implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document): \DOMElement
+    public function getDomSubtree(DOMDocument $document): DOMElement
     {
         $attributeElem = XMLHelper::createElement($document, 'attribute');
 

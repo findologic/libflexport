@@ -2,6 +2,8 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
+use DOMDocument;
+use DOMElement;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 
 /**
@@ -69,7 +71,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document): \DOMElement
+    public function getDomSubtree(DOMDocument $document): DOMElement
     {
         $collectionElem = XMLHelper::createElement($document, $this->collectionName);
 

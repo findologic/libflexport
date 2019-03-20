@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Export\Tests;
 
 use BadMethodCallException;
+use Exception;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
 use FINDOLOGIC\Export\Data\DateAdded;
@@ -62,7 +63,7 @@ class DataElementsTest extends TestCase
                 // the lack of assertions in this successful test.
                 $this->assertNotNull($element);
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->assertEquals(EmptyValueNotAllowedException::class, get_class($exception));
         }
     }
@@ -110,7 +111,7 @@ class DataElementsTest extends TestCase
      * @dataProvider simpleValueItemProvider
      * @param string|float|int $value
      * @param string $elementType
-     * @param \Exception|null $expectedException
+     * @param Exception|null $expectedException
      */
     public function testAddingEmptyValuesToSimpleItemsCausesException(
         $value,
@@ -127,7 +128,7 @@ class DataElementsTest extends TestCase
                 // the lack of assertions in this successful test.
                 $this->assertNotNull($element);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertEquals($expectedException, get_class($e));
         }
     }
@@ -180,7 +181,7 @@ class DataElementsTest extends TestCase
                 // the lack of assertions in this successful test.
                 $this->assertNotNull($element);
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->assertEquals(EmptyValueNotAllowedException::class, get_class($exception));
         }
     }

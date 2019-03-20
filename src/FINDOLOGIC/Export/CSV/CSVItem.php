@@ -2,19 +2,22 @@
 
 namespace FINDOLOGIC\Export\CSV;
 
+use BadMethodCallException;
+use DOMDocument;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Helpers\DataHelper;
+use InvalidArgumentException;
 
 class CSVItem extends Item
 {
     /**
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document): void
+    public function getDomSubtree(DOMDocument $document): void
     {
-        throw new \BadMethodCallException('CSVItem does not implement XML export.');
+        throw new BadMethodCallException('CSVItem does not implement XML export.');
     }
 
     /**
@@ -115,7 +118,7 @@ class CSVItem extends Item
             if (count($this->images['']) === 1) {
                 $imageUrl = $this->images[''][0]->getCsvFragment();
             } else {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'Zero or multiple images without usergroup associated with item. ' .
                     'Cannot generate CSV if there is not one definitive image set.'
                 );

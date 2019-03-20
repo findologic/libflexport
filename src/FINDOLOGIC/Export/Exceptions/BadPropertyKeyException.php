@@ -2,10 +2,12 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
+use RuntimeException;
+
 /**
  * Thrown in case a property key is used for CSV export containing characters that would break the format.
  */
-class BadPropertyKeyException extends \RuntimeException
+class BadPropertyKeyException extends RuntimeException
 {
     public function __construct(string $propertyKey)
     {

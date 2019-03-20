@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\XML;
 
+use DOMDocument;
 use FINDOLOGIC\Export\Exceptions\ItemsExceedCountValueException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
@@ -37,13 +38,13 @@ class Page
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function getXml(): \DOMDocument
+    public function getXml(): DOMDocument
     {
         if (count($this->items) > $this->count) {
             throw new ItemsExceedCountValueException();
         }
 
-        $document = new \DOMDocument('1.0', 'utf-8');
+        $document = new DOMDocument('1.0', 'utf-8');
         $root = XMLHelper::createElement($document, 'findologic', ['version' => '1.0']);
         $document->appendCHild($root);
 

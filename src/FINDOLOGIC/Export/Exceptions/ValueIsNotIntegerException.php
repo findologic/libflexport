@@ -2,7 +2,9 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-class ValueIsNotIntegerException extends \RuntimeException
+use RuntimeException;
+
+class ValueIsNotIntegerException extends RuntimeException
 {
     public function __construct(string $value)
     {

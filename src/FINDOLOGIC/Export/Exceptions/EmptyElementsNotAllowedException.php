@@ -2,7 +2,9 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-class EmptyElementsNotAllowedException extends \RuntimeException
+use RuntimeException;
+
+class EmptyElementsNotAllowedException extends RuntimeException
 {
     public function __construct(string $elementType, string $elementKey)
     {

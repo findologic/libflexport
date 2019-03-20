@@ -2,6 +2,9 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
+use DOMDocument;
+use DOMElement;
+
 /**
  * Class UsergroupAwareMultiValueItem
  * @package FINDOLOGIC\Export\Helpers
@@ -46,7 +49,7 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document): \DOMElement
+    public function getDomSubtree(DOMDocument $document): DOMElement
     {
         $valueElem = XMLHelper::createElementWithText($document, $this->itemName, $this->getValue());
 

@@ -2,7 +2,9 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-class InvalidUrlException extends \RuntimeException
+use RuntimeException;
+
+class InvalidUrlException extends RuntimeException
 {
     public function __construct()
     {

@@ -2,7 +2,9 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-class ImagesWithoutUsergroupMissingException extends \RuntimeException
+use RuntimeException;
+
+class ImagesWithoutUsergroupMissingException extends RuntimeException
 {
     public function __construct()
     {

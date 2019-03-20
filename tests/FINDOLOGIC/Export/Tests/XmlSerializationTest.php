@@ -2,7 +2,10 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
+use BadMethodCallException;
 use DateTime;
+use DOMDocument;
+use Exception;
 use FINDOLOGIC\Export\Constant;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
@@ -48,7 +51,7 @@ class XmlSerializationTest extends TestCase
     {
         try {
             unlink('/tmp/findologic_0_1.xml');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // No need to delete a written file if the test didn't write it.
         }
     }
@@ -77,7 +80,7 @@ class XmlSerializationTest extends TestCase
 
     private function assertPageIsValid($xmlString): void
     {
-        $xmlDocument = new \DOMDocument('1.0', 'utf-8');
+        $xmlDocument = new DOMDocument('1.0', 'utf-8');
         $xmlDocument->loadXML($xmlString);
 
         $this->assertTrue($xmlDocument->schemaValidateSource(self::$schema));
@@ -166,7 +169,7 @@ class XmlSerializationTest extends TestCase
             new Image($imageUrl),
         ]);
 
-        $document = new \DOMDocument('1.0', 'utf-8');
+        $document = new DOMDocument('1.0', 'utf-8');
         $root = XMLHelper::createElement($document, 'findologic', ['version' => '1.0']);
         $document->appendChild($root);
 
@@ -271,7 +274,7 @@ class XmlSerializationTest extends TestCase
 
         try {
             $item->getCsvFragment();
-        } catch (\BadMethodCallException $e) {
+        } catch (BadMethodCallException $e) {
             $this->assertEquals('XMLItem does not implement CSV export.', $e->getMessage());
         }
     }
@@ -382,7 +385,7 @@ class XmlSerializationTest extends TestCase
             $url =  new Url();
             $url->setValue($value);
             $this->assertNotNull($url);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertEquals($expectedException, get_class($e));
         }
     }
@@ -440,7 +443,7 @@ class XmlSerializationTest extends TestCase
         $this->expectException(InvalidUrlException::class);
 
         $image = new Image('www.store.com/images/277KTL.png');
-        $image->getDomSubtree(new \DOMDocument());
+        $image->getDomSubtree(new DOMDocument());
     }
 
     public function testAddingUrlsToXmlDomWorksAsExpected(): void

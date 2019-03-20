@@ -2,6 +2,9 @@
 
 namespace FINDOLOGIC\Export\XML;
 
+use BadMethodCallException;
+use DOMDocument;
+use DOMElement;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
@@ -18,14 +21,14 @@ class XMLItem extends Item
      */
     public function getCsvFragment(array $availableProperties = []): void
     {
-        throw new \BadMethodCallException('XMLItem does not implement CSV export.');
+        throw new BadMethodCallException('XMLItem does not implement CSV export.');
     }
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document): \DOMElement
+    public function getDomSubtree(DOMDocument $document): DOMElement
     {
         $itemElem = XMLHelper::createElement($document, 'item', ['id' => $this->id]);
         $document->appendChild($itemElem);
@@ -53,7 +56,7 @@ class XMLItem extends Item
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    private function buildProperties(\DOMDocument $document): \DOMElement
+    private function buildProperties(DOMDocument $document): DOMElement
     {
         $allProps = XMLHelper::createElement($document, 'allProperties');
 
@@ -82,7 +85,7 @@ class XMLItem extends Item
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    private function buildAttributes(\DOMDocument $document): \DOMElement
+    private function buildAttributes(DOMDocument $document): DOMElement
     {
         $allAttributes = XMLHelper::createElement($document, 'allAttributes');
 
@@ -103,7 +106,7 @@ class XMLItem extends Item
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    private function buildImages(\DOMDocument $document): \DOMElement
+    private function buildImages(DOMDocument $document): DOMElement
     {
         $allImagesElem = XMLHelper::createElement($document, 'allImages');
 
@@ -135,7 +138,7 @@ class XMLItem extends Item
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    private function buildUsergroups(\DOMDocument $document): \DOMElement
+    private function buildUsergroups(DOMDocument $document): DOMElement
     {
         $usergroups = XMLHelper::createElement($document, 'usergroups');
 

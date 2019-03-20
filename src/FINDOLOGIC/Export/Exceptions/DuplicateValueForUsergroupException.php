@@ -2,7 +2,9 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-class DuplicateValueForUsergroupException extends \RuntimeException
+use RuntimeException;
+
+class DuplicateValueForUsergroupException extends RuntimeException
 {
     public function __construct(string $key, ?string $usergroup)
     {

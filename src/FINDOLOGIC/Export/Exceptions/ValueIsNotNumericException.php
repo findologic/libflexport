@@ -2,7 +2,9 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-class ValueIsNotNumericException extends \RuntimeException
+use RuntimeException;
+
+class ValueIsNotNumericException extends RuntimeException
 {
     public function __construct()
     {

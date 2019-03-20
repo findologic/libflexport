@@ -2,6 +2,8 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use DOMDocument;
+use DOMElement;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
@@ -12,7 +14,7 @@ class Url extends UsergroupAwareSimpleValue
         parent::__construct('urls', 'url');
     }
 
-    public function getDomSubtree(\DOMDocument $document): \DOMElement
+    public function getDomSubtree(DOMDocument $document): DOMElement
     {
         foreach ($this->getValues() as $value) {
             DataHelper::validateUrl($value);

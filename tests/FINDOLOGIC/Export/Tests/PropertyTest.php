@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
+use Exception;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException;
 use PHPUnit\Framework\TestCase;
@@ -52,7 +53,7 @@ class PropertyTest extends TestCase
                 // the lack of assertions in this successful test.
                 $this->assertNotNull($property);
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->assertRegExp('/' . $key . '/', $exception->getMessage());
         }
     }
@@ -60,8 +61,8 @@ class PropertyTest extends TestCase
     public function testNonAssociativePropertyValueCausesException(): void
     {
         try {
-            $property = new Property('foo', ['bar']);
-        } catch (\Exception $exception) {
+            new Property('foo', ['bar']);
+        } catch (Exception $exception) {
             $warningMessage = 'Property values have to be associative, like $key => $value. The key "0" has to be a ' .
                 'string, integer given.';
             $this->assertEquals($exception->getMessage(), $warningMessage);

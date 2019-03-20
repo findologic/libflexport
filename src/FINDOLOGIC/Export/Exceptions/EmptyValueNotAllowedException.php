@@ -2,7 +2,9 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-class EmptyValueNotAllowedException extends \RuntimeException
+use RuntimeException;
+
+class EmptyValueNotAllowedException extends RuntimeException
 {
     public function __construct(string $message = 'Empty values are not allowed!')
     {

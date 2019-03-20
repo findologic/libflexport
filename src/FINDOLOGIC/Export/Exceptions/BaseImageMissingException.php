@@ -2,7 +2,9 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-class BaseImageMissingException extends \RuntimeException
+use RuntimeException;
+
+class BaseImageMissingException extends RuntimeException
 {
     public function __construct()
     {
