@@ -6,43 +6,34 @@ use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
-class BaseImageMissingException extends \RuntimeException
-{
-    public function __construct()
-    {
-        $message = 'Base image without usergroup does\'t exist, exporting a “No Image Available" image is recommended!';
-        parent::__construct($message);
-    }
-}
-
-class ImagesWithoutUsergroupMissingException extends \RuntimeException
-{
-    public function __construct()
-    {
-        parent::__construct('There exist no images without usergroup!');
-    }
-}
-
 class Image implements Serializable
 {
     /**
      * Main, full-size image type.
      */
-    const TYPE_DEFAULT = '';
+    public const TYPE_DEFAULT = '';
 
     /**
      * Scaled-down thumbnail image type.
      */
-    const TYPE_THUMBNAIL = 'thumbnail';
+    public const TYPE_THUMBNAIL = 'thumbnail';
 
+    /** @var string */
     private $url;
+
+    /** @var string */
     private $type;
+
+    /** @var string */
     private $usergroup;
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
+     * @param string $url The image url of the element.
+     * @param self::TYPE_DEFAULT|self::TYPE_THUMBNAIL $type The image type to use.
+     * @param string $usergroup The usergroup of the image element.
      */
-    public function __construct($url, $type = self::TYPE_DEFAULT, $usergroup = '')
+    public function __construct(string $url, string $type = self::TYPE_DEFAULT, string $usergroup = '')
     {
         $this->setUrl($url);
         $this->type = $type;
@@ -52,12 +43,12 @@ class Image implements Serializable
     /**
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    private function setUrl($url)
+    private function setUrl(string $url): void
     {
         $url = DataHelper::checkForEmptyValue($url);
 
@@ -67,7 +58,7 @@ class Image implements Serializable
     /**
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -75,7 +66,7 @@ class Image implements Serializable
     /**
      * @return string
      */
-    public function getUsergroup()
+    public function getUsergroup(): string
     {
         return $this->usergroup;
     }
@@ -84,7 +75,7 @@ class Image implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document)
+    public function getDomSubtree(\DOMDocument $document): \DOMElement
     {
         $imageElem = XMLHelper::createElementWithText($document, 'image', DataHelper::validateUrl($this->getUrl()));
         if ($this->getType()) {
@@ -97,7 +88,7 @@ class Image implements Serializable
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [])
+    public function getCsvFragment(array $availableProperties = []): string
     {
         return $this->getUrl();
     }

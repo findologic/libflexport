@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
+use BadMethodCallException;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
 use FINDOLOGIC\Export\Data\DateAdded;
@@ -16,10 +17,11 @@ use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
-use FINDOLOGIC\Export\Data\ValueIsNotIntegerException;
-use FINDOLOGIC\Export\Data\ValueIsNotPositiveIntegerException;
-use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
-use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
+use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
+use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
+use FINDOLOGIC\Export\Exceptions\ValueIsNotIntegerException;
+use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
+use FINDOLOGIC\Export\Exceptions\ValueIsNotPositiveIntegerException;
 use PHPUnit\Framework\TestCase;
 
 class DataElementsTest extends TestCase
@@ -30,7 +32,7 @@ class DataElementsTest extends TestCase
      *
      * @return array Scenarios with a value, the element class and whether this input should cause an exception.
      */
-    public function multiValueItemProvider()
+    public function multiValueItemProvider(): array
     {
         return [
             'Keyword with empty value' => ['', Keyword::class, true],
@@ -47,10 +49,10 @@ class DataElementsTest extends TestCase
      * @param bool $shouldCauseException
      */
     public function testAddingEmptyValuesToMultiValueItemCausesException(
-        $value = '',
-        $elementType = '',
-        $shouldCauseException = true
-    ) {
+        string $value = '',
+        string $elementType = '',
+        bool $shouldCauseException = true
+    ): void {
         try {
             $element = new $elementType($value);
             if ($shouldCauseException) {
@@ -72,7 +74,7 @@ class DataElementsTest extends TestCase
      * @return array Scenarios with a value, the element class and the expected exception, or null if none is supposed
      *      to be thrown.
      */
-    public function simpleValueItemProvider()
+    public function simpleValueItemProvider(): array
     {
         return [
             'Bonus with empty value' => ['', Bonus::class, EmptyValueNotAllowedException::class],
@@ -106,15 +108,15 @@ class DataElementsTest extends TestCase
 
     /**
      * @dataProvider simpleValueItemProvider
-     * @param string $value
+     * @param string|float|int $value
      * @param string $elementType
      * @param \Exception|null $expectedException
      */
     public function testAddingEmptyValuesToSimpleItemsCausesException(
-        $value = '',
-        $elementType = '',
-        $expectedException = null
-    ) {
+        $value,
+        string $elementType,
+        ?string $expectedException = null
+    ): void {
         try {
             $element = new $elementType();
             $element->setValue($value);
@@ -130,11 +132,10 @@ class DataElementsTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     */
-    public function testCallingSetValueMethodOfDateAddedClassCausesException()
+    public function testCallingSetValueMethodOfDateAddedClassCausesException(): void
     {
+        $this->expectException(BadMethodCallException::class);
+
         $element = new DateAdded();
         $element->setValue("");
     }
@@ -145,13 +146,13 @@ class DataElementsTest extends TestCase
      * @return array Scenarios with key, one or more values, the element class and whether this input should cause
      *      an exception.
      */
-    public function emptyValueProvider()
+    public function emptyValueProvider(): array
     {
         return [
             'Attribute with empty key' => ['', ['value'], Attribute::class, true],
             'Attribute with empty value' => ['key', [''], Attribute::class, true],
             'Attribute with valid key and value' => ['key', ['value'], Attribute::class, false],
-            'Property with empty key' => ['',['value'], Property::class, true],
+            'Property with empty key' => ['', ['value'], Property::class, true],
             'Property with empty value' => ['key', ['foo' => ''], Property::class, true],
             'Property with valid key and value' => ['key', ['foo' => 'bar'], Property::class, false]
         ];
@@ -160,16 +161,16 @@ class DataElementsTest extends TestCase
     /**
      * @dataProvider emptyValueProvider
      * @param string $key
-     * @param string $value
+     * @param array $value
      * @param string $elementType
      * @param bool $shouldCauseException
      */
     public function testAddingEmptyValueCausesException(
-        $key = '',
-        $value = '',
-        $elementType = '',
-        $shouldCauseException = true
-    ) {
+        string $key,
+        array $value,
+        string $elementType,
+        bool $shouldCauseException
+    ): void {
         try {
             $element = new $elementType($key, $value);
             if ($shouldCauseException) {
@@ -184,26 +185,24 @@ class DataElementsTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException
-     */
-    public function testAddingEmptyUsergroupCausesException()
+    public function testAddingEmptyUsergroupCausesException(): void
     {
-        new Usergroup('');
+        $this->expectException(EmptyValueNotAllowedException::class);
+
+        $usergroup = new Usergroup('');
     }
 
-    public function testUsergroupStringRepresentationIsTheUsergroupValue()
+    public function testUsergroupStringRepresentationIsTheUsergroupValue(): void
     {
         $usergroup = new Usergroup('test');
 
         $this->assertEquals($usergroup->getValue(), (string) $usergroup);
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\Exceptions\AttributeValueLengthException
-     */
-    public function testVeryLongAttributeValueCausesException()
+    public function testVeryLongAttributeValueCausesException(): void
     {
+        $this->expectException(AttributeValueLengthException::class);
+
         $attribute = new Attribute('attribute_with_very_long_value');
 
         $value = implode('', array_fill(0, 16384, '©'));

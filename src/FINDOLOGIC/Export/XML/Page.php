@@ -2,16 +2,8 @@
 
 namespace FINDOLOGIC\Export\XML;
 
+use FINDOLOGIC\Export\Exceptions\ItemsExceedCountValueException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
-
-class ItemsExceedCountValueException extends \RuntimeException
-{
-    public function __construct()
-    {
-        $message = 'The number of items must not exceed the count value';
-        parent::__construct($message);
-    }
-}
 
 class Page
 {
@@ -20,7 +12,7 @@ class Page
     private $count;
     private $total;
 
-    public function __construct($start, $count, $total)
+    public function __construct(int $start, int $count, int $total)
     {
         $this->start = $start;
         $this->count = $count;
@@ -28,12 +20,12 @@ class Page
         $this->items = [];
     }
 
-    public function addItem(XMLItem $item)
+    public function addItem(XMLItem $item): void
     {
         array_push($this->items, $item);
     }
 
-    public function setAllItems(array $items)
+    public function setAllItems(array $items): void
     {
         $this->items = [];
 
@@ -45,7 +37,7 @@ class Page
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function getXml()
+    public function getXml(): \DOMDocument
     {
         if (count($this->items) > $this->count) {
             throw new ItemsExceedCountValueException();

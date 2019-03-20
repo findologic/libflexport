@@ -8,14 +8,18 @@ use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 class Attribute implements Serializable
 {
+    /** @var string */
     private $key;
 
+    /** @var array */
     private $values;
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
+     * @var string $key The name of the attribute.
+     * @var array $values The attribute values to set.
      */
-    public function __construct($key, $values = [])
+    public function __construct(string $key, array $values = [])
     {
         $this->key = DataHelper::checkForEmptyValue($key);
         $this->setValues($values);
@@ -24,13 +28,13 @@ class Attribute implements Serializable
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function addValue($value)
+    public function addValue($value): void
     {
         DataHelper::checkAttributeValueNotExceedingCharacterLimit($this->getKey(), $value);
         array_push($this->values, DataHelper::checkForEmptyValue($value));
     }
 
-    public function setValues($values)
+    public function setValues(array $values): void
     {
         $this->values = [];
 
@@ -39,12 +43,12 @@ class Attribute implements Serializable
         }
     }
 
-    public function getValues()
+    public function getValues(): array
     {
         return $this->values;
     }
 
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -53,7 +57,7 @@ class Attribute implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document)
+    public function getDomSubtree(\DOMDocument $document): \DOMElement
     {
         $attributeElem = XMLHelper::createElement($document, 'attribute');
 
@@ -74,7 +78,7 @@ class Attribute implements Serializable
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [])
+    public function getCsvFragment(array $availableProperties = []): string
     {
         $attributeParts = [];
 

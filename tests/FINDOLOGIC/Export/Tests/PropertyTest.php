@@ -3,31 +3,30 @@
 namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Data\Property;
+use FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException;
 use PHPUnit\Framework\TestCase;
 
 class PropertyTest extends TestCase
 {
-    /**
-     * @expectedException \FINDOLOGIC\Export\Data\DuplicateValueForUsergroupException
-     */
-    public function testAddingMultipleValuesPerUsergroupCausesException()
+    public function testAddingMultipleValuesPerUsergroupCausesException(): void
     {
+        $this->expectException(DuplicateValueForUsergroupException::class);
+
         $property = new Property('prop');
         $property->addValue('foobar', 'usergroup');
         $property->addValue('foobar', 'usergroup');
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\Data\DuplicateValueForUsergroupException
-     */
-    public function testAddingMultipleValuesWithoutUsergroupCausesException()
+    public function testAddingMultipleValuesWithoutUsergroupCausesException(): void
     {
+        $this->expectException(DuplicateValueForUsergroupException::class);
+
         $property = new Property('prop');
         $property->addValue('foobar');
         $property->addValue('foobar');
     }
 
-    public function propertyKeyProvider()
+    public function propertyKeyProvider(): array
     {
         return [
             'reserved property "image\d+"' => ['image0', true],
@@ -39,8 +38,10 @@ class PropertyTest extends TestCase
 
     /**
      * @dataProvider propertyKeyProvider
+     * @param string $key
+     * @param bool $shouldCauseException
      */
-    public function testReservedPropertyKeysCausesException($key, $shouldCauseException)
+    public function testReservedPropertyKeysCausesException(string $key, bool $shouldCauseException): void
     {
         try {
             $property = new Property($key);
@@ -56,12 +57,13 @@ class PropertyTest extends TestCase
         }
     }
 
-    public function testNonAssociativePropertyValueCausesException()
+    public function testNonAssociativePropertyValueCausesException(): void
     {
         try {
             $property = new Property('foo', ['bar']);
         } catch (\Exception $exception) {
-            $warningMessage = 'Property values have to be associative, like $key => $value. The key "0" has to be a string, integer given.';
+            $warningMessage = 'Property values have to be associative, like $key => $value. The key "0" has to be a ' .
+                'string, integer given.';
             $this->assertEquals($exception->getMessage(), $warningMessage);
         }
     }

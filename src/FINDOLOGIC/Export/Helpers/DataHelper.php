@@ -4,50 +4,11 @@ namespace FINDOLOGIC\Export\Helpers;
 
 use FINDOLOGIC\Export\Exceptions\AttributeKeyLengthException;
 use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
-use FINDOLOGIC\Export\Exceptions\ItemIdLengthException;
+use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
+use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\GroupNameLengthException;
-
-class EmptyValueNotAllowedException extends \RuntimeException
-{
-    public function __construct($message = 'Empty values are not allowed!')
-    {
-        parent::__construct($message);
-    }
-}
-
-class InvalidUrlException extends \RuntimeException
-{
-    public function __construct()
-    {
-        parent::__construct('Value is not a valid url!');
-    }
-}
-
-class UnsupportedValueException extends \BadMethodCallException
-{
-    public function __construct($unsupportedValueName)
-    {
-        parent::__construct(sprintf(
-            '%s is not a supported value for the XML export format. Use a property instead.',
-            $unsupportedValueName
-        ));
-    }
-}
-
-/**
- * Thrown in case a property key is used for CSV export containing characters that would break the format.
- */
-class BadPropertyKeyException extends \RuntimeException
-{
-    public function __construct($propertyKey)
-    {
-        parent::__construct(sprintf(
-            'Tabs and line feed characters are not allowed in property key "%s", as they would break the format.',
-            $propertyKey
-        ));
-    }
-}
-
+use FINDOLOGIC\Export\Exceptions\InvalidUrlException;
+use FINDOLOGIC\Export\Exceptions\ItemIdLengthException;
 
 /**
  * Class DataHelper
@@ -60,22 +21,22 @@ class DataHelper
     /*
      * Internal character limit for attribute values.
      */
-    const ATTRIBUTE_CHARACTER_LIMIT = 16383;
+    private const ATTRIBUTE_CHARACTER_LIMIT = 16383;
 
     /*
      * Internal character limit for item id.
      */
-    const ITEM_ID_CHARACTER_LIMIT = 255;
+    private const ITEM_ID_CHARACTER_LIMIT = 255;
 
     /*
      * Internal character limit for group names of CSV export.
      */
-    const CSV_GROUP_CHARACTER_LIMIT = 255;
+    private const CSV_GROUP_CHARACTER_LIMIT = 255;
 
     /*
      * Internal character limit for attribute key names of CSV export.
      */
-    const CSV_ATTRIBUTE_KEY_CHARACTER_LIMIT = 247;
+    private const CSV_ATTRIBUTE_KEY_CHARACTER_LIMIT = 247;
 
     /**
      * Checks if the provided value is empty.
@@ -84,7 +45,7 @@ class DataHelper
      * @throws EmptyValueNotAllowedException If the value is empty.
      * @return string Returns the value if not empty.
      */
-    public static function checkForEmptyValue($value)
+    public static function checkForEmptyValue($value): string
     {
         $value = trim($value);
 
@@ -104,7 +65,7 @@ class DataHelper
      * @throws InvalidUrlException If the input is no url.
      * @return string Returns the url if valid.
      */
-    public static function validateUrl($url)
+    public static function validateUrl(string $url): string
     {
         if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/http[s]?:\/\/.*/', $url)) {
             throw new InvalidUrlException();
@@ -119,7 +80,7 @@ class DataHelper
      * @param string $propertyKey The property key to check.
      * @throw BadPropertyKeyException In case the property key contains dangerous characters.
      */
-    public static function checkForIllegalCsvPropertyKeys($propertyKey)
+    public static function checkForIllegalCsvPropertyKeys(string $propertyKey): void
     {
         if (strpos($propertyKey, "\t") !== false || strpos($propertyKey, "\n") !== false) {
             throw new BadPropertyKeyException($propertyKey);
@@ -130,7 +91,7 @@ class DataHelper
      * @param string $attributeName Attribute name to output in exception.
      * @param string $attributeValue Attribute value to check if it exceeds character limit.
      */
-    public static function checkAttributeValueNotExceedingCharacterLimit($attributeName, $attributeValue)
+    public static function checkAttributeValueNotExceedingCharacterLimit($attributeName, $attributeValue): void
     {
         if (mb_strlen($attributeValue) > self::ATTRIBUTE_CHARACTER_LIMIT) {
             throw new AttributeValueLengthException($attributeName, self::ATTRIBUTE_CHARACTER_LIMIT);

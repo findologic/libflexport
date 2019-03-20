@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
+use BadMethodCallException;
 use DateTime;
 use FINDOLOGIC\Export\CSV\CSVExporter;
 use FINDOLOGIC\Export\Data\Attribute;
@@ -9,6 +10,7 @@ use FINDOLOGIC\Export\Data\Bonus;
 use FINDOLOGIC\Export\Data\DateAdded;
 use FINDOLOGIC\Export\Data\Description;
 use FINDOLOGIC\Export\Data\Image;
+use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Name;
 use FINDOLOGIC\Export\Data\Ordernumber;
@@ -19,13 +21,15 @@ use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
 use FINDOLOGIC\Export\Exporter;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class CSVSerializationTest extends TestCase
 {
-    const DEFAULT_CSV_HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\tinstead\tmaxprice\ttaxrate\t" .
-        "url\timage\tattributes\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
+    private const DEFAULT_CSV_HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\tinstead\tmaxprice\t" .
+        "taxrate\turl\timage\tattributes\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
 
     /** @var CSVExporter */
     private $exporter;
@@ -33,12 +37,12 @@ class CSVSerializationTest extends TestCase
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->exporter = Exporter::create(Exporter::TYPE_CSV);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         try {
             unlink('/tmp/findologic.csv');
@@ -47,7 +51,7 @@ class CSVSerializationTest extends TestCase
         }
     }
 
-    private function getMinimalItem($exporter = null)
+    private function getMinimalItem($exporter = null): Item
     {
         if ($exporter === null) {
             $exporter = $this->exporter;
@@ -94,28 +98,28 @@ class CSVSerializationTest extends TestCase
         return $item;
     }
 
-    public function testMinimalItemIsExported()
+    public function testMinimalItemIsExported(): void
     {
         $item = $this->getMinimalItem();
         $export = $this->exporter->serializeItems([$item]);
 
-        $this->assertInternalType('string', $export);
+        $this->assertIsString($export);
     }
 
-    public function testHeadingIsOnlyWrittenForFirstPage()
+    public function testHeadingIsOnlyWrittenForFirstPage(): void
     {
         $item = $this->getMinimalItem();
         $export = $this->exporter->serializeItems([$item], 0, 1, 2);
 
-        $this->assertContains(CSVExporter::HEADING, $export);
+        $this->assertStringContainsString(self::DEFAULT_CSV_HEADING, $export);
 
         $item = $this->getMinimalItem();
         $export = $this->exporter->serializeItems([$item], 1, 1, 2);
 
-        $this->assertNotContains(CSVExporter::HEADING, $export);
+        $this->assertStringNotContainsString(self::DEFAULT_CSV_HEADING, $export);
     }
 
-    public function testCsvCanBeWrittenDirectlyToFile()
+    public function testCsvCanBeWrittenDirectlyToFile(): void
     {
         $item = $this->getMinimalItem();
 
@@ -125,7 +129,7 @@ class CSVSerializationTest extends TestCase
         self::assertEquals($expectedCsvContent, file_get_contents('/tmp/findologic.csv'));
     }
 
-    public function testKitchenSink()
+    public function testKitchenSink(): void
     {
         $expectedId = '123';
         $expectedOrdernumbers = ['987654321', 'BAC-123'];
@@ -158,7 +162,7 @@ class CSVSerializationTest extends TestCase
 
         $expectedAttributeArray = [];
         foreach ($expectedAttributes as $attribute => $values) {
-            $expectedAttributeArray []= implode('&', array_map(function ($value) use ($attribute) {
+            $expectedAttributeArray []= implode('&', array_map(function (string $value) use ($attribute): string {
                 return sprintf('%s=%s', $attribute, urlencode($value));
             }, $values));
         }
@@ -231,7 +235,7 @@ class CSVSerializationTest extends TestCase
         $this->assertEquals($expectedCsvLine, $item->getCsvFragment($expectedPropertyKeys));
     }
 
-    public function testItemsCanHaveVaryingProperties()
+    public function testItemsCanHaveVaryingProperties(): void
     {
         $firstPropertyName = 'only first item';
         $secondPropertyName = 'all items';
@@ -270,7 +274,7 @@ class CSVSerializationTest extends TestCase
         $this->assertEquals($expectedCsvHeading, $lines[0]);
     }
 
-    public function illegalPropertyProvider()
+    public function illegalPropertyProvider(): array
     {
         return [
             'tab' => [new Property("This\tcontains\ttabs", [null => 'some value'])],
@@ -279,13 +283,13 @@ class CSVSerializationTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Helpers\BadPropertyKeyException
      * @dataProvider illegalPropertyProvider
      *
      * @param Property $property The property with an illegal key to test.
      */
-    public function testFormatBreakingCharactersAreNotAllowedInPropertyKeys(Property $property)
+    public function testFormatBreakingCharactersAreNotAllowedInPropertyKeys(Property $property): void
     {
+        $this->expectException(BadPropertyKeyException::class);
         $exporter = Exporter::create(
             Exporter::TYPE_CSV,
             20,
@@ -298,11 +302,9 @@ class CSVSerializationTest extends TestCase
         $exporter->serializeItems([$item], 0, 1, 1);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSettingMoreThanOneImagePerItemCausesException()
+    public function testSettingMoreThanOneImagePerItemCausesException(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $item = $this->getMinimalItem();
         $item->addImage(new Image('https://example.org/some_image.png', Image::TYPE_DEFAULT));
         $item->addImage(new Image('https://example.org/some_image.png', Image::TYPE_THUMBNAIL));
@@ -310,15 +312,14 @@ class CSVSerializationTest extends TestCase
         $this->exporter->serializeItems([$item], 0, 1, 1);
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     */
-    public function testAttemptingToGetXmlVersionForACSVItemCausesAnException()
+    public function testAttemptingToGetXmlVersionForACSVItemCausesAnException(): void
     {
+        $this->expectException(BadMethodCallException::class);
+
         $this->getMinimalItem()->getDomSubtree(new \DOMDocument());
     }
 
-    public function testAddingRelativeUrlIsNotCausingAnException()
+    public function testAddingRelativeUrlIsNotCausingAnException(): void
     {
         $imageWithRelativePath = '/media/images/image.jpg';
         $image = new Image($imageWithRelativePath);
@@ -332,7 +333,7 @@ class CSVSerializationTest extends TestCase
      *
      * @return array Scenarios with value, the element class and the elements setter method name.
      */
-    public function csvSanitizedElementsInputProvider()
+    public function csvSanitizedElementsInputProvider(): array
     {
         return [
             'Ordernumber with invalid characters' => ["ordernumber\t\n", Ordernumber::class, 'addOrdernumber'],
@@ -351,7 +352,7 @@ class CSVSerializationTest extends TestCase
      * @param string $elementType
      * @param string $setterMethodName
      */
-    public function testSanitizingOfElementsWorks($value = '', $elementType = '', $setterMethodName = '')
+    public function testSanitizingOfElementsWorks($value = '', $elementType = '', $setterMethodName = ''): void
     {
         $item = $this->getMinimalItem();
 

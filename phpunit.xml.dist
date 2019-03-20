@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.5/phpunit.xsd"
+        backupGlobals="false"
+        colors="true"
+        bootstrap="vendor/autoload.php"
+>
+    <testsuites>
+        <testsuite name="FINDOLOGIC XMl export toolkit tests">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>src</directory>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+        <log type="coverage-clover" target="./coverage.xml"/>
+    </logging>
+</phpunit>

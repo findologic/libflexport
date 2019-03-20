@@ -2,13 +2,14 @@
 
 namespace FINDOLOGIC\Export\CSV;
 
+use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 
 class CSVExporter extends Exporter
 {
-    const HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\tinstead\tmaxprice\ttaxrate\turl\timage\t" .
-        "attributes\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
+    private const HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\tinstead\tmaxprice\ttaxrate\turl\t" .
+        "image\tattributes\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
 
     /**
      * @var array Names of properties; used for alignment of extra columns containing property values.
@@ -25,7 +26,7 @@ class CSVExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function serializeItems($items, $start = 0, $count = 0, $total = 0)
+    public function serializeItems(array $items, int $start = 0, int $count = 0, int $total = 0): string
     {
         $export = '';
         // To enable pagination, don't write the heading if it's anything but the first page.
@@ -51,8 +52,13 @@ class CSVExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function serializeItemsToFile($targetDirectory, $items, $start = 0, $count = 0, $total = 0)
-    {
+    public function serializeItemsToFile(
+        string $targetDirectory,
+        array $items,
+        int $start = 0,
+        int $count = 0,
+        int $total = 0
+    ): string {
         $csvString = $this->serializeItems($items, $start, $count, $total);
         $targetPath = sprintf('%s/findologic.csv', $targetDirectory);
 
@@ -64,7 +70,7 @@ class CSVExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function createItem($id)
+    public function createItem($id): Item
     {
         return new CSVItem($id);
     }

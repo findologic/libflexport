@@ -12,7 +12,7 @@ class Url extends UsergroupAwareSimpleValue
         parent::__construct('urls', 'url');
     }
 
-    public function getDomSubtree(\DOMDocument $document)
+    public function getDomSubtree(\DOMDocument $document): \DOMElement
     {
         foreach ($this->getValues() as $value) {
             DataHelper::validateUrl($value);

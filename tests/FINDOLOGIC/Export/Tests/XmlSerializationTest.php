@@ -3,16 +3,22 @@
 namespace FINDOLOGIC\Export\Tests;
 
 use DateTime;
+use FINDOLOGIC\Export\Constant;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
+use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Ordernumber;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Exceptions\BaseImageMissingException;
+use FINDOLOGIC\Export\Exceptions\ImagesWithoutUsergroupMissingException;
+use FINDOLOGIC\Export\Exceptions\InvalidUrlException;
+use FINDOLOGIC\Export\Exceptions\ItemsExceedCountValueException;
+use FINDOLOGIC\Export\Exceptions\UnsupportedValueException;
 use FINDOLOGIC\Export\Exporter;
-use FINDOLOGIC\Export\Helpers\InvalidUrlException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 use FINDOLOGIC\Export\XML\Page;
 use FINDOLOGIC\Export\XML\XMLExporter;
@@ -30,19 +36,15 @@ use PHPUnit\Framework\TestCase;
  */
 class XmlSerializationTest extends TestCase
 {
-    const SCHEMA_URL = 'https://raw.githubusercontent.com/findologic/xml-export/master/src/main/resources/findologic.xsd';
-
     private static $schema;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-
-        // Download the schema once for the whole test case for speed as compared to downloading it for each test.
-        self::$schema = file_get_contents(self::SCHEMA_URL);
+        self::$schema = file_get_contents(Constant::$XSD_SCHEMA_PATH);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         try {
             unlink('/tmp/findologic_0_1.xml');
@@ -57,12 +59,12 @@ class XmlSerializationTest extends TestCase
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->exporter = Exporter::create(Exporter::TYPE_XML);
     }
 
-    private function getMinimalItem()
+    private function getMinimalItem(): Item
     {
         $item = $this->exporter->createItem('123');
 
@@ -73,7 +75,7 @@ class XmlSerializationTest extends TestCase
         return $item;
     }
 
-    private function assertPageIsValid($xmlString)
+    private function assertPageIsValid($xmlString): void
     {
         $xmlDocument = new \DOMDocument('1.0', 'utf-8');
         $xmlDocument->loadXML($xmlString);
@@ -81,14 +83,14 @@ class XmlSerializationTest extends TestCase
         $this->assertTrue($xmlDocument->schemaValidateSource(self::$schema));
     }
 
-    public function testEmptyPageIsValid()
+    public function testEmptyPageIsValid(): void
     {
         $page = $this->exporter->serializeItems([], 0, 0, 0);
 
         $this->assertPageIsValid($page);
     }
 
-    public function testMinimalItemIsValid()
+    public function testMinimalItemIsValid(): void
     {
         $item = $this->getMinimalItem();
         $page = $this->exporter->serializeItems([$item], 0, 1, 1);
@@ -96,11 +98,10 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($page);
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\XML\ItemsExceedCountValueException
-     */
-    public function testMoreItemsSuppliedThanCountValueCausesException()
+    public function testMoreItemsSuppliedThanCountValueCausesException(): void
     {
+        $this->expectException(ItemsExceedCountValueException::class);
+
         $items = [];
 
         for ($i = 0; $i <= 2; $i++) {
@@ -117,7 +118,7 @@ class XmlSerializationTest extends TestCase
         $this->exporter->serializeItems($items, 0, 1, 1);
     }
 
-    public function testPropertyKeysAndValuesAreCdataWrapped()
+    public function testPropertyKeysAndValuesAreCdataWrapped(): void
     {
         $item = $this->getMinimalItem();
 
@@ -129,7 +130,7 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($page);
     }
 
-    public function testAttributesAreCdataWrapped()
+    public function testAttributesAreCdataWrapped(): void
     {
         $item = $this->getMinimalItem();
 
@@ -141,7 +142,7 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($page);
     }
 
-    public function testImagesCanBeDefaultAndThumbnail()
+    public function testImagesCanBeDefaultAndThumbnail(): void
     {
         $item = $this->getMinimalItem();
 
@@ -156,7 +157,7 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($page);
     }
 
-    public function testBaseImageCanBeExported()
+    public function testBaseImageCanBeExported(): void
     {
         $item = $this->getMinimalItem();
 
@@ -185,11 +186,10 @@ class XmlSerializationTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\Data\BaseImageMissingException
-     */
-    public function testMissingBaseImageCausesException()
+    public function testMissingBaseImageCausesException(): void
     {
+        $this->expectException(BaseImageMissingException::class);
+
         $item = $this->getMinimalItem();
 
         $item->setAllImages([
@@ -200,11 +200,10 @@ class XmlSerializationTest extends TestCase
         $this->exporter->serializeItems([$item], 0, 1, 1);
     }
 
-    /**
-     * @expectedException \FINDOLOGIC\Export\Data\ImagesWithoutUsergroupMissingException
-     */
-    public function testImagesWithoutUsergroupMissingCausesException()
+    public function testImagesWithoutUsergroupMissingCausesException(): void
     {
+        $this->expectException(ImagesWithoutUsergroupMissingException::class);
+
         $item = $this->getMinimalItem();
 
         $item->setAllImages([
@@ -214,7 +213,7 @@ class XmlSerializationTest extends TestCase
         $this->exporter->serializeItems([$item], 0, 1, 1);
     }
 
-    public function testOrdernumbersSupportUsergroups()
+    public function testOrdernumbersSupportUsergroups(): void
     {
         $item = $this->getMinimalItem();
 
@@ -228,7 +227,7 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($page);
     }
 
-    public function testKeywordsSupportUsergroups()
+    public function testKeywordsSupportUsergroups(): void
     {
         $item = $this->getMinimalItem();
 
@@ -242,7 +241,7 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($page);
     }
 
-    public function testUsergroupVisibilitiesAreExported()
+    public function testUsergroupVisibilitiesAreExported(): void
     {
         $item = $this->getMinimalItem();
 
@@ -256,7 +255,7 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($page);
     }
 
-    public function testXmlCanBeWrittenDirectlyToFile()
+    public function testXmlCanBeWrittenDirectlyToFile(): void
     {
         $item = $this->getMinimalItem();
 
@@ -266,7 +265,7 @@ class XmlSerializationTest extends TestCase
         self::assertEquals($expectedXml, file_get_contents('/tmp/findologic_0_1.xml'));
     }
 
-    public function testAttemptingToGetCsvFromAnXmlItemResultsInAnException()
+    public function testAttemptingToGetCsvFromAnXmlItemResultsInAnException(): void
     {
         $item = new XMLItem(123);
 
@@ -281,7 +280,7 @@ class XmlSerializationTest extends TestCase
      * @return array Name of add method to call in a test to add a certain value, and an array of values with
      *      usergroup names as key.
      */
-    public function simpleValueAddingShortcutProvider()
+    public function simpleValueAddingShortcutProvider(): array
     {
         $stringValuesWithUsergroupKeys = [
             '' => 'No usergroup',
@@ -321,7 +320,7 @@ class XmlSerializationTest extends TestCase
      * @param string $valueType
      * @param array $values
      */
-    public function testSimpleValuesAddedToItemViaShortcutAccumulate($valueType, array $values)
+    public function testSimpleValuesAddedToItemViaShortcutAccumulate(string $valueType, array $values): void
     {
         $item = new XMLItem(123);
 
@@ -332,7 +331,7 @@ class XmlSerializationTest extends TestCase
         $this->assertEquals($values, $item->{'get' . $valueType}()->getValues());
     }
 
-    public function testDateValuesAddedToItemViaShortcutAccumulate()
+    public function testDateValuesAddedToItemViaShortcutAccumulate(): void
     {
         $values = [
             '' => new DateTime('today midnight'),
@@ -341,7 +340,7 @@ class XmlSerializationTest extends TestCase
         ];
 
         // On assignment, dates are converted to strings according to the format set in the schema.
-        $expectedValues = array_map(function (DateTime $date) {
+        $expectedValues = array_map(function (DateTime $date): string {
             return $date->format(DATE_ATOM);
         }, $values);
 
@@ -359,12 +358,15 @@ class XmlSerializationTest extends TestCase
      *
      * @return array Scenarios with a value and the expected exception
      */
-    public function urlValidationProvider()
+    public function urlValidationProvider(): array
     {
         return [
             'Url with value' => ['value', InvalidUrlException::class],
             'Url without schema' => ['www.store.com/images/thumbnails/277KTLmen.png', InvalidUrlException::class],
-            'Url without wrong schema' => ['tcp://www.store.com/images/thumbnails/277KTLmen.png', InvalidUrlException::class],
+            'Url without wrong schema' => [
+                'tcp://www.store.com/images/thumbnails/277KTLmen.png',
+                InvalidUrlException::class
+            ],
         ];
     }
 
@@ -372,27 +374,27 @@ class XmlSerializationTest extends TestCase
      * @dataProvider urlValidationProvider
      *
      * @param string $value
-     * @param \Exception|null $expectedException
+     * @param string $expectedException
      */
-    public function testUrlValidationWorks($value, $expectedException)
+    public function testUrlValidationWorks(string $value, string $expectedException): void
     {
         try {
             $url =  new Url();
             $url->setValue($value);
-            $url->getDomSubtree(new \DOMDocument());
+            $this->assertNotNull($url);
         } catch (\Exception $e) {
             $this->assertEquals($expectedException, get_class($e));
         }
     }
 
-    public function testItemsCanBeAddedToXmlPageAsWell()
+    public function testItemsCanBeAddedToXmlPageAsWell(): void
     {
         $page = new Page(0, 1, 1);
         $page->addItem($this->getMinimalItem());
         $this->assertNotNull($page->getXml());
     }
 
-    public function unsupportedValueProvider()
+    public function unsupportedValueProvider(): array
     {
         return [
             'getInsteadPrice' => ['getInsteadPrice', null],
@@ -405,14 +407,15 @@ class XmlSerializationTest extends TestCase
     }
 
     /**
-     * @expectedException \FINDOLOGIC\Export\Helpers\UnsupportedValueException
      * @dataProvider unsupportedValueProvider
      *
      * @param string $method Name of the method to call to interact with an unsupported value.
-     * @param mixed $parameter The parameter in case of a setter.
+     * @param float|null $parameter The parameter in case of a setter.
      */
-    public function testUsingValuesUnsupportedByXmlCauseExceptions($method, $parameter)
+    public function testUsingValuesUnsupportedByXmlCauseExceptions(string $method, ?float $parameter): void
     {
+        $this->expectException(UnsupportedValueException::class);
+
         $item = $this->getMinimalItem();
 
         if ($parameter === null) {
@@ -422,7 +425,7 @@ class XmlSerializationTest extends TestCase
         }
     }
 
-    public function testAddingPropertyWithUsergroupWorksAsExpected()
+    public function testAddingPropertyWithUsergroupWorksAsExpected(): void
     {
         $item = $this->getMinimalItem();
 
@@ -432,17 +435,15 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($this->exporter->serializeItems([$item], 0, 1, 1));
     }
 
-
-    /**
-     * @expectedException \FINDOLOGIC\Export\Helpers\InvalidUrlException
-     */
-    public function testAddingInvalidUrlToImageElementCausesException()
+    public function testAddingInvalidUrlToImageElementCausesException(): void
     {
+        $this->expectException(InvalidUrlException::class);
+
         $image = new Image('www.store.com/images/277KTL.png');
         $image->getDomSubtree(new \DOMDocument());
     }
 
-    public function testAddingUrlsToXmlDomWorksAsExpected()
+    public function testAddingUrlsToXmlDomWorksAsExpected(): void
     {
         $item = $this->getMinimalItem();
 

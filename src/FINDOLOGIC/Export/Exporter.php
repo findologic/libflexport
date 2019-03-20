@@ -13,14 +13,14 @@ abstract class Exporter
      *
      * @see https://docs.findologic.com/doku.php?id=export_patterns:xml
      */
-    const TYPE_XML = 0;
+    public const TYPE_XML = 0;
 
     /**
      * CSV-based export format. Does not support usergroups.
      *
      * @see https://docs.findologic.com/doku.php?id=export_patterns:csv
      */
-    const TYPE_CSV = 1;
+    public const TYPE_CSV = 1;
 
     /**
      * Creates an exporter for the desired output format.
@@ -31,7 +31,7 @@ abstract class Exporter
      * @param array $csvProperties Properties/extra columns for CSV export. Has no effect for XML export.
      * @return Exporter The exporter for the desired output format.
      */
-    public static function create($type, $itemsPerPage = 20, $csvProperties = [])
+    public static function create(int $type, int $itemsPerPage = 20, array $csvProperties = []): Exporter
     {
         if ($itemsPerPage < 1) {
             throw new \InvalidArgumentException('At least one item must be exported per page.');
@@ -67,10 +67,11 @@ abstract class Exporter
      * @param int $count The number of items requested for this export step. Actual number of items can be smaller due
      *      to errors, and can not be greater than the requested count, because that would indicate that the requested
      *      count is ignored when generating items. This value is ignored when using CSV exporter.
-     * @param int $total The global total of items that could be exported. This value is ignored when using CSV exporter.
+     * @param int $total The global total of items that could be exported. This value is ignored when using CSV
+     *      exporter.
      * @return string The items in serialized form.
      */
-    abstract public function serializeItems($items, $start, $count, $total);
+    abstract public function serializeItems(array $items, int $start, int $count, int $total): string;
 
     /**
      * Like serializeItems(), but the output is written to filesystem instead of being returned.
@@ -83,10 +84,17 @@ abstract class Exporter
      * @param int $count The number of items requested for this export step. Actual number of items can be smaller due
      *      to errors, and can not be greater than the requested count, because that would indicate that the requested
      *      count is ignored when generating items. This value is ignored when using CSV exporter.
-     * @param int $total The global total of items that could be exported. This value is ignored when using CSV exporter.
+     * @param int $total The global total of items that could be exported. This value is ignored when using CSV
+     *      exporter.
      * @return string Full path of the written file.
      */
-    abstract public function serializeItemsToFile($targetDirectory, $items, $start, $count, $total);
+    abstract public function serializeItemsToFile(
+        string $targetDirectory,
+        array $items,
+        int $start,
+        int $count,
+        int $total
+    ): string;
 
     /**
      * Creates an export format-specific item instance.
@@ -94,5 +102,5 @@ abstract class Exporter
      * @param string $id Unique ID of the item.
      * @return Item The newly generated item.
      */
-    abstract public function createItem($id);
+    abstract public function createItem($id): Item;
 }

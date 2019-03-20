@@ -3,7 +3,8 @@
 namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Data\Attribute;
-use FINDOLOGIC\Export\Data\EmptyElementsNotAllowedException;
+use FINDOLOGIC\Export\Data\Item;
+use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Exporter;
@@ -19,12 +20,12 @@ class ItemTest extends TestCase
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->exporter = Exporter::create(Exporter::TYPE_XML);
     }
 
-    private function getMinimalItem()
+    private function getMinimalItem(): Item
     {
         $item = $this->exporter->createItem('123');
 
@@ -35,7 +36,7 @@ class ItemTest extends TestCase
         return $item;
     }
 
-    public function testAddingEmptyAttributesCauseException()
+    public function testAddingEmptyAttributesCauseException(): void
     {
         try {
             $item = $this->getMinimalItem();
@@ -43,12 +44,13 @@ class ItemTest extends TestCase
             $item->addAttribute($attribute);
             $this->fail('Assigning attributes with empty values should cause an exception!');
         } catch (EmptyElementsNotAllowedException $e) {
-            $expectedMessage = "Elements with empty values are not allowed. 'Attribute' with the name 'empty attribute'";
+            $expectedMessage = 'Elements with empty values are not allowed. "Attribute" with the name ' .
+                '"empty attribute"';
             $this->assertEquals($expectedMessage, $e->getMessage());
         }
     }
 
-    public function testAddingEmptyPropertiesCauseException()
+    public function testAddingEmptyPropertiesCauseException(): void
     {
         try {
             $item = $this->getMinimalItem();
@@ -56,7 +58,7 @@ class ItemTest extends TestCase
             $item->addProperty($property);
             $this->fail('Assigning properties with empty values should cause an exception!');
         } catch (EmptyElementsNotAllowedException $e) {
-            $expectedMessage = "Elements with empty values are not allowed. 'Property' with the name 'empty property'";
+            $expectedMessage = 'Elements with empty values are not allowed. "Property" with the name "empty property"';
             $this->assertEquals($expectedMessage, $e->getMessage());
         }
     }

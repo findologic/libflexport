@@ -2,16 +2,9 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
+use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
+use FINDOLOGIC\Export\Exceptions\ValueIsNotIntegerException;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
-
-class ValueIsNotIntegerException extends \RuntimeException
-{
-    public function __construct($value)
-    {
-        parent::__construct(sprintf('%s is not an integer!', $value));
-    }
-}
 
 class Sort extends UsergroupAwareSimpleValue
 {
@@ -20,7 +13,7 @@ class Sort extends UsergroupAwareSimpleValue
         parent::__construct('sorts', 'sort');
     }
 
-    protected function validate($value)
+    protected function validate($value): int
     {
         if ($value === '') {
             throw new EmptyValueNotAllowedException();

@@ -4,12 +4,12 @@ namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Exceptions\AttributeKeyLengthException;
 use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
+use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\GroupNameLengthException;
 use FINDOLOGIC\Export\Exceptions\ItemIdLengthException;
+use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
-use FINDOLOGIC\Export\Helpers\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
-use FINDOLOGIC\Export\Helpers\ValueIsNotNumericException;
 use PHPUnit\Framework\TestCase;
 
 class DataHelperTest extends TestCase
@@ -17,10 +17,10 @@ class DataHelperTest extends TestCase
     /**
      * @dataProvider emptyValueProvider
      *
-     * @param $value string|int value that should be checked.
-     * @param $shouldCauseException bool should an exception be caused by given parameter.
+     * @param string|int $value Value that should be checked.
+     * @param bool $shouldCauseException Whether the value should cause an exception or not.
      */
-    public function testEmptyValueDetectsEmptyStringsOnly($value, $shouldCauseException)
+    public function testEmptyValueDetectsEmptyStringsOnly($value, bool $shouldCauseException): void
     {
         try {
             $value = DataHelper::checkForEmptyValue($value);
@@ -46,7 +46,7 @@ class DataHelperTest extends TestCase
      *
      * @return array Cases with the value to check and whether it should cause a validation issue.
      */
-    public function emptyValueProvider()
+    public function emptyValueProvider(): array
     {
         return [
             'empty string' => ['', true],
@@ -63,10 +63,10 @@ class DataHelperTest extends TestCase
     /**
      * @dataProvider numericValueProvider
      *
-     * @param $value string|int|bool value that should be checked.
-     * @param $shouldCauseException bool should an exception be caused by given parameter.
+     * @param string|int|bool $value Value that should be checked.
+     * @param bool $shouldCauseException Whether the value should cause an exception or not.
      */
-    public function testNumericValuesAreValidated($value, $shouldCauseException)
+    public function testNumericValuesAreValidated($value, bool $shouldCauseException): void
     {
         try {
             $numericValueElement = new UsergroupAwareNumericValue('dummies', 'dummy');
@@ -93,7 +93,7 @@ class DataHelperTest extends TestCase
      *
      * @return array Cases with the value to check and whether it should cause a validation issue.
      */
-    public function numericValueProvider()
+    public function numericValueProvider(): array
     {
         return [
             'string' => ['blubbergurke', true],

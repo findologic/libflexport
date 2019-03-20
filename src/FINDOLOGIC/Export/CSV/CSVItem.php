@@ -12,7 +12,7 @@ class CSVItem extends Item
     /**
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document)
+    public function getDomSubtree(\DOMDocument $document): void
     {
         throw new \BadMethodCallException('CSVItem does not implement XML export.');
     }
@@ -20,7 +20,7 @@ class CSVItem extends Item
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [])
+    public function getCsvFragment(array $availableProperties = []): string
     {
         $that = $this; // Used in closure.
 
@@ -40,7 +40,7 @@ class CSVItem extends Item
         $instead = $this->getInsteadPrice();
         $maxPrice = $this->getMaxPrice();
         $taxRate = $this->getTaxRate();
-        $groups = implode(',', array_map(function ($group) use ($that) {
+        $groups = implode(',', array_map(function (Usergroup $group) use ($that): string {
             /** @var $group Usergroup */
             $groupName = $group->getCsvFragment();
             DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
@@ -78,7 +78,7 @@ class CSVItem extends Item
         return $line;
     }
 
-    private function buildProperties($availableProperties)
+    private function buildProperties(array $availableProperties): string
     {
         $propertiesString = '';
 
@@ -93,7 +93,7 @@ class CSVItem extends Item
         return $propertiesString;
     }
 
-    private function buildAttributes()
+    private function buildAttributes(): string
     {
         $attributes = [];
 
@@ -107,7 +107,7 @@ class CSVItem extends Item
         return $attributes;
     }
 
-    private function buildImages()
+    private function buildImages(): string
     {
         // Use the first available image that is not restricted by usergroup. If more than one usergroup-less image
         // exists, cause an error because it's no longer certain which one is intended to be used.
@@ -127,7 +127,7 @@ class CSVItem extends Item
         return $imageUrl;
     }
 
-    private function sanitize($input, $stripTags = true)
+    private function sanitize($input, $stripTags = true): string
     {
         if ($stripTags) {
             $input = strip_tags($input);

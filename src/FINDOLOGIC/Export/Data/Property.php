@@ -2,23 +2,9 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException;
+use FINDOLOGIC\Export\Exceptions\PropertyKeyNotAllowedException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
-
-class DuplicateValueForUsergroupException extends \RuntimeException
-{
-    public function __construct($key, $usergroup)
-    {
-        parent::__construct(sprintf('Property "%s" already has a value for usergroup "%s".', $key, $usergroup));
-    }
-}
-
-class PropertyKeyNotAllowedException extends \RuntimeException
-{
-    public function __construct($key)
-    {
-        parent::__construct(sprintf('Property key "%s" is reserved for internal use and overwritten when importing.', $key));
-    }
-}
 
 class Property
 {
@@ -29,13 +15,16 @@ class Property
      * /thumbnail\d+/: Image URLs of type thumbnail.
      * /ordernumber/: The products first exported ordernumber.
      */
-    const RESERVED_PROPERTY_KEYS = [
+    private const RESERVED_PROPERTY_KEYS = [
         "/image\d+/",
         "/thumbnail\d+/",
         "/ordernumber/"
     ];
 
+    /** @var string */
     private $key;
+
+    /** @var array */
     private $values;
 
     /**
@@ -45,7 +34,7 @@ class Property
      * @param string $key The property key.
      * @param array $values The values of the property.
      */
-    public function __construct($key, $values = [])
+    public function __construct(string $key, array $values = [])
     {
         foreach (self::RESERVED_PROPERTY_KEYS as $reservedPropertyKey) {
             if (preg_match($reservedPropertyKey, $key)) {
@@ -57,7 +46,7 @@ class Property
         $this->setValues($values);
     }
 
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -69,7 +58,7 @@ class Property
      * @param string $value The value to add to the property element.
      * @param string|null $usergroup The usergroup of the property value.
      */
-    public function addValue($value, $usergroup = null)
+    public function addValue(string $value, ?string $usergroup = null): void
     {
         if (array_key_exists($usergroup, $this->getAllValues())) {
             throw new DuplicateValueForUsergroupException($this->getKey(), $usergroup);
@@ -78,7 +67,7 @@ class Property
         $this->values[$usergroup] = DataHelper::checkForEmptyValue($value);
     }
 
-    protected function setValues($values)
+    protected function setValues(array $values): void
     {
         $this->values = [];
 
@@ -88,7 +77,8 @@ class Property
          */
         array_walk($values, function ($item, $key) {
             if (!is_string($key)) {
-                $format = 'Property values have to be associative, like $key => $value. The key "%s" has to be a string, integer given.';
+                $format = 'Property values have to be associative, like $key => $value. The key "%s" has to be a ' .
+                    'string, integer given.';
                 trigger_error(sprintf($format, $key), E_USER_WARNING);
             }
         });
@@ -98,7 +88,7 @@ class Property
         }
     }
 
-    public function getAllValues()
+    public function getAllValues(): array
     {
         return $this->values;
     }
