@@ -21,6 +21,7 @@ use FINDOLOGIC\Export\Exceptions\ImagesWithoutUsergroupMissingException;
 use FINDOLOGIC\Export\Exceptions\InvalidUrlException;
 use FINDOLOGIC\Export\Exceptions\ItemsExceedCountValueException;
 use FINDOLOGIC\Export\Exceptions\UnsupportedValueException;
+use FINDOLOGIC\Export\Exceptions\XMLSchemaViolationException;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 use FINDOLOGIC\Export\XML\Page;
@@ -453,5 +454,23 @@ class XmlSerializationTest extends TestCase
         $item->addUrl('https://www.store.com/images/277KTL.png');
 
         $this->assertPageIsValid($this->exporter->serializeItems([$item], 0, 1, 1));
+    }
+
+    public function testUrlsContainingSquareBracketsFailValidation(): void
+    {
+        $this->expectException(XMLSchemaViolationException::class);
+        $this->expectExceptionMessage(
+            'XML schema validation failed: DOMDocument::schemaValidate(): Element ' .
+            '\'url\': \'https://www.store.com/search?attrib[cat][]=Foobar\' ' .
+            'is not a valid value of the atomic type \'httpURI\'.'
+        );
+
+        $item = $this->getMinimalItem();
+        $item->addUrl('https://www.store.com/search?attrib[cat][]=Foobar');
+
+        $page = new Page(0, 1, 1);
+        $page->addItem($item);
+
+        $page->getXml();
     }
 }
