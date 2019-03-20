@@ -11,7 +11,7 @@ use DOMElement;
  *
  * Multi values that can differ per usergroup, and have multiple values for each.
  */
-abstract class UsergroupAwareMultiValue implements Serializable
+abstract class UsergroupAwareMultiValue implements Serializable, NameAwareValue
 {
     /** @var string */
     private $rootCollectionName;

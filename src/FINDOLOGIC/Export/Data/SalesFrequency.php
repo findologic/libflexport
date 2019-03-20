@@ -16,7 +16,7 @@ class SalesFrequency extends UsergroupAwareSimpleValue
     protected function validate($value): int
     {
         if ($value === '') {
-            throw new EmptyValueNotAllowedException();
+            throw new EmptyValueNotAllowedException($this->getValueName());
         }
 
         if (!is_int($value) || $value < 0) {
@@ -24,5 +24,13 @@ class SalesFrequency extends UsergroupAwareSimpleValue
         }
 
         return $value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValueName(): string
+    {
+        return 'salesFrequency';
     }
 }

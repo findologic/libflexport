@@ -14,7 +14,7 @@ use DOMElement;
  * When inheriting, make sure that the child class' constructor exposes $value and $usergroup, and calls the parent's
  * constructor with those values, plus the name of the XML element in which the value is wrapped.
  */
-abstract class UsergroupAwareMultiValueItem implements Serializable
+abstract class UsergroupAwareMultiValueItem implements Serializable, NameAwareValue
 {
     /** @var string */
     private $itemName;
@@ -30,7 +30,7 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
      */
     public function __construct($itemName, $value, $usergroup)
     {
-        $this->value = DataHelper::checkForEmptyValue($value);
+        $this->value = DataHelper::checkForEmptyValue($this->getValueName(), $value);
         $this->itemName = $itemName;
         $this->usergroup = $usergroup;
     }

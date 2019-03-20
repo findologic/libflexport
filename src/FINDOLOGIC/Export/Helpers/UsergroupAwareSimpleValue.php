@@ -12,7 +12,7 @@ use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
  *
  * Simple values that can differ per usergroup, but have one value at most for each.
  */
-abstract class UsergroupAwareSimpleValue implements Serializable
+abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
 {
     /** @var string */
     private $collectionName;
@@ -61,7 +61,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable
         $value = trim($value);
 
         if ($value === '') {
-            throw new EmptyValueNotAllowedException();
+            throw new EmptyValueNotAllowedException($this->getValueName());
         }
 
         return $value;

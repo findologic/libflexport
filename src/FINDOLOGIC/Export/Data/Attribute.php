@@ -23,7 +23,7 @@ class Attribute implements Serializable
      */
     public function __construct(string $key, array $values = [])
     {
-        $this->key = DataHelper::checkForEmptyValue($key);
+        $this->key = DataHelper::checkForEmptyValue('attribute', $key);
         $this->setValues($values);
     }
 
@@ -33,7 +33,7 @@ class Attribute implements Serializable
     public function addValue($value): void
     {
         DataHelper::checkAttributeValueNotExceedingCharacterLimit($this->getKey(), $value);
-        array_push($this->values, DataHelper::checkForEmptyValue($value));
+        array_push($this->values, DataHelper::checkForEmptyValue('attribute', $value));
     }
 
     public function setValues(array $values): void

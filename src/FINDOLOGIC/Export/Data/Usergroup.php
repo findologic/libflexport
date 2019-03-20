@@ -15,7 +15,7 @@ class Usergroup implements Serializable
 
     public function __construct($value)
     {
-        $this->value = DataHelper::checkForEmptyValue($value);
+        $this->value = DataHelper::checkForEmptyValue('usergroup', $value);
     }
 
     public function getValue(): string

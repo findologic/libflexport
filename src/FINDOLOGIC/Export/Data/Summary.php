@@ -10,4 +10,12 @@ class Summary extends UsergroupAwareSimpleValue
     {
         parent::__construct('summaries', 'summary');
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValueName(): string
+    {
+        return 'summary';
+    }
 }

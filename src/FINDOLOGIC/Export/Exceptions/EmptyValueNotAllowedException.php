@@ -6,8 +6,8 @@ use RuntimeException;
 
 class EmptyValueNotAllowedException extends RuntimeException
 {
-    public function __construct(string $message = 'Empty values are not allowed!')
+    public function __construct(string $valueName)
     {
-        parent::__construct($message);
+        parent::__construct(sprintf('Empty values are not allowed for "%s" values.', $valueName));
     }
 }

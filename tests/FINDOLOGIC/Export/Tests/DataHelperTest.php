@@ -2,6 +2,19 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
+use FINDOLOGIC\Export\Data\AllKeywords;
+use FINDOLOGIC\Export\Data\AllOrdernumbers;
+use FINDOLOGIC\Export\Data\Bonus;
+use FINDOLOGIC\Export\Data\DateAdded;
+use FINDOLOGIC\Export\Data\Description;
+use FINDOLOGIC\Export\Data\Keyword;
+use FINDOLOGIC\Export\Data\Name;
+use FINDOLOGIC\Export\Data\Ordernumber;
+use FINDOLOGIC\Export\Data\Price;
+use FINDOLOGIC\Export\Data\SalesFrequency;
+use FINDOLOGIC\Export\Data\Sort;
+use FINDOLOGIC\Export\Data\Summary;
+use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Exceptions\AttributeKeyLengthException;
 use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
@@ -9,8 +22,11 @@ use FINDOLOGIC\Export\Exceptions\GroupNameLengthException;
 use FINDOLOGIC\Export\Exceptions\ItemIdLengthException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
+use FINDOLOGIC\Export\Helpers\NameAwareValue;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionException;
 
 class DataHelperTest extends TestCase
 {
@@ -22,8 +38,10 @@ class DataHelperTest extends TestCase
      */
     public function testEmptyValueDetectsEmptyStringsOnly($value, bool $shouldCauseException): void
     {
+        $expectedValueNames = 'foobar';
+
         try {
-            $value = DataHelper::checkForEmptyValue($value);
+            $value = DataHelper::checkForEmptyValue($expectedValueNames, $value);
 
             if ($shouldCauseException) {
                 $this->fail('Should be detected as empty value.');
@@ -36,7 +54,10 @@ class DataHelperTest extends TestCase
             if (!$shouldCauseException) {
                 $this->fail('Should not be detected as empty value.');
             } else {
-                $this->assertEquals('Empty values are not allowed!', $e->getMessage());
+                $this->assertEquals(
+                    sprintf('Empty values are not allowed for "%s" values.', $expectedValueNames),
+                    $e->getMessage()
+                );
             }
         }
     }
@@ -69,7 +90,7 @@ class DataHelperTest extends TestCase
     public function testNumericValuesAreValidated($value, bool $shouldCauseException): void
     {
         try {
-            $numericValueElement = new UsergroupAwareNumericValue('dummies', 'dummy');
+            $numericValueElement = new DummyNumericValue('dummies', 'dummy');
             $numericValueElement->setValue($value);
 
             if ($shouldCauseException) {
@@ -162,5 +183,44 @@ class DataHelperTest extends TestCase
     public function generateMultiByteCharacterString($stringLength)
     {
         return implode('', array_fill(0, $stringLength, '©'));
+    }
+
+    public function allValuesProvider()
+    {
+        return [
+            'AllKeywords' => [AllKeywords::class, [], 'allKeywords'],
+            'AllOrdernumbers' => [AllOrdernumbers::class, [], 'allOrdernumbers'],
+            'Bonus' => [Bonus::class, [], 'bonus'],
+            'DateAdded' => [DateAdded::class, [], 'dateAdded'],
+            'Description' => [Description::class, [], 'description'],
+            'Keyword' => [Keyword::class, ['keyword value'], 'keyword'],
+            'Name' => [Name::class, [], 'name'],
+            'Ordernumber' => [Ordernumber::class, ['ordernumber value'], 'ordernumber'],
+            'Price' => [Price::class, [], 'price'],
+            'SalesFrequency' => [SalesFrequency::class, [], 'salesFrequency'],
+            'Sort' => [Sort::class, [], 'sort'],
+            'Summary' => [Summary::class, [], 'summary'],
+            'Url' => [Url::class, [], 'url']
+        ];
+    }
+
+    /**
+     * @dataProvider allValuesProvider
+     *
+     * @param string $class The usergroup-aware class to check for its name.
+     * @param array $constructorArgs Arguments for the constructor of $class.
+     * @param string $expectedName The name the class should have.
+     * @throws ReflectionException
+     */
+    public function testUsergroupAwareValuesKnowTheirOwnNames(
+        string $class,
+        array $constructorArgs,
+        string $expectedName
+    ) {
+        $reflector = new ReflectionClass($class);
+        /** @var NameAwareValue $value */
+        $value = $reflector->newInstanceArgs($constructorArgs);
+
+        $this->assertEquals($expectedName, $value->getValueName());
     }
 }

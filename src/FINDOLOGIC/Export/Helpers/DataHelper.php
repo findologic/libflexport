@@ -41,16 +41,16 @@ class DataHelper
     /**
      * Checks if the provided value is empty.
      *
+     * @param string $valueName Name of the value, for better error reporting.
      * @param string|int|float $value The value to check. Regardless of type, it is coerced into a string.
-     * @throws EmptyValueNotAllowedException If the value is empty.
      * @return string Returns the value if not empty.
      */
-    public static function checkForEmptyValue($value): string
+    public static function checkForEmptyValue(string $valueName, $value): string
     {
         $value = trim($value);
 
         if ($value === '') {
-            throw new EmptyValueNotAllowedException();
+            throw new EmptyValueNotAllowedException($valueName);
         }
 
         return $value;

@@ -52,7 +52,7 @@ class Image implements Serializable
 
     private function setUrl(string $url): void
     {
-        $url = DataHelper::checkForEmptyValue($url);
+        $url = DataHelper::checkForEmptyValue('image', $url);
 
         $this->url = $url;
     }
