@@ -23,11 +23,14 @@ use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotIntegerException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotPositiveIntegerException;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 use PHPUnit\Framework\TestCase;
 
 class DataElementsTest extends TestCase
 {
     /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
      * Provides a data set for testing if initializing elements of type UsergroupAwareMultiValueItem
      * with an empty value fails.
      *
@@ -69,6 +72,8 @@ class DataElementsTest extends TestCase
     }
 
     /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
      * Provides a data set for testing if adding empty or wrong values to elements of type UsergroupAwareSimpleValue
      * fails.
      *
@@ -111,7 +116,7 @@ class DataElementsTest extends TestCase
      * @dataProvider simpleValueItemProvider
      * @param string|float|int $value
      * @param string $elementType
-     * @param Exception|null $expectedException
+     * @param string|null $expectedException
      */
     public function testAddingEmptyValuesToSimpleItemsCausesException(
         $value,
@@ -119,6 +124,7 @@ class DataElementsTest extends TestCase
         ?string $expectedException = null
     ): void {
         try {
+            /** @var UsergroupAwareSimpleValue $element */
             $element = new $elementType();
             $element->setValue($value);
             if ($expectedException !== null) {
@@ -142,6 +148,8 @@ class DataElementsTest extends TestCase
     }
 
     /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
      * Provides a data set for testing if adding empty keys or values to attribute and property elements fails.
      *
      * @return array Scenarios with key, one or more values, the element class and whether this input should cause

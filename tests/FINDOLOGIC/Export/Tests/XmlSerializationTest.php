@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Export\Tests;
 use BadMethodCallException;
 use DateTime;
 use DOMDocument;
+use DOMElement;
 use DOMXPath;
 use Exception;
 use FINDOLOGIC\Export\Constant;
@@ -182,6 +183,7 @@ class XmlSerializationTest extends TestCase
         ]);
         $root->appendChild($xmlItems);
 
+        /** @var DOMElement $itemDom */
         $itemDom = $item->getDomSubtree($document);
 
         foreach ($itemDom->childNodes as $node) {
@@ -282,6 +284,8 @@ class XmlSerializationTest extends TestCase
     }
 
     /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
      * @return array Name of add method to call in a test to add a certain value, and an array of values with
      *      usergroup names as key.
      */
@@ -359,6 +363,8 @@ class XmlSerializationTest extends TestCase
     }
 
     /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
      * Provides a data set for testing if adding wrong url values to elements of type UsergroupAwareSimpleValue fails.
      *
      * @return array Scenarios with a value and the expected exception
@@ -394,11 +400,19 @@ class XmlSerializationTest extends TestCase
 
     public function testItemsCanBeAddedToXmlPageAsWell(): void
     {
+        /** @var XMLItem $item */
+        $item = $this->getMinimalItem();
+
         $page = new Page(0, 1, 1);
-        $page->addItem($this->getMinimalItem());
+        $page->addItem($item);
         $this->assertNotNull($page->getXml());
     }
 
+    /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
+     * @return array
+     */
     public function unsupportedValueProvider(): array
     {
         return [
@@ -466,6 +480,7 @@ class XmlSerializationTest extends TestCase
             'is not a valid value of the atomic type \'httpURI\'.'
         );
 
+        /** @var XMLItem $item */
         $item = $this->getMinimalItem();
         $item->addUrl('https://www.store.com/search?attrib[cat][]=Foobar');
 
@@ -479,6 +494,7 @@ class XmlSerializationTest extends TestCase
     {
         $expectedUsergroup = 'Foobar';
 
+        /** @var XMLItem $item */
         $item = $this->getMinimalItem();
         $item->addDateAdded(new DateTime(), $expectedUsergroup);
         $item->addDescription('Descriptive things', $expectedUsergroup);

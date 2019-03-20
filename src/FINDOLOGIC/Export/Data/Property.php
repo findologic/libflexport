@@ -75,7 +75,7 @@ class Property
          * As we can not check if the values of the given array is associative,
          * we trigger a notice if the array keys are not a string.
          */
-        array_walk($values, function ($item, $key) {
+        array_walk($values, function (/** @noinspection PhpUnusedParameterInspection */ $item, $key) {
             if (!is_string($key)) {
                 $format = 'Property values have to be associative, like $key => $value. The key "%s" has to be a ' .
                     'string, integer given.';

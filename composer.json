@@ -4,7 +4,8 @@
     "homepage": "https://github.com/findologic/libflexport",
     "require": {
         "php": "^7.1",
-        "ext-dom": "*"
+        "ext-dom": "*",
+        "ext-mbstring": "*"
     },
     "require-dev": {
         "phpunit/phpunit": ">7.5",

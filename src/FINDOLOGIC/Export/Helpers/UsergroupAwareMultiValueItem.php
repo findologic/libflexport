@@ -27,6 +27,9 @@ abstract class UsergroupAwareMultiValueItem implements Serializable, NameAwareVa
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
+     * @param string $itemName
+     * @param mixed $value
+     * @param string|null $usergroup
      */
     public function __construct($itemName, $value, $usergroup)
     {

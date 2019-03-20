@@ -27,6 +27,11 @@ class PropertyTest extends TestCase
         $property->addValue('foobar');
     }
 
+    /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
+     * @return array
+     */
     public function propertyKeyProvider(): array
     {
         return [

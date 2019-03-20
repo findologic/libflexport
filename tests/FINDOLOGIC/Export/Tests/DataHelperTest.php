@@ -23,7 +23,6 @@ use FINDOLOGIC\Export\Exceptions\ItemIdLengthException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\NameAwareValue;
-use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
@@ -63,6 +62,8 @@ class DataHelperTest extends TestCase
     }
 
     /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
      * Scenarios for empty value validation.
      *
      * @return array Cases with the value to check and whether it should cause a validation issue.
@@ -110,6 +111,8 @@ class DataHelperTest extends TestCase
     }
 
     /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
      * Scenarios for numeric value validation.
      *
      * @return array Cases with the value to check and whether it should cause a validation issue.
@@ -133,7 +136,7 @@ class DataHelperTest extends TestCase
     {
         $this->expectException(AttributeValueLengthException::class);
 
-        $value = $this->generateMultiByteCharacterString(16384);
+        $value = DataHelperTest::generateMultiByteCharacterString(16384);
 
         DataHelper::checkAttributeValueNotExceedingCharacterLimit('some attribute', $value);
     }
@@ -145,7 +148,7 @@ class DataHelperTest extends TestCase
     {
         $this->expectException(ItemIdLengthException::class);
 
-        $id = $this->generateMultiByteCharacterString(256);
+        $id = DataHelperTest::generateMultiByteCharacterString(256);
 
         DataHelper::checkItemIdNotExceedingCharacterLimit($id);
     }
@@ -157,7 +160,7 @@ class DataHelperTest extends TestCase
     {
         $this->expectException(GroupNameLengthException::class);
 
-        $group = $this->generateMultiByteCharacterString(256);
+        $group = DataHelperTest::generateMultiByteCharacterString(256);
 
         DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($group);
     }
@@ -169,7 +172,7 @@ class DataHelperTest extends TestCase
     {
         $this->expectException(AttributeKeyLengthException::class);
 
-        $attributeKey = $this->generateMultiByteCharacterString(248);
+        $attributeKey = DataHelperTest::generateMultiByteCharacterString(248);
 
         DataHelper::checkCsvAttributeKeyNotExceedingCharacterLimit($attributeKey);
     }
@@ -180,11 +183,16 @@ class DataHelperTest extends TestCase
      * @param int $stringLength The string length to generate.
      * @return string The multi byte character string.
      */
-    public function generateMultiByteCharacterString($stringLength)
+    public static function generateMultiByteCharacterString($stringLength)
     {
         return implode('', array_fill(0, $stringLength, '©'));
     }
 
+    /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
+     * @return array
+     */
     public function allValuesProvider()
     {
         return [

@@ -29,6 +29,7 @@ class Attribute implements Serializable
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
+     * @param mixed $value
      */
     public function addValue($value): void
     {

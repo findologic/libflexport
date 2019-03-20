@@ -32,7 +32,7 @@ class Image implements Serializable
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @param string $url The image url of the element.
-     * @param self::TYPE_DEFAULT|self::TYPE_THUMBNAIL $type The image type to use.
+     * @param string $type The image type to use. Either Image::TYPE_DEFAULT or Image::TYPE_THUMBNAIL.
      * @param string $usergroup The usergroup of the image element.
      */
     public function __construct(string $url, string $type = self::TYPE_DEFAULT, string $usergroup = '')
