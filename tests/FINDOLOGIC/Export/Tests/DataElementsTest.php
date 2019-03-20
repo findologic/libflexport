@@ -64,7 +64,7 @@ class DataElementsTest extends TestCase
                 $this->assertNotNull($element);
             }
         } catch (Exception $exception) {
-            $this->assertEquals(EmptyValueNotAllowedException::class, get_class($exception));
+            $this->assertInstanceOf(EmptyValueNotAllowedException::class, $exception);
         }
     }
 
@@ -129,7 +129,7 @@ class DataElementsTest extends TestCase
                 $this->assertNotNull($element);
             }
         } catch (Exception $e) {
-            $this->assertEquals($expectedException, get_class($e));
+            $this->assertInstanceOf($expectedException, $e);
         }
     }
 
@@ -182,7 +182,7 @@ class DataElementsTest extends TestCase
                 $this->assertNotNull($element);
             }
         } catch (Exception $exception) {
-            $this->assertEquals(EmptyValueNotAllowedException::class, get_class($exception));
+            $this->assertInstanceOf(EmptyValueNotAllowedException::class, $exception);
         }
     }
 
@@ -190,7 +190,7 @@ class DataElementsTest extends TestCase
     {
         $this->expectException(EmptyValueNotAllowedException::class);
 
-        $usergroup = new Usergroup('');
+        new Usergroup('');
     }
 
     public function testUsergroupStringRepresentationIsTheUsergroupValue(): void

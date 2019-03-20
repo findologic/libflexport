@@ -386,7 +386,7 @@ class XmlSerializationTest extends TestCase
             $url->setValue($value);
             $this->assertNotNull($url);
         } catch (Exception $e) {
-            $this->assertEquals($expectedException, get_class($e));
+            $this->assertInstanceOf($expectedException, $e);
         }
     }
 
