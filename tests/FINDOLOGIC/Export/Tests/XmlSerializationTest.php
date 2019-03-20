@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Export\Tests;
 use BadMethodCallException;
 use DateTime;
 use DOMDocument;
+use DOMXPath;
 use Exception;
 use FINDOLOGIC\Export\Constant;
 use FINDOLOGIC\Export\Data\Attribute;
@@ -472,5 +473,34 @@ class XmlSerializationTest extends TestCase
         $page->addItem($item);
 
         $page->getXml();
+    }
+
+    public function testUsergroupIsSetOnSimpleValues()
+    {
+        $expectedUsergroup = 'Foobar';
+
+        $item = $this->getMinimalItem();
+        $item->addDateAdded(new DateTime(), $expectedUsergroup);
+        $item->addDescription('Descriptive things', $expectedUsergroup);
+        $item->addName('Alternative name', $expectedUsergroup);
+        $item->addSalesFrequency(123, $expectedUsergroup);
+        $item->addSort(345, $expectedUsergroup);
+        $item->addSummary('Summing up things', $expectedUsergroup);
+        $item->addUrl('http://example.org', $expectedUsergroup);
+
+        $page = new Page(0, 1, 1);
+        $page->addItem($item);
+        $document = $page->getXml();
+
+        $xpath = new DOMXPath($document);
+        $usergroupAttributeQuery = sprintf('[@usergroup="%s"]', $expectedUsergroup);
+
+        $this->assertEquals(1, $xpath->query('//dateAdded' . $usergroupAttributeQuery)->count());
+        $this->assertEquals(1, $xpath->query('//description' . $usergroupAttributeQuery)->count());
+        $this->assertEquals(1, $xpath->query('//name' . $usergroupAttributeQuery)->count());
+        $this->assertEquals(1, $xpath->query('//salesFrequency' . $usergroupAttributeQuery)->count());
+        $this->assertEquals(1, $xpath->query('//sort' . $usergroupAttributeQuery)->count());
+        $this->assertEquals(1, $xpath->query('//summary' . $usergroupAttributeQuery)->count());
+        $this->assertEquals(1, $xpath->query('//url' . $usergroupAttributeQuery)->count());
     }
 }
