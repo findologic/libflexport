@@ -495,12 +495,12 @@ class XmlSerializationTest extends TestCase
         $xpath = new DOMXPath($document);
         $usergroupAttributeQuery = sprintf('[@usergroup="%s"]', $expectedUsergroup);
 
-        $this->assertEquals(1, $xpath->query('//dateAdded' . $usergroupAttributeQuery)->count());
-        $this->assertEquals(1, $xpath->query('//description' . $usergroupAttributeQuery)->count());
-        $this->assertEquals(1, $xpath->query('//name' . $usergroupAttributeQuery)->count());
-        $this->assertEquals(1, $xpath->query('//salesFrequency' . $usergroupAttributeQuery)->count());
-        $this->assertEquals(1, $xpath->query('//sort' . $usergroupAttributeQuery)->count());
-        $this->assertEquals(1, $xpath->query('//summary' . $usergroupAttributeQuery)->count());
-        $this->assertEquals(1, $xpath->query('//url' . $usergroupAttributeQuery)->count());
+        $this->assertEquals(1, $xpath->query('//dateAdded' . $usergroupAttributeQuery)->length);
+        $this->assertEquals(1, $xpath->query('//description' . $usergroupAttributeQuery)->length);
+        $this->assertEquals(1, $xpath->query('//name' . $usergroupAttributeQuery)->length);
+        $this->assertEquals(1, $xpath->query('//salesFrequency' . $usergroupAttributeQuery)->length);
+        $this->assertEquals(1, $xpath->query('//sort' . $usergroupAttributeQuery)->length);
+        $this->assertEquals(1, $xpath->query('//summary' . $usergroupAttributeQuery)->length);
+        $this->assertEquals(1, $xpath->query('//url' . $usergroupAttributeQuery)->length);
     }
 }
