@@ -27,17 +27,17 @@ class CSVItem extends Item
     public function getCsvFragment(array $availableProperties = []): string
     {
         $id = $this->getId();
-        $ordernumbers = CSVItem::sanitize($this->ordernumbers->getCsvFragment());
-        $name = CSVItem::sanitize($this->name->getCsvFragment());
-        $summary = CSVItem::sanitize($this->summary->getCsvFragment());
-        $description = CSVItem::sanitize($this->description->getCsvFragment());
+        $ordernumbers = self::sanitize($this->ordernumbers->getCsvFragment());
+        $name = self::sanitize($this->name->getCsvFragment());
+        $summary = self::sanitize($this->summary->getCsvFragment());
+        $description = self::sanitize($this->description->getCsvFragment());
         $price = $this->price->getCsvFragment();
-        $url = CSVItem::sanitize($this->url->getCsvFragment());
-        $keywords = CSVItem::sanitize($this->keywords->getCsvFragment());
-        $bonus = CSVItem::sanitize($this->bonus->getCsvFragment());
-        $salesFrequency = CSVItem::sanitize($this->salesFrequency->getCsvFragment());
-        $dateAdded = CSVItem::sanitize($this->dateAdded->getCsvFragment());
-        $sort = CSVItem::sanitize($this->sort->getCsvFragment());
+        $url = self::sanitize($this->url->getCsvFragment());
+        $keywords = self::sanitize($this->keywords->getCsvFragment());
+        $bonus = self::sanitize($this->bonus->getCsvFragment());
+        $salesFrequency = self::sanitize($this->salesFrequency->getCsvFragment());
+        $dateAdded = self::sanitize($this->dateAdded->getCsvFragment());
+        $sort = self::sanitize($this->sort->getCsvFragment());
 
         $instead = $this->getInsteadPrice();
         $maxPrice = $this->getMaxPrice();
@@ -46,7 +46,7 @@ class CSVItem extends Item
             /** @var $group Usergroup */
             $groupName = $group->getCsvFragment();
             DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
-            return CSVItem::sanitize($groupName);
+            return self::sanitize($groupName);
         }, $this->usergroups));
 
 
@@ -86,7 +86,7 @@ class CSVItem extends Item
 
         foreach ($availableProperties as $availableProperty) {
             if (array_key_exists($availableProperty, $this->properties[''])) {
-                $propertiesString .= "\t" . CSVItem::sanitize($this->properties[''][$availableProperty]);
+                $propertiesString .= "\t" . self::sanitize($this->properties[''][$availableProperty]);
             } else {
                 $propertiesString .= "\t";
             }

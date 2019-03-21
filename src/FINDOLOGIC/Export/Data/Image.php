@@ -5,10 +5,11 @@ namespace FINDOLOGIC\Export\Data;
 use DOMDocument;
 use DOMElement;
 use FINDOLOGIC\Export\Helpers\DataHelper;
+use FINDOLOGIC\Export\Helpers\NameAwareValue;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
-class Image implements Serializable
+class Image implements Serializable, NameAwareValue
 {
     /**
      * Main, full-size image type.
@@ -52,7 +53,7 @@ class Image implements Serializable
 
     private function setUrl(string $url): void
     {
-        $url = DataHelper::checkForEmptyValue('image', $url);
+        $url = DataHelper::checkForEmptyValue($this->getValueName(), $url);
 
         $this->url = $url;
     }
@@ -93,5 +94,13 @@ class Image implements Serializable
     public function getCsvFragment(array $availableProperties = []): string
     {
         return $this->getUrl();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValueName(): string
+    {
+        return 'image';
     }
 }

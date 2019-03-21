@@ -490,7 +490,7 @@ class XmlSerializationTest extends TestCase
         $page->getXml();
     }
 
-    public function testUsergroupIsSetOnSimpleValues()
+    public function testUsergroupIsSetOnSimpleValues(): void
     {
         $expectedUsergroup = 'Foobar';
 

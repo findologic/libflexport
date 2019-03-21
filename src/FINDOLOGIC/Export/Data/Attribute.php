@@ -5,10 +5,11 @@ namespace FINDOLOGIC\Export\Data;
 use DOMDocument;
 use DOMElement;
 use FINDOLOGIC\Export\Helpers\DataHelper;
+use FINDOLOGIC\Export\Helpers\NameAwareValue;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
-class Attribute implements Serializable
+class Attribute implements Serializable, NameAwareValue
 {
     /** @var string */
     private $key;
@@ -23,7 +24,7 @@ class Attribute implements Serializable
      */
     public function __construct(string $key, array $values = [])
     {
-        $this->key = DataHelper::checkForEmptyValue('attribute', $key);
+        $this->key = DataHelper::checkForEmptyValue($this->getValueName(), $key);
         $this->setValues($values);
     }
 
@@ -34,7 +35,7 @@ class Attribute implements Serializable
     public function addValue($value): void
     {
         DataHelper::checkAttributeValueNotExceedingCharacterLimit($this->getKey(), $value);
-        array_push($this->values, DataHelper::checkForEmptyValue('attribute', $value));
+        array_push($this->values, DataHelper::checkForEmptyValue($this->getValueName(), $value));
     }
 
     public function setValues(array $values): void
@@ -91,5 +92,13 @@ class Attribute implements Serializable
         }
 
         return implode('&', $attributeParts);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValueName(): string
+    {
+        return 'attribute';
     }
 }

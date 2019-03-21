@@ -4,9 +4,11 @@ namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Data\AllKeywords;
 use FINDOLOGIC\Export\Data\AllOrdernumbers;
+use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
 use FINDOLOGIC\Export\Data\DateAdded;
 use FINDOLOGIC\Export\Data\Description;
+use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Name;
 use FINDOLOGIC\Export\Data\Ordernumber;
@@ -15,6 +17,7 @@ use FINDOLOGIC\Export\Data\SalesFrequency;
 use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
+use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exceptions\AttributeKeyLengthException;
 use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
@@ -136,7 +139,7 @@ class DataHelperTest extends TestCase
     {
         $this->expectException(AttributeValueLengthException::class);
 
-        $value = DataHelperTest::generateMultiByteCharacterString(16384);
+        $value = self::generateMultiByteCharacterString(16384);
 
         DataHelper::checkAttributeValueNotExceedingCharacterLimit('some attribute', $value);
     }
@@ -148,7 +151,7 @@ class DataHelperTest extends TestCase
     {
         $this->expectException(ItemIdLengthException::class);
 
-        $id = DataHelperTest::generateMultiByteCharacterString(256);
+        $id = self::generateMultiByteCharacterString(256);
 
         DataHelper::checkItemIdNotExceedingCharacterLimit($id);
     }
@@ -160,7 +163,7 @@ class DataHelperTest extends TestCase
     {
         $this->expectException(GroupNameLengthException::class);
 
-        $group = DataHelperTest::generateMultiByteCharacterString(256);
+        $group = self::generateMultiByteCharacterString(256);
 
         DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($group);
     }
@@ -172,7 +175,7 @@ class DataHelperTest extends TestCase
     {
         $this->expectException(AttributeKeyLengthException::class);
 
-        $attributeKey = DataHelperTest::generateMultiByteCharacterString(248);
+        $attributeKey = self::generateMultiByteCharacterString(248);
 
         DataHelper::checkCsvAttributeKeyNotExceedingCharacterLimit($attributeKey);
     }
@@ -198,9 +201,11 @@ class DataHelperTest extends TestCase
         return [
             'AllKeywords' => [AllKeywords::class, [], 'allKeywords'],
             'AllOrdernumbers' => [AllOrdernumbers::class, [], 'allOrdernumbers'],
+            'Attribute' => [Attribute::class, ['foo'], 'attribute'],
             'Bonus' => [Bonus::class, [], 'bonus'],
             'DateAdded' => [DateAdded::class, [], 'dateAdded'],
             'Description' => [Description::class, [], 'description'],
+            'Image' => [Image::class, ['https://example.org/foo.png'], 'image'],
             'Keyword' => [Keyword::class, ['keyword value'], 'keyword'],
             'Name' => [Name::class, [], 'name'],
             'Ordernumber' => [Ordernumber::class, ['ordernumber value'], 'ordernumber'],
@@ -208,19 +213,20 @@ class DataHelperTest extends TestCase
             'SalesFrequency' => [SalesFrequency::class, [], 'salesFrequency'],
             'Sort' => [Sort::class, [], 'sort'],
             'Summary' => [Summary::class, [], 'summary'],
-            'Url' => [Url::class, [], 'url']
+            'Url' => [Url::class, [], 'url'],
+            'Usergroup' => [Usergroup::class, ['nice people'], 'usergroup']
         ];
     }
 
     /**
      * @dataProvider allValuesProvider
      *
-     * @param string $class The usergroup-aware class to check for its name.
+     * @param string $class The class to check for its name.
      * @param array $constructorArgs Arguments for the constructor of $class.
      * @param string $expectedName The name the class should have.
      * @throws ReflectionException
      */
-    public function testUsergroupAwareValuesKnowTheirOwnNames(
+    public function testValuesKnowTheirOwnNames(
         string $class,
         array $constructorArgs,
         string $expectedName
