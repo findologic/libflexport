@@ -135,7 +135,7 @@ class DataHelperTest extends TestCase
     /**
      * Test if character limit of data helper causes exception when called outside attribute class.
      */
-    public function testAttributeValueCharacterLimitCausesException()
+    public function testAttributeValueCharacterLimitCausesException(): void
     {
         $this->expectException(AttributeValueLengthException::class);
 
@@ -147,7 +147,7 @@ class DataHelperTest extends TestCase
     /**
      * Test if item id character limit of data helper causes exception when called outside item class.
      */
-    public function testItemIdCharacterLimitCausesException()
+    public function testItemIdCharacterLimitCausesException(): void
     {
         $this->expectException(ItemIdLengthException::class);
 
@@ -159,7 +159,7 @@ class DataHelperTest extends TestCase
     /**
      * Test if group name character limit of data helper causes exception when called outside item class.
      */
-    public function testGroupNameCharacterLimitCausesException()
+    public function testGroupNameCharacterLimitCausesException(): void
     {
         $this->expectException(GroupNameLengthException::class);
 
@@ -171,7 +171,7 @@ class DataHelperTest extends TestCase
     /**
      * Test if attribute key character limit of data helper causes exception when called outside item class.
      */
-    public function testAttributeKeyCharacterLimitCausesException()
+    public function testAttributeKeyCharacterLimitCausesException(): void
     {
         $this->expectException(AttributeKeyLengthException::class);
 
@@ -186,7 +186,7 @@ class DataHelperTest extends TestCase
      * @param int $stringLength The string length to generate.
      * @return string The multi byte character string.
      */
-    public static function generateMultiByteCharacterString($stringLength)
+    public static function generateMultiByteCharacterString($stringLength): string
     {
         return implode('', array_fill(0, $stringLength, '©'));
     }
@@ -196,7 +196,7 @@ class DataHelperTest extends TestCase
      *
      * @return array
      */
-    public function allValuesProvider()
+    public function allValuesProvider(): array
     {
         return [
             'AllKeywords' => [AllKeywords::class, [], 'allKeywords'],
@@ -230,7 +230,7 @@ class DataHelperTest extends TestCase
         string $class,
         array $constructorArgs,
         string $expectedName
-    ) {
+    ): void {
         $reflector = new ReflectionClass($class);
         /** @var NameAwareValue $value */
         $value = $reflector->newInstanceArgs($constructorArgs);
