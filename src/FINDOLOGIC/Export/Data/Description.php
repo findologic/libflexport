@@ -10,4 +10,12 @@ class Description extends UsergroupAwareSimpleValue
     {
         parent::__construct('descriptions', 'description');
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValueName(): string
+    {
+        return 'description';
+    }
 }

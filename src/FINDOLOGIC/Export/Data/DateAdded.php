@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use BadMethodCallException;
 use DateTime;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
@@ -14,7 +15,7 @@ class DateAdded extends UsergroupAwareSimpleValue
 
     public function setValue($value, string $usergroup = ''): void
     {
-        throw new \BadMethodCallException('Assign DateAdded values by passing a \DateTime to setDateValue()');
+        throw new BadMethodCallException('Assign DateAdded values by passing a \DateTime to setDateValue()');
     }
 
     public function setDateValue(DateTime $value, string $usergroup = ''): void
@@ -29,5 +30,13 @@ class DateAdded extends UsergroupAwareSimpleValue
         $date = DateTime::createFromFormat(DATE_ATOM, $this->getValues()['']);
 
         return $date->format('U');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValueName(): string
+    {
+        return 'dateAdded';
     }
 }

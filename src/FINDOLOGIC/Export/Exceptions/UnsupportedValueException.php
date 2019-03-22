@@ -2,7 +2,9 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-class UnsupportedValueException extends \BadMethodCallException
+use BadMethodCallException;
+
+class UnsupportedValueException extends BadMethodCallException
 {
     public function __construct(string $unsupportedValueName)
     {

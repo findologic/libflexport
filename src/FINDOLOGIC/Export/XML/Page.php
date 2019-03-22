@@ -2,7 +2,10 @@
 
 namespace FINDOLOGIC\Export\XML;
 
+use DOMDocument;
+use FINDOLOGIC\Export\Constant;
 use FINDOLOGIC\Export\Exceptions\ItemsExceedCountValueException;
+use FINDOLOGIC\Export\Exceptions\XMLSchemaViolationException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 class Page
@@ -37,13 +40,13 @@ class Page
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function getXml(): \DOMDocument
+    public function getXml(): DOMDocument
     {
         if (count($this->items) > $this->count) {
             throw new ItemsExceedCountValueException();
         }
 
-        $document = new \DOMDocument('1.0', 'utf-8');
+        $document = new DOMDocument('1.0', 'utf-8');
         $root = XMLHelper::createElement($document, 'findologic', ['version' => '1.0']);
         $document->appendCHild($root);
 
@@ -60,6 +63,29 @@ class Page
             $items->appendChild($itemDom);
         }
 
+        $this->validateWithSchema($document);
+
         return $document;
+    }
+
+    /**
+     * Validates the export page against the schema. In case of violations, an exception is thrown.
+     *
+     * @param DOMDocument $document The document to validate.
+     */
+    private function validateWithSchema(DOMDocument $document): void
+    {
+        $validationErrors = [];
+        set_error_handler(function (/** @noinspection PhpUnusedParameterInspection */ $errno, $errstr)
+ use (&$validationErrors) {
+            array_push($validationErrors, $errstr);
+        });
+
+        $isValid = $document->schemaValidate(Constant::$XSD_SCHEMA_PATH);
+        restore_error_handler();
+
+        if (!$isValid) {
+            throw new XMLSchemaViolationException($validationErrors);
+        }
     }
 }

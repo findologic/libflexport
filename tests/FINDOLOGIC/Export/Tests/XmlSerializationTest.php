@@ -2,7 +2,12 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
+use BadMethodCallException;
 use DateTime;
+use DOMDocument;
+use DOMElement;
+use DOMXPath;
+use Exception;
 use FINDOLOGIC\Export\Constant;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
@@ -18,6 +23,7 @@ use FINDOLOGIC\Export\Exceptions\ImagesWithoutUsergroupMissingException;
 use FINDOLOGIC\Export\Exceptions\InvalidUrlException;
 use FINDOLOGIC\Export\Exceptions\ItemsExceedCountValueException;
 use FINDOLOGIC\Export\Exceptions\UnsupportedValueException;
+use FINDOLOGIC\Export\Exceptions\XMLSchemaViolationException;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 use FINDOLOGIC\Export\XML\Page;
@@ -48,7 +54,7 @@ class XmlSerializationTest extends TestCase
     {
         try {
             unlink('/tmp/findologic_0_1.xml');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // No need to delete a written file if the test didn't write it.
         }
     }
@@ -77,7 +83,7 @@ class XmlSerializationTest extends TestCase
 
     private function assertPageIsValid($xmlString): void
     {
-        $xmlDocument = new \DOMDocument('1.0', 'utf-8');
+        $xmlDocument = new DOMDocument('1.0', 'utf-8');
         $xmlDocument->loadXML($xmlString);
 
         $this->assertTrue($xmlDocument->schemaValidateSource(self::$schema));
@@ -166,7 +172,7 @@ class XmlSerializationTest extends TestCase
             new Image($imageUrl),
         ]);
 
-        $document = new \DOMDocument('1.0', 'utf-8');
+        $document = new DOMDocument('1.0', 'utf-8');
         $root = XMLHelper::createElement($document, 'findologic', ['version' => '1.0']);
         $document->appendChild($root);
 
@@ -177,6 +183,7 @@ class XmlSerializationTest extends TestCase
         ]);
         $root->appendChild($xmlItems);
 
+        /** @var DOMElement $itemDom */
         $itemDom = $item->getDomSubtree($document);
 
         foreach ($itemDom->childNodes as $node) {
@@ -271,12 +278,14 @@ class XmlSerializationTest extends TestCase
 
         try {
             $item->getCsvFragment();
-        } catch (\BadMethodCallException $e) {
+        } catch (BadMethodCallException $e) {
             $this->assertEquals('XMLItem does not implement CSV export.', $e->getMessage());
         }
     }
 
     /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
      * @return array Name of add method to call in a test to add a certain value, and an array of values with
      *      usergroup names as key.
      */
@@ -354,6 +363,8 @@ class XmlSerializationTest extends TestCase
     }
 
     /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
      * Provides a data set for testing if adding wrong url values to elements of type UsergroupAwareSimpleValue fails.
      *
      * @return array Scenarios with a value and the expected exception
@@ -382,18 +393,26 @@ class XmlSerializationTest extends TestCase
             $url =  new Url();
             $url->setValue($value);
             $this->assertNotNull($url);
-        } catch (\Exception $e) {
-            $this->assertEquals($expectedException, get_class($e));
+        } catch (Exception $e) {
+            $this->assertInstanceOf($expectedException, $e);
         }
     }
 
     public function testItemsCanBeAddedToXmlPageAsWell(): void
     {
+        /** @var XMLItem $item */
+        $item = $this->getMinimalItem();
+
         $page = new Page(0, 1, 1);
-        $page->addItem($this->getMinimalItem());
+        $page->addItem($item);
         $this->assertNotNull($page->getXml());
     }
 
+    /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
+     * @return array
+     */
     public function unsupportedValueProvider(): array
     {
         return [
@@ -440,7 +459,7 @@ class XmlSerializationTest extends TestCase
         $this->expectException(InvalidUrlException::class);
 
         $image = new Image('www.store.com/images/277KTL.png');
-        $image->getDomSubtree(new \DOMDocument());
+        $image->getDomSubtree(new DOMDocument());
     }
 
     public function testAddingUrlsToXmlDomWorksAsExpected(): void
@@ -450,5 +469,54 @@ class XmlSerializationTest extends TestCase
         $item->addUrl('https://www.store.com/images/277KTL.png');
 
         $this->assertPageIsValid($this->exporter->serializeItems([$item], 0, 1, 1));
+    }
+
+    public function testUrlsContainingSquareBracketsFailValidation(): void
+    {
+        $this->expectException(XMLSchemaViolationException::class);
+        $this->expectExceptionMessage(
+            'XML schema validation failed: DOMDocument::schemaValidate(): Element ' .
+            '\'url\': \'https://www.store.com/search?attrib[cat][]=Foobar\' ' .
+            'is not a valid value of the atomic type \'httpURI\'.'
+        );
+
+        /** @var XMLItem $item */
+        $item = $this->getMinimalItem();
+        $item->addUrl('https://www.store.com/search?attrib[cat][]=Foobar');
+
+        $page = new Page(0, 1, 1);
+        $page->addItem($item);
+
+        $page->getXml();
+    }
+
+    public function testUsergroupIsSetOnSimpleValues(): void
+    {
+        $expectedUsergroup = 'Foobar';
+
+        /** @var XMLItem $item */
+        $item = $this->getMinimalItem();
+        $item->addDateAdded(new DateTime(), $expectedUsergroup);
+        $item->addDescription('Descriptive things', $expectedUsergroup);
+        $item->addName('Alternative name', $expectedUsergroup);
+        $item->addSalesFrequency(123, $expectedUsergroup);
+        $item->addSort(345, $expectedUsergroup);
+        $item->addSummary('Summing up things', $expectedUsergroup);
+        $item->addUrl('http://example.org', $expectedUsergroup);
+
+        $page = new Page(0, 1, 1);
+        $page->addItem($item);
+        $document = $page->getXml();
+
+        $xpath = new DOMXPath($document);
+        $usergroupAttributeQuery = sprintf('[@usergroup="%s"]', $expectedUsergroup);
+
+        $this->assertEquals(1, $xpath->query('//dateAdded' . $usergroupAttributeQuery)->length);
+        $this->assertEquals(1, $xpath->query('//description' . $usergroupAttributeQuery)->length);
+        $this->assertEquals(1, $xpath->query('//name' . $usergroupAttributeQuery)->length);
+        $this->assertEquals(1, $xpath->query('//salesFrequency' . $usergroupAttributeQuery)->length);
+        $this->assertEquals(1, $xpath->query('//sort' . $usergroupAttributeQuery)->length);
+        $this->assertEquals(1, $xpath->query('//summary' . $usergroupAttributeQuery)->length);
+        $this->assertEquals(1, $xpath->query('//url' . $usergroupAttributeQuery)->length);
     }
 }

@@ -24,4 +24,12 @@ class AllOrdernumbers extends UsergroupAwareMultiValue
             return '';
         }
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValueName(): string
+    {
+        return 'allOrdernumbers';
+    }
 }

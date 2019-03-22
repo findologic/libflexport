@@ -2,19 +2,23 @@
 
 namespace FINDOLOGIC\Export\CSV;
 
+use BadMethodCallException;
+use DOMDocument;
 use FINDOLOGIC\Export\Data\Attribute;
+use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Helpers\DataHelper;
+use InvalidArgumentException;
 
 class CSVItem extends Item
 {
     /**
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document): void
+    public function getDomSubtree(DOMDocument $document): void
     {
-        throw new \BadMethodCallException('CSVItem does not implement XML export.');
+        throw new BadMethodCallException('CSVItem does not implement XML export.');
     }
 
     /**
@@ -22,29 +26,27 @@ class CSVItem extends Item
      */
     public function getCsvFragment(array $availableProperties = []): string
     {
-        $that = $this; // Used in closure.
-
         $id = $this->getId();
-        $ordernumbers = $this->sanitize($this->ordernumbers->getCsvFragment());
-        $name = $this->sanitize($this->name->getCsvFragment());
-        $summary = $this->sanitize($this->summary->getCsvFragment());
-        $description = $this->sanitize($this->description->getCsvFragment());
+        $ordernumbers = self::sanitize($this->ordernumbers->getCsvFragment());
+        $name = self::sanitize($this->name->getCsvFragment());
+        $summary = self::sanitize($this->summary->getCsvFragment());
+        $description = self::sanitize($this->description->getCsvFragment());
         $price = $this->price->getCsvFragment();
-        $url = $this->sanitize($this->url->getCsvFragment());
-        $keywords = $this->sanitize($this->keywords->getCsvFragment());
-        $bonus = $this->sanitize($this->bonus->getCsvFragment());
-        $salesFrequency = $this->sanitize($this->salesFrequency->getCsvFragment());
-        $dateAdded = $this->sanitize($this->dateAdded->getCsvFragment());
-        $sort = $this->sanitize($this->sort->getCsvFragment());
+        $url = self::sanitize($this->url->getCsvFragment());
+        $keywords = self::sanitize($this->keywords->getCsvFragment());
+        $bonus = self::sanitize($this->bonus->getCsvFragment());
+        $salesFrequency = self::sanitize($this->salesFrequency->getCsvFragment());
+        $dateAdded = self::sanitize($this->dateAdded->getCsvFragment());
+        $sort = self::sanitize($this->sort->getCsvFragment());
 
         $instead = $this->getInsteadPrice();
         $maxPrice = $this->getMaxPrice();
         $taxRate = $this->getTaxRate();
-        $groups = implode(',', array_map(function (Usergroup $group) use ($that): string {
+        $groups = implode(',', array_map(function (Usergroup $group): string {
             /** @var $group Usergroup */
             $groupName = $group->getCsvFragment();
             DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
-            return $that->sanitize($groupName);
+            return self::sanitize($groupName);
         }, $this->usergroups));
 
 
@@ -84,7 +86,7 @@ class CSVItem extends Item
 
         foreach ($availableProperties as $availableProperty) {
             if (array_key_exists($availableProperty, $this->properties[''])) {
-                $propertiesString .= "\t" . $this->sanitize($this->properties[''][$availableProperty]);
+                $propertiesString .= "\t" . self::sanitize($this->properties[''][$availableProperty]);
             } else {
                 $propertiesString .= "\t";
             }
@@ -113,9 +115,11 @@ class CSVItem extends Item
         // exists, cause an error because it's no longer certain which one is intended to be used.
         if (array_key_exists('', $this->images)) {
             if (count($this->images['']) === 1) {
-                $imageUrl = $this->images[''][0]->getCsvFragment();
+                /** @var Image $image */
+                $image = $this->images[''][0];
+                $imageUrl = $image->getCsvFragment();
             } else {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'Zero or multiple images without usergroup associated with item. ' .
                     'Cannot generate CSV if there is not one definitive image set.'
                 );
@@ -127,7 +131,7 @@ class CSVItem extends Item
         return $imageUrl;
     }
 
-    private function sanitize($input, $stripTags = true): string
+    private static function sanitize($input, $stripTags = true): string
     {
         if ($stripTags) {
             $input = strip_tags($input);

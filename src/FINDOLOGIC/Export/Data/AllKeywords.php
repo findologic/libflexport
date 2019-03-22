@@ -26,4 +26,12 @@ class AllKeywords extends UsergroupAwareMultiValue
             return '';
         }
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValueName(): string
+    {
+        return 'allKeywords';
+    }
 }

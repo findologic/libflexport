@@ -4,6 +4,8 @@ namespace FINDOLOGIC\Export\Tests;
 
 use BadMethodCallException;
 use DateTime;
+use DOMDocument;
+use Exception;
 use FINDOLOGIC\Export\CSV\CSVExporter;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
@@ -23,6 +25,8 @@ use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
 use FINDOLOGIC\Export\Exporter;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValueItem;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -46,7 +50,7 @@ class CSVSerializationTest extends TestCase
     {
         try {
             unlink('/tmp/findologic.csv');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // No need to delete a written file if the test didn't write it.
         }
     }
@@ -274,6 +278,7 @@ class CSVSerializationTest extends TestCase
         $this->assertEquals($expectedCsvHeading, $lines[0]);
     }
 
+    /** @noinspection PhpMethodMayBeStaticInspection */
     public function illegalPropertyProvider(): array
     {
         return [
@@ -316,7 +321,7 @@ class CSVSerializationTest extends TestCase
     {
         $this->expectException(BadMethodCallException::class);
 
-        $this->getMinimalItem()->getDomSubtree(new \DOMDocument());
+        $this->getMinimalItem()->getDomSubtree(new DOMDocument());
     }
 
     public function testAddingRelativeUrlIsNotCausingAnException(): void
@@ -328,6 +333,8 @@ class CSVSerializationTest extends TestCase
     }
 
     /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
      * Provides a dataset for testing if tab and new line characters which are removed by the sanitize method
      * don't break the CSV export.
      *
@@ -356,10 +363,11 @@ class CSVSerializationTest extends TestCase
     {
         $item = $this->getMinimalItem();
 
-        if (get_parent_class($elementType) === 'FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValueItem') {
+        if (get_parent_class($elementType) === UsergroupAwareMultiValueItem::class) {
             $element = new $elementType($value);
             $item->$setterMethodName($element);
         } else {
+            /** @var UsergroupAwareSimpleValue $element */
             $element = new $elementType();
             $element->setValue($value);
             $item->$setterMethodName($element);

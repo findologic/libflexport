@@ -2,11 +2,14 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use DOMDocument;
+use DOMElement;
 use FINDOLOGIC\Export\Helpers\DataHelper;
+use FINDOLOGIC\Export\Helpers\NameAwareValue;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
-class Image implements Serializable
+class Image implements Serializable, NameAwareValue
 {
     /**
      * Main, full-size image type.
@@ -30,7 +33,7 @@ class Image implements Serializable
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @param string $url The image url of the element.
-     * @param self::TYPE_DEFAULT|self::TYPE_THUMBNAIL $type The image type to use.
+     * @param string $type The image type to use. Either Image::TYPE_DEFAULT or Image::TYPE_THUMBNAIL.
      * @param string $usergroup The usergroup of the image element.
      */
     public function __construct(string $url, string $type = self::TYPE_DEFAULT, string $usergroup = '')
@@ -50,7 +53,7 @@ class Image implements Serializable
 
     private function setUrl(string $url): void
     {
-        $url = DataHelper::checkForEmptyValue($url);
+        $url = DataHelper::checkForEmptyValue($this->getValueName(), $url);
 
         $this->url = $url;
     }
@@ -75,7 +78,7 @@ class Image implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document): \DOMElement
+    public function getDomSubtree(DOMDocument $document): DOMElement
     {
         $imageElem = XMLHelper::createElementWithText($document, 'image', DataHelper::validateUrl($this->getUrl()));
         if ($this->getType()) {
@@ -91,5 +94,13 @@ class Image implements Serializable
     public function getCsvFragment(array $availableProperties = []): string
     {
         return $this->getUrl();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValueName(): string
+    {
+        return 'image';
     }
 }

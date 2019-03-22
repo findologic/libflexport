@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Export;
 use FINDOLOGIC\Export\CSV\CSVExporter;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\XML\XMLExporter;
+use InvalidArgumentException;
 
 abstract class Exporter
 {
@@ -25,7 +26,7 @@ abstract class Exporter
     /**
      * Creates an exporter for the desired output format.
      *
-     * @param self::TYPE_XML|self::TYPE_CSV $type The type of export format to choose.
+     * @param int $type The type of export format to choose. Must be either Exporter::TYPE_XML or Exporter::TYPE_CSV.
      * @param int $itemsPerPage Number of items being exported at once. Respecting this parameter is at the exporter
      *      implementation's discretion.
      * @param array $csvProperties Properties/extra columns for CSV export. Has no effect for XML export.
@@ -34,7 +35,7 @@ abstract class Exporter
     public static function create(int $type, int $itemsPerPage = 20, array $csvProperties = []): Exporter
     {
         if ($itemsPerPage < 1) {
-            throw new \InvalidArgumentException('At least one item must be exported per page.');
+            throw new InvalidArgumentException('At least one item must be exported per page.');
         }
 
         switch ($type) {
@@ -45,7 +46,7 @@ abstract class Exporter
                 $exporter = new CSVExporter($itemsPerPage, $csvProperties);
                 break;
             default:
-                throw new \InvalidArgumentException('Unsupported exporter type.');
+                throw new InvalidArgumentException('Unsupported exporter type.');
         }
 
         return $exporter;

@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Export\Helpers;
 
 use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
 
-class UsergroupAwareNumericValue extends UsergroupAwareSimpleValue
+abstract class UsergroupAwareNumericValue extends UsergroupAwareSimpleValue
 {
     protected function validate($value)
     {

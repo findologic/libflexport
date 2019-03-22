@@ -2,17 +2,20 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
+use DOMDocument;
+use DOMElement;
+
 /**
  * Data that is serializable as CSV or XML.
  */
 interface Serializable
 {
     /**
-     * @param \DOMDocument The document to work with. It should be passed along if getDomDocument of other objects is
-     *      called. It should not be modified, unless at the root!
-     * @return \DOMElement The root element of whatever was generated.
+     * @param DOMDocument $document The document to work with. It should be passed along if getDomDocument of other
+     *      objects is called. It should not be modified, unless at the root!
+     * @return DOMElement The root element of whatever was generated.
      */
-    public function getDomSubtree(\DOMDocument $document);
+    public function getDomSubtree(DOMDocument $document);
 
     /**
      * @param array $availableProperties Properties that are available across the data set, so an individual item

@@ -2,13 +2,16 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
+use DOMDocument;
+use DOMElement;
+
 /**
  * Class UsergroupAwareMultiValue
  * @package FINDOLOGIC\Export\Helpers
  *
  * Multi values that can differ per usergroup, and have multiple values for each.
  */
-abstract class UsergroupAwareMultiValue implements Serializable
+abstract class UsergroupAwareMultiValue implements Serializable, NameAwareValue
 {
     /** @var string */
     private $rootCollectionName;
@@ -63,7 +66,7 @@ abstract class UsergroupAwareMultiValue implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document): \DOMElement
+    public function getDomSubtree(DOMDocument $document): DOMElement
     {
         $rootCollectionElem = XMLHelper::createElement($document, $this->rootCollectionName);
 

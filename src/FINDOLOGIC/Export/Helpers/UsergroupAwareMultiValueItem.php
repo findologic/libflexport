@@ -2,6 +2,9 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
+use DOMDocument;
+use DOMElement;
+
 /**
  * Class UsergroupAwareMultiValueItem
  * @package FINDOLOGIC\Export\Helpers
@@ -11,7 +14,7 @@ namespace FINDOLOGIC\Export\Helpers;
  * When inheriting, make sure that the child class' constructor exposes $value and $usergroup, and calls the parent's
  * constructor with those values, plus the name of the XML element in which the value is wrapped.
  */
-abstract class UsergroupAwareMultiValueItem implements Serializable
+abstract class UsergroupAwareMultiValueItem implements Serializable, NameAwareValue
 {
     /** @var string */
     private $itemName;
@@ -24,10 +27,13 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
+     * @param string $itemName
+     * @param mixed $value
+     * @param string|null $usergroup
      */
     public function __construct($itemName, $value, $usergroup)
     {
-        $this->value = DataHelper::checkForEmptyValue($value);
+        $this->value = DataHelper::checkForEmptyValue($this->getValueName(), $value);
         $this->itemName = $itemName;
         $this->usergroup = $usergroup;
     }
@@ -46,7 +52,7 @@ abstract class UsergroupAwareMultiValueItem implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document): \DOMElement
+    public function getDomSubtree(DOMDocument $document): DOMElement
     {
         $valueElem = XMLHelper::createElementWithText($document, $this->itemName, $this->getValue());
 

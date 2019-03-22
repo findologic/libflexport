@@ -16,7 +16,7 @@ class Sort extends UsergroupAwareSimpleValue
     protected function validate($value): int
     {
         if ($value === '') {
-            throw new EmptyValueNotAllowedException();
+            throw new EmptyValueNotAllowedException($this->getValueName());
         }
 
         if (!is_int($value)) {
@@ -24,5 +24,13 @@ class Sort extends UsergroupAwareSimpleValue
         }
 
         return $value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValueName(): string
+    {
+        return 'sort';
     }
 }

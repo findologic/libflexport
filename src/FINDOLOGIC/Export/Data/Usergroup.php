@@ -2,18 +2,21 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use DOMDocument;
+use DOMElement;
 use FINDOLOGIC\Export\Helpers\DataHelper;
+use FINDOLOGIC\Export\Helpers\NameAwareValue;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
-class Usergroup implements Serializable
+class Usergroup implements Serializable, NameAwareValue
 {
     /** @var string */
     private $value;
 
     public function __construct($value)
     {
-        $this->value = DataHelper::checkForEmptyValue($value);
+        $this->value = DataHelper::checkForEmptyValue($this->getValueName(), $value);
     }
 
     public function getValue(): string
@@ -25,7 +28,7 @@ class Usergroup implements Serializable
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
-    public function getDomSubtree(\DOMDocument $document): \DOMElement
+    public function getDomSubtree(DOMDocument $document): DOMElement
     {
         $usergroupElem = XMLHelper::createElementWithText($document, 'usergroup', $this->getValue());
 
@@ -43,5 +46,13 @@ class Usergroup implements Serializable
     public function __toString(): string
     {
         return $this->getValue();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValueName(): string
+    {
+        return 'usergroup';
     }
 }

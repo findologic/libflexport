@@ -10,4 +10,12 @@ class Keyword extends UsergroupAwareMultiValueItem
     {
         parent::__construct('keyword', $value, $usergroup);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValueName(): string
+    {
+        return 'keyword';
+    }
 }

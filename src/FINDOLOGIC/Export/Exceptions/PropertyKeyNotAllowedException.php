@@ -2,7 +2,9 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-class PropertyKeyNotAllowedException extends \RuntimeException
+use RuntimeException;
+
+class PropertyKeyNotAllowedException extends RuntimeException
 {
     public function __construct(string $key)
     {
