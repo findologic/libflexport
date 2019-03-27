@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use DateTime;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
@@ -17,43 +18,34 @@ use FINDOLOGIC\Export\Exporter;
  */
 class CsvExample
 {
-    public function createExport()
+    public function createExport(): string
     {
         $exporter = Exporter::create(Exporter::TYPE_CSV, 20, [
             'sale', 'novelty', 'logo', 'availability', 'old_price', 'Basic_rate_price'
         ]);
 
-        $itemsToExport = [];
+        $item = $exporter->createItem('01120c948ad41a2284ad9f0402fbc7d');
 
-        // Here you could have an array with the item data to iterate threw
-        $itemsData = ['item1'];
+        $this->addOrdernumbers($item);
+        $this->addNames($item);
+        $this->addSummaries($item);
+        $this->addDescriptions($item);
+        $this->addPrices($item);
+        $this->addUrls($item);
+        $this->addKeywords($item);
+        $this->addBonuses($item);
+        $this->addSalesFrequencies($item);
+        $this->addDateAddeds($item);
+        $this->addSorts($item);
+        $this->addUsergroups($item);
+        $this->addImages($item);
+        $this->addAttributes($item);
+        $this->addProperties($item);
 
-        foreach ($itemsData as $itemData) {
-            $item = $exporter->createItem('01120c948ad41a2284ad9f0402fbc7d');
-
-            $this->addOrdernumbers($item, $itemData);
-            $this->addNames($item, $itemData);
-            $this->addSummaries($item, $itemData);
-            $this->addDescriptions($item, $itemData);
-            $this->addPrices($item, $itemData);
-            $this->addUrls($item, $itemData);
-            $this->addKeywords($item, $itemData);
-            $this->addBonuses($item, $itemData);
-            $this->addSalesFrequencies($item, $itemData);
-            $this->addDateAddeds($item, $itemData);
-            $this->addSorts($item, $itemData);
-            $this->addUsergroups($item, $itemData);
-            $this->addImages($item, $itemData);
-            $this->addAttributes($item, $itemData);
-            $this->addProperties($item, $itemData);
-
-            $itemsToExport[] = $item;
-        }
-
-        return $exporter->serializeItems($itemsToExport, 0, 1, 1);
+        return $exporter->serializeItems([$item], 0, 1, 1);
     }
 
-    private function addAttributes(Item $item, $itemData)
+    private function addAttributes(Item $item): void
     {
         $attributesData = [
             'cat' => [
@@ -80,22 +72,22 @@ class CsvExample
         }
     }
 
-    private function addBonuses(Item $item, $itemData)
+    private function addBonuses(Item $item): void
     {
         $item->addBonus(3);
     }
 
-    private function addDateAddeds(Item $item, $itemData)
+    private function addDateAddeds(Item $item): void
     {
-        $item->addDateAdded(new \DateTime());
+        $item->addDateAdded(new DateTime());
     }
 
-    private function addDescriptions(Item $item, $itemData)
+    private function addDescriptions(Item $item): void
     {
         $item->addDescription('With this sneaker you will walk in style. It\'s available in green and blue.');
     }
 
-    private function addOrdernumbers(Item $item, $itemData)
+    private function addOrdernumbers(Item $item): void
     {
         $ordernumbersData = [
             '' => [
@@ -111,7 +103,7 @@ class CsvExample
         }
     }
 
-    private function addImages(Item $item, $itemData)
+    private function addImages(Item $item): void
     {
         $imagesData = [
             '' => [
@@ -126,7 +118,7 @@ class CsvExample
         }
     }
 
-    private function addKeywords(Item $item, $itemData)
+    private function addKeywords(Item $item): void
     {
         $keywordsData = [
             '' => [
@@ -142,12 +134,12 @@ class CsvExample
         }
     }
 
-    private function addNames(Item $item, $itemData)
+    private function addNames(Item $item): void
     {
         $item->addName('Adidas Sneaker');
     }
 
-    private function addPrices(Item $item, $itemData)
+    private function addPrices(Item $item): void
     {
         $item->addPrice(44.8);
         $item->setInsteadPrice(50);
@@ -155,7 +147,7 @@ class CsvExample
         $item->setTaxRate(20);
     }
 
-    private function addProperties(Item $item, $itemData)
+    private function addProperties(Item $item): void
     {
         $propertiesData = [
             'sale' => [
@@ -184,27 +176,27 @@ class CsvExample
         }
     }
 
-    private function addSalesFrequencies(Item $item, $itemData)
+    private function addSalesFrequencies(Item $item): void
     {
         $item->addSalesFrequency(5);
     }
 
-    private function addSorts(Item $item, $itemData)
+    private function addSorts(Item $item): void
     {
         $item->addSort(5);
     }
 
-    private function addSummaries(Item $item, $itemData)
+    private function addSummaries(Item $item): void
     {
         $item->addSummary('A cool and fashionable sneaker');
     }
 
-    private function addUrls(Item $item, $itemData)
+    private function addUrls(Item $item): void
     {
         $item->addUrl('https://www.store.com/sneakers/adidas.html');
     }
 
-    private function addUsergroups(Item $item, $itemData)
+    private function addUsergroups(Item $item): void
     {
         $usergroups = [
             'LNrLF7BRVJ0toQ==',
