@@ -18,6 +18,7 @@ use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\BaseImageMissingException;
 use FINDOLOGIC\Export\Exceptions\ImagesWithoutUsergroupMissingException;
 use FINDOLOGIC\Export\Exceptions\InvalidUrlException;
@@ -73,6 +74,8 @@ class XmlSerializationTest extends TestCase
     private function getMinimalItem(): Item
     {
         $item = $this->exporter->createItem('123');
+
+        $item->addName('Alternative name');
 
         $price = new Price();
         $price->setValue('13.37');
@@ -518,5 +521,40 @@ class XmlSerializationTest extends TestCase
         $this->assertEquals(1, $xpath->query('//sort' . $usergroupAttributeQuery)->length);
         $this->assertEquals(1, $xpath->query('//summary' . $usergroupAttributeQuery)->length);
         $this->assertEquals(1, $xpath->query('//url' . $usergroupAttributeQuery)->length);
+    }
+
+    public function testEmptyNameCausesException(): void
+    {
+        $this->expectException(EmptyValueNotAllowedException::class);
+
+        $item = $this->getMinimalItem();
+
+        $item->addName('');
+
+        $this->exporter->serializeItems([$item], 0, 1, 1);
+    }
+
+    public function testWhitespaceOnlyNameCausesException(): void
+    {
+        $this->expectException(EmptyValueNotAllowedException::class);
+
+        $item = $this->getMinimalItem();
+
+        $item->addName('     ');
+
+        $this->exporter->serializeItems([$item], 0, 1, 1);
+    }
+
+    public function testMissingNameCausesException(): void
+    {
+        $this->expectException(XMLSchemaViolationException::class);
+
+        $item = $this->exporter->createItem('123');
+
+        $price = new Price();
+        $price->setValue('13.37');
+        $item->setPrice($price);
+
+        $this->exporter->serializeItems([$item], 0, 1, 1);
     }
 }
