@@ -28,13 +28,16 @@
             "name": "Markus Machatschek",
             "email": "mmachatschek@yahoo.com",
             "role": "maintainer"
-
         },
         {
             "name": "Dominik Brader",
             "email": "d.brader@findologic.com",
             "role": "developer"
-
+        },
+        {
+            "name": "Mohamad Assani",
+            "email": "m.assani@findologic.com",
+            "role": "developer"
         }
     ],
     "autoload": {
