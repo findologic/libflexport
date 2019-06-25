@@ -54,9 +54,7 @@ abstract class UsergroupAwareMultiValueItem implements Serializable, NameAwareVa
      */
     public function getDomSubtree(DOMDocument $document): DOMElement
     {
-        $valueElem = XMLHelper::createElementWithText($document, $this->itemName, $this->getValue());
-
-        return $valueElem;
+        return XMLHelper::createElementWithText($document, $this->itemName, $this->getValue());
     }
 
     /**

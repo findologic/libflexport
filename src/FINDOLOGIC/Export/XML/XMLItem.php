@@ -97,10 +97,9 @@ class XMLItem extends Item
         $allAttributes->appendChild($attributes);
 
         /**
-         * @var string $key
          * @var Attribute $attribute
          */
-        foreach ($this->attributes as $key => $attribute) {
+        foreach ($this->attributes as $attribute) {
             $attributes->appendChild($attribute->getDomSubtree($document));
         }
 
@@ -162,7 +161,7 @@ class XMLItem extends Item
      * Checks if there is at least one image of type default
      *
      * @param array $images The images to validate.
-     * @return boolean Whether the images are valid or not.
+     * @return bool Whether the images are valid or not.
      */
     private static function validateImages(array $images): bool
     {

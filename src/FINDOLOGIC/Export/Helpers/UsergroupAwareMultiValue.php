@@ -19,17 +19,13 @@ abstract class UsergroupAwareMultiValue implements Serializable, NameAwareValue
     /** @var string */
     private $usergroupCollectionName;
 
-    /** @var string */
-    private $csvDelimiter;
-
     /** @var array */
     protected $values = [];
 
-    public function __construct($rootCollectionName, $usergroupCollectionName, $csvDelimiter)
+    public function __construct($rootCollectionName, $usergroupCollectionName)
     {
         $this->rootCollectionName = $rootCollectionName;
         $this->usergroupCollectionName = $usergroupCollectionName;
-        $this->csvDelimiter = $csvDelimiter;
     }
 
     /**
@@ -51,7 +47,7 @@ abstract class UsergroupAwareMultiValue implements Serializable, NameAwareValue
     {
         $this->values = [];
 
-        /* @var UsergroupAwareMultiValueItem $value */
+        /** @var UsergroupAwareMultiValueItem $value */
         foreach ($values as $value) {
             $this->addValue($value);
         }

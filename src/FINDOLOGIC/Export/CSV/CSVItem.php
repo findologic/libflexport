@@ -43,7 +43,7 @@ class CSVItem extends Item
         $maxPrice = $this->getMaxPrice();
         $taxRate = $this->getTaxRate();
         $groups = implode(',', array_map(function (Usergroup $group): string {
-            /** @var $group Usergroup */
+            /** @var Usergroup $group */
             $groupName = $group->getCsvFragment();
             DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
             return self::sanitize($groupName);
@@ -137,8 +137,6 @@ class CSVItem extends Item
             $input = strip_tags($input);
         }
 
-        $sanitized = preg_replace('/[\t\n]/', ' ', $input);
-
-        return $sanitized;
+        return preg_replace('/[\t\n]/', ' ', $input);
     }
 }

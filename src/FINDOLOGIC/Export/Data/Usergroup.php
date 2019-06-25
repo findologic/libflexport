@@ -30,9 +30,7 @@ class Usergroup implements Serializable, NameAwareValue
      */
     public function getDomSubtree(DOMDocument $document): DOMElement
     {
-        $usergroupElem = XMLHelper::createElementWithText($document, 'usergroup', $this->getValue());
-
-        return $usergroupElem;
+        return XMLHelper::createElementWithText($document, 'usergroup', $this->getValue());
     }
 
     /**
