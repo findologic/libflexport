@@ -15,7 +15,7 @@ interface Serializable
      *      objects is called. It should not be modified, unless at the root!
      * @return DOMElement The root element of whatever was generated.
      */
-    public function getDomSubtree(DOMDocument $document);
+    public function getDomSubtree(DOMDocument $document): DOMElement;
 
     /**
      * @param array $availableProperties Properties that are available across the data set, so an individual item

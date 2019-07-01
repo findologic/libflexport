@@ -11,9 +11,6 @@ class Ordernumber extends UsergroupAwareMultiValueItem
         parent::__construct('ordernumber', $value, $usergroup);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getValueName(): string
     {
         return 'ordernumber';

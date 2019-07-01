@@ -30,7 +30,7 @@ class Attribute implements Serializable, NameAwareValue
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
-     * @param mixed $value
+     * @param string|int|float $value
      */
     public function addValue($value): void
     {
@@ -59,7 +59,7 @@ class Attribute implements Serializable, NameAwareValue
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getDomSubtree(DOMDocument $document): DOMElement
     {
@@ -79,9 +79,6 @@ class Attribute implements Serializable, NameAwareValue
         return $attributeElem;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getCsvFragment(array $availableProperties = []): string
     {
         $attributeParts = [];
@@ -94,9 +91,6 @@ class Attribute implements Serializable, NameAwareValue
         return implode('&', $attributeParts);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getValueName(): string
     {
         return 'attribute';

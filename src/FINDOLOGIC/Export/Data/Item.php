@@ -457,8 +457,5 @@ abstract class Item implements Serializable
         $this->usergroups = $usergroups;
     }
 
-    /**
-     * @inheritdoc
-     */
     abstract public function getDomSubtree(DOMDocument $document);
 }

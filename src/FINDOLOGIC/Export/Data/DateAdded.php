@@ -32,9 +32,6 @@ class DateAdded extends UsergroupAwareSimpleValue
         return $date->format('U');
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getValueName(): string
     {
         return 'dateAdded';

@@ -26,9 +26,6 @@ class Sort extends UsergroupAwareSimpleValue
         return $value;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getValueName(): string
     {
         return 'sort';

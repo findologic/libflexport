@@ -16,9 +16,6 @@ use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 class XMLItem extends Item
 {
-    /**
-     * @inheritdoc
-     */
     public function getCsvFragment(array $availableProperties = []): void
     {
         throw new BadMethodCallException('XMLItem does not implement CSV export.');
@@ -26,6 +23,7 @@ class XMLItem extends Item
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
+     *
      * @inheritdoc
      */
     public function getDomSubtree(DOMDocument $document): DOMElement
@@ -55,6 +53,7 @@ class XMLItem extends Item
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
+     *
      * @param DOMDocument $document
      * @return DOMElement
      */
@@ -86,6 +85,7 @@ class XMLItem extends Item
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
+     *
      * @param DOMDocument $document
      * @return DOMElement
      */
@@ -108,8 +108,6 @@ class XMLItem extends Item
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
-     * @param DOMDocument $document
-     * @return DOMElement
      */
     private function buildImages(DOMDocument $document): DOMElement
     {
@@ -142,8 +140,6 @@ class XMLItem extends Item
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
-     * @param DOMDocument $document
-     * @return DOMElement
      */
     private function buildUsergroups(DOMDocument $document): DOMElement
     {
@@ -160,7 +156,7 @@ class XMLItem extends Item
     /**
      * Checks if there is at least one image of type default
      *
-     * @param array $images The images to validate.
+     * @param array<Image> $images The images to validate.
      * @return bool Whether the images are valid or not.
      */
     private static function validateImages(array $images): bool
@@ -196,7 +192,7 @@ class XMLItem extends Item
         throw new UnsupportedValueException('maxPrice');
     }
 
-    public function setMaxPrice(float $insteadPrice): void
+    public function setMaxPrice(float $maxPrice): void
     {
         throw new UnsupportedValueException('maxPrice');
     }
@@ -206,7 +202,7 @@ class XMLItem extends Item
         throw new UnsupportedValueException('taxRate');
     }
 
-    public function setTaxRate(float $insteadPrice): void
+    public function setTaxRate(float $taxRate): void
     {
         throw new UnsupportedValueException('taxRate');
     }

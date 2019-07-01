@@ -28,7 +28,7 @@ abstract class UsergroupAwareMultiValueItem implements Serializable, NameAwareVa
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @param string $itemName
-     * @param mixed $value
+     * @param string|int|float $value
      * @param string|null $usergroup
      */
     public function __construct($itemName, $value, $usergroup)
@@ -57,9 +57,6 @@ abstract class UsergroupAwareMultiValueItem implements Serializable, NameAwareVa
         return XMLHelper::createElementWithText($document, $this->itemName, $this->getValue());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getCsvFragment(array $availableProperties = []): string
     {
         return $this->getValue();

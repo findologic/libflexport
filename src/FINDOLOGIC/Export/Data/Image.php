@@ -76,7 +76,7 @@ class Image implements Serializable, NameAwareValue
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getDomSubtree(DOMDocument $document): DOMElement
     {
@@ -88,17 +88,11 @@ class Image implements Serializable, NameAwareValue
         return $imageElem;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getCsvFragment(array $availableProperties = []): string
     {
         return $this->getUrl();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getValueName(): string
     {
         return 'image';

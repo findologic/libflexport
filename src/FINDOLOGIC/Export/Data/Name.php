@@ -11,9 +11,6 @@ class Name extends UsergroupAwareSimpleValue
         parent::__construct('names', 'name');
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getValueName(): string
     {
         return 'name';

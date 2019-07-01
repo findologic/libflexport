@@ -11,9 +11,6 @@ class Price extends UsergroupAwareNumericValue
         parent::__construct('prices', 'price');
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getValueName(): string
     {
         return 'price';

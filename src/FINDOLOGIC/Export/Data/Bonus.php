@@ -11,9 +11,6 @@ class Bonus extends UsergroupAwareNumericValue
         parent::__construct('bonuses', 'bonus');
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getValueName(): string
     {
         return 'bonus';

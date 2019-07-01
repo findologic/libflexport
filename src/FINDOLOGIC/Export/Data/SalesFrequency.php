@@ -26,9 +26,6 @@ class SalesFrequency extends UsergroupAwareSimpleValue
         return $value;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getValueName(): string
     {
         return 'salesFrequency';

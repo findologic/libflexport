@@ -23,9 +23,6 @@ class CSVExporter extends Exporter
         $this->propertyKeys = $propertyKeys;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function serializeItems(array $items, int $start = 0, int $count = 0, int $total = 0): string
     {
         $export = '';
@@ -49,9 +46,6 @@ class CSVExporter extends Exporter
         return $export;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function serializeItemsToFile(
         string $targetDirectory,
         array $items,
@@ -67,9 +61,6 @@ class CSVExporter extends Exporter
         return $targetPath;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function createItem($id): Item
     {
         return new CSVItem($id);

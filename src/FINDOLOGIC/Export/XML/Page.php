@@ -76,7 +76,7 @@ class Page
     private function validateWithSchema(DOMDocument $document): void
     {
         $validationErrors = [];
-        set_error_handler(function (/** @noinspection PhpUnusedParameterInspection */ $errno, $errstr)
+        set_error_handler(static function (/** @noinspection PhpUnusedParameterInspection */ $errno, $errstr)
  use (&$validationErrors) {
             array_push($validationErrors, $errstr);
         });

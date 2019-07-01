@@ -11,13 +11,10 @@ class AllOrdernumbers extends UsergroupAwareMultiValue
         parent::__construct('allOrdernumbers', 'ordernumbers');
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getCsvFragment(array $availableProperties = []): string
     {
         if (array_key_exists('', $this->values)) {
-            return implode('|', array_map(function (Ordernumber $ordernumber): string {
+            return implode('|', array_map(static function (Ordernumber $ordernumber): string {
                 return $ordernumber->getCsvFragment();
             }, $this->values['']));
         } else {
@@ -25,9 +22,6 @@ class AllOrdernumbers extends UsergroupAwareMultiValue
         }
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getValueName(): string
     {
         return 'allOrdernumbers';

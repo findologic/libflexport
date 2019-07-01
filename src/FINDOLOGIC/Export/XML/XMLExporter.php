@@ -7,9 +7,6 @@ use FINDOLOGIC\Export\Exporter;
 
 class XMLExporter extends Exporter
 {
-    /**
-     * @inheritdoc
-     */
     public function serializeItems(array $items, int $start, int $count, int $total): string
     {
         $page = new Page($start, $count, $total);
@@ -19,9 +16,6 @@ class XMLExporter extends Exporter
         return $xmlDocument->saveXML();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function serializeItemsToFile(
         string $targetDirectory,
         array $items,
@@ -37,9 +31,6 @@ class XMLExporter extends Exporter
         return $targetPath;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function createItem($id): Item
     {
         return new XMLItem($id);

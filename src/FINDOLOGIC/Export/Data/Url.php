@@ -23,9 +23,6 @@ class Url extends UsergroupAwareSimpleValue
         return parent::getDomSubtree($document);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getValueName(): string
     {
         return 'url';

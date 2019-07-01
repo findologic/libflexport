@@ -33,9 +33,6 @@ class Usergroup implements Serializable, NameAwareValue
         return XMLHelper::createElementWithText($document, 'usergroup', $this->getValue());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getCsvFragment(array $availableProperties = []): string
     {
         return $this->getValue();
@@ -46,9 +43,6 @@ class Usergroup implements Serializable, NameAwareValue
         return $this->getValue();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getValueName(): string
     {
         return 'usergroup';
