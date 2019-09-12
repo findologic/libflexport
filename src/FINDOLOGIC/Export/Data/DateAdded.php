@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Export\Data;
 
 use BadMethodCallException;
+use DateTime;
 use DateTimeInterface;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
