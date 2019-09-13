@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-use DateTime;
 use DateTimeInterface;
 use DOMDocument;
 use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
