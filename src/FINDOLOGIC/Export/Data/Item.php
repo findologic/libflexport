@@ -7,6 +7,7 @@ use DOMDocument;
 use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\DataHelper;
+use InvalidArgumentException;
 
 abstract class Item implements Serializable
 {
@@ -194,6 +195,25 @@ abstract class Item implements Serializable
         }
 
         $this->price->setValue($price, $usergroup);
+    }
+
+    /**
+     * @param Price[] $prices
+     */
+    public function setAllPrices(array $prices): void
+    {
+        foreach ($prices as $price) {
+            if (!$price instanceof Price) {
+                throw new InvalidArgumentException(sprintf(
+                    'Given prices must be instances of %s',
+                    Price::class
+                ));
+            }
+
+            foreach ($price->getValues() as $usergroup => $value) {
+                $this->addPrice($value, $usergroup);
+            }
+        }
     }
 
     public function getInsteadPrice()

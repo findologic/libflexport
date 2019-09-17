@@ -30,7 +30,9 @@ use FINDOLOGIC\Export\Helpers\XMLHelper;
 use FINDOLOGIC\Export\XML\Page;
 use FINDOLOGIC\Export\XML\XMLExporter;
 use FINDOLOGIC\Export\XML\XMLItem;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * Class XmlSerializationTest
@@ -556,5 +558,41 @@ class XmlSerializationTest extends TestCase
         $item->setPrice($price);
 
         $this->exporter->serializeItems([$item], 0, 1, 1);
+    }
+
+    public function testAllPricesCanBeSet(): void
+    {
+        $expectedUsergroup = 'best usergroup';
+
+        $price = new Price();
+        $price->setValue('13.37');
+        $anotherPrice = new Price();
+        $anotherPrice->setValue(4.20, $expectedUsergroup);
+
+        /** @var XMLItem $item */
+        $item = $this->exporter->createItem('123');
+        $item->setAllPrices([$price, $anotherPrice]);
+        $item->addName('Best item ever');
+
+        $page = new Page(0, 1, 1);
+        $page->addItem($item);
+        $document = $page->getXml();
+        $xpath = new DOMXPath($document);
+
+        $this->assertEquals('13.37', $xpath->query('//price')->item(0)->nodeValue);
+        $this->assertEquals('4.2', $xpath->query('//price')->item(1)->nodeValue);
+        $this->assertEquals(
+            $expectedUsergroup,
+            $xpath->query('//price')->item(1)->getAttribute('usergroup')
+        );
+    }
+
+    public function testPricesAreNotInstancesOfPriceThrowsAnException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('Given prices must be instances of %s', Price::class));
+
+        $item = $this->exporter->createItem('123');
+        $item->setAllPrices([new stdClass()]);
     }
 }
