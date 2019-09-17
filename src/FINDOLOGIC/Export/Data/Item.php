@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-use DateTime;
+use DateTimeInterface;
 use DOMDocument;
 use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
 use FINDOLOGIC\Export\Helpers\Serializable;
@@ -343,10 +343,10 @@ abstract class Item implements Serializable
     /**
      * Shortcut to easily add the date added value of the item.
      *
-     * @param DateTime $dateAdded The date on which the item was added to the ecommerce system.
+     * @param DateTimeInterface $dateAdded The date on which the item was added to the ecommerce system.
      * @param string $usergroup The usergroup of the date added value.
      */
-    public function addDateAdded(DateTime $dateAdded, string $usergroup = ''): void
+    public function addDateAdded(DateTimeInterface $dateAdded, string $usergroup = ''): void
     {
         $this->dateAdded->setDateValue($dateAdded, $usergroup);
     }

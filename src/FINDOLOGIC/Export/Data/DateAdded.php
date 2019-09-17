@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\Data;
 
 use BadMethodCallException;
 use DateTime;
+use DateTimeInterface;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
 class DateAdded extends UsergroupAwareSimpleValue
@@ -15,10 +16,12 @@ class DateAdded extends UsergroupAwareSimpleValue
 
     public function setValue($value, string $usergroup = ''): void
     {
-        throw new BadMethodCallException('Assign DateAdded values by passing a \DateTime to setDateValue()');
+        throw new BadMethodCallException(
+            sprintf('Assign DateAdded values by passing a %s to setDateValue()', DateTimeInterface::class)
+        );
     }
 
-    public function setDateValue(DateTime $value, string $usergroup = ''): void
+    public function setDateValue(DateTimeInterface $value, string $usergroup = ''): void
     {
         $formatted = $value->format(DateTime::ATOM);
 

@@ -21,8 +21,8 @@
 ## Synopsis
 
 This project provides an export library for XML and CSV generation according to the FINDOLOGIC export patterns.
-* XML <https://docs.findologic.com/doku.php?id=export_patterns:xml>
-* CSV <https://docs.findologic.com/doku.php?id=export_patterns:csv>
+* XML <https://docs.findologic.com/doku.php?id=xml_export_documentation:xml_format>
+* CSV <https://docs.findologic.com/doku.php?id=csv_export_documentation:csv_format>
   * Note that CSV support is still relatively new. Consider it beta-quality.
 
 #### Export recommendation

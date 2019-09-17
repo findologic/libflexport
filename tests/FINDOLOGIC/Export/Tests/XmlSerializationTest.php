@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\Tests;
 
 use BadMethodCallException;
 use DateTime;
+use DateTimeImmutable;
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
@@ -558,6 +559,23 @@ class XmlSerializationTest extends TestCase
         $item->setPrice($price);
 
         $this->exporter->serializeItems([$item], 0, 1, 1);
+    }
+
+    public function testDateTimesWhichExtendDateTimeInterfaceCanBeSetAsDateAdded(): void
+    {
+        $expectedDateTime = new DateTimeImmutable();
+        $expectedValue = $expectedDateTime->format(DateTime::ATOM);
+
+        /** @var XMLItem $item */
+        $item = $this->getMinimalItem();
+        $item->addDateAdded($expectedDateTime);
+
+        $page = new Page(0, 1, 1);
+        $page->addItem($item);
+        $document = $page->getXml();
+
+        $xpath = new DOMXPath($document);
+        $this->assertEquals($expectedValue, $xpath->query('//dateAdded')->item(0)->nodeValue);
     }
 
     public function testAllPricesCanBeSet(): void
