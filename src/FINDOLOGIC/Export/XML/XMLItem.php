@@ -100,13 +100,8 @@ class XMLItem extends Item
          * @var string $key
          * @var Attribute $attribute
          */
-        $addedAttributes = [];
         foreach ($this->attributes as $key => $attribute) {
-            if (!isset($addedAttributes[$key])) {
-                $addedAttributes[$key] = $attributes->appendChild($attribute->getDomSubtree($document));
-            } else {
-                $addedAttributes[$key]->appendChild($attribute->getDomSubtree($document));
-            }
+            $attributes->appendChild($attribute->getDomSubtree($document));
         }
 
         return $allAttributes;

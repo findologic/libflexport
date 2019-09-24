@@ -396,6 +396,17 @@ abstract class Item implements Serializable
     }
 
     /**
+     * Adds an attribute. If attributes with the same key, but a different value are added, they will not
+     * be overridden. E.g.
+     * ```
+     * $attr1 = Attribute('color', ['orange', 'yellow']);
+     * $attr2 = Attribute('color', ['pink', 'orange']);
+     *
+     * $item->addAttribute($attr1);
+     * $item->addAttribute($attr2);
+     * // $item attributes will be: ['orange', 'yellow', 'pink']
+     * ```
+     *
      * @param Attribute $attribute The attribute element to add to the item.
      */
     public function addAttribute(Attribute $attribute): void
@@ -404,7 +415,15 @@ abstract class Item implements Serializable
             throw new EmptyElementsNotAllowedException('Attribute', $attribute->getKey());
         }
 
-        $this->attributes[$attribute->getKey()] = $attribute;
+        if (!isset($this->attributes[$attribute->getKey()])) {
+            $this->attributes[$attribute->getKey()] = $attribute;
+            return;
+        }
+
+        $this->attributes[$attribute->getKey()] = new Attribute(
+            $attribute->getKey(),
+            array_unique(array_merge($this->attributes[$attribute->getKey()]->getValues(), $attribute->getValues()))
+        );
     }
 
     /**
