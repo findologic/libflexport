@@ -38,28 +38,25 @@ class ItemTest extends TestCase
 
     public function testAddingEmptyAttributesCauseException(): void
     {
-        try {
-            $item = $this->getMinimalItem();
-            $attribute = new Attribute('empty attribute', []);
-            $item->addAttribute($attribute);
-            $this->fail('Assigning attributes with empty values should cause an exception!');
-        } catch (EmptyElementsNotAllowedException $e) {
-            $expectedMessage = 'Elements with empty values are not allowed. "Attribute" with the name ' .
-                '"empty attribute"';
-            $this->assertEquals($expectedMessage, $e->getMessage());
-        }
+        $this->expectException(EmptyElementsNotAllowedException::class);
+        $this->expectExceptionMessage(
+            'Elements with empty values are not allowed. "Attribute" with the name "empty attribute"'
+        );
+
+        $item = $this->getMinimalItem();
+        $attribute = new Attribute('empty attribute', []);
+        $item->addAttribute($attribute);
     }
 
     public function testAddingEmptyPropertiesCauseException(): void
     {
-        try {
-            $item = $this->getMinimalItem();
-            $property = new Property('empty property', []);
-            $item->addProperty($property);
-            $this->fail('Assigning properties with empty values should cause an exception!');
-        } catch (EmptyElementsNotAllowedException $e) {
-            $expectedMessage = 'Elements with empty values are not allowed. "Property" with the name "empty property"';
-            $this->assertEquals($expectedMessage, $e->getMessage());
-        }
+        $this->expectException(EmptyElementsNotAllowedException::class);
+        $this->expectExceptionMessage(
+            'Elements with empty values are not allowed. "Property" with the name "empty property"'
+        );
+
+        $item = $this->getMinimalItem();
+        $property = new Property('empty property', []);
+        $item->addProperty($property);
     }
 }

@@ -385,9 +385,6 @@ abstract class Item implements Serializable
         }
 
         foreach ($property->getAllValues() as $usergroup => $value) {
-            if (!array_key_exists($usergroup, $this->properties)) {
-                $this->properties[$usergroup] = [];
-            }
             // No need to check if there are duplicate values for a single property and usergroup, because
             // Property::addValue() already takes care of that.
 
