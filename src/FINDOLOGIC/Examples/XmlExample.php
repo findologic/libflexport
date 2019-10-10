@@ -14,6 +14,7 @@ use FINDOLOGIC\Export\Exporter;
 /**
  * This example class builds a xml export based on the example of the FINDOLOGIC documentation, which can be found
  * under the following link https://docs.findologic.com/doku.php?id=export_patterns:xml#example_xml
+ * @codeCoverageIgnore
  */
 class XmlExample
 {
