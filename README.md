@@ -104,7 +104,7 @@ $csvOutput = $exporter->serializeItems([$item], 0, 1, 1);
 
 ### Examples
 
-For more specific examples, please have a look at the examples directory.
+For more specific examples, please have a look at the Examples directory in `src`.
 
 ## Compatibility
 
