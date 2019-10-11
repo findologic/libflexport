@@ -614,7 +614,7 @@ class XmlSerializationTest extends TestCase
         $item->setAllPrices([new stdClass()]);
     }
 
-    public function testAddingMultipleAttributesWillNotOverrideOldOnes(): void
+    public function testMergingAttributesWillNotOverrideExistingOnes(): void
     {
         /** @var XMLItem $item */
         $item = $this->getMinimalItem();
@@ -623,8 +623,8 @@ class XmlSerializationTest extends TestCase
         $attr1 = new Attribute('color', ['orange', 'yellow', 'yellow']);
         $attr2 = new Attribute('color', ['pink', 'orange', 'pink']);
 
-        $item->addAttribute($attr1);
-        $item->addAttribute($attr2);
+        $item->addMergedAttribute($attr1);
+        $item->addMergedAttribute($attr2);
 
         $page = new Page(0, 1, 1);
         $page->addItem($item);
@@ -634,8 +634,8 @@ class XmlSerializationTest extends TestCase
         $values = $xpath->query('//attribute')->item(0)->childNodes->item(1)->childNodes;
 
         $actualAttributes = [];
-        for ($i = 0; $i < $values->length; $i++) {
-            $actualAttributes[] = $values->item($i)->nodeValue;
+        foreach ($values as $value) {
+            $actualAttributes[] = $value->nodeValue;
         }
 
         $this->assertEquals($expectedAttributes, $actualAttributes);
