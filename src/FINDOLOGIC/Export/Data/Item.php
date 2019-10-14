@@ -385,9 +385,6 @@ abstract class Item implements Serializable
         }
 
         foreach ($property->getAllValues() as $usergroup => $value) {
-            if (!array_key_exists($usergroup, $this->properties)) {
-                $this->properties[$usergroup] = [];
-            }
             // No need to check if there are duplicate values for a single property and usergroup, because
             // Property::addValue() already takes care of that.
 
@@ -396,6 +393,19 @@ abstract class Item implements Serializable
     }
 
     /**
+     * Adds an attribute.
+     *
+     * E.g.
+     * ```
+     * $attr1 = Attribute('color', ['orange', 'yellow']);
+     * $attr2 = Attribute('color', ['pink', 'orange']);
+     *
+     * $item->addAttribute($attr1);
+     * $item->addAttribute($attr2);
+     * // $item attributes will be: ['pink', 'orange']
+     * ```
+     *
+     * @see addMergedAttribute if you want to merge values with the same key.
      * @param Attribute $attribute The attribute element to add to the item.
      */
     public function addAttribute(Attribute $attribute): void
@@ -405,6 +415,38 @@ abstract class Item implements Serializable
         }
 
         $this->attributes[$attribute->getKey()] = $attribute;
+    }
+
+    /**
+     * Adds an attribute by merging attribute values with the same key.
+     *
+     * E.g.
+     * ```
+     * $attr1 = Attribute('color', ['orange', 'yellow']);
+     * $attr2 = Attribute('color', ['pink', 'orange']);
+     *
+     * $item->addAttribute($attr1);
+     * $item->addAttribute($attr2);
+     * // $item attributes will be: ['orange', 'yellow', 'pink']
+     * ```
+     *
+     * @see addAttribute if you don't want to merge values with the same key.
+     */
+    public function addMergedAttribute(Attribute $attribute): void
+    {
+        if (count($attribute->getValues()) === 0) {
+            throw new EmptyElementsNotAllowedException('Attribute', $attribute->getKey());
+        }
+
+        if (!isset($this->attributes[$attribute->getKey()])) {
+            $this->attributes[$attribute->getKey()] = $attribute;
+            return;
+        }
+
+        $this->attributes[$attribute->getKey()] = new Attribute(
+            $attribute->getKey(),
+            array_unique(array_merge($this->attributes[$attribute->getKey()]->getValues(), $attribute->getValues()))
+        );
     }
 
     /**

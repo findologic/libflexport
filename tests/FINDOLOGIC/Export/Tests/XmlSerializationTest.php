@@ -605,12 +605,39 @@ class XmlSerializationTest extends TestCase
         );
     }
 
-    public function testPricesAreNotInstancesOfPriceThrowsAnException()
+    public function testPricesAreNotInstancesOfPriceThrowsAnException(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf('Given prices must be instances of %s', Price::class));
 
         $item = $this->exporter->createItem('123');
         $item->setAllPrices([new stdClass()]);
+    }
+
+    public function testMergingAttributesWillNotOverrideExistingOnes(): void
+    {
+        /** @var XMLItem $item */
+        $item = $this->getMinimalItem();
+
+        $expectedAttributes = ['orange', 'yellow', 'pink'];
+        $attr1 = new Attribute('color', ['orange', 'yellow', 'yellow']);
+        $attr2 = new Attribute('color', ['pink', 'orange', 'pink']);
+
+        $item->addMergedAttribute($attr1);
+        $item->addMergedAttribute($attr2);
+
+        $page = new Page(0, 1, 1);
+        $page->addItem($item);
+        $document = $page->getXml();
+        $xpath = new DOMXPath($document);
+
+        $values = $xpath->query('//attribute')->item(0)->childNodes->item(1)->childNodes;
+
+        $actualAttributes = [];
+        foreach ($values as $value) {
+            $actualAttributes[] = $value->nodeValue;
+        }
+
+        $this->assertEquals($expectedAttributes, $actualAttributes);
     }
 }
