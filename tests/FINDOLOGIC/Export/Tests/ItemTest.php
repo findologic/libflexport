@@ -48,6 +48,18 @@ class ItemTest extends TestCase
         $item->addAttribute($attribute);
     }
 
+    public function testMergingEmptyAttributesCauseException(): void
+    {
+        $this->expectException(EmptyElementsNotAllowedException::class);
+        $this->expectExceptionMessage(
+            'Elements with empty values are not allowed. "Attribute" with the name "empty attribute"'
+        );
+
+        $item = $this->getMinimalItem();
+        $attribute = new Attribute('empty attribute', []);
+        $item->addMergedAttribute($attribute);
+    }
+
     public function testAddingEmptyPropertiesCauseException(): void
     {
         $this->expectException(EmptyElementsNotAllowedException::class);
