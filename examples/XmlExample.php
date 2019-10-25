@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use DateTime;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
