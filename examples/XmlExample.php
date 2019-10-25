@@ -21,90 +21,149 @@ class XmlExample
     {
         $exporter = Exporter::create(Exporter::TYPE_XML);
 
-        $item = $exporter->createItem('01120c948ad41a2284ad9f0402fbc7d');
+        //type: product
+        $items[] = $exporter->createItem('01120c948ad41a2284ad9f0402fbc7d');
+        //type: content
+        $items[] = $exporter->createItem('content_ypy44hn5rpk8nggba8vxmpx68d8v7ra');
 
-        $this->addOrdernumbers($item);
-        $this->addNames($item);
-        $this->addSummaries($item);
-        $this->addDescriptions($item);
-        $this->addPrices($item);
-        $this->addUrls($item);
-        $this->addKeywords($item);
-        $this->addBonuses($item);
-        $this->addSalesFrequencies($item);
-        $this->addDateAddeds($item);
-        $this->addSorts($item);
-        $this->addUsergroups($item);
-        $this->addImages($item);
-        $this->addAttributes($item);
-        $this->addProperties($item);
+        foreach ($items as $item) {
+            $this->addOrderNumbers($item);
+            $this->addNames($item);
+            $this->addSummaries($item);
+            $this->addDescriptions($item);
+            $this->addPrices($item);
+            $this->addUrls($item);
+            $this->addKeywords($item);
+            $this->addBonuses($item);
+            $this->addSalesFrequencies($item);
+            $this->addDateAddeds($item);
+            $this->addSorts($item);
+            $this->addUserGroups($item);
+            $this->addImages($item);
+            $this->addAttributes($item);
+            $this->addProperties($item);
+        }
 
-        return $exporter->serializeItems([$item], 0, 1, 1);
+        return $exporter->serializeItems($items, 0, 2, 2);
     }
 
     private function addAttributes(Item $item): void
     {
         $attributesData = [
-            'cat' => [
-                'Sneakers_Men',
-                'Specials_Sale'
+            '01120c948ad41a2284ad9f0402fbc7d' => [
+                'cat' => [
+                    'Sneakers_Men',
+                    'Specials_Sale'
+                ],
+                'cat_url' => [
+                    '/sneakers',
+                    '/sneakers/men',
+                    '/specials',
+                    '/specials/sale'
+                ],
+                'brand' => [
+                    'Adidas'
+                ],
+                'color' => [
+                    'green',
+                    'blue'
+                ],
+                'type' => [
+                    'product',
+                ]
             ],
-            'cat_url' => [
-                '/sneakers',
-                '/sneakers/men',
-                '/specials',
-                '/specials/sale'
-            ],
-            'brand' => [
-                'Adidas'
-            ],
-            'color' => [
-                'green',
-                'blue'
+            'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra' => [
+                'type' => [
+                    'content',
+                ]
             ]
         ];
 
-        foreach ($attributesData as $attributeName => $attributeValues) {
+        foreach ($attributesData[$item->getId()] as $attributeName => $attributeValues) {
             $item->addAttribute(new Attribute($attributeName, $attributeValues));
         }
     }
 
     private function addBonuses(Item $item): void
     {
-        $item->addBonus(3);
-        $item->addBonus(5, 'LNrLF7BRVJ0toQ==');
+        $bonusesData = [
+            '01120c948ad41a2284ad9f0402fbc7d' => [
+                '' => 3,
+                'LNrLF7BRVJ0toQ==' => 5
+            ],
+            'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra' => [
+                '' => 7,
+            ]
+        ];
+
+        foreach ($bonusesData[$item->getId()] as $userGroup => $bonus) {
+            $item->addBonus($bonus, $userGroup);
+        }
     }
 
     private function addDateAddeds(Item $item): void
     {
-        $item->addDateAdded(new DateTime());
-        $item->addDateAdded(new DateTime(), 'LNrLF7BRVJ0toQ==');
+        $dateAddedsData = [
+            '01120c948ad41a2284ad9f0402fbc7d' => [
+                '' => new DateTime(),
+                'LNrLF7BRVJ0toQ==' => new DateTime()
+            ],
+            'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra' => [
+                '' => new DateTime()
+            ]
+        ];
+
+        foreach ($dateAddedsData[$item->getId()] as $userGroup => $dateAdded) {
+            $item->addDateAdded($dateAdded, $userGroup);
+        }
     }
 
     private function addDescriptions(Item $item): void
     {
-        $item->addDescription('With this sneaker you will walk in style. It\'s available in green and blue.');
-        $item->addDescription(
-            'With this men\'s sneaker you will walk in style. It\'s comes in various sizes and colors.',
-            'LNrLF7BRVJ0toQ=='
-        );
-    }
-
-    private function addOrdernumbers(Item $item): void
-    {
-        $ordernumbersData = [
-            '' => [
-                '277KTL',
-                '4987123846879'
+        $descriptionsData = [
+            '01120c948ad41a2284ad9f0402fbc7d' => [
+                '' =>
+                    'With this sneaker you will walk in style. It\'s available in green and blue.',
+                'LNrLF7BRVJ0toQ==' =>
+                    'With this men\'s sneaker you will walk in style. It\'s comes in various sizes and colors.'
             ],
-            'LNrLF7BRVJ0toQ==' => [
-                '377KTL'
+            'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra' => [
+                '' =>
+                    'In tempus eleifend orci, eu suscipit dolor pellentesque ac. Morbi.'
             ]
         ];
 
-        foreach ($ordernumbersData as $usergroup => $ordernumbers) {
-            foreach ($ordernumbers as $ordernumber) {
-                $item->addOrdernumber(new Ordernumber($ordernumber, $usergroup));
+        foreach ($descriptionsData[$item->getId()] as $userGroup => $description) {
+            $item->addDescription($description, $userGroup);
+        }
+    }
+
+    private function addOrderNumbers(Item $item): void
+    {
+        $orderNumbersData = [
+            '01120c948ad41a2284ad9f0402fbc7d' => [
+                '' => [
+                    '277KTL',
+                    '4987123846879'
+                ],
+                'LNrLF7BRVJ0toQ==' => [
+                    '377KTL'
+                ]
+            ],
+            'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra' => [
+                '' => [
+                    'pdf304xyz',
+                    '9424585418519'
+                ],
+                'LNrLF7BRVJ0toQ==' => [
+                    'pdf305xyz'
+                ]
+            ]
+        ];
+
+        foreach ($orderNumbersData[$item->getId()] as $userGroup => $orderNumbers) {
+            foreach ($orderNumbers as $orderNumber) {
+                $item->addOrdernumber(new Ordernumber($orderNumber, $userGroup));
             }
         }
     }
@@ -112,19 +171,31 @@ class XmlExample
     private function addImages(Item $item): void
     {
         $imagesData = [
-            '' => [
-                'https://www.store.com/images/277KTL.png' => Image::TYPE_DEFAULT,
-                'https://www.store.com/images/thumbnails/277KTL.png' => Image::TYPE_THUMBNAIL
+            '01120c948ad41a2284ad9f0402fbc7d' => [
+                '' => [
+                    'https://www.store.com/images/277KTL.png' => Image::TYPE_DEFAULT,
+                    'https://www.store.com/images/thumbnails/277KTL.png' => Image::TYPE_THUMBNAIL
+                ],
+                'LNrLF7BRVJ0toQ==' => [
+                    'https://www.store.com/images/277KTLmen.png' => Image::TYPE_DEFAULT,
+                    'https://www.store.com/images/thumbnails/277KTLmen.png' => Image::TYPE_THUMBNAIL
+                ]
             ],
-            'LNrLF7BRVJ0toQ==' => [
-                'https://www.store.com/images/277KTLmen.png' => Image::TYPE_DEFAULT,
-                'https://www.store.com/images/thumbnails/277KTLmen.png' => Image::TYPE_THUMBNAIL
+            'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra' => [
+                '' => [
+                    'https://www.store.com/images/pdf304xyz.png' => Image::TYPE_DEFAULT,
+                    'https://www.store.com/images/thumbnails/pdf304xyz.png' => Image::TYPE_THUMBNAIL
+                ],
+                'LNrLF7BRVJ0toQ==' => [
+                    'https://www.store.com/images/pdf305xyz.png' => Image::TYPE_DEFAULT,
+                    'https://www.store.com/images/thumbnails/pdf305xyz.png' => Image::TYPE_THUMBNAIL
+                ]
             ]
         ];
 
-        foreach ($imagesData as $usergroup => $images) {
+        foreach ($imagesData[$item->getId()] as $userGroup => $images) {
             foreach ($images as $image => $type) {
-                $item->addImage(new Image($image, $type, $usergroup));
+                $item->addImage(new Image($image, $type, $userGroup));
             }
         }
     }
@@ -132,64 +203,140 @@ class XmlExample
     private function addKeywords(Item $item): void
     {
         $keywordsData = [
-            '' => [
-                '277KTL',
-                '4987123846879'
+            '01120c948ad41a2284ad9f0402fbc7d' => [
+                '' => [
+                    '277KTL',
+                    '4987123846879'
+                ],
+                'LNrLF7BRVJ0toQ==' => [
+                    '377KTL'
+                ]
             ],
-            'LNrLF7BRVJ0toQ==' => [
-                '377KTL'
+            'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra' => [
+                '' => [
+                    'pdf304xyz',
+                    '9424585418519'
+                ],
+                'LNrLF7BRVJ0toQ==' => [
+                    'pdf305xyz'
+                ]
             ]
         ];
 
-        foreach ($keywordsData as $usergroup => $keywords) {
+        foreach ($keywordsData[$item->getId()] as $userGroup => $keywords) {
             foreach ($keywords as $keyword) {
-                $item->addKeyword(new Keyword($keyword, $usergroup));
+                $item->addKeyword(new Keyword($keyword, $userGroup));
             }
         }
     }
 
     private function addNames(Item $item): void
     {
-        $item->addName('Adidas Sneaker');
-        $item->addName('Adidas Men\'s Sneaker', 'LNrLF7BRVJ0toQ==');
+        $namesData = [
+            '01120c948ad41a2284ad9f0402fbc7d' => [
+                '' => 'Adidas Sneaker',
+                'LNrLF7BRVJ0toQ==' => 'Adidas Men\'s Sneaker'
+            ],
+            'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra' => [
+                '' => 'Aliquam eget vehicula.'
+            ]
+        ];
+
+        foreach ($namesData[$item->getId()] as $userGroup => $name) {
+            $item->addName($name, $userGroup);
+        }
     }
 
     private function addPrices(Item $item): void
     {
-        $item->addPrice(44.8);
-        $item->addPrice(45.9, 'LNrLF7BRVJ0toQ==');
+        $pricesData = [
+            '01120c948ad41a2284ad9f0402fbc7d' => [
+                '' => 44.8,
+                'LNrLF7BRVJ0toQ==' => 45.9
+            ],
+            'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra' => [
+                '' => 0
+            ]
+        ];
+
+        foreach ($pricesData[$item->getId()] as $userGroup => $price) {
+            $item->addPrice($price, $userGroup);
+        }
     }
 
     private function addProperties(Item $item): void
     {
         $propertiesData = [
-            'sale' => [
-                '' => 1,
-                'LNrLF7BRVJ0toQ==' => 0
+            '01120c948ad41a2284ad9f0402fbc7d' => [
+                'sale' => [
+                    '' => 1,
+                    'LNrLF7BRVJ0toQ==' => 0
+                ],
+                'novelty' => [
+                    '' => 0,
+                    'LNrLF7BRVJ0toQ==' => 0
+                ],
+                'logo' => [
+                    '' => 'http://www.shop.de/brand.png',
+                    'LNrLF7BRVJ0toQ==' => 'http://www.shop.de/brand.png'
+                ],
+                'availability' => [
+                    '' => '<span style="color: green;">4 days</span>',
+                    'LNrLF7BRVJ0toQ==' => '<span style="color: green;">3 days</span>'
+                ],
+                'old_price' => [
+                    '' => 99.9,
+                    'LNrLF7BRVJ0toQ==' => 99.9
+                ],
+                'Basic_rate_price' => [
+                    '' => 99.9,
+                    'LNrLF7BRVJ0toQ==' => 89.9
+                ],
+                'variants' => [
+                    '' => '{
+                        "Blue" : {
+                            "title": "Adidas Sneaker blue",
+                            "badge": "https://www.store.com/images/badges/new.png",
+                            "price": "13.99",
+                            "old_price": "",
+                            "sale": "",
+                            "image": "https://www.store.com/images/277KTL-blue.png",
+                            "thumbnail": "https://www.store.com/images/thumbs/277KTL-blue.png"
+                            "productUrl": "https://www.store.com/sneakers/adidas-blue.html" 
+                        }, 
+                        "Red" : { 
+                            "title": "Adidas Sneaker red",
+                            "badge": "https://www.store.com/images/badges/sale.png",
+                            "price": "7.49",
+                            "old_price": "14.99",
+                            "sale": "50%",
+                            "image": "https://www.store.com/images/277KTL-red.png",
+                            "thumbnail": "https://www.store.com/images/thumbs/277KTL-red.png"
+                            "productUrl": "https://www.store.com/sneakers/adidas-red.html" 
+                        },
+                        "Grey" : { 
+                            "title": "Adidas Sneaker grey",
+                            "badge": "https://www.store.com/images/badges/sale.png",
+                            "price": "6.49",
+                            "old_price": "12.99",
+                            "sale": "50%",
+                            "thumbnail": "https://www.store.com/images/thumbs/277KTL-grey.png"
+                            "productUrl": "https://www.store.com/sneakers/adidas-grey.html" 
+                        }
+                    }'
+                ],
             ],
-            'novelty' => [
-                '' => 0,
-                'LNrLF7BRVJ0toQ==' => 0
-            ],
-            'logo' => [
-                '' => 'http://www.shop.de/brand.png',
-                'LNrLF7BRVJ0toQ==' => 'http://www.shop.de/brand.png'
-            ],
-            'availability' => [
-                '' => '<span style="color: green;">4 days</span>',
-                'LNrLF7BRVJ0toQ==' => '<span style="color: green;">3 days</span>'
-            ],
-            'old_price' => [
-                '' => 99.9,
-                'LNrLF7BRVJ0toQ==' => 99.9
-            ],
-            'Basic_rate_price' => [
-                '' => 99.9,
-                'LNrLF7BRVJ0toQ==' => 89.9
+            'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra' => [
+                'file_type' => [
+                    '' => 'pdf',
+                ],
+                'number_of_comments' => [
+                    '' => 9,
+                ]
             ]
         ];
 
-        foreach ($propertiesData as $propertyName => $values) {
+        foreach ($propertiesData[$item->getId()] as $propertyName => $values) {
             $propertyElement = new Property($propertyName, $values);
             $item->addProperty($propertyElement);
         }
@@ -197,42 +344,82 @@ class XmlExample
 
     private function addSalesFrequencies(Item $item): void
     {
-        $item->addSalesFrequency(5);
-        $item->addSalesFrequency(10, 'LNrLF7BRVJ0toQ==');
+        $salesFrequenciesData = [
+            '01120c948ad41a2284ad9f0402fbc7d' => [
+                '' => 5,
+                'LNrLF7BRVJ0toQ==' => 10
+            ],
+            'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra' => [
+                '' => 23
+            ]
+        ];
+
+        foreach ($salesFrequenciesData[$item->getId()] as $userGroup => $salesFrequency) {
+            $item->addSalesFrequency($salesFrequency, $userGroup);
+        }
     }
 
     private function addSorts(Item $item): void
     {
-        $item->addSort(5);
-        $item->addSort(7, 'LNrLF7BRVJ0toQ==');
+        $sortsData = [
+            '01120c948ad41a2284ad9f0402fbc7d' => [
+                '' => 5,
+                'LNrLF7BRVJ0toQ==' => 7
+            ],
+            'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra' => [
+                '' => 1
+            ]
+        ];
+
+        foreach ($sortsData[$item->getId()] as $userGroup => $sort) {
+            $item->addSort($sort, $userGroup);
+        }
     }
 
     private function addSummaries(Item $item): void
     {
-        $item->addSummary('A cool and fashionable sneaker');
-        $item->addSummary('A cool and fashionable sneaker for men', 'LNrLF7BRVJ0toQ==');
+        $summariesData = [
+            '01120c948ad41a2284ad9f0402fbc7d' => [
+                '' => 'A cool and fashionable sneaker',
+                'LNrLF7BRVJ0toQ==' => 'A cool and fashionable sneaker for men'
+            ],
+            'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra' => [
+                '' => 'Nullam blandit in ipsum ac feugiat. Vivamus varius, velit nec.'
+            ]
+        ];
+
+        foreach ($summariesData[$item->getId()] as $userGroup => $summary) {
+            $item->addSummary($summary, $userGroup);
+        }
     }
 
     private function addUrls(Item $item): void
     {
-        $item->addUrl('https://www.store.com/sneakers/adidas.html');
-        $item->addUrl('https://www.store.com/sneakers/mens/adidas.html', 'LNrLF7BRVJ0toQ==');
+        $urlsData = [
+            '01120c948ad41a2284ad9f0402fbc7d' => [
+                '' => 'https://www.store.com/sneakers/adidas.html',
+                'LNrLF7BRVJ0toQ==' => 'https://www.store.com/sneakers/adidas.html'
+            ],
+            'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra' => [
+                '' => 'https://www.store.com/documents/pdf304xyz.pdf',
+                'LNrLF7BRVJ0toQ==' => 'https://www.store.com/documents/pdf305xyz.pdf',
+            ]
+        ];
+
+        foreach ($urlsData[$item->getId()] as $userGroup => $url) {
+            $item->addUrl($url, $userGroup);
+        }
     }
 
-    private function addUsergroups(Item $item): void
+    private function addUserGroups(Item $item): void
     {
-        $usergroups = [
+        $userGroups = [
             'LNrLF7BRVJ0toQ==',
             'cHBw'
         ];
 
-        foreach ($usergroups as $usergroup) {
-            $item->addUsergroup(new Usergroup($usergroup));
+        foreach ($userGroups as $userGroup) {
+            $item->addUsergroup(new Usergroup($userGroup));
         }
     }
 }
-
-$example = new XmlExample();
-
-// Output the XML content.
-echo $example->createExport();
