@@ -1,8 +1,9 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/ItemProduct.php';
+require_once __DIR__ . '/ItemContent.php';
 
-use DateTime;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
@@ -18,217 +19,153 @@ use FINDOLOGIC\Export\Exporter;
  */
 class XmlExample
 {
+    /**
+     * @var Item
+     */
+    private $item;
+
     public function createExport(): string
     {
+        $items = [];
         $exporter = Exporter::create(Exporter::TYPE_XML);
 
-        $item = $exporter->createItem('01120c948ad41a2284ad9f0402fbc7d');
+        $products[] = new ItemProduct();
+        $products[] = new ItemContent();
 
-        $this->addOrdernumbers($item);
-        $this->addNames($item);
-        $this->addSummaries($item);
-        $this->addDescriptions($item);
-        $this->addPrices($item);
-        $this->addUrls($item);
-        $this->addKeywords($item);
-        $this->addBonuses($item);
-        $this->addSalesFrequencies($item);
-        $this->addDateAddeds($item);
-        $this->addSorts($item);
-        $this->addUsergroups($item);
-        $this->addImages($item);
-        $this->addAttributes($item);
-        $this->addProperties($item);
+        foreach ($products as $product) {
+            $this->item = $exporter->createItem($product->id);
 
-        return $exporter->serializeItems([$item], 0, 1, 1);
-    }
+            $this->addOrderNumbers($product);
+            $this->addNames($product);
+            $this->addSummaries($product);
+            $this->addDescriptions($product);
+            $this->addPrices($product);
+            $this->addUrls($product);
+            $this->addKeywords($product);
+            $this->addBonuses($product);
+            $this->addSalesFrequencies($product);
+            $this->addDateAddeds($product);
+            $this->addSorts($product);
+            $this->addUserGroups($product);
+            $this->addImages($product);
+            $this->addAttributes($product);
+            $this->addProperties($product);
 
-    private function addAttributes(Item $item): void
-    {
-        $attributesData = [
-            'cat' => [
-                'Sneakers_Men',
-                'Specials_Sale'
-            ],
-            'cat_url' => [
-                '/sneakers',
-                '/sneakers/men',
-                '/specials',
-                '/specials/sale'
-            ],
-            'brand' => [
-                'Adidas'
-            ],
-            'color' => [
-                'green',
-                'blue'
-            ]
-        ];
-
-        foreach ($attributesData as $attributeName => $attributeValues) {
-            $item->addAttribute(new Attribute($attributeName, $attributeValues));
+            $items[] = $this->item;
         }
+
+        return $exporter->serializeItems($items, 0, 2, 2);
     }
 
-    private function addBonuses(Item $item): void
+    private function addOrderNumbers($product): void
     {
-        $item->addBonus(3);
-        $item->addBonus(5, 'LNrLF7BRVJ0toQ==');
-    }
-
-    private function addDateAddeds(Item $item): void
-    {
-        $item->addDateAdded(new DateTime());
-        $item->addDateAdded(new DateTime(), 'LNrLF7BRVJ0toQ==');
-    }
-
-    private function addDescriptions(Item $item): void
-    {
-        $item->addDescription('With this sneaker you will walk in style. It\'s available in green and blue.');
-        $item->addDescription(
-            'With this men\'s sneaker you will walk in style. It\'s comes in various sizes and colors.',
-            'LNrLF7BRVJ0toQ=='
-        );
-    }
-
-    private function addOrdernumbers(Item $item): void
-    {
-        $ordernumbersData = [
-            '' => [
-                '277KTL',
-                '4987123846879'
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                '377KTL'
-            ]
-        ];
-
-        foreach ($ordernumbersData as $usergroup => $ordernumbers) {
-            foreach ($ordernumbers as $ordernumber) {
-                $item->addOrdernumber(new Ordernumber($ordernumber, $usergroup));
+        foreach ($product->orderNumbers as $userGroup => $orderNumbers) {
+            foreach ($orderNumbers as $orderNumber) {
+                $this->item->addOrdernumber(new Ordernumber($orderNumber, $userGroup));
             }
         }
     }
 
-    private function addImages(Item $item): void
+    private function addNames($product): void
     {
-        $imagesData = [
-            '' => [
-                'https://www.store.com/images/277KTL.png' => Image::TYPE_DEFAULT,
-                'https://www.store.com/images/thumbnails/277KTL.png' => Image::TYPE_THUMBNAIL
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                'https://www.store.com/images/277KTLmen.png' => Image::TYPE_DEFAULT,
-                'https://www.store.com/images/thumbnails/277KTLmen.png' => Image::TYPE_THUMBNAIL
-            ]
-        ];
-
-        foreach ($imagesData as $usergroup => $images) {
-            foreach ($images as $image => $type) {
-                $item->addImage(new Image($image, $type, $usergroup));
-            }
+        foreach ($product->names as $userGroup => $name) {
+            $this->item->addName($name, $userGroup);
         }
     }
 
-    private function addKeywords(Item $item): void
+    private function addSummaries($product): void
     {
-        $keywordsData = [
-            '' => [
-                '277KTL',
-                '4987123846879'
-            ],
-            'LNrLF7BRVJ0toQ==' => [
-                '377KTL'
-            ]
-        ];
+        foreach ($product->summaries as $userGroup => $summary) {
+            $this->item->addSummary($summary, $userGroup);
+        }
+    }
 
-        foreach ($keywordsData as $usergroup => $keywords) {
+    private function addDescriptions($product): void
+    {
+        foreach ($product->descriptions as $userGroup => $description) {
+            $this->item->addDescription($description, $userGroup);
+        }
+    }
+
+    private function addPrices($product): void
+    {
+        foreach ($product->prices as $userGroup => $price) {
+            $this->item->addPrice($price, $userGroup);
+        }
+    }
+
+    private function addUrls($product): void
+    {
+        foreach ($product->urls as $userGroup => $url) {
+            $this->item->addUrl($url, $userGroup);
+        }
+    }
+
+    private function addKeywords($product): void
+    {
+        foreach ($product->keywords as $userGroup => $keywords) {
             foreach ($keywords as $keyword) {
-                $item->addKeyword(new Keyword($keyword, $usergroup));
+                $this->item->addKeyword(new Keyword($keyword, $userGroup));
             }
         }
     }
 
-    private function addNames(Item $item): void
+    private function addBonuses($product): void
     {
-        $item->addName('Adidas Sneaker');
-        $item->addName('Adidas Men\'s Sneaker', 'LNrLF7BRVJ0toQ==');
-    }
-
-    private function addPrices(Item $item): void
-    {
-        $item->addPrice(44.8);
-        $item->addPrice(45.9, 'LNrLF7BRVJ0toQ==');
-    }
-
-    private function addProperties(Item $item): void
-    {
-        $propertiesData = [
-            'sale' => [
-                '' => 1,
-                'LNrLF7BRVJ0toQ==' => 0
-            ],
-            'novelty' => [
-                '' => 0,
-                'LNrLF7BRVJ0toQ==' => 0
-            ],
-            'logo' => [
-                '' => 'http://www.shop.de/brand.png',
-                'LNrLF7BRVJ0toQ==' => 'http://www.shop.de/brand.png'
-            ],
-            'availability' => [
-                '' => '<span style="color: green;">4 days</span>',
-                'LNrLF7BRVJ0toQ==' => '<span style="color: green;">3 days</span>'
-            ],
-            'old_price' => [
-                '' => 99.9,
-                'LNrLF7BRVJ0toQ==' => 99.9
-            ],
-            'Basic_rate_price' => [
-                '' => 99.9,
-                'LNrLF7BRVJ0toQ==' => 89.9
-            ]
-        ];
-
-        foreach ($propertiesData as $propertyName => $values) {
-            $propertyElement = new Property($propertyName, $values);
-            $item->addProperty($propertyElement);
+        foreach ($product->bonuses as $userGroup => $bonus) {
+            $this->item->addBonus($bonus, $userGroup);
         }
     }
 
-    private function addSalesFrequencies(Item $item): void
+    private function addSalesFrequencies($product): void
     {
-        $item->addSalesFrequency(5);
-        $item->addSalesFrequency(10, 'LNrLF7BRVJ0toQ==');
+        foreach ($product->salesFrequencies as $userGroup => $salesFrequency) {
+            $this->item->addSalesFrequency($salesFrequency, $userGroup);
+        }
     }
 
-    private function addSorts(Item $item): void
+    private function addDateAddeds($product): void
     {
-        $item->addSort(5);
-        $item->addSort(7, 'LNrLF7BRVJ0toQ==');
+        foreach ($product->dateAddeds as $userGroup => $dateAdded) {
+            $this->item->addDateAdded(new DateTime($dateAdded), $userGroup);
+        }
     }
 
-    private function addSummaries(Item $item): void
+    private function addSorts($product): void
     {
-        $item->addSummary('A cool and fashionable sneaker');
-        $item->addSummary('A cool and fashionable sneaker for men', 'LNrLF7BRVJ0toQ==');
+        foreach ($product->sorts as $userGroup => $sort) {
+            $this->item->addSort($sort, $userGroup);
+        }
     }
 
-    private function addUrls(Item $item): void
+    private function addUserGroups($product): void
     {
-        $item->addUrl('https://www.store.com/sneakers/adidas.html');
-        $item->addUrl('https://www.store.com/sneakers/mens/adidas.html', 'LNrLF7BRVJ0toQ==');
+        foreach ($product->userGroups as $userGroup) {
+            $this->item->addUsergroup(new Usergroup($userGroup));
+        }
     }
 
-    private function addUsergroups(Item $item): void
+    private function addImages($product): void
     {
-        $usergroups = [
-            'LNrLF7BRVJ0toQ==',
-            'cHBw'
-        ];
+        foreach ($product->images as $userGroup => $images) {
+            foreach ($images as $image => $type) {
+                $this->item->addImage(new Image($image, $type, $userGroup));
+            }
+        }
+    }
 
-        foreach ($usergroups as $usergroup) {
-            $item->addUsergroup(new Usergroup($usergroup));
+    private function addAttributes($product): void
+    {
+        foreach ($product->attributes as $attributeName => $attributeValues) {
+            $this->item->addAttribute(new Attribute($attributeName, $attributeValues));
+        }
+    }
+
+    private function addProperties($product): void
+    {
+        foreach ($product->properties as $propertyName => $values) {
+            $propertyElement = new Property($propertyName, $values);
+            $this->item->addProperty($propertyElement);
         }
     }
 }
