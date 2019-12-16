@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-use \RuntimeException;
+use RuntimeException;
 
 abstract class InternalCharacterLimitException extends RuntimeException
 {
