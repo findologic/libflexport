@@ -121,7 +121,7 @@ class XmlSerializationTest extends TestCase
 
             $price = new Price();
             //Generate a random price
-            $price->setValue(rand(1, 2000)*1.24);
+            $price->setValue(rand(1, 2000) * 1.24);
             $item->setPrice($price);
 
             $items[] = $item;

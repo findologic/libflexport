@@ -166,7 +166,7 @@ class CSVSerializationTest extends TestCase
 
         $expectedAttributeArray = [];
         foreach ($expectedAttributes as $attribute => $values) {
-            $expectedAttributeArray []= implode('&', array_map(function (string $value) use ($attribute): string {
+            $expectedAttributeArray [] = implode('&', array_map(function (string $value) use ($attribute): string {
                 return sprintf('%s=%s', $attribute, urlencode($value));
             }, $values));
         }
