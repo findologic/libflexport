@@ -119,10 +119,7 @@ The status of the major versions of libflexport is outlined below. Version numbe
 
 All versions will most likely remain available for as long as the infrastructure to do so exists.
 
-Development for 3.X is conducted on the branch `master` with `develop` serving as target branch between releases.
-
-Bug maintenance for 2.X is conducted on the branch `2.X` with `develop_2.X` serving as target branch between
-releases.
+Development for 2.X is conducted on the branch `master` with `develop` serving as target branch between releases.
 
 Bug maintenance for 1.X is conducted on the branch `1.X` with `develop_1.X` serving as target branch between
 releases.
