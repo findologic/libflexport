@@ -113,8 +113,7 @@ The status of the major versions of libflexport is outlined below. Version numbe
 
 | Version | PHP support | Receives bug fixes | Receives enhancements | End of life                   |
 |---------|-------------|--------------------|-----------------------|-------------------------------|
-| 3.X     | \>=7.2      | :heavy_check_mark: | :heavy_check_mark:    | Not in the foreseeable future |
-| 2.X     | \>=7.1      | :heavy_check_mark: | :x:                   | TBD                           |
+| 2.X     | \>=7.1      | :heavy_check_mark: | :heavy_check_mark:    | Not in the foreseeable future |
 | 1.X     | 5.6 - 7.3   | :heavy_check_mark: | :x:                   | TBD                           |
 | 0.X     | 5.6 - 7.0   | :x:                | :x:                   | 2017-11-24                    |
 
