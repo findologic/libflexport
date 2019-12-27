@@ -72,7 +72,7 @@ class Property
         $this->values = [];
 
         /**
-         * As we can not check if the values of the given array is associative,
+         * As we can not check if the values of the given array are associative,
          * we trigger a notice if the array keys are not a string.
          */
         array_walk($values, function (/** @noinspection PhpUnusedParameterInspection */ $item, $key) {

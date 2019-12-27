@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Tests;
 
+use Exception;
 use FINDOLOGIC\Export\Data\AllKeywords;
 use FINDOLOGIC\Export\Data\AllOrdernumbers;
 use FINDOLOGIC\Export\Data\Attribute;
@@ -20,6 +21,7 @@ use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Exceptions\AttributeKeyLengthException;
 use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
+use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\GroupNameLengthException;
 use FINDOLOGIC\Export\Exceptions\ItemIdLengthException;
@@ -32,6 +34,27 @@ use ReflectionException;
 
 class DataHelperTest extends TestCase
 {
+    /**
+     * @noinspection PhpMethodMayBeStaticInspection
+     *
+     * Scenarios for empty value validation.
+     *
+     * @return array Cases with the value to check and whether it should cause a validation issue.
+     */
+    public function emptyValueProvider(): array
+    {
+        return [
+            'empty string' => ['', true],
+            'non-zero integer' => [123, false],
+            'zero as integer' => [0, false],
+            'non-zero float' => [12.3, false],
+            'zero as float' => [0.0, false],
+            'zero as string' => ['0', false],
+            'null' => ['', true],
+            'false' => [false, true]
+        ];
+    }
+
     /**
      * @dataProvider emptyValueProvider
      *
@@ -67,21 +90,19 @@ class DataHelperTest extends TestCase
     /**
      * @noinspection PhpMethodMayBeStaticInspection
      *
-     * Scenarios for empty value validation.
+     * Scenarios for numeric value validation.
      *
      * @return array Cases with the value to check and whether it should cause a validation issue.
      */
-    public function emptyValueProvider(): array
+    public function numericValueProvider(): array
     {
         return [
-            'empty string' => ['', true],
+            'string' => ['blubbergurke', true],
             'non-zero integer' => [123, false],
             'zero as integer' => [0, false],
             'non-zero float' => [12.3, false],
             'zero as float' => [0.0, false],
-            'zero as string' => ['0', false],
-            'null' => ['', true],
-            'false' => [false, true]
+            'zero as string' => ['0', false]
         ];
     }
 
@@ -114,22 +135,49 @@ class DataHelperTest extends TestCase
     }
 
     /**
-     * @noinspection PhpMethodMayBeStaticInspection
-     *
-     * Scenarios for numeric value validation.
+     * Scenarios for property key validation.
      *
      * @return array Cases with the value to check and whether it should cause a validation issue.
      */
-    public function numericValueProvider(): array
+    public function propertyKeyProvider(): array
     {
         return [
-            'string' => ['blubbergurke', true],
-            'non-zero integer' => [123, false],
-            'zero as integer' => [0, false],
-            'non-zero float' => [12.3, false],
-            'zero as float' => [0.0, false],
-            'zero as string' => ['0', false]
+            'Valid property keys' => [
+                ['valid_property_key', 'also-a_valid-propery-key',],
+                false,
+            ],
+            'Invalid property keys' => [
+                ["invalid\tproperty\nkey", "invalid\tkey", "invalid\nkey",],
+                true,
+            ],
+            'Mixed valid and invalid property keys' => [
+                ['valid_property_key',"invalid\tproperty\nkey",],
+                true,
+            ],
         ];
+    }
+
+    /**
+     * @dataProvider propertyKeyProvider
+     *
+     * @param array $propertyKeys The keys to check.
+     * @param bool $shouldCauseException Whether the array should cause an exception or not.
+     */
+    public function testAddingInvalidCsvPropertyKeysCausesException(
+        array $propertyKeys,
+        bool $shouldCauseException
+    ): void {
+        try {
+            $validatedPropertyKeys = DataHelper::checkForInvalidCsvPropertyKeys($propertyKeys);
+
+            $this->assertEquals($propertyKeys, $validatedPropertyKeys);
+        } catch (Exception $exception) {
+            if (!$shouldCauseException) {
+                $this->fail('This should not fail.');
+            } else {
+                $this->assertEquals(get_class($exception), BadPropertyKeyException::class);
+            }
+        }
     }
 
     /**

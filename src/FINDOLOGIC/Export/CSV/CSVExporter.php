@@ -20,7 +20,7 @@ class CSVExporter extends Exporter
     {
         parent::__construct($itemsPerPage);
 
-        $this->propertyKeys = $propertyKeys;
+        $this->propertyKeys = DataHelper::checkForInvalidCsvPropertyKeys($propertyKeys);
     }
 
     /**
@@ -29,16 +29,10 @@ class CSVExporter extends Exporter
     public function serializeItems(array $items, int $start = 0, int $count = 0, int $total = 0): string
     {
         $export = '';
+
         // To enable pagination, don't write the heading if it's anything but the first page.
         if ($start === 0) {
-            $export = self::HEADING;
-
-            foreach ($this->propertyKeys as $propertyKey) {
-                DataHelper::checkForIllegalCsvPropertyKeys($propertyKey);
-
-                $export .= "\t" . $propertyKey;
-            }
-            $export .= "\n";
+            $export = $this->getHeadingLine();
         }
 
         /** @var CSVItem $item */
@@ -73,5 +67,31 @@ class CSVExporter extends Exporter
     public function createItem($id): Item
     {
         return new CSVItem($id);
+    }
+
+    /**
+     * Returns the heading line of a CSV document
+     *
+     * @return string
+     */
+    protected function getHeadingLine(): string
+    {
+        return self::HEADING . $this->getPropertyHeadingPart() . "\n";
+    }
+
+    /**
+     * Returns the property part of the heading line.
+     *
+     * @return string
+     */
+    protected function getPropertyHeadingPart(): string
+    {
+        $propertyHeading = '';
+
+        foreach ($this->propertyKeys as $propertyKey) {
+            $propertyHeading .= "\t" . $propertyKey;
+        }
+
+        return $propertyHeading;
     }
 }

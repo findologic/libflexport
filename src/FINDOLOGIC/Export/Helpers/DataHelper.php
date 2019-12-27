@@ -77,14 +77,19 @@ class DataHelper
     /**
      * Verifies that property keys for use in CSV export don't contain characters that could break the format fatally.
      *
-     * @param string $propertyKey The property key to check.
-     * @throw BadPropertyKeyException In case the property key contains dangerous characters.
+     * @param array $propertyKeys The property keys to check.
+     * @return array The validated property keys.
+     * @throws  BadPropertyKeyException In case the property key contains dangerous characters.
      */
-    public static function checkForIllegalCsvPropertyKeys(string $propertyKey): void
+    public static function checkForInvalidCsvPropertyKeys(array $propertyKeys): array
     {
-        if (strpos($propertyKey, "\t") !== false || strpos($propertyKey, "\n") !== false) {
-            throw new BadPropertyKeyException($propertyKey);
+        foreach ($propertyKeys as $propertyKey) {
+            if (strpos($propertyKey, "\t") !== false || strpos($propertyKey, "\n") !== false) {
+                throw new BadPropertyKeyException($propertyKey);
+            }
         }
+
+        return $propertyKeys;
     }
 
     /**

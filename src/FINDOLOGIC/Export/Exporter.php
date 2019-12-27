@@ -23,6 +23,13 @@ abstract class Exporter
      */
     public const TYPE_CSV = 1;
 
+    protected $itemsPerPage;
+
+    protected function __construct($itemsPerPage)
+    {
+        $this->itemsPerPage = $itemsPerPage;
+    }
+
     /**
      * Creates an exporter for the desired output format.
      *
@@ -50,13 +57,6 @@ abstract class Exporter
         }
 
         return $exporter;
-    }
-
-    protected $itemsPerPage;
-
-    protected function __construct($itemsPerPage)
-    {
-        $this->itemsPerPage = $itemsPerPage;
     }
 
     /**

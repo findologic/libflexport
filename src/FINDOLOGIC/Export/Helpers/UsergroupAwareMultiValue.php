@@ -72,9 +72,11 @@ abstract class UsergroupAwareMultiValue implements Serializable, NameAwareValue
 
         foreach ($this->getValues() as $usergroup => $usergroupValues) {
             $usergroupCollectionElem = XMLHelper::createElement($document, $this->usergroupCollectionName);
+
             if ($usergroup) {
                 $usergroupCollectionElem->setAttribute('usergroup', $usergroup);
             }
+
             $rootCollectionElem->appendChild($usergroupCollectionElem);
 
             /** @var UsergroupAwareMultiValueItem $value */
