@@ -438,15 +438,14 @@ abstract class Item implements Serializable
             throw new EmptyElementsNotAllowedException('Attribute', $attribute->getKey());
         }
 
-        if (!isset($this->attributes[$attribute->getKey()])) {
-            $this->attributes[$attribute->getKey()] = $attribute;
-            return;
+        if (array_key_exists($attribute->getKey(), $this->attributes)) {
+            $attribute = new Attribute(
+                $attribute->getKey(),
+                array_unique(array_merge($this->attributes[$attribute->getKey()]->getValues(), $attribute->getValues()))
+            );
         }
 
-        $this->attributes[$attribute->getKey()] = new Attribute(
-            $attribute->getKey(),
-            array_unique(array_merge($this->attributes[$attribute->getKey()]->getValues(), $attribute->getValues()))
-        );
+        $this->attributes[$attribute->getKey()] = $attribute;
     }
 
     /**

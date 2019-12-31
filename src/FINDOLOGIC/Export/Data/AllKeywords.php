@@ -22,9 +22,9 @@ class AllKeywords extends UsergroupAwareMultiValue
             return implode(',', array_map(function (Keyword $keyword): string {
                 return $keyword->getCsvFragment();
             }, $this->values['']));
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     /**
