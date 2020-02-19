@@ -111,6 +111,8 @@ class CSVItem extends Item
 
     private function buildImages(): string
     {
+        $imageUrl = '';
+
         // Use the first available image that is not restricted by usergroup. If more than one usergroup-less image
         // exists, cause an error because it's no longer certain which one is intended to be used.
         if (array_key_exists('', $this->images)) {
@@ -124,8 +126,6 @@ class CSVItem extends Item
                     'Cannot generate CSV if there is not one definitive image set.'
                 );
             }
-        } else {
-            $imageUrl = '';
         }
 
         return $imageUrl;

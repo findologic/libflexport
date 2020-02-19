@@ -64,9 +64,11 @@ class XMLItem extends Item
 
         foreach ($this->properties as $usergroup => $usergroupSpecificProperties) {
             $usergroupPropsElem = XMLHelper::createElement($document, 'properties');
+
             if ($usergroup) {
                 $usergroupPropsElem->setAttribute('usergroup', $usergroup);
             }
+
             $allProps->appendChild($usergroupPropsElem);
 
             foreach ($usergroupSpecificProperties as $key => $value) {
@@ -117,9 +119,10 @@ class XMLItem extends Item
         $allImagesElem = XMLHelper::createElement($document, 'allImages');
 
         if ($this->images) {
-            if (array_key_exists("", $this->images)) {
+            if (array_key_exists('', $this->images)) {
                 foreach ($this->images as $usergroup => $images) {
                     $usergroupImagesElem = XMLHelper::createElement($document, 'images');
+
                     if ($usergroup) {
                         $usergroupImagesElem->setAttribute('usergroup', $usergroup);
                     }
@@ -163,23 +166,17 @@ class XMLItem extends Item
      *
      * @param array $images The images to validate.
      * @return boolean Whether the images are valid or not.
+     * @throws BaseImageMissingException
      */
     private static function validateImages(array $images): bool
     {
-        $valid = false;
-
         foreach ($images as $image) {
             if ($image->getType() === Image::TYPE_DEFAULT) {
-                $valid = true;
-                break;
+                return true;
             }
         }
 
-        if (!$valid) {
-            throw new BaseImageMissingException();
-        }
-
-        return $valid;
+        throw new BaseImageMissingException();
     }
 
     public function getInsteadPrice(): void

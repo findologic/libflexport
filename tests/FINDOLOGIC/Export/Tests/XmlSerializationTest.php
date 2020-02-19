@@ -79,6 +79,7 @@ class XmlSerializationTest extends TestCase
         $item = $this->exporter->createItem('123');
 
         $item->addName('Alternative name');
+        $item->addUrl('http://example.org/item.html');
 
         $price = new Price();
         $price->setValue('13.37');
@@ -121,7 +122,7 @@ class XmlSerializationTest extends TestCase
 
             $price = new Price();
             //Generate a random price
-            $price->setValue(rand(1, 2000)*1.24);
+            $price->setValue(rand(1, 2000) * 1.24);
             $item->setPrice($price);
 
             $items[] = $item;
@@ -591,6 +592,7 @@ class XmlSerializationTest extends TestCase
         $item = $this->exporter->createItem('123');
         $item->setAllPrices([$price, $anotherPrice]);
         $item->addName('Best item ever');
+        $item->addUrl('http://example.org/item.html');
 
         $page = new Page(0, 1, 1);
         $page->addItem($item);

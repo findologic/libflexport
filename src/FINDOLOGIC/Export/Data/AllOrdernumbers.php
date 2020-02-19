@@ -20,9 +20,9 @@ class AllOrdernumbers extends UsergroupAwareMultiValue
             return implode('|', array_map(function (Ordernumber $ordernumber): string {
                 return $ordernumber->getCsvFragment();
             }, $this->values['']));
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     /**
