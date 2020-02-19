@@ -62,7 +62,7 @@ abstract class Exporter
     /**
      * Turns the provided items into their serialized form.
      *
-     * @param array $items Array of items to serialize. All of them are serialized, regardless of $start and $total.
+     * @param Item[] $items Array of items to serialize. All of them are serialized, regardless of $start and $total.
      * @param int $start Assuming that $items is a fragment of the total, this is the global index of the first item in
      *      $items.
      * @param int $count The number of items requested for this export step. Actual number of items can be smaller due
@@ -79,7 +79,7 @@ abstract class Exporter
      *
      * @param string $targetDirectory The directory to which the file is written. The filename is at the exporter
      *      implementation's discretion.
-     * @param array $items Array of items to serialize. All of them are serialized, regardless of $start and $total.
+     * @param Item[] $items Array of items to serialize. All of them are serialized, regardless of $start and $total.
      * @param int $start Assuming that $items is a fragment of the total, this is the global index of the first item in
      *      $items.
      * @param int $count The number of items requested for this export step. Actual number of items can be smaller due
