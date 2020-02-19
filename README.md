@@ -70,8 +70,16 @@ $exporter = Exporter::create(Exporter::TYPE_XML);
 
 $item = $exporter->createItem('123');
 
+$item->addName('Test');
+$item->addUrl('http://example.org/test.html');
 $item->addPrice(13.37);
 // Alternative long form:
+// $name = new Name();
+// $name->setValue('Test');
+// $item->setName($name);
+// $url = new Url();
+// $url->setValue('http://example.org/test.html');
+// $item->setUrl($url);
 // $price = new Price();
 // $price->setValue(13.37);
 // $item->setPrice($price);
@@ -91,7 +99,15 @@ $exporter = Exporter::create(Exporter::TYPE_CSV);
 $item = $exporter->createItem('123');
 
 $item->addPrice(13.37);
+$item->addName('Test');
+$item->addUrl('http://example.org/test.html');
 // Alternative long form:
+// $name = new Name();
+// $name->setValue('Test');
+// $item->setName($name);
+// $url = new Url();
+// $url->setValue('http://example.org/test.html');
+// $item->setUrl($url);
 // $price = new Price();
 // $price->setValue(13.37);
 // $item->setPrice($price);
