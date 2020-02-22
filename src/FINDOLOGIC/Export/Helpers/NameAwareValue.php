@@ -1,6 +1,5 @@
 <?php
 
-
 namespace FINDOLOGIC\Export\Helpers;
 
 /**
