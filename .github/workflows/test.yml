@@ -18,7 +18,6 @@ jobs:
       with:
         php-version: ${{ matrix.php-versions }}
         extensions: mbstring, dom
-        ini-values: post_max_size=256M, short_open_tag=On
         coverage: xdebug
         tools: composer
 
