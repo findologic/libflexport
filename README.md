@@ -1,6 +1,6 @@
 # FINDOLOGIC export toolkit
 
-[![Travis](https://img.shields.io/travis/findologic/libflexport.svg)](https://travis-ci.org/findologic/libflexport)
+![Github Actions](https://github.com/findologic/libflexport/workflows/Library%20test/badge.svg)
 [![Latest Stable Version](https://poser.pugx.org/findologic/libflexport/v/stable)](https://packagist.org/packages/findologic/libflexport)
 [![Code Climate](https://codeclimate.com/github/findologic/libflexport.svg)](https://codeclimate.com/github/findologic/libflexport)
 [![Codecov](https://codecov.io/gh/findologic/libflexport/branch/develop/graph/badge.svg)](https://codecov.io/gh/findologic/libflexport)
