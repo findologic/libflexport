@@ -26,10 +26,6 @@ jobs:
         composer install
         composer test
 
-    - name: Debug secret
-      run: |
-        echo ${{ secrets.DOES_NOT_EXIST }}
-
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
