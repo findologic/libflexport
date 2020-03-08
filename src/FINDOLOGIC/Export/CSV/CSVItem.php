@@ -38,18 +38,10 @@ class CSVItem extends Item
         $salesFrequency = self::sanitize($this->salesFrequency->getCsvFragment());
         $dateAdded = self::sanitize($this->dateAdded->getCsvFragment());
         $sort = self::sanitize($this->sort->getCsvFragment());
-
         $instead = $this->getInsteadPrice();
         $maxPrice = $this->getMaxPrice();
         $taxRate = $this->getTaxRate();
-        $groups = implode(',', array_map(function (Usergroup $group): string {
-            /** @var $group Usergroup */
-            $groupName = $group->getCsvFragment();
-            DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
-            return self::sanitize($groupName);
-        }, $this->usergroups));
-
-
+        $groups = $this->buildGroups();
         $image = $this->buildImages();
         $attributes = $this->buildAttributes();
         $properties = $this->buildProperties($availableProperties);
@@ -80,21 +72,6 @@ class CSVItem extends Item
         return $line;
     }
 
-    private function buildProperties(array $availableProperties): string
-    {
-        $propertiesString = '';
-
-        foreach ($availableProperties as $availableProperty) {
-            if (array_key_exists($availableProperty, $this->properties[''])) {
-                $propertiesString .= "\t" . self::sanitize($this->properties[''][$availableProperty]);
-            } else {
-                $propertiesString .= "\t";
-            }
-        }
-
-        return $propertiesString;
-    }
-
     private function buildAttributes(): string
     {
         $attributes = [];
@@ -107,6 +84,16 @@ class CSVItem extends Item
         $attributes = implode('&', $attributes);
 
         return $attributes;
+    }
+
+    private function buildGroups()
+    {
+        return implode(',', array_map(function (Usergroup $group): string {
+            /** @var $group Usergroup */
+            $groupName = $group->getCsvFragment();
+            DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
+            return self::sanitize($groupName);
+        }, $this->usergroups));
     }
 
     private function buildImages(): string
@@ -129,6 +116,21 @@ class CSVItem extends Item
         }
 
         return $imageUrl;
+    }
+
+    private function buildProperties(array $availableProperties): string
+    {
+        $propertiesString = '';
+
+        foreach ($availableProperties as $availableProperty) {
+            if (array_key_exists($availableProperty, $this->properties[''])) {
+                $propertiesString .= "\t" . self::sanitize($this->properties[''][$availableProperty]);
+            } else {
+                $propertiesString .= "\t";
+            }
+        }
+
+        return $propertiesString;
     }
 
     private static function sanitize($input, $stripTags = true): string
