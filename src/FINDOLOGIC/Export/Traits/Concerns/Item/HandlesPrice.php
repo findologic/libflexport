@@ -92,5 +92,4 @@ trait HandlesPrice
     {
         $this->maxPrice = $maxPrice;
     }
-
 }
