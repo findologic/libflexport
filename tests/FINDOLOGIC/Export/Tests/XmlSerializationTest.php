@@ -469,6 +469,14 @@ class XmlSerializationTest extends TestCase
         $image->getDomSubtree(new DOMDocument());
     }
 
+    public function testAddingImproperEncodedUrlToImageElementCausesException(): void
+    {
+        $this->expectException(InvalidUrlException::class);
+
+        $image = new Image('https://store.com/Alu-Style-Ø-270-cm50324901e845e.jpg');
+        $image->getDomSubtree(new DOMDocument());
+    }
+
     public function testAddingUrlsToXmlDomWorksAsExpected(): void
     {
         $item = $this->getMinimalItem();
