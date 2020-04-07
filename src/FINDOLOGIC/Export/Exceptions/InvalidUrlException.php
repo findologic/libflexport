@@ -6,8 +6,8 @@ use RuntimeException;
 
 class InvalidUrlException extends RuntimeException
 {
-    public function __construct()
+    public function __construct(string $url)
     {
-        parent::__construct('Value is not a valid url!');
+        parent::__construct(sprintf('"%s" is not a valid url!', $url));
     }
 }
