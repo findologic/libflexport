@@ -38,6 +38,11 @@
             "name": "Mohamad Assani",
             "email": "m.assani@findologic.com",
             "role": "developer"
+        },
+        {
+            "name": "Huzaifa Mustafa",
+            "email": "24492269+zaifastafa@users.noreply.github.com",
+            "role": "developer"
         }
     ],
     "autoload": {
