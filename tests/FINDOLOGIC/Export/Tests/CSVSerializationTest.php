@@ -147,6 +147,32 @@ class CSVSerializationTest extends TestCase
         $this->assertCount(3, file(self::CSV_PATH));
     }
 
+    public function testCsvWillNotOverrideItselfWhenPassingACountHigherThenZero(): void
+    {
+        $item = $this->getMinimalItem();
+        $expectedInitialData = 'This is some pretty nice data.';
+        $expectedCsvContent = $this->exporter->serializeItems([$item], 1, 1, 1);
+
+        file_put_contents(self::CSV_PATH, $expectedInitialData);
+        $this->exporter->serializeItemsToFile('/tmp', [$item], 1, 1, 1);
+
+        $actualContents = file_get_contents(self::CSV_PATH);
+        $this->assertStringStartsWith($expectedInitialData, $actualContents);
+        $this->assertStringEndsWith($expectedCsvContent, $actualContents);
+    }
+
+    public function testCsvWillOverrideItselfWhenPassingAnInitialCount(): void
+    {
+        $item = $this->getMinimalItem();
+        $expectedCsvContent = $this->exporter->serializeItems([$item], 0, 1, 1);
+
+        file_put_contents(self::CSV_PATH, 'This is some pretty nice data.');
+        $this->exporter->serializeItemsToFile('/tmp', [$item], 0, 1, 1);
+
+        $this->assertEquals($expectedCsvContent, file_get_contents(self::CSV_PATH));
+        $this->assertCount(2, file(self::CSV_PATH));
+    }
+
     public function testKitchenSink(): void
     {
         $expectedId = '123';
