@@ -56,7 +56,9 @@ class CSVExporter extends Exporter
         $csvString = $this->serializeItems($items, $start, $count, $total);
         $targetPath = sprintf('%s/findologic.csv', $targetDirectory);
 
-        file_put_contents($targetPath, $csvString);
+        // Clear CSV contents if a new export starts. Don't do this for further pagination steps, to prevent
+        // overriding the file itself, causing it to clear all contents except the new items.
+        file_put_contents($targetPath, $csvString, $start > 0 ? FILE_APPEND : 0);
 
         return $targetPath;
     }
