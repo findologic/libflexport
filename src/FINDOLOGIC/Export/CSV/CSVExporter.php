@@ -56,7 +56,7 @@ class CSVExporter extends Exporter
         $csvString = $this->serializeItems($items, $start, $count, $total);
         $targetPath = sprintf('%s/findologic.csv', $targetDirectory);
 
-        file_put_contents($targetPath, $csvString);
+        file_put_contents($targetPath, $csvString, FILE_APPEND);
 
         return $targetPath;
     }
