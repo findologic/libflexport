@@ -35,6 +35,8 @@ class CSVSerializationTest extends TestCase
     private const DEFAULT_CSV_HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\tinstead\tmaxprice\t" .
         "taxrate\turl\timage\tattributes\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
 
+    private const CSV_PATH = '/tmp/findologic.csv';
+
     /** @var CSVExporter */
     private $exporter;
 
@@ -48,10 +50,9 @@ class CSVSerializationTest extends TestCase
 
     public function tearDown(): void
     {
-        try {
-            unlink('/tmp/findologic.csv');
-        } catch (Exception $e) {
-            // No need to delete a written file if the test didn't write it.
+        if (file_exists(self::CSV_PATH)) {
+            // Cleanup file after tests have created it.
+            unlink(self::CSV_PATH);
         }
     }
 
@@ -126,11 +127,50 @@ class CSVSerializationTest extends TestCase
     public function testCsvCanBeWrittenDirectlyToFile(): void
     {
         $item = $this->getMinimalItem();
-
         $expectedCsvContent = $this->exporter->serializeItems([$item], 0, 1, 1);
+
         $this->exporter->serializeItemsToFile('/tmp', [$item], 0, 1, 1);
 
-        self::assertEquals($expectedCsvContent, file_get_contents('/tmp/findologic.csv'));
+        $this->assertEquals($expectedCsvContent, file_get_contents(self::CSV_PATH));
+        $this->assertCount(2, file(self::CSV_PATH));
+    }
+
+    public function testCsvWillNotOverrideItselfWhenHavingMultipleSteps(): void
+    {
+        $item = $this->getMinimalItem();
+        $expectedCsvContent = $this->exporter->serializeItems([$item, $item], 0, 2, 2);
+
+        $this->exporter->serializeItemsToFile('/tmp', [$item], 0, 1, 2);
+        $this->exporter->serializeItemsToFile('/tmp', [$item], 1, 1, 2);
+
+        $this->assertEquals($expectedCsvContent, file_get_contents(self::CSV_PATH));
+        $this->assertCount(3, file(self::CSV_PATH));
+    }
+
+    public function testCsvWillNotOverrideItselfWhenPassingACountHigherThenZero(): void
+    {
+        $item = $this->getMinimalItem();
+        $expectedInitialData = 'This is some pretty nice data.';
+        $expectedCsvContent = $this->exporter->serializeItems([$item], 1, 1, 1);
+
+        file_put_contents(self::CSV_PATH, $expectedInitialData);
+        $this->exporter->serializeItemsToFile('/tmp', [$item], 1, 1, 1);
+
+        $actualContents = file_get_contents(self::CSV_PATH);
+        $this->assertStringStartsWith($expectedInitialData, $actualContents);
+        $this->assertStringEndsWith($expectedCsvContent, $actualContents);
+    }
+
+    public function testCsvWillOverrideItselfWhenPassingAnInitialCount(): void
+    {
+        $item = $this->getMinimalItem();
+        $expectedCsvContent = $this->exporter->serializeItems([$item], 0, 1, 1);
+
+        file_put_contents(self::CSV_PATH, 'This is some pretty nice data.');
+        $this->exporter->serializeItemsToFile('/tmp', [$item], 0, 1, 1);
+
+        $this->assertEquals($expectedCsvContent, file_get_contents(self::CSV_PATH));
+        $this->assertCount(2, file(self::CSV_PATH));
     }
 
     public function testKitchenSink(): void

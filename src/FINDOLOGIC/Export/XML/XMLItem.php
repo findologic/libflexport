@@ -164,7 +164,7 @@ class XMLItem extends Item
     /**
      * Checks if there is at least one image of type default
      *
-     * @param array $images The images to validate.
+     * @param Image[] $images The images to validate.
      * @return boolean Whether the images are valid or not.
      * @throws BaseImageMissingException
      */

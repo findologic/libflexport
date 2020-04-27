@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\XML;
 
 use DOMDocument;
 use FINDOLOGIC\Export\Constant;
+use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Exceptions\ItemsExceedCountValueException;
 use FINDOLOGIC\Export\Exceptions\XMLSchemaViolationException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
@@ -28,6 +29,9 @@ class Page
         array_push($this->items, $item);
     }
 
+    /**
+     * @param Item[] $items
+     */
     public function setAllItems(array $items): void
     {
         $this->items = [];

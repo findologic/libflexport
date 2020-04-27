@@ -68,7 +68,7 @@ class DataHelper
     public static function validateUrl(string $url): string
     {
         if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/http[s]?:\/\/.*/', $url)) {
-            throw new InvalidUrlException();
+            throw new InvalidUrlException($url);
         }
 
         return $url;
