@@ -417,5 +417,6 @@ class CSVSerializationTest extends TestCase
 
         $this->assertEquals(1, preg_match_all('/\n/', $csvLine));
         $this->assertEquals(17, preg_match_all('/\t/', $csvLine));
+        $this->assertEquals(0, preg_match_all('/\r/', $csvLine));
     }
 }
