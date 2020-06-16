@@ -137,8 +137,6 @@ class CSVItem extends Item
             $input = strip_tags($input);
         }
 
-        $sanitized = preg_replace('/[\t\n]/', ' ', $input);
-
-        return $sanitized;
+        return preg_replace('/[\t\n\r]/', ' ', $input);
     }
 }
