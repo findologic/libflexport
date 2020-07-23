@@ -11,29 +11,41 @@ jobs:
     strategy:
       matrix:
         php: ['7.1', '7.2', '7.3', '7.4', '8.0']
-    name: PHP ${{ matrix.php }} Test
+        stability: [prefer-lowest, prefer-stable]
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.stability }} Test
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php }}
-        extensions: mbstring, dom
-        coverage: xdebug
-        tools: composer:v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, dom
+          coverage: xdebug
+          tools: composer:v2
 
-    - name: Run test suite
-      run: |
-        composer install
-        composer test
+      - name: Setup PHP 7 Dependencies
+        run: composer install
+        if: "matrix.php < 8"
 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: true
+      - name: Setup PHP 8 Dependencies
+        run: |
+          composer require "phpunit/phpunit:^9.3" --no-update --no-interaction --dev
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --ignore-platform-req=php
+          cp phpunit-9.3.xml.dist phpunit.xml
+        if: "matrix.php >= 8"
+
+      - name: Run test suite
+        run: composer test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
