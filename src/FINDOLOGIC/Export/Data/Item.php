@@ -23,7 +23,7 @@ abstract class Item implements Serializable
     /** @var Description */
     protected $description;
 
-    /** @var Price */
+    /** @var Price|null */
     protected $price;
 
     /** @var float */
@@ -169,7 +169,7 @@ abstract class Item implements Serializable
         $this->description->setValue($description, $usergroup);
     }
 
-    public function getPrice(): Price
+    public function getPrice(): ?Price
     {
         return $this->price;
     }

@@ -71,4 +71,11 @@ class ItemTest extends TestCase
         $property = new Property('empty property', []);
         $item->addProperty($property);
     }
+
+    public function testCanAccessPriceIfNotSet(): void
+    {
+        $item = $this->exporter->createItem('123');
+
+        $this->assertNull($item->getPrice());
+    }
 }
