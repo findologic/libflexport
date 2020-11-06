@@ -24,7 +24,6 @@ use FINDOLOGIC\Export\Exceptions\ValueIsNotIntegerException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotPositiveIntegerException;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
-use PHPUnit\Framework\TestCase;
 
 class DataElementsTest extends TestCase
 {

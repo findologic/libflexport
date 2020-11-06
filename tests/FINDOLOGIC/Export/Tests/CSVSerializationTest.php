@@ -28,7 +28,6 @@ use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValueItem;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 
 class CSVSerializationTest extends TestCase
 {

@@ -5,7 +5,6 @@ namespace FINDOLOGIC\Export\Tests;
 use Exception;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException;
-use PHPUnit\Framework\TestCase;
 
 class PropertyTest extends TestCase
 {
@@ -59,7 +58,7 @@ class PropertyTest extends TestCase
                 $this->assertNotNull($property);
             }
         } catch (Exception $exception) {
-            $this->assertRegExp('/' . $key . '/', $exception->getMessage());
+            $this->assertMatchesRegularExpression('/' . $key . '/', $exception->getMessage());
         }
     }
 

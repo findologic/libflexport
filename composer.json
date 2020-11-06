@@ -3,7 +3,7 @@
     "description": "FINDOLOGIC export toolkit for XML and CSV data export",
     "homepage": "https://github.com/findologic/libflexport",
     "require": {
-        "php": "^7.1",
+        "php": "^7.1|^8.0",
         "ext-dom": "*",
         "ext-mbstring": "*",
         "findologic/xml-export-schema": "^1.4"
@@ -54,5 +54,6 @@
         "psr-0": {
             "FINDOLOGIC\\Export\\Tests\\": "tests/"
         }
-    }
+    },
+    "prefer-stable": true
 }
