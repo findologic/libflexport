@@ -4,7 +4,6 @@ namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Exporter;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 
 class ExporterTest extends TestCase
 {

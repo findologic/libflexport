@@ -28,7 +28,6 @@ use FINDOLOGIC\Export\Exceptions\ItemIdLengthException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\NameAwareValue;
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 

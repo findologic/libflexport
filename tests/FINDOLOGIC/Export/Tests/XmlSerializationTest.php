@@ -32,7 +32,6 @@ use FINDOLOGIC\Export\XML\Page;
 use FINDOLOGIC\Export\XML\XMLExporter;
 use FINDOLOGIC\Export\XML\XMLItem;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
