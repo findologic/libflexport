@@ -18,25 +18,25 @@ use FINDOLOGIC\Export\Exceptions\ItemIdLengthException;
  */
 class DataHelper
 {
-    /*
+    /**
      * Internal character limit for attribute values.
      */
-    private const ATTRIBUTE_CHARACTER_LIMIT = 16383;
+    public const ATTRIBUTE_CHARACTER_LIMIT = 16383;
 
-    /*
+    /**
      * Internal character limit for item id.
      */
-    private const ITEM_ID_CHARACTER_LIMIT = 255;
+    public const ITEM_ID_CHARACTER_LIMIT = 255;
 
-    /*
+    /**
      * Internal character limit for group names of CSV export.
      */
-    private const CSV_GROUP_CHARACTER_LIMIT = 255;
+    public const CSV_GROUP_CHARACTER_LIMIT = 255;
 
-    /*
+    /**
      * Internal character limit for attribute key names of CSV export.
      */
-    private const CSV_ATTRIBUTE_KEY_CHARACTER_LIMIT = 247;
+    public const CSV_ATTRIBUTE_KEY_CHARACTER_LIMIT = 247;
 
     /**
      * Checks if the provided value is empty.
