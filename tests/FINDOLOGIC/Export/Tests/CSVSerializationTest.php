@@ -36,6 +36,8 @@ class CSVSerializationTest extends TestCase
 
     private const CSV_PATH = '/tmp/findologic.csv';
 
+    private const ALTERNATE_CSV_PATH = '/tmp/findologic-new.csv';
+
     /** @var CSVExporter */
     private $exporter;
 
@@ -52,6 +54,11 @@ class CSVSerializationTest extends TestCase
         if (file_exists(self::CSV_PATH)) {
             // Cleanup file after tests have created it.
             unlink(self::CSV_PATH);
+        }
+
+        if (file_exists(self::ALTERNATE_CSV_PATH)) {
+            // Cleanup file after tests have created it.
+            unlink(self::ALTERNATE_CSV_PATH);
         }
     }
 
@@ -170,6 +177,17 @@ class CSVSerializationTest extends TestCase
 
         $this->assertEquals($expectedCsvContent, file_get_contents(self::CSV_PATH));
         $this->assertCount(2, file(self::CSV_PATH));
+    }
+
+    public function testCsvWillBeExportedToExactFileIfFileNameIsProcided(): void
+    {
+        $item = $this->getMinimalItem();
+        $expectedCsvContent = $this->exporter->serializeItems([$item], 0, 1, 1);
+
+        $this->exporter->serializeItemsToFile(self::ALTERNATE_CSV_PATH, [$item], 0, 1, 1);
+
+        $this->assertEquals($expectedCsvContent, file_get_contents(self::ALTERNATE_CSV_PATH));
+        $this->assertCount(2, file(self::ALTERNATE_CSV_PATH));
     }
 
     public function testKitchenSink(): void
