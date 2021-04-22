@@ -278,6 +278,23 @@ class XmlSerializationTest extends TestCase
         self::assertEquals($expectedXml, file_get_contents('/tmp/findologic_0_1.xml'));
     }
 
+    public function testXmlFileNamePrefixCanBeAltered(): void
+    {
+        $fileNamePrefix = 'blub.ber.gurken';
+        $expectedOutputPath = '/tmp/blub.ber.gurken_0_1.xml';
+
+        $item = $this->getMinimalItem();
+
+        $this->exporter->setFileNamePrefix($fileNamePrefix);
+        $expectedXml = $this->exporter->serializeItems([$item], 0, 1, 1);
+        $this->exporter->serializeItemsToFile('/tmp', [$item], 0, 1, 1);
+
+        self::assertEquals($expectedXml, file_get_contents($expectedOutputPath));
+
+        // Remove created XML file.
+        unlink($expectedOutputPath);
+    }
+
     public function testAttemptingToGetCsvFromAnXmlItemResultsInAnException(): void
     {
         $item = new XMLItem(123);

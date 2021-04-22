@@ -23,7 +23,14 @@ abstract class Exporter
      */
     public const TYPE_CSV = 1;
 
+    protected const DEFAULT_FILE_NAME_PREFIX = 'findologic';
+
     protected $itemsPerPage;
+
+    /**
+     * @var string
+     */
+    protected $fileNamePrefix = self::DEFAULT_FILE_NAME_PREFIX;
 
     protected function __construct($itemsPerPage)
     {
@@ -57,6 +64,20 @@ abstract class Exporter
         }
 
         return $exporter;
+    }
+
+    /**
+     * Can be used to alter the file name of the serialization output. Default: "findologic".
+     *
+     * E.g.
+     * * XMLExporter: `<path>/<fileNamePrefix>_<start>_<count>.xml`
+     * * CSVExporter: `<path>/<fileNamePrefix>.csv`
+     */
+    public function setFileNamePrefix(string $fileNamePrefix = self::DEFAULT_FILE_NAME_PREFIX): self
+    {
+        $this->fileNamePrefix = $fileNamePrefix;
+
+        return $this;
     }
 
     /**

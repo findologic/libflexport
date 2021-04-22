@@ -172,6 +172,24 @@ class CSVSerializationTest extends TestCase
         $this->assertCount(2, file(self::CSV_PATH));
     }
 
+    public function testCsvFileNamePrefixCanBeAltered(): void
+    {
+        $fileNamePrefix = 'findologic.new';
+        $expectedOutputPath = '/tmp/findologic.new.csv';
+
+        $item = $this->getMinimalItem();
+        $expectedCsvContent = $this->exporter->serializeItems([$item], 0, 1, 1);
+
+        $this->exporter->setFileNamePrefix($fileNamePrefix);
+        $this->exporter->serializeItemsToFile('/tmp', [$item], 0, 1, 1);
+
+        $this->assertEquals($expectedCsvContent, file_get_contents($expectedOutputPath));
+        $this->assertCount(2, file($expectedOutputPath));
+
+        // Remove CSV after test.
+        unlink($expectedOutputPath);
+    }
+
     public function testKitchenSink(): void
     {
         $expectedId = '123';
