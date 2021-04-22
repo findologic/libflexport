@@ -30,7 +30,7 @@ class XMLExporter extends Exporter
         int $total
     ): string {
         $xmlString = $this->serializeItems($items, $start, $count, $total);
-        $targetPath = sprintf('%s/findologic_%d_%d.xml', $targetDirectory, $start, $count);
+        $targetPath = sprintf('%s/%s_%d_%d.xml', $targetDirectory, $this->fileNamePrefix, $start, $count);
 
         file_put_contents($targetPath, $xmlString);
 

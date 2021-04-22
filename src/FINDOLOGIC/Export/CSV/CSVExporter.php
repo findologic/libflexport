@@ -55,7 +55,7 @@ class CSVExporter extends Exporter
     ): string {
         $csvString = $this->serializeItems($items, $start, $count, $total);
 
-        $targetPath = $this->getTargetPath($targetDirectory);
+        $targetPath = sprintf('%s/%s.csv', $targetDirectory, $this->fileNamePrefix);
 
         // Clear CSV contents if a new export starts. Don't do this for further pagination steps, to prevent
         // overriding the file itself, causing it to clear all contents except the new items.
@@ -96,20 +96,5 @@ class CSVExporter extends Exporter
         }
 
         return $propertyHeading;
-    }
-
-    /**
-     * Returns the export file path
-     *
-     * @param string $targetDirectory
-     * @return string
-     */
-    protected function getTargetPath(string $targetDirectory): string
-    {
-        if (substr($targetDirectory, -4) === '.csv') {
-            return $targetDirectory;
-        }
-
-        return sprintf('%s/findologic.csv', $targetDirectory);
     }
 }
