@@ -37,7 +37,10 @@ class PropertyTest extends TestCase
             'reserved property "image\d+"' => ['image0', true],
             'reserved property "thumbnail\d+"' => ['thumbnail1', true],
             'reserved property "ordernumber"' => ['ordernumber', true],
-            'non-reserved property key' => ['foobar', false]
+            'non-reserved property key' => ['foobar', false],
+            'non-reserved property key containing "ordernumber"' => ['main_ordernumber', false],
+            'non-reserved property key containing "image0"' => ['main_image0', false],
+            'non-reserved property key containing "thumbnail0"' => ['main_thumbnail0', false],
         ];
     }
 
@@ -58,7 +61,11 @@ class PropertyTest extends TestCase
                 $this->assertNotNull($property);
             }
         } catch (Exception $exception) {
-            $this->assertMatchesRegularExpression('/' . $key . '/', $exception->getMessage());
+            if (!$shouldCauseException) {
+                $this->fail('Using a non-reserved property key should not cause an exception.');
+            } else {
+                $this->assertMatchesRegularExpression('/' . $key . '/', $exception->getMessage());
+            }
         }
     }
 

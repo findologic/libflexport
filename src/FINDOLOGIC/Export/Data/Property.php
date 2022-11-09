@@ -11,14 +11,14 @@ class Property
     /**
      * Reserved property keys for internal use which would be overwritten when importing
      *
-     * /image\d+/: Image URLs of type default.
-     * /thumbnail\d+/: Image URLs of type thumbnail.
-     * /ordernumber/: The products first exported ordernumber.
+     * - Image URLs of type default.
+     * - Image URLs of type thumbnail.
+     * - The products first exported ordernumber.
      */
     private const RESERVED_PROPERTY_KEYS = [
-        "/image\d+/",
-        "/thumbnail\d+/",
-        "/ordernumber/"
+        "/^image\d+$/",
+        "/^thumbnail\d+$/",
+        "/^ordernumber$/"
     ];
 
     /** @var string */
