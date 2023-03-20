@@ -16,7 +16,7 @@
     "scripts": {
         "lint": "phpcs",
         "fix": "phpcbf",
-        "test": "phpunit"
+        "test": "XDEBUG_MODE=coverage phpunit"
     },
     "license": "MIT",
     "authors": [

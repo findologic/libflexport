@@ -28,14 +28,12 @@ use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 class DataElementsTest extends TestCase
 {
     /**
-     * @noinspection PhpMethodMayBeStaticInspection
-     *
      * Provides a data set for testing if initializing elements of type UsergroupAwareMultiValueItem
      * with an empty value fails.
      *
      * @return array Scenarios with a value, the element class and whether this input should cause an exception.
      */
-    public function multiValueItemProvider(): array
+    public static function multiValueItemProvider(): array
     {
         return [
             'Keyword with empty value' => ['', Keyword::class, true],
@@ -71,15 +69,13 @@ class DataElementsTest extends TestCase
     }
 
     /**
-     * @noinspection PhpMethodMayBeStaticInspection
-     *
      * Provides a data set for testing if adding empty or wrong values to elements of type UsergroupAwareSimpleValue
      * fails.
      *
      * @return array Scenarios with a value, the element class and the expected exception, or null if none is supposed
      *      to be thrown.
      */
-    public function simpleValueItemProvider(): array
+    public static function simpleValueItemProvider(): array
     {
         return [
             'Bonus with empty value' => ['', Bonus::class, EmptyValueNotAllowedException::class],
@@ -147,14 +143,12 @@ class DataElementsTest extends TestCase
     }
 
     /**
-     * @noinspection PhpMethodMayBeStaticInspection
-     *
      * Provides a data set for testing if adding empty keys or values to attribute and property elements fails.
      *
      * @return array Scenarios with key, one or more values, the element class and whether this input should cause
      *      an exception.
      */
-    public function emptyValueProvider(): array
+    public static function emptyValueProvider(): array
     {
         return [
             'Attribute with empty key' => ['', ['value'], Attribute::class, true],

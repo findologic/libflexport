@@ -34,13 +34,11 @@ use ReflectionException;
 class DataHelperTest extends TestCase
 {
     /**
-     * @noinspection PhpMethodMayBeStaticInspection
-     *
      * Scenarios for empty value validation.
      *
      * @return array Cases with the value to check and whether it should cause a validation issue.
      */
-    public function emptyValueProvider(): array
+    public static function emptyValueProvider(): array
     {
         return [
             'empty string' => ['', true],
@@ -87,13 +85,11 @@ class DataHelperTest extends TestCase
     }
 
     /**
-     * @noinspection PhpMethodMayBeStaticInspection
-     *
      * Scenarios for numeric value validation.
      *
      * @return array Cases with the value to check and whether it should cause a validation issue.
      */
-    public function numericValueProvider(): array
+    public static function numericValueProvider(): array
     {
         return [
             'string' => ['blubbergurke', true],
@@ -138,7 +134,7 @@ class DataHelperTest extends TestCase
      *
      * @return array Cases with the value to check and whether it should cause a validation issue.
      */
-    public function propertyKeyProvider(): array
+    public static function propertyKeyProvider(): array
     {
         return [
             'Valid property keys' => [
@@ -239,11 +235,9 @@ class DataHelperTest extends TestCase
     }
 
     /**
-     * @noinspection PhpMethodMayBeStaticInspection
-     *
      * @return array
      */
-    public function allValuesProvider(): array
+    public static function allValuesProvider(): array
     {
         return [
             'AllKeywords' => [AllKeywords::class, [], 'allKeywords'],
