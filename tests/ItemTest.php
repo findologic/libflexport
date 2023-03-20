@@ -12,7 +12,6 @@ use FINDOLOGIC\Export\XML\XMLExporter;
 
 class ItemTest extends TestCase
 {
-
     /** @var XMLExporter */
     private $exporter;
 
