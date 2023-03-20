@@ -51,7 +51,7 @@ class Page
         }
 
         $document = new DOMDocument('1.0', 'utf-8');
-        $root = XMLHelper::createElement($document, 'findologic', ['version' => '1.0']);
+        $root = XMLHelper::createElement($document, 'findologic', ['version' => '2.0']);
         $document->appendCHild($root);
 
         $items = XMLHelper::createElement($document, 'items', [
