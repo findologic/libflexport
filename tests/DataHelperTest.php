@@ -255,7 +255,7 @@ class DataHelperTest extends TestCase
             'Sort' => [Sort::class, [], 'sort'],
             'Summary' => [Summary::class, [], 'summary'],
             'Url' => [Url::class, [], 'url'],
-            'Group' => [Group::class, ['nice people'], 'usergroup']
+            'Group' => [Group::class, ['nice people'], 'group']
         ];
     }
 

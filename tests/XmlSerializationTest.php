@@ -51,7 +51,9 @@ class XmlSerializationTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        self::$schema = file_get_contents(Constant::$XSD_SCHEMA_PATH);
+        self::$schema = file_get_contents(
+            str_replace('findologic.xsd', 'findologic_20.xsd', Constant::$XSD_SCHEMA_PATH)
+        );
     }
 
     public function tearDown(): void
@@ -78,6 +80,8 @@ class XmlSerializationTest extends TestCase
 
         $item->addName('Alternative name');
         $item->addUrl('http://example.org/item.html');
+        $item->addOrdernumber(new Ordernumber('123-1'));
+        $item->addSalesFrequency(1337);
 
         $price = new Price();
         $price->setValue('13.37');
@@ -611,6 +615,8 @@ class XmlSerializationTest extends TestCase
         $item->setAllPrices([$price, $anotherPrice]);
         $item->addName('Best item ever');
         $item->addUrl('http://example.org/item.html');
+        $item->addSalesFrequency(1337);
+        $item->addOrdernumber(new Ordernumber('123-1'));
 
         $page = new Page(0, 1, 1);
         $page->addItem($item);
