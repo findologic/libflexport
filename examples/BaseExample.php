@@ -37,6 +37,7 @@ abstract class BaseExample
             $this->addSummaries($product);
             $this->addDescriptions($product);
             $this->addPrices($product);
+            $this->addOverriddenPrice($product);
             $this->addUrls($product);
             $this->addKeywords($product);
             $this->addBonuses($product);
@@ -47,6 +48,7 @@ abstract class BaseExample
             $this->addImages($product);
             $this->addAttributes($product);
             $this->addProperties($product);
+            $this->addVariants($exporter, $product);
 
             $items[] = $this->item;
         }
@@ -88,6 +90,13 @@ abstract class BaseExample
     {
         foreach ($product->prices as $userGroup => $price) {
             $this->item->addPrice($price, $userGroup);
+        }
+    }
+
+    protected function addOverriddenPrice(ExampleBaseItem $product): void
+    {
+        foreach ($product->overriddenPrices as $userGroup => $overriddenPrice) {
+            $this->item->addOverriddenPrice($overriddenPrice, $userGroup);
         }
     }
 
@@ -169,6 +178,26 @@ abstract class BaseExample
 
             $propertyElement = new Property($propertyName, $values);
             $this->item->addProperty($propertyElement);
+        }
+    }
+
+    protected function addVariants(Exporter $exporter, ExampleBaseItem $product): void
+    {
+        foreach ($product->variants as $variantAttribute => $values) {
+            $variant = $exporter->createVariant($values['id']);
+
+            $variant->addName($values['title']);
+            $variant->addOrdernumber(new Ordernumber($values['ordernumber']));
+            $variant->addPrice($values['price']);
+            $variant->addMergedAttribute(
+                new Attribute('variant_value', [$variantAttribute])
+            );
+
+            if ($values['overridden_price']) {
+                $variant->addOverriddenPrice($values['overridden_price']);
+            }
+
+            $this->item->addVariant($variant);
         }
     }
 

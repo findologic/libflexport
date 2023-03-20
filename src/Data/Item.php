@@ -11,58 +11,46 @@ use InvalidArgumentException;
 
 abstract class Item implements Serializable
 {
-    /** @var string */
-    protected $id;
+    protected string $id;
 
-    /** @var Name */
-    protected $name;
+    protected Name $name;
 
-    /** @var Summary */
-    protected $summary;
+    protected Summary $summary;
 
-    /** @var Description */
-    protected $description;
+    protected Description $description;
 
-    /** @var Price */
-    protected $price;
+    protected ?Price $price = null;
 
-    /** @var float */
-    protected $insteadPrice;
+    protected ?OverriddenPrice $overriddenPrice = null;
 
-    /** @var float */
-    protected $maxPrice;
+    protected Url $url;
 
-    /** @var float */
-    protected $taxRate;
+    protected Bonus $bonus;
 
-    /** @var Url */
-    protected $url;
+    protected SalesFrequency $salesFrequency;
 
-    /** @var Bonus */
-    protected $bonus;
+    protected DateAdded $dateAdded;
 
-    /** @var SalesFrequency */
-    protected $salesFrequency;
+    protected Sort $sort;
 
-    /** @var DateAdded */
-    protected $dateAdded;
+    protected AllKeywords $keywords;
 
-    /** @var Sort */
-    protected $sort;
+    protected AllOrdernumbers $ordernumbers;
 
-    /** @var AllKeywords */
-    protected $keywords;
+    /** @var Property[] */
+    protected array $properties = [];
 
-    /** @var AllOrdernumbers */
-    protected $ordernumbers;
+    /** @var Attribute[] */
+    protected array $attributes = [];
 
-    protected $properties = [];
+    /** @var Image[] */
+    protected array $images = [];
 
-    protected $attributes = [];
+    /** @var Group[]  */
+    protected array $groups = [];
 
-    protected $images = [];
-
-    protected $groups = [];
+    /** @var Variant[] */
+    protected array $variants = [];
 
     public function __construct($id)
     {
@@ -80,17 +68,11 @@ abstract class Item implements Serializable
         $this->ordernumbers = new AllOrdernumbers();
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @param string $id The id of the item to set
-     */
     public function setId(string $id): void
     {
         DataHelper::checkItemIdNotExceedingCharacterLimit($id);
@@ -102,20 +84,11 @@ abstract class Item implements Serializable
         return $this->name;
     }
 
-    /**
-     * @param Name $name The name element to add to the item.
-     */
     public function setName(Name $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * Shortcut to easily add the name of the item.
-     *
-     * @param string $name The name of the item.
-     * @param string $usergroup The usergroup of the name element.
-     */
     public function addName(string $name, string $usergroup = ''): void
     {
         $this->name->setValue($name, $usergroup);
@@ -126,20 +99,11 @@ abstract class Item implements Serializable
         return $this->summary;
     }
 
-    /**
-     * @param Summary $summary The summary element to add to the item.
-     */
     public function setSummary(Summary $summary): void
     {
         $this->summary = $summary;
     }
 
-    /**
-     * Shortcut to easily add the summary of the item.
-     *
-     * @param string $summary The summary of the item.
-     * @param string $usergroup The usergroup of the summary.
-     */
     public function addSummary(string $summary, string $usergroup = ''): void
     {
         $this->summary->setValue($summary, $usergroup);
@@ -150,20 +114,11 @@ abstract class Item implements Serializable
         return $this->description;
     }
 
-    /**
-     * @param Description $description The description element to add to the item.
-     */
     public function setDescription(Description $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * Shortcut to easily add the description of the item.
-     *
-     * @param string $description The description of the item.
-     * @param string $usergroup The usergroup of the description.
-     */
     public function addDescription(string $description, string $usergroup = ''): void
     {
         $this->description->setValue($description, $usergroup);
@@ -174,21 +129,12 @@ abstract class Item implements Serializable
         return $this->price;
     }
 
-    /**
-     * @param Price $price The price element to add to the item.
-     */
     public function setPrice(Price $price): void
     {
         $this->price = $price;
     }
 
-    /**
-     * Shortcut to easily add the price of the item.
-     *
-     * @param string $price The price of the item.
-     * @param string $usergroup The usergroup of the price.
-     */
-    public function addPrice($price, $usergroup = ''): void
+    public function addPrice(string|int|float $price, string $usergroup = ''): void
     {
         if ($this->price === null) {
             $this->price = new Price();
@@ -216,49 +162,42 @@ abstract class Item implements Serializable
         }
     }
 
-    public function getInsteadPrice()
+    public function getOverriddenPrice(): OverriddenPrice
     {
-        return $this->insteadPrice;
+        return $this->overriddenPrice;
+    }
+
+    public function setOverriddenPrice(OverriddenPrice $overriddenPrice): void
+    {
+        $this->overriddenPrice = $overriddenPrice;
+    }
+
+    public function addOverriddenPrice(string|int|float $overriddenPrice, string $usergroup = ''): void
+    {
+        if ($this->overriddenPrice === null) {
+            $this->overriddenPrice = new OverriddenPrice();
+        }
+
+        $this->overriddenPrice->setValue($overriddenPrice, $usergroup);
     }
 
     /**
-     * Set the instead price of the item. This is only relevant for CSV export type.
-     *
-     * @param float $insteadPrice The instead price of the item.
+     * @param OverriddenPrice[] $overriddenPrices
      */
-    public function setInsteadPrice(float $insteadPrice): void
+    public function setAllOverriddenPrices(array $overriddenPrices): void
     {
-        $this->insteadPrice = $insteadPrice;
-    }
+        foreach ($overriddenPrices as $overriddenPrice) {
+            if (!$overriddenPrice instanceof OverriddenPrice) {
+                throw new InvalidArgumentException(sprintf(
+                    'Given overridden prices must be instances of %s',
+                    OverriddenPrice::class
+                ));
+            }
 
-    public function getMaxPrice()
-    {
-        return $this->maxPrice;
-    }
-
-    /**
-     * Set the max price of the item. This is only relevant for CSV export type.
-     *
-     * @param float $maxPrice The instead price of the item.
-     */
-    public function setMaxPrice(float $maxPrice): void
-    {
-        $this->maxPrice = $maxPrice;
-    }
-
-    public function getTaxRate()
-    {
-        return $this->taxRate;
-    }
-
-    /**
-     * Set the tax rate of the item. This is only relevant for CSV export type.
-     *
-     * @param float $taxRate The tax rate of the item.
-     */
-    public function setTaxRate(float $taxRate): void
-    {
-        $this->taxRate = $taxRate;
+            foreach ($overriddenPrice->getValues() as $usergroup => $value) {
+                $this->addOverriddenPrice($value, $usergroup);
+            }
+        }
     }
 
     public function getUrl(): Url
@@ -266,9 +205,6 @@ abstract class Item implements Serializable
         return $this->url;
     }
 
-    /**
-     * @param Url $url The url element to add to the item.
-     */
     public function setUrl(Url $url): void
     {
         $this->url = $url;
@@ -284,20 +220,11 @@ abstract class Item implements Serializable
         return $this->bonus;
     }
 
-    /**
-     * @param Bonus $bonus The bonus element to add to the item.
-     */
     public function setBonus(Bonus $bonus): void
     {
         $this->bonus = $bonus;
     }
 
-    /**
-     * Shortcut to easily add the bonus of the item. The value must be a numeric.
-     *
-     * @param float $bonus The bonus value of the item.
-     * @param string $usergroup The usergroup of the bonus value.
-     */
     public function addBonus(float $bonus, string $usergroup = ''): void
     {
         $this->bonus->setValue($bonus, $usergroup);
@@ -308,20 +235,11 @@ abstract class Item implements Serializable
         return $this->salesFrequency;
     }
 
-    /**
-     * @param SalesFrequency $salesFrequency The sales frequency element to add to the item.
-     */
     public function setSalesFrequency(SalesFrequency $salesFrequency): void
     {
         $this->salesFrequency = $salesFrequency;
     }
 
-    /**
-     * Shortcut to easily add the sales frequency of the item. The value must be a positive integer.
-     *
-     * @param int $salesFrequency The sales frequency of the item.
-     * @param string $usergroup The usergroup of the sales frequency.
-     */
     public function addSalesFrequency(int $salesFrequency, string $usergroup = ''): void
     {
         $this->salesFrequency->setValue($salesFrequency, $usergroup);
@@ -332,20 +250,11 @@ abstract class Item implements Serializable
         return $this->dateAdded;
     }
 
-    /**
-     * @param DateAdded $dateAdded The date added element to add to the item.
-     */
     public function setDateAdded(DateAdded $dateAdded): void
     {
         $this->dateAdded = $dateAdded;
     }
 
-    /**
-     * Shortcut to easily add the date added value of the item.
-     *
-     * @param DateTimeInterface $dateAdded The date on which the item was added to the ecommerce system.
-     * @param string $usergroup The usergroup of the date added value.
-     */
     public function addDateAdded(DateTimeInterface $dateAdded, string $usergroup = ''): void
     {
         $this->dateAdded->setDateValue($dateAdded, $usergroup);
@@ -356,28 +265,16 @@ abstract class Item implements Serializable
         return $this->sort;
     }
 
-    /**
-     * @param Sort $sort The sort element to add to the item.
-     */
     public function setSort(Sort $sort): void
     {
         $this->sort = $sort;
     }
 
-    /**
-     * Shortcut to easily add the sort value of the item.
-     *
-     * @param int $sort The sort value of the item.
-     * @param string $usergroup The usergroup of the sort value.
-     */
     public function addSort(int $sort, string $usergroup = ''): void
     {
         $this->sort->setValue($sort, $usergroup);
     }
 
-    /**
-     * @param Property $property The property element to add to the item.
-     */
     public function addProperty(Property $property): void
     {
         if (count($property->getAllValues()) === 0) {
@@ -457,11 +354,11 @@ abstract class Item implements Serializable
             $this->images[$image->getUsergroup()] = [];
         }
 
-        array_push($this->images[$image->getUsergroup()], $image);
+        $this->images[$image->getUsergroup()][] = $image;
     }
 
     /**
-     * @param array $images Array of image elements which should be added to the item.
+     * @param Image[] $images
      */
     public function setAllImages(array $images): void
     {
@@ -470,52 +367,53 @@ abstract class Item implements Serializable
         }
     }
 
-    /**
-     * @param Ordernumber $ordernumber The ordernumber element to add to the item.
-     */
     public function addOrdernumber(Ordernumber $ordernumber): void
     {
         $this->ordernumbers->addValue($ordernumber);
     }
 
     /**
-     * @param array $ordernumbers Array of ordernumber elements which should be added to the item.
+     * @param Ordernumber[] $ordernumbers
      */
     public function setAllOrdernumbers(array $ordernumbers): void
     {
         $this->ordernumbers->setAllValues($ordernumbers);
     }
 
-    /**
-     * @param Keyword $keyword The keyword element to add to the item.
-     */
     public function addKeyword(Keyword $keyword): void
     {
         $this->keywords->addValue($keyword);
     }
 
     /**
-     * @param array $keywords Array of keyword elements which should be added to the item.
+     * @param Keyword[] $keywords
      */
     public function setAllKeywords(array $keywords): void
     {
         $this->keywords->setAllValues($keywords);
     }
 
-    /**
-     * @param Group $group The usergroup element to add to the item.
-     */
     public function addGroup(Group $group): void
     {
         $this->groups[] = $group;
     }
 
     /**
-     * @param array $groups Array of usergroup elements which should be added to the item.
+     * @param Group[] $groups
      */
     public function setAllGroups(array $groups): void
     {
         $this->groups = $groups;
+    }
+
+    public function addVariant(Variant $variant): void
+    {
+        $this->variants[] = $variant;
+    }
+
+    public function setAllVariants(array $variants): void
+    {
+        $this->variants = $variants;
     }
 
     /**

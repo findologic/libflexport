@@ -39,9 +39,7 @@ class CSVItem extends Item
         $dateAdded = self::sanitize($this->dateAdded->getCsvFragment());
         $sort = self::sanitize($this->sort->getCsvFragment());
 
-        $instead = $this->getInsteadPrice();
-        $maxPrice = $this->getMaxPrice();
-        $taxRate = $this->getTaxRate();
+        $overriddenPrice = $this->getOverriddenPrice();
         $groups = implode(',', array_map(function (Group $group): string {
             /** @var $group Group */
             $groupName = $group->getCsvFragment();
@@ -49,22 +47,19 @@ class CSVItem extends Item
             return self::sanitize($groupName);
         }, $this->groups));
 
-
         $image = $this->buildImages();
         $attributes = $this->buildAttributes();
         $properties = $this->buildProperties($availableProperties);
 
-        $line = sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s\n",
+        return sprintf(
+            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s\n",
             $id,
             $ordernumbers,
             $name,
             $summary,
             $description,
             $price,
-            $instead,
-            $maxPrice,
-            $taxRate,
+            $overriddenPrice,
             $url,
             $image,
             $attributes,
@@ -76,8 +71,6 @@ class CSVItem extends Item
             $sort,
             $properties
         );
-
-        return $line;
     }
 
     private function buildProperties(array $availableProperties): string

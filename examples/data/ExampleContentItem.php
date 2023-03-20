@@ -6,6 +6,7 @@ use FINDOLOGIC\Export\Data\Image;
  * This class represents an example content.
  * As this is just a static class, an own logic must be implemented
  */
+
 class ExampleContentItem extends ExampleBaseItem
 {
     public string $id = 'content_ypy44hn5rpk8nggba8vxmpx68d8v7ra';
@@ -34,6 +35,10 @@ class ExampleContentItem extends ExampleBaseItem
     ];
 
     public array $prices = [
+        self::DEFAULT_USER_GROUP => 0
+    ];
+
+    public array $overriddenPrices = [
         self::DEFAULT_USER_GROUP => 0
     ];
 
@@ -98,4 +103,6 @@ class ExampleContentItem extends ExampleBaseItem
             self::DEFAULT_USER_GROUP => 9,
         ]
     ];
+
+    public array $variants = [];
 }

@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export;
 
 use FINDOLOGIC\Export\CSV\CSVExporter;
 use FINDOLOGIC\Export\Data\Item;
+use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\XML\XMLExporter;
 use InvalidArgumentException;
 
@@ -125,4 +126,12 @@ abstract class Exporter
      * @return Item The newly generated item.
      */
     abstract public function createItem($id): Item;
+
+    /**
+     * Creates an export format-specific variant instance.
+     *
+     * @param string $id Unique ID of the item.
+     * @return Variant The newly generated item.
+     */
+    abstract public function createVariant($id): Variant;
 }

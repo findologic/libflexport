@@ -6,6 +6,7 @@ use FINDOLOGIC\Export\Data\Image;
  * This class represents an example product.
  * As this is just a static class, an own logic must be implemented
  */
+
 class ExampleProductItem extends ExampleBaseItem
 {
     public string $id = '01120c948ad41a2284ad9f0402fbc7d';
@@ -40,6 +41,11 @@ class ExampleProductItem extends ExampleBaseItem
     public array $prices = [
         self::DEFAULT_USER_GROUP => 44.8,
         self::SPECIFIC_USER_GROUP => 45.9
+    ];
+
+    public array $overriddenPrices = [
+        self::DEFAULT_USER_GROUP => 54.8,
+        self::SPECIFIC_USER_GROUP => 55.9
     ];
 
     public array $urls = [
@@ -173,6 +179,39 @@ class ExampleProductItem extends ExampleBaseItem
                     'productUrl' => 'https://www.store.com/sneakers/adidas-grey.html'
                 ]
             ]
+        ]
+    ];
+
+    public array $variants = [
+        'Blue' => [
+            'id' => 'variant1',
+            'ordernumber' => 'variant1',
+            'title' => 'Adidas Sneaker blue',
+            'badge' => 'https://www.store.com/images/badges/new.png',
+            'price' => '13.99',
+            'overridden_price' => '',
+            'sale' => '',
+            'groups' => ['group1', 'group2']
+        ],
+        'Red' => [
+            'id' => 'variant2',
+            'ordernumber' => 'variant1',
+            'title' => 'Adidas Sneaker red',
+            'badge' => 'https://www.store.com/images/badges/sale.png',
+            'price' => '7.49',
+            'overridden_price' => '14.99',
+            'sale' => '50%',
+            'groups' => ['group1', 'group2']
+        ],
+        'Grey' => [
+            'id' => 'variant3',
+            'ordernumber' => 'variant1',
+            'title' => 'Adidas Sneaker grey',
+            'badge' => 'https://www.store.com/images/badges/sale.png',
+            'price' => '6.49',
+            'overridden_price' => '12.99',
+            'sale' => '50%',
+            'groups' => ['group1', 'group2']
         ]
     ];
 }

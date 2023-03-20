@@ -22,6 +22,9 @@ class ExampleBaseItem
     /** @var array<string, int|float> */
     public array $prices;
 
+    /** @var array<string, int|float> */
+    public array $overriddenPrices;
+
     /** @var array<string, string> */
     public array $urls;
 
@@ -51,4 +54,7 @@ class ExampleBaseItem
 
     /** @var array<string, array<string, mixed>> */
     public array $properties;
+
+    /** @var array<string, array<string, mixed>> */
+    public array $variants;
 }

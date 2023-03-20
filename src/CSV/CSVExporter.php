@@ -3,12 +3,13 @@
 namespace FINDOLOGIC\Export\CSV;
 
 use FINDOLOGIC\Export\Data\Item;
+use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 
 class CSVExporter extends Exporter
 {
-    private const HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\tinstead\tmaxprice\ttaxrate\turl\t" .
+    private const HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\toverriddenPrice\turl\t" .
         "image\tattributes\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
 
     /**
@@ -70,6 +71,14 @@ class CSVExporter extends Exporter
     public function createItem($id): Item
     {
         return new CSVItem($id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function createVariant($id): Variant
+    {
+        return new CSVVariant($id);
     }
 
     /**

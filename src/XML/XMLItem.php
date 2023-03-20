@@ -37,6 +37,9 @@ class XMLItem extends Item
         $itemElem->appendChild($this->summary->getDomSubtree($document));
         $itemElem->appendChild($this->description->getDomSubtree($document));
         $itemElem->appendChild($this->price->getDomSubtree($document));
+        if ($this->overriddenPrice) {
+            $itemElem->appendChild($this->overriddenPrice->getDomSubtree($document));
+        }
         $itemElem->appendChild($this->url->getDomSubtree($document));
         $itemElem->appendChild($this->bonus->getDomSubtree($document));
         $itemElem->appendChild($this->salesFrequency->getDomSubtree($document));
@@ -49,6 +52,7 @@ class XMLItem extends Item
         $itemElem->appendChild($this->buildAttributes($document));
         $itemElem->appendChild($this->buildImages($document));
         $itemElem->appendChild($this->buildGroups($document));
+        $itemElem->appendChild($this->buildVariants($document));
 
         return $itemElem;
     }
@@ -162,6 +166,22 @@ class XMLItem extends Item
     }
 
     /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     * @param DOMDocument $document
+     * @return DOMElement
+     */
+    private function buildVariants(DOMDocument $document): DOMElement
+    {
+        $variants = XMLHelper::createElement($document, 'variants');
+
+        foreach ($this->variants as $variant) {
+            $variants->appendChild($variant->getDomSubtree($document));
+        }
+
+        return $variants;
+    }
+
+    /**
      * Checks if there is at least one image of type default
      *
      * @param Image[] $images The images to validate.
@@ -177,35 +197,5 @@ class XMLItem extends Item
         }
 
         throw new BaseImageMissingException();
-    }
-
-    public function getInsteadPrice(): void
-    {
-        throw new UnsupportedValueException('insteadPrice');
-    }
-
-    public function setInsteadPrice(float $insteadPrice): void
-    {
-        throw new UnsupportedValueException('insteadPrice');
-    }
-
-    public function getMaxPrice(): void
-    {
-        throw new UnsupportedValueException('maxPrice');
-    }
-
-    public function setMaxPrice(float $insteadPrice): void
-    {
-        throw new UnsupportedValueException('maxPrice');
-    }
-
-    public function getTaxRate(): void
-    {
-        throw new UnsupportedValueException('taxRate');
-    }
-
-    public function setTaxRate(float $insteadPrice): void
-    {
-        throw new UnsupportedValueException('taxRate');
     }
 }

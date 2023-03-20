@@ -45,13 +45,12 @@ abstract class UsergroupAwareMultiValue implements Serializable, NameAwareValue
     }
 
     /**
-     * @param array $values Array of elements to be added to the collection.
+     * @param UsergroupAwareMultiValueItem[] $values Array of elements to be added to the collection.
      */
     public function setAllValues(array $values): void
     {
         $this->values = [];
 
-        /* @var UsergroupAwareMultiValueItem $value */
         foreach ($values as $value) {
             $this->addValue($value);
         }
