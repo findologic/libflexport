@@ -2,86 +2,53 @@
 
 class ExampleBaseItem
 {
-    const DEFAULT_USER_GROUP = '';
-    const SPECIFIC_USER_GROUP = 'LNrLF7BRVJ0toQ==';
+    public const DEFAULT_USER_GROUP = '';
+    public const SPECIFIC_USER_GROUP = 'LNrLF7BRVJ0toQ==';
 
-    /**
-     * @var int
-     */
-    public $id;
+    public string $id;
 
-    /**
-     * @var array[]
-     */
-    public $orderNumbers;
+    /** @var array<string, string[]> */
+    public array $orderNumbers;
 
-    /**
-     * @var string[]
-     */
-    public $names;
+    /** @var array<string, string> */
+    public array $names;
 
-    /**
-     * @var string[]
-     */
-    public $summaries;
+    /** @var array<string, string> */
+    public array $summaries;
 
-    /**
-     * @var string[]
-     */
-    public $descriptions;
+    /**  @var array<string, string> */
+    public array $descriptions;
 
-    /**
-     * @var int[]
-     */
-    public $prices;
+    /** @var array<string, int|float> */
+    public array $prices;
 
-    /**
-     * @var string[]
-     */
-    public $urls ;
+    /** @var array<string, string> */
+    public array $urls;
 
-    /**
-     * @var array[]
-     */
-    public $keywords;
+    /** @var array<string, string[]> */
+    public array $keywords;
 
-    /**
-     * @var int[]
-     */
-    public $bonuses;
+    /** @var array<string, int> */
+    public array $bonuses;
 
-    /**
-     * @var int[]
-     */
-    public $salesFrequencies;
+    /** @var array<string, int> */
+    public array $salesFrequencies;
 
-    /**
-     * @var string[]
-     */
-    public $dateAddeds;
+    /** @var array<string, string> */
+    public array $dateAddeds;
 
-    /**
-     * @var int[]
-     */
-    public $sorts;
+    /** @var array<string, int> */
+    public array $sorts;
 
-    /**
-     * @var string[]
-     */
-    public $groups;
+    /** @var string[] */
+    public array $groups;
 
-    /**
-     * @var array[]
-     */
-    public $images;
+    /** @var array<string, array<string, string>> */
+    public array $images;
 
-    /**
-     * @var array[]
-     */
-    public $attributes;
+    /** @var array<string, string[]> */
+    public array $attributes;
 
-    /**
-     * @var array[]
-     */
-    public $properties;
+    /** @var array<string, array<string, mixed>> */
+    public array $properties;
 }
