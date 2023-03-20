@@ -51,9 +51,7 @@ class XmlSerializationTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        self::$schema = file_get_contents(
-            str_replace('findologic.xsd', 'findologic_20.xsd', Constant::$XSD_SCHEMA_PATH)
-        );
+        self::$schema = file_get_contents(Constant::$XSD_SCHEMA_PATH_20);
     }
 
     public function tearDown(): void

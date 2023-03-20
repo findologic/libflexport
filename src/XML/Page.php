@@ -85,9 +85,7 @@ class Page
             array_push($validationErrors, $errstr);
         });
 
-        $isValid = $document->schemaValidate(
-            str_replace('findologic.xsd', 'findologic_20.xsd', Constant::$XSD_SCHEMA_PATH)
-        );
+        $isValid = $document->schemaValidate(Constant::$XSD_SCHEMA_PATH_20);
         restore_error_handler();
 
         if (!$isValid) {
