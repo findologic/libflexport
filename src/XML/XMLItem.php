@@ -8,7 +8,7 @@ use DOMElement;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
-use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Exceptions\BaseImageMissingException;
 use FINDOLOGIC\Export\Exceptions\ImagesWithoutUsergroupMissingException;
 use FINDOLOGIC\Export\Exceptions\UnsupportedValueException;
@@ -48,7 +48,7 @@ class XMLItem extends Item
         $itemElem->appendChild($this->buildProperties($document));
         $itemElem->appendChild($this->buildAttributes($document));
         $itemElem->appendChild($this->buildImages($document));
-        $itemElem->appendChild($this->buildUsergroups($document));
+        $itemElem->appendChild($this->buildGroups($document));
 
         return $itemElem;
     }
@@ -149,16 +149,16 @@ class XMLItem extends Item
      * @param DOMDocument $document
      * @return DOMElement
      */
-    private function buildUsergroups(DOMDocument $document): DOMElement
+    private function buildGroups(DOMDocument $document): DOMElement
     {
-        $usergroups = XMLHelper::createElement($document, 'usergroups');
+        $groups = XMLHelper::createElement($document, 'groups');
 
-        /** @var Usergroup $usergroup */
-        foreach ($this->usergroups as $usergroup) {
-            $usergroups->appendChild($usergroup->getDomSubtree($document));
+        /** @var Group $groups */
+        foreach ($this->groups as $group) {
+            $groups->appendChild($group->getDomSubtree($document));
         }
 
-        return $usergroups;
+        return $groups;
     }
 
     /**

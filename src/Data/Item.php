@@ -62,7 +62,7 @@ abstract class Item implements Serializable
 
     protected $images = [];
 
-    protected $usergroups = [];
+    protected $groups = [];
 
     public function __construct($id)
     {
@@ -503,19 +503,19 @@ abstract class Item implements Serializable
     }
 
     /**
-     * @param Usergroup $usergroup The usergroup element to add to the item.
+     * @param Group $group The usergroup element to add to the item.
      */
-    public function addUsergroup(Usergroup $usergroup): void
+    public function addGroup(Group $group): void
     {
-        array_push($this->usergroups, $usergroup);
+        $this->groups[] = $group;
     }
 
     /**
-     * @param array $usergroups Array of usergroup elements which should be added to the item.
+     * @param array $groups Array of usergroup elements which should be added to the item.
      */
-    public function setAllUsergroups(array $usergroups): void
+    public function setAllGroups(array $groups): void
     {
-        $this->usergroups = $usergroups;
+        $this->groups = $groups;
     }
 
     /**

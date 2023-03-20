@@ -77,7 +77,7 @@ class ExampleProductItem extends ExampleBaseItem
         self::SPECIFIC_USER_GROUP => 7
     ];
 
-    public $userGroups = [
+    public $groups = [
         self::SPECIFIC_USER_GROUP,
         'cHBw'
     ];

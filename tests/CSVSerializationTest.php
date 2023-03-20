@@ -21,7 +21,7 @@ use FINDOLOGIC\Export\Data\SalesFrequency;
 use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
-use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValueItem;
@@ -278,7 +278,7 @@ class CSVSerializationTest extends TestCase
         }
 
         foreach ($expectedGroups as $group) {
-            $item->addUsergroup(new Usergroup($group));
+            $item->addGroup(new Group($group));
         }
 
         $item->addBonus($expectedBonus);

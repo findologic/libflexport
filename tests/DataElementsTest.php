@@ -17,7 +17,7 @@ use FINDOLOGIC\Export\Data\SalesFrequency;
 use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
-use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotIntegerException;
@@ -191,12 +191,12 @@ class DataElementsTest extends TestCase
     {
         $this->expectException(EmptyValueNotAllowedException::class);
 
-        new Usergroup('');
+        new Group('');
     }
 
     public function testUsergroupStringRepresentationIsTheUsergroupValue(): void
     {
-        $usergroup = new Usergroup('test');
+        $usergroup = new Group('test');
 
         $this->assertEquals($usergroup->getValue(), (string) $usergroup);
     }

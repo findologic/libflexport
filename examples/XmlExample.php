@@ -11,7 +11,7 @@ use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Ordernumber;
 use FINDOLOGIC\Export\Data\Property;
-use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Exporter;
 
 /**
@@ -48,7 +48,7 @@ class XmlExample
             $this->addSalesFrequencies($product);
             $this->addDateAddeds($product);
             $this->addSorts($product);
-            $this->addUserGroups($product);
+            $this->addGroups($product);
             $this->addImages($product);
             $this->addAttributes($product);
             $this->addProperties($product);
@@ -140,10 +140,10 @@ class XmlExample
         }
     }
 
-    private function addUserGroups(ExampleBaseItem $product): void
+    private function addGroups(ExampleBaseItem $product): void
     {
-        foreach ($product->userGroups as $userGroup) {
-            $this->item->addUsergroup(new Usergroup($userGroup));
+        foreach ($product->groups as $group) {
+            $this->item->addGroup(new Group($group));
         }
     }
 

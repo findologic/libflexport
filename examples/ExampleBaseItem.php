@@ -68,7 +68,7 @@ class ExampleBaseItem
     /**
      * @var string[]
      */
-    public $userGroups;
+    public $groups;
 
     /**
      * @var array[]

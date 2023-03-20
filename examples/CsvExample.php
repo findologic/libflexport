@@ -8,7 +8,7 @@ use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Ordernumber;
 use FINDOLOGIC\Export\Data\Property;
-use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Exporter;
 
 /**
@@ -36,7 +36,7 @@ class CsvExample
         $this->addSalesFrequencies($item);
         $this->addDateAddeds($item);
         $this->addSorts($item);
-        $this->addUsergroups($item);
+        $this->addGroups($item);
         $this->addImages($item);
         $this->addAttributes($item);
         $this->addProperties($item);
@@ -195,15 +195,15 @@ class CsvExample
         $item->addUrl('https://www.store.com/sneakers/adidas.html');
     }
 
-    private function addUsergroups(Item $item): void
+    private function addGroups(Item $item): void
     {
-        $usergroups = [
+        $groups = [
             'LNrLF7BRVJ0toQ==',
             'cHBw'
         ];
 
-        foreach ($usergroups as $usergroup) {
-            $item->addUsergroup(new Usergroup($usergroup));
+        foreach ($groups as $group) {
+            $item->addGroup(new Group($group));
         }
     }
 }

@@ -7,7 +7,7 @@ use DOMDocument;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
-use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use InvalidArgumentException;
 
@@ -42,12 +42,12 @@ class CSVItem extends Item
         $instead = $this->getInsteadPrice();
         $maxPrice = $this->getMaxPrice();
         $taxRate = $this->getTaxRate();
-        $groups = implode(',', array_map(function (Usergroup $group): string {
-            /** @var $group Usergroup */
+        $groups = implode(',', array_map(function (Group $group): string {
+            /** @var $group Group */
             $groupName = $group->getCsvFragment();
             DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
             return self::sanitize($groupName);
-        }, $this->usergroups));
+        }, $this->groups));
 
 
         $image = $this->buildImages();

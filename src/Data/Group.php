@@ -9,10 +9,9 @@ use FINDOLOGIC\Export\Helpers\NameAwareValue;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
-class Usergroup implements Serializable, NameAwareValue
+class Group implements Serializable, NameAwareValue
 {
-    /** @var string */
-    private $value;
+    private string $value;
 
     public function __construct($value)
     {
@@ -30,9 +29,7 @@ class Usergroup implements Serializable, NameAwareValue
      */
     public function getDomSubtree(DOMDocument $document): DOMElement
     {
-        $usergroupElem = XMLHelper::createElementWithText($document, 'usergroup', $this->getValue());
-
-        return $usergroupElem;
+        return XMLHelper::createElementWithText($document, 'group', $this->getValue());
     }
 
     /**
@@ -53,6 +50,6 @@ class Usergroup implements Serializable, NameAwareValue
      */
     public function getValueName(): string
     {
-        return 'usergroup';
+        return 'group';
     }
 }

@@ -18,7 +18,7 @@ use FINDOLOGIC\Export\Data\SalesFrequency;
 use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
-use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Exceptions\AttributeKeyLengthException;
 use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
 use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
@@ -255,7 +255,7 @@ class DataHelperTest extends TestCase
             'Sort' => [Sort::class, [], 'sort'],
             'Summary' => [Summary::class, [], 'summary'],
             'Url' => [Url::class, [], 'url'],
-            'Usergroup' => [Usergroup::class, ['nice people'], 'usergroup']
+            'Group' => [Group::class, ['nice people'], 'usergroup']
         ];
     }
 

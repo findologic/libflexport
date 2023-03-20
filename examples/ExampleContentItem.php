@@ -68,7 +68,7 @@ class ExampleContentItem extends ExampleBaseItem
         self::DEFAULT_USER_GROUP => 1
     ];
 
-    public $userGroups = [
+    public $groups = [
         self::SPECIFIC_USER_GROUP,
         'cHBw'
     ];

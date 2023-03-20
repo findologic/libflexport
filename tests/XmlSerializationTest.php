@@ -11,6 +11,7 @@ use DOMXPath;
 use Exception;
 use FINDOLOGIC\Export\Constant;
 use FINDOLOGIC\Export\Data\Attribute;
+use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Keyword;
@@ -256,9 +257,9 @@ class XmlSerializationTest extends TestCase
     {
         $item = $this->getMinimalItem();
 
-        $item->setAllUsergroups([
-            new Usergroup('one group'),
-            new Usergroup('another group')
+        $item->setAllGroups([
+            new Group('one group'),
+            new Group('another group')
         ]);
 
         $page = $this->exporter->serializeItems([$item], 0, 1, 1);
@@ -463,7 +464,7 @@ class XmlSerializationTest extends TestCase
     {
         $item = $this->getMinimalItem();
 
-        $item->addUsergroup(new Usergroup('myusergroup'));
+        $item->addGroup(new Group('myusergroup'));
         $item->addProperty(new Property('property1', ['myusergroup' => 'usergroupvalue']));
 
         $this->assertPageIsValid($this->exporter->serializeItems([$item], 0, 1, 1));
