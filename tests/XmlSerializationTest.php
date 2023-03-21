@@ -55,10 +55,8 @@ class XmlSerializationTest extends TestCase
 
     public function tearDown(): void
     {
-        try {
+        if (file_exists('/tmp/findologic_0_1.xml')) {
             unlink('/tmp/findologic_0_1.xml');
-        } catch (Exception $e) {
-            // No need to delete a written file if the test didn't write it.
         }
     }
 
@@ -307,12 +305,10 @@ class XmlSerializationTest extends TestCase
     }
 
     /**
-     * @noinspection PhpMethodMayBeStaticInspection
-     *
      * @return array Name of add method to call in a test to add a certain value, and an array of values with
      *      usergroup names as key.
      */
-    public function simpleValueAddingShortcutProvider(): array
+    public static function simpleValueAddingShortcutProvider(): array
     {
         $stringValuesWithUsergroupKeys = [
             '' => 'No usergroup',
@@ -386,13 +382,11 @@ class XmlSerializationTest extends TestCase
     }
 
     /**
-     * @noinspection PhpMethodMayBeStaticInspection
-     *
      * Provides a data set for testing if adding wrong url values to elements of type UsergroupAwareSimpleValue fails.
      *
      * @return array Scenarios with a value and the expected exception
      */
-    public function urlValidationProvider(): array
+    public static function urlValidationProvider(): array
     {
         return [
             'Url with value' => ['value', InvalidUrlException::class],
@@ -432,11 +426,9 @@ class XmlSerializationTest extends TestCase
     }
 
     /**
-     * @noinspection PhpMethodMayBeStaticInspection
-     *
      * @return array
      */
-    public function unsupportedValueProvider(): array
+    public static function unsupportedValueProvider(): array
     {
         return [
             'getInsteadPrice' => ['getInsteadPrice', null],

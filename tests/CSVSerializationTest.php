@@ -334,8 +334,7 @@ class CSVSerializationTest extends TestCase
         $this->assertEquals($expectedCsvHeading, $lines[0]);
     }
 
-    /** @noinspection PhpMethodMayBeStaticInspection */
-    public function illegalPropertyProvider(): array
+    public static function illegalPropertyProvider(): array
     {
         return [
             'tab' => [new Property("This\tcontains\ttabs", [null => 'some value'])],
@@ -389,14 +388,12 @@ class CSVSerializationTest extends TestCase
     }
 
     /**
-     * @noinspection PhpMethodMayBeStaticInspection
-     *
      * Provides a dataset for testing if tab and new line characters which are removed by the sanitize method
      * don't break the CSV export.
      *
      * @return array Scenarios with value, the element class and the elements setter method name.
      */
-    public function csvSanitizedElementsInputProvider(): array
+    public static function csvSanitizedElementsInputProvider(): array
     {
         return [
             'Ordernumber with invalid characters' => ["ordernumber\t\n", Ordernumber::class, 'addOrdernumber'],

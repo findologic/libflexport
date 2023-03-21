@@ -27,11 +27,9 @@ class PropertyTest extends TestCase
     }
 
     /**
-     * @noinspection PhpMethodMayBeStaticInspection
-     *
      * @return array
      */
-    public function propertyKeyProvider(): array
+    public static function propertyKeyProvider(): array
     {
         return [
             'reserved property "image\d+"' => ['image0', true],
@@ -71,12 +69,17 @@ class PropertyTest extends TestCase
 
     public function testNonAssociativePropertyValueCausesException(): void
     {
-        try {
-            new Property('foo', ['bar']);
-        } catch (Exception $exception) {
-            $warningMessage = 'Property values have to be associative, like $key => $value. The key "0" has to be a ' .
-                'string, integer given.';
-            $this->assertEquals($exception->getMessage(), $warningMessage);
-        }
+        $warningMessage = 'Property values have to be associative, like $key => $value. The key "0" has to be a ' .
+            'string, integer given.';
+
+        set_error_handler(static function (int $errno, string $error): never {
+            throw new Exception($error, $errno);
+        }, E_USER_WARNING);
+
+        $this->expectExceptionMessage($warningMessage);
+
+        new Property('foo', ['bar']);
+
+        restore_error_handler();
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
         colors="true"
         bootstrap="vendor/autoload.php"
 >
@@ -11,14 +11,15 @@
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist>
+    <coverage>
+        <include>
             <directory>src</directory>
-        </whitelist>
-    </filter>
+        </include>
+        <report>
+            <clover outputFile="./coverage.xml"/>
+            <text outputFile="php://stdout"/>
+        </report>
+    </coverage>
 
-    <logging>
-        <log type="coverage-text" target="php://stdout"/>
-        <log type="coverage-clover" target="./coverage.xml"/>
-    </logging>
+    <logging/>
 </phpunit>
