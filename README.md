@@ -64,7 +64,7 @@ following is necessary:
 ```php
 require_once './vendor/autoload.php';
 
-use \FINDOLOGIC\Export\Exporter;
+use FINDOLOGIC\Export\Exporter;
 
 $exporter = Exporter::create(Exporter::TYPE_XML);
 
@@ -92,7 +92,7 @@ $xmlOutput = $exporter->serializeItems([$item], 0, 1, 1);
 ```php
 require_once './vendor/autoload.php';
 
-use \FINDOLOGIC\Export\Exporter;
+use FINDOLOGIC\Export\Exporter;
 
 $exporter = Exporter::create(Exporter::TYPE_CSV);
 

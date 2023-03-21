@@ -47,13 +47,13 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "FINDOLOGIC\\Export\\": "src/"
+        "psr-4": {
+            "FINDOLOGIC\\Export\\": "src"
         }
     },
     "autoload-dev": {
-        "psr-0": {
-            "FINDOLOGIC\\Export\\Tests\\": "tests/"
+        "psr-4": {
+            "FINDOLOGIC\\Export\\Tests\\": "tests"
         }
     },
     "prefer-stable": true
