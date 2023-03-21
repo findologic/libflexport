@@ -79,5 +79,7 @@ class PropertyTest extends TestCase
         $this->expectExceptionMessage($warningMessage);
 
         new Property('foo', ['bar']);
+
+        restore_error_handler();
     }
 }
