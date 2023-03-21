@@ -13,9 +13,9 @@ abstract class Variant implements Serializable
 
     protected Name $name;
 
-    protected ?Price $price = null;
+    protected Price $price;
 
-    protected ?OverriddenPrice $overriddenPrice = null;
+    protected OverriddenPrice $overriddenPrice;
 
     protected AllOrdernumbers $ordernumbers;
 
@@ -34,6 +34,8 @@ abstract class Variant implements Serializable
 
         $this->name = new Name();
         $this->ordernumbers = new AllOrdernumbers();
+        $this->price = new Price();
+        $this->overriddenPrice = new OverriddenPrice();
     }
 
     public function getId(): string

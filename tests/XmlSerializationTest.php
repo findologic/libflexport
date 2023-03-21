@@ -16,6 +16,7 @@ use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Ordernumber;
+use FINDOLOGIC\Export\Data\OverriddenPrice;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\Url;
@@ -428,40 +429,6 @@ class XmlSerializationTest extends TestCase
         $this->assertNotNull($page->getXml());
     }
 
-    /**
-     * @return array
-     */
-    public static function unsupportedValueProvider(): array
-    {
-        return [
-            'getInsteadPrice' => ['getInsteadPrice', null],
-            'setInsteadPrice' => ['setInsteadPrice', 13.37],
-            'getMaxPrice' => ['getMaxPrice', null],
-            'setMaxPrice' => ['setMaxPrice', 42.00],
-            'getTaxRate' => ['getTaxRate', null],
-            'setTaxRate' => ['setTaxRate', 20.0],
-        ];
-    }
-
-    /**
-     * @dataProvider unsupportedValueProvider
-     *
-     * @param string $method Name of the method to call to interact with an unsupported value.
-     * @param float|null $parameter The parameter in case of a setter.
-     */
-    public function testUsingValuesUnsupportedByXmlCauseExceptions(string $method, ?float $parameter): void
-    {
-        $this->expectException(UnsupportedValueException::class);
-
-        $item = $this->getMinimalItem();
-
-        if ($parameter === null) {
-            $item->{$method}();
-        } else {
-            $item->{$method}($parameter);
-        }
-    }
-
     public function testAddingPropertyWithUsergroupWorksAsExpected(): void
     {
         $item = $this->getMinimalItem();
@@ -636,6 +603,48 @@ class XmlSerializationTest extends TestCase
 
         $item = $this->exporter->createItem('123');
         $item->setAllPrices([new stdClass()]);
+    }
+
+    public function testAllOverriddenPricesCanBeSet(): void
+    {
+        $expectedUsergroup = 'best usergroup';
+
+        $price = new OverriddenPrice();
+        $price->setValue('13.37');
+        $anotherPrice = new OverriddenPrice();
+        $anotherPrice->setValue(4.20, $expectedUsergroup);
+
+        /** @var XMLItem $item */
+        $item = $this->exporter->createItem('123');
+        $item->addPrice(10.0);
+        $item->setAllOverriddenPrices([$price, $anotherPrice]);
+        $item->addName('Best item ever');
+        $item->addUrl('http://example.org/item.html');
+        $item->addSalesFrequency(1337);
+        $item->addOrdernumber(new Ordernumber('123-1'));
+
+        $page = new Page(0, 1, 1);
+        $page->addItem($item);
+        $document = $page->getXml();
+        $xpath = new DOMXPath($document);
+
+        $this->assertEquals('13.37', $xpath->query('//overriddenPrice')->item(0)->nodeValue);
+        $this->assertEquals('4.2', $xpath->query('//overriddenPrice')->item(1)->nodeValue);
+        $this->assertEquals(
+            $expectedUsergroup,
+            $xpath->query('//overriddenPrice')->item(1)->getAttribute('usergroup')
+        );
+    }
+
+    public function testOverriddenPricesAreNotInstancesOfOverriddenPriceThrowsAnException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            sprintf('Given overridden prices must be instances of %s', OverriddenPrice::class)
+        );
+
+        $item = $this->exporter->createItem('123');
+        $item->setAllOverriddenPrices([new stdClass()]);
     }
 
     public function testMergingAttributesWillNotOverrideExistingOnes(): void

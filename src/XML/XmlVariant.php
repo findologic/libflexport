@@ -26,8 +26,10 @@ class XmlVariant extends Variant
         $document->appendChild($itemElem);
 
         $itemElem->appendChild($this->name->getDomSubtree($document));
-        $itemElem->appendChild($this->price->getDomSubtree($document));
-        if ($this->overriddenPrice !== null) {
+        if (count($this->price->getValues())) {
+            $itemElem->appendChild($this->price->getDomSubtree($document));
+        }
+        if (count($this->overriddenPrice->getValues())) {
             $itemElem->appendChild($this->overriddenPrice->getDomSubtree($document));
         }
         $itemElem->appendChild($this->ordernumbers->getDomSubtree($document));

@@ -30,8 +30,8 @@ use InvalidArgumentException;
 
 class CSVSerializationTest extends TestCase
 {
-    private const DEFAULT_CSV_HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\tinstead\tmaxprice\t" .
-        "taxrate\turl\timage\tattributes\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
+    private const DEFAULT_CSV_HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\t" .
+        "overriddenPrice\turl\timage\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
 
     private const CSV_PATH = '/tmp/findologic.csv';
 
@@ -198,15 +198,19 @@ class CSVSerializationTest extends TestCase
         $expectedDescription =
             'Here I keep on rambling in length about how the product will enhance your existence as a consumer.';
         $expectedPrice = 11.99;
-        $expectedInsteadPrice = 10.11;
-        $expectedMaxPrice = 20.00;
-        $expectedTaxRate = 20;
+        $expectedOverriddenPrice = 10.11;
         $expectedUrl = 'https://example.org/wonderful_product.html';
         $expectedImage = 'https://example.org/wonderful_product.png';
+        $expectedAttributeKeys = ['cat', 'vendor', 'use'];
         $expectedAttributes = [
-            'cat' => ['Bikes', 'Bikes_Racing Bikes'],
-            'vendor' => ['Ultrabikes'],
-            'use' => ['Outdoor', 'Race', "&=<>=%"]
+            $expectedAttributeKeys[0] => ['Bikes', 'Bikes_Racing Bikes'],
+            $expectedAttributeKeys[1] => ['Ultrabikes, Megabikes'],
+            $expectedAttributeKeys[2] => ['Outdoor', 'Race', "&=<>=%"]
+        ];
+        $expectedAttributesColumns = [
+            implode(',', ['Bikes', 'Bikes_Racing Bikes']),
+            implode(',', ['Ultrabikes\, Megabikes']),
+            implode(',', ['Outdoor', 'Race', "&==%"]),
         ];
         $expectedKeywords = ['bike', 'race', 'velobike', 'ultrabikes'];
         $expectedGroups = [1, 2, 3];
@@ -220,37 +224,27 @@ class CSVSerializationTest extends TestCase
             $expectedPropertyKeys[1] => 'true'
         ];
 
-        $expectedAttributeArray = [];
-        foreach ($expectedAttributes as $attribute => $values) {
-            $expectedAttributeArray [] = implode('&', array_map(function (string $value) use ($attribute): string {
-                return sprintf('%s=%s', $attribute, urlencode($value));
-            }, $values));
-        }
-        $expectedAttributeString = implode('&', $expectedAttributeArray);
-
-        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $expectedPropertyKeys);
+        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $expectedPropertyKeys, $expectedAttributeKeys);
 
         $expectedCsvLine = sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%d\t%d\t%s\t%d\t%s\n",
+            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%d\t%d\t%s\t%d\t%s\t%s\n",
             $expectedId,
             implode('|', $expectedOrdernumbers),
             $expectedName,
             $expectedSummary,
             $expectedDescription,
             $expectedPrice,
-            $expectedInsteadPrice,
-            $expectedMaxPrice,
-            $expectedTaxRate,
+            $expectedOverriddenPrice,
             $expectedUrl,
             $expectedImage,
-            $expectedAttributeString,
             implode(',', $expectedKeywords),
             implode(',', $expectedGroups),
             $expectedBonus,
             $expectedSalesFrequency,
             $expectedDateAdded->format('U'),
             $expectedSort,
-            implode("\t", array_values($expectedProperties))
+            implode("\t", array_values($expectedProperties)),
+            implode("\t", array_values($expectedAttributesColumns))
         );
 
         $item = $exporter->createItem($expectedId);
@@ -263,9 +257,7 @@ class CSVSerializationTest extends TestCase
         $item->addSummary($expectedSummary);
         $item->addDescription($expectedDescription);
         $item->addPrice($expectedPrice);
-        $item->setInsteadPrice($expectedInsteadPrice);
-        $item->setMaxPrice($expectedMaxPrice);
-        $item->setTaxRate($expectedTaxRate);
+        $item->addOverriddenPrice($expectedOverriddenPrice);
         $item->addUrl($expectedUrl);
         $item->addImage(new Image($expectedImage));
 
@@ -292,7 +284,7 @@ class CSVSerializationTest extends TestCase
 
         $item->addName($expectedName);
 
-        $this->assertEquals($expectedCsvLine, $item->getCsvFragment($expectedPropertyKeys));
+        $this->assertEquals($expectedCsvLine, $item->getCsvFragment($expectedPropertyKeys, $expectedAttributeKeys));
     }
 
     public function testItemsCanHaveVaryingProperties(): void
@@ -304,8 +296,7 @@ class CSVSerializationTest extends TestCase
         $exporter = Exporter::create(
             Exporter::TYPE_CSV,
             20,
-            [
-                $firstPropertyName, $secondPropertyName, $thirdPropertyName]
+            [$firstPropertyName, $secondPropertyName, $thirdPropertyName]
         );
 
         $firstItem = $this->getMinimalItem($exporter);
@@ -325,7 +316,7 @@ class CSVSerializationTest extends TestCase
         $lines = explode("\n", $csv);
 
         $expectedCsvHeading = sprintf(
-            "%s\t%s\t%s\t%s",
+            "%s\tprop_%s\tprop_%s\tprop_%s",
             self::DEFAULT_CSV_HEADING,
             $firstPropertyName,
             $secondPropertyName,
@@ -412,7 +403,7 @@ class CSVSerializationTest extends TestCase
      * @param string $elementType
      * @param string $setterMethodName
      */
-    public function testSanitizingOfElementsWorks($value = '', $elementType = '', $setterMethodName = ''): void
+    public function testSanitizingOfElementsWorks(string $value, string $elementType, string $setterMethodName): void
     {
         $item = $this->getMinimalItem();
 
@@ -429,7 +420,7 @@ class CSVSerializationTest extends TestCase
         $csvLine = $item->getCsvFragment();
 
         $this->assertEquals(1, preg_match_all('/\n/', $csvLine));
-        $this->assertEquals(17, preg_match_all('/\t/', $csvLine));
+        $this->assertEquals(14, preg_match_all('/\t/', $csvLine));
         $this->assertEquals(0, preg_match_all('/\r/', $csvLine));
     }
 }

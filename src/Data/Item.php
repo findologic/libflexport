@@ -19,9 +19,9 @@ abstract class Item implements Serializable
 
     protected Description $description;
 
-    protected ?Price $price = null;
+    protected Price $price;
 
-    protected ?OverriddenPrice $overriddenPrice = null;
+    protected OverriddenPrice $overriddenPrice;
 
     protected Url $url;
 
@@ -59,6 +59,8 @@ abstract class Item implements Serializable
         $this->name = new Name();
         $this->summary = new Summary();
         $this->description = new Description();
+        $this->price = new Price();
+        $this->overriddenPrice = new OverriddenPrice();
         $this->url = new Url();
         $this->bonus = new Bonus();
         $this->salesFrequency = new SalesFrequency();
@@ -136,10 +138,6 @@ abstract class Item implements Serializable
 
     public function addPrice(string|int|float $price, string $usergroup = ''): void
     {
-        if ($this->price === null) {
-            $this->price = new Price();
-        }
-
         $this->price->setValue($price, $usergroup);
     }
 
@@ -345,9 +343,6 @@ abstract class Item implements Serializable
         $this->attributes[$attribute->getKey()] = $attribute;
     }
 
-    /**
-     * @param Image $image The image element to add to the item.
-     */
     public function addImage(Image $image): void
     {
         if (!array_key_exists($image->getUsergroup(), $this->images)) {

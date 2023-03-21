@@ -36,8 +36,10 @@ class XMLItem extends Item
         $itemElem->appendChild($this->name->getDomSubtree($document));
         $itemElem->appendChild($this->summary->getDomSubtree($document));
         $itemElem->appendChild($this->description->getDomSubtree($document));
-        $itemElem->appendChild($this->price->getDomSubtree($document));
-        if ($this->overriddenPrice) {
+        if (count($this->price->getValues())) {
+            $itemElem->appendChild($this->price->getDomSubtree($document));
+        }
+        if (count($this->overriddenPrice->getValues())) {
             $itemElem->appendChild($this->overriddenPrice->getDomSubtree($document));
         }
         $itemElem->appendChild($this->url->getDomSubtree($document));

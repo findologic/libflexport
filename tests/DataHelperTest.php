@@ -13,6 +13,7 @@ use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Name;
 use FINDOLOGIC\Export\Data\Ordernumber;
+use FINDOLOGIC\Export\Data\OverriddenPrice;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\SalesFrequency;
 use FINDOLOGIC\Export\Data\Sort;
@@ -250,6 +251,7 @@ class DataHelperTest extends TestCase
             'Keyword' => [Keyword::class, ['keyword value'], 'keyword'],
             'Name' => [Name::class, [], 'name'],
             'Ordernumber' => [Ordernumber::class, ['ordernumber value'], 'ordernumber'],
+            'OverriddenPrice' => [OverriddenPrice::class, ['ordernumber value'], 'overriddenPrice'],
             'Price' => [Price::class, [], 'price'],
             'SalesFrequency' => [SalesFrequency::class, [], 'salesFrequency'],
             'Sort' => [Sort::class, [], 'sort'],
