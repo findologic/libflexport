@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Export\Data;
 
 use DOMDocument;
+use DOMElement;
 use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\Serializable;
@@ -19,7 +20,7 @@ abstract class Variant implements Serializable
 
     protected AllOrdernumbers $ordernumbers;
 
-    /** @var Property[] */
+    /** @var array<string, Property[]> */
     protected array $properties = [];
 
     /** @var Attribute[] */
@@ -197,5 +198,5 @@ abstract class Variant implements Serializable
     /**
      * @inheritdoc
      */
-    abstract public function getDomSubtree(DOMDocument $document);
+    abstract public function getDomSubtree(DOMDocument $document): DOMElement;
 }

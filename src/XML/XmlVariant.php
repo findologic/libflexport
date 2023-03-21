@@ -15,12 +15,12 @@ class XmlVariant extends Variant
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [])
+    public function getCsvFragment(array $availableProperties = [], array $availableAttributes = []): string
     {
         throw new BadMethodCallException('XMLItem does not implement CSV export.');
     }
 
-    public function getDomSubtree(DOMDocument $document)
+    public function getDomSubtree(DOMDocument $document): DOMElement
     {
         $itemElem = XMLHelper::createElement($document, 'variant', ['id' => $this->id]);
         $document->appendChild($itemElem);

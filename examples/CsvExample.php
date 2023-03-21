@@ -38,6 +38,7 @@ class CsvExample extends BaseExample
                 'variants',
                 'file_type',
                 'number_of_comments',
+                'badge',
             ],
             [
                 'cat',
@@ -45,6 +46,7 @@ class CsvExample extends BaseExample
                 'brand',
                 'color',
                 'type',
+                'variant_value'
             ]
         );
 
@@ -56,7 +58,7 @@ class CsvExample extends BaseExample
     private function adaptExampleProducts(): void
     {
         foreach ($this->products as $product) {
-            $product->images[''] = [current($product->images[''])];
+            $product->images[''] = array_slice($product->images[''], 0, 1);
         }
     }
 }

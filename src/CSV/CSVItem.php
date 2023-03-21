@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\CSV;
 
 use BadMethodCallException;
 use DOMDocument;
+use DOMElement;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
@@ -17,7 +18,7 @@ class CSVItem extends Item
     /**
      * @inheritdoc
      */
-    public function getDomSubtree(DOMDocument $document): void
+    public function getDomSubtree(DOMDocument $document): DOMElement
     {
         throw new BadMethodCallException('CSVItem does not implement XML export.');
     }
@@ -42,18 +43,17 @@ class CSVItem extends Item
 
         $overriddenPrice = $this->getOverriddenPrice()->getCsvFragment();
         $groups = implode(',', array_map(function (Group $group): string {
-            /** @var $group Group */
             $groupName = $group->getCsvFragment();
             DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
             return self::sanitize($groupName);
         }, $this->groups));
 
         $image = $this->buildImages();
-        $attributes = $this->buildAttributes($availableAttributes);
         $properties = $this->buildProperties($availableProperties);
+        $attributes = $this->buildAttributes($availableAttributes);
 
-        return sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s\n",
+        $data = sprintf(
+            "\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s\n",
             $id,
             $ordernumbers,
             $name,
@@ -72,6 +72,16 @@ class CSVItem extends Item
             $properties,
             $attributes,
         );
+
+        foreach ($this->variants as $variant) {
+            $data .= sprintf(
+                "%s\t%s",
+                $id,
+                $variant->getCsvFragment($availableProperties, $availableAttributes)
+            );
+        }
+
+        return $data;
     }
 
     private function buildProperties(array $availableProperties): string

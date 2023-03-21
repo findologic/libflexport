@@ -195,7 +195,7 @@ class ExampleProductItem extends ExampleBaseItem
         ],
         'Red' => [
             'id' => 'variant2',
-            'ordernumber' => 'variant1',
+            'ordernumber' => 'variant2',
             'title' => 'Adidas Sneaker red',
             'badge' => 'https://www.store.com/images/badges/sale.png',
             'price' => '7.49',
@@ -205,7 +205,7 @@ class ExampleProductItem extends ExampleBaseItem
         ],
         'Grey' => [
             'id' => 'variant3',
-            'ordernumber' => 'variant1',
+            'ordernumber' => 'variant3',
             'title' => 'Adidas Sneaker grey',
             'badge' => 'https://www.store.com/images/badges/sale.png',
             'price' => '6.49',

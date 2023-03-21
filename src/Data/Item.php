@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\Data;
 
 use DateTimeInterface;
 use DOMDocument;
+use DOMElement;
 use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\Serializable;
@@ -414,5 +415,5 @@ abstract class Item implements Serializable
     /**
      * @inheritdoc
      */
-    abstract public function getDomSubtree(DOMDocument $document);
+    abstract public function getDomSubtree(DOMDocument $document): DOMElement;
 }

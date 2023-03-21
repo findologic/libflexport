@@ -9,7 +9,7 @@ use FINDOLOGIC\Export\Helpers\DataHelper;
 
 class CSVExporter extends Exporter
 {
-    private const HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\toverriddenPrice\turl\t" .
+    private const HEADING = "parent_id\tid\tordernumber\tname\tsummary\tdescription\tprice\toverriddenPrice\turl\t" .
         "image\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
 
     /**

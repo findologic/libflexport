@@ -90,7 +90,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = []): string
+    public function getCsvFragment(array $availableProperties = [], array $availableAttributes = []): string
     {
         $value = '';
 

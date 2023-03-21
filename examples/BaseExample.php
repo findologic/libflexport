@@ -193,6 +193,15 @@ abstract class BaseExample
                 new Attribute('variant_value', [$variantAttribute])
             );
 
+            $variant->addProperty(
+                new Property('badge', ['' => $values['badge']])
+            );
+            if ($values['sale']) {
+                $variant->addProperty(
+                    new Property('sale', ['' => $values['sale']])
+                );
+            }
+
             if ($values['overridden_price']) {
                 $variant->addOverriddenPrice($values['overridden_price']);
             }

@@ -62,7 +62,7 @@ abstract class UsergroupAwareMultiValueItem implements Serializable, NameAwareVa
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = []): string
+    public function getCsvFragment(array $availableProperties = [], array $availableAttributes = []): string
     {
         return $this->getValue();
     }

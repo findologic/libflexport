@@ -19,7 +19,7 @@ class XMLItem extends Item
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = []): void
+    public function getCsvFragment(array $availableProperties = [], array $availableAttributes = []): string
     {
         throw new BadMethodCallException('XMLItem does not implement CSV export.');
     }
