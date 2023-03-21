@@ -25,17 +25,28 @@ class CsvExample extends BaseExample
     {
         $this->adaptExampleProducts();
 
-        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, [
-            'sale',
-            'novelty',
-            'logo',
-            'availability',
-            'old_price',
-            'Basic_rate_price',
-            'variants',
-            'file_type',
-            'number_of_comments',
-        ]);
+        $exporter = Exporter::create(
+            Exporter::TYPE_CSV,
+            20,
+            [
+                'sale',
+                'novelty',
+                'logo',
+                'availability',
+                'old_price',
+                'Basic_rate_price',
+                'variants',
+                'file_type',
+                'number_of_comments',
+            ],
+            [
+                'cat',
+                'cat_url',
+                'brand',
+                'color',
+                'type',
+            ]
+        );
 
         $items = $this->buildItems($exporter);
 

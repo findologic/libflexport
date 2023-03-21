@@ -37,13 +37,13 @@ abstract class Item implements Serializable
 
     protected AllOrdernumbers $ordernumbers;
 
-    /** @var Property[] */
+    /** @var array<string, Property[]> */
     protected array $properties = [];
 
     /** @var Attribute[] */
     protected array $attributes = [];
 
-    /** @var Image[] */
+    /** @var array<string, Image[]> */
     protected array $images = [];
 
     /** @var Group[]  */

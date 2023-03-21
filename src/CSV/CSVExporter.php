@@ -10,18 +10,24 @@ use FINDOLOGIC\Export\Helpers\DataHelper;
 class CSVExporter extends Exporter
 {
     private const HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\toverriddenPrice\turl\t" .
-        "image\tattributes\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
+        "image\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
 
     /**
-     * @var array Names of properties; used for alignment of extra columns containing property values.
+     * @var string[] Names of properties; used for alignment of extra columns containing property values.
      */
-    private $propertyKeys;
+    private array $propertyKeys;
 
-    public function __construct($itemsPerPage, $propertyKeys)
+    /**
+     * @var string[] Names of attributes; used for alignment of extra columns containing attribute values.
+     */
+    private array $attributeKeys;
+
+    public function __construct($itemsPerPage, $propertyKeys, $attributeKeys)
     {
         parent::__construct($itemsPerPage);
 
-        $this->propertyKeys = DataHelper::checkForInvalidCsvPropertyKeys($propertyKeys);
+        $this->propertyKeys = DataHelper::checkForInvalidCsvColumnKeys($propertyKeys);
+        $this->attributeKeys = DataHelper::checkForInvalidCsvColumnKeys($attributeKeys);
     }
 
     /**
@@ -38,7 +44,7 @@ class CSVExporter extends Exporter
 
         /** @var CSVItem $item */
         foreach ($items as $item) {
-            $export .= $item->getCsvFragment($this->propertyKeys);
+            $export .= $item->getCsvFragment($this->propertyKeys, $this->attributeKeys);
         }
 
         return $export;
@@ -88,7 +94,7 @@ class CSVExporter extends Exporter
      */
     protected function getHeadingLine(): string
     {
-        return self::HEADING . $this->getPropertyHeadingPart() . "\n";
+        return self::HEADING . $this->getPropertyHeadingPart() . $this->getAttributeHeadingPart() . "\n";
     }
 
     /**
@@ -101,9 +107,25 @@ class CSVExporter extends Exporter
         $propertyHeading = '';
 
         foreach ($this->propertyKeys as $propertyKey) {
-            $propertyHeading .= "\t" . $propertyKey;
+            $propertyHeading .= "\t" . 'prop_' . $propertyKey;
         }
 
         return $propertyHeading;
+    }
+
+    /**
+     * Returns the attribute part of the heading line.
+     *
+     * @return string
+     */
+    protected function getAttributeHeadingPart(): string
+    {
+        $attributeHeading = '';
+
+        foreach ($this->attributeKeys as $attributeKey) {
+            $attributeHeading .= "\t" . 'attrib_' . $attributeKey;
+        }
+
+        return $attributeHeading;
     }
 }

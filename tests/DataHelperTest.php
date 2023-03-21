@@ -134,38 +134,38 @@ class DataHelperTest extends TestCase
      *
      * @return array Cases with the value to check and whether it should cause a validation issue.
      */
-    public static function propertyKeyProvider(): array
+    public static function columnKeyProvider(): array
     {
         return [
-            'Valid property keys' => [
-                ['valid_property_key', 'also-a_valid-propery-key',],
+            'Valid column keys' => [
+                ['valid_column_key', 'also-a_valid-column-key',],
                 false,
             ],
-            'Invalid property keys' => [
-                ["invalid\tproperty\nkey", "invalid\tkey", "invalid\nkey",],
+            'Invalid column keys' => [
+                ["invalid\tvalid_column_key\nkey", "invalid\tkey", "invalid\nkey",],
                 true,
             ],
-            'Mixed valid and invalid property keys' => [
-                ['valid_property_key',"invalid\tproperty\nkey",],
+            'Mixed valid and invalid column keys' => [
+                ['valid_column_key',"invalid\tcolumn\nkey",],
                 true,
             ],
         ];
     }
 
     /**
-     * @dataProvider propertyKeyProvider
+     * @dataProvider columnKeyProvider
      *
-     * @param array $propertyKeys The keys to check.
+     * @param array $columnKeys The keys to check.
      * @param bool $shouldCauseException Whether the array should cause an exception or not.
      */
     public function testAddingInvalidCsvPropertyKeysCausesException(
-        array $propertyKeys,
-        bool $shouldCauseException
+        array $columnKeys,
+        bool  $shouldCauseException
     ): void {
         try {
-            $validatedPropertyKeys = DataHelper::checkForInvalidCsvPropertyKeys($propertyKeys);
+            $validatedColumnKeys = DataHelper::checkForInvalidCsvColumnKeys($columnKeys);
 
-            $this->assertEquals($propertyKeys, $validatedPropertyKeys);
+            $this->assertEquals($columnKeys, $validatedColumnKeys);
         } catch (Exception $exception) {
             if (!$shouldCauseException) {
                 $this->fail('This should not fail.');

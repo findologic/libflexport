@@ -114,7 +114,7 @@ class ExampleProductItem extends ExampleBaseItem
             'Adidas'
         ],
         'color' => [
-            'green',
+            'green,brown',
             'blue'
         ],
         'type' => [

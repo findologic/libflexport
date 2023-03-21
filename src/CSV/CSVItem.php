@@ -8,6 +8,7 @@ use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Group;
+use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use InvalidArgumentException;
 
@@ -24,7 +25,7 @@ class CSVItem extends Item
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = []): string
+    public function getCsvFragment(array $availableProperties = [], array $availableAttributes = []): string
     {
         $id = $this->getId();
         $ordernumbers = self::sanitize($this->ordernumbers->getCsvFragment());
@@ -39,7 +40,7 @@ class CSVItem extends Item
         $dateAdded = self::sanitize($this->dateAdded->getCsvFragment());
         $sort = self::sanitize($this->sort->getCsvFragment());
 
-        $overriddenPrice = $this->getOverriddenPrice();
+        $overriddenPrice = $this->getOverriddenPrice()->getCsvFragment();
         $groups = implode(',', array_map(function (Group $group): string {
             /** @var $group Group */
             $groupName = $group->getCsvFragment();
@@ -48,11 +49,11 @@ class CSVItem extends Item
         }, $this->groups));
 
         $image = $this->buildImages();
-        $attributes = $this->buildAttributes();
+        $attributes = $this->buildAttributes($availableAttributes);
         $properties = $this->buildProperties($availableProperties);
 
         return sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s\n",
+            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s\n",
             $id,
             $ordernumbers,
             $name,
@@ -62,14 +63,14 @@ class CSVItem extends Item
             $overriddenPrice,
             $url,
             $image,
-            $attributes,
             $keywords,
             $groups,
             $bonus,
             $salesFrequency,
             $dateAdded,
             $sort,
-            $properties
+            $properties,
+            $attributes,
         );
     }
 
@@ -88,18 +89,27 @@ class CSVItem extends Item
         return $propertiesString;
     }
 
-    private function buildAttributes(): string
+    private function buildAttributes(array $availableAttributes): string
     {
-        $attributes = [];
+        $attributesString = '';
 
-        /** @var Attribute $attribute */
-        foreach ($this->attributes as $attribute) {
-            $attributes[] = $attribute->getCsvFragment();
+        foreach ($availableAttributes as $availableAttribute) {
+            if (array_key_exists($availableAttribute, $this->attributes)) {
+                $sanitizedValues = array_map(
+                    function (string $value) {
+                        $sanitized = self::sanitize($value);
+                        return str_replace(',', '\,', $sanitized);
+                    },
+                    $this->attributes[$availableAttribute]->getValues()
+                );
+
+                $attributesString .= "\t" . self::sanitize(implode(',', $sanitizedValues));
+            } else {
+                $attributesString .= "\t";
+            }
         }
 
-        $attributes = implode('&', $attributes);
-
-        return $attributes;
+        return $attributesString;
     }
 
     private function buildImages(): string
