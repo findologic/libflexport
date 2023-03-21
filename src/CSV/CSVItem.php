@@ -24,12 +24,15 @@ class CSVItem extends Item
     }
 
     /**
+     * @param int $imageCount
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [], array $availableAttributes = []): string
-    {
+    public function getCsvFragment(
+        array $availableProperties = [],
+        array $availableAttributes = [],
+        int $imageCount = 1
+    ): string {
         $id = $this->getId();
-        $ordernumbers = self::sanitize($this->ordernumbers->getCsvFragment());
         $name = self::sanitize($this->name->getCsvFragment());
         $summary = self::sanitize($this->summary->getCsvFragment());
         $description = self::sanitize($this->description->getCsvFragment());
@@ -48,13 +51,15 @@ class CSVItem extends Item
             return self::sanitize($groupName);
         }, $this->groups));
 
-        $image = $this->buildImages();
+        $ordernumbers = $this->buildOrdernumbers();
+        $images = $this->buildImages($imageCount);
         $properties = $this->buildProperties($availableProperties);
         $attributes = $this->buildAttributes($availableAttributes);
 
         $data = sprintf(
-            "\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s\n",
+            "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s%s\n",
             $id,
+            '', // parentId
             $ordernumbers,
             $name,
             $summary,
@@ -62,26 +67,33 @@ class CSVItem extends Item
             $price,
             $overriddenPrice,
             $url,
-            $image,
             $keywords,
             $groups,
             $bonus,
             $salesFrequency,
             $dateAdded,
             $sort,
+            $images,
             $properties,
             $attributes,
         );
 
         foreach ($this->variants as $variant) {
-            $data .= sprintf(
-                "%s\t%s",
-                $id,
-                $variant->getCsvFragment($availableProperties, $availableAttributes)
-            );
+            $data .= $variant->getCsvFragment($availableProperties, $availableAttributes, $imageCount);
         }
 
         return $data;
+    }
+
+    private function buildOrdernumbers(): string
+    {
+        $orderNumbers = $this->ordernumbers->getCsvFragment();
+
+        foreach ($this->variants as $variant) {
+            $orderNumbers .= '|' . $variant->getOrdernumbers()->getCsvFragment();
+        }
+
+        return self::sanitize($orderNumbers);
     }
 
     private function buildProperties(array $availableProperties): string
@@ -122,26 +134,20 @@ class CSVItem extends Item
         return $attributesString;
     }
 
-    private function buildImages(): string
+    private function buildImages(int $imageCount): string
     {
-        $imageUrl = '';
+        $imagesString = '';
 
-        // Use the first available image that is not restricted by usergroup. If more than one usergroup-less image
-        // exists, cause an error because it's no longer certain which one is intended to be used.
         if (array_key_exists('', $this->images)) {
-            if (count($this->images['']) === 1) {
-                /** @var Image $image */
-                $image = $this->images[''][0];
-                $imageUrl = $image->getCsvFragment();
-            } else {
-                throw new InvalidArgumentException(
-                    'Zero or multiple images without usergroup associated with item. ' .
-                    'Cannot generate CSV if there is not one definitive image set.'
-                );
+            $images = $this->images[''];
+
+            for ($i = 0; $i < $imageCount; $i++) {
+                $imageUrl = isset($images[$i]) ? $images[$i]->getCsvFragment() : '';
+                $imagesString .= "\t" . $imageUrl;
             }
         }
 
-        return $imageUrl;
+        return $imagesString;
     }
 
     private static function sanitize($input, $stripTags = true): string

@@ -88,10 +88,14 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
     }
 
     /**
+     * @param int $imageCount
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [], array $availableAttributes = []): string
-    {
+    public function getCsvFragment(
+        array $availableProperties = [],
+        array $availableAttributes = [],
+        int $imageCount = 1
+    ): string {
         $value = '';
 
         if (array_key_exists('', $this->getValues())) {

@@ -9,8 +9,8 @@ use FINDOLOGIC\Export\Helpers\DataHelper;
 
 class CSVExporter extends Exporter
 {
-    private const HEADING = "parent_id\tid\tordernumber\tname\tsummary\tdescription\tprice\toverriddenPrice\turl\t" .
-        "image\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
+    private const HEADING = "id\tparent_id\tordernumber\tname\tsummary\tdescription\tprice\toverriddenPrice\turl\t" .
+        "keywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
 
     /**
      * @var string[] Names of properties; used for alignment of extra columns containing property values.
@@ -22,12 +22,15 @@ class CSVExporter extends Exporter
      */
     private array $attributeKeys;
 
-    public function __construct($itemsPerPage, $propertyKeys, $attributeKeys)
+    private int $imageCount;
+
+    public function __construct(int $itemsPerPage, array $propertyKeys, array $attributeKeys, int $imageCount)
     {
         parent::__construct($itemsPerPage);
 
         $this->propertyKeys = DataHelper::checkForInvalidCsvColumnKeys($propertyKeys);
         $this->attributeKeys = DataHelper::checkForInvalidCsvColumnKeys($attributeKeys);
+        $this->imageCount = $imageCount;
     }
 
     /**
@@ -44,7 +47,7 @@ class CSVExporter extends Exporter
 
         /** @var CSVItem $item */
         foreach ($items as $item) {
-            $export .= $item->getCsvFragment($this->propertyKeys, $this->attributeKeys);
+            $export .= $item->getCsvFragment($this->propertyKeys, $this->attributeKeys, $this->imageCount);
         }
 
         return $export;
@@ -74,33 +77,48 @@ class CSVExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function createItem($id): Item
+    public function createItem(string $id): Item
     {
         return new CSVItem($id);
     }
 
     /**
+     * @param string $parentId
      * @inheritdoc
      */
-    public function createVariant($id): Variant
+    public function createVariant(string $id, string $parentId): Variant
     {
-        return new CSVVariant($id);
+        return new CSVVariant($id, $parentId);
     }
 
     /**
      * Returns the heading line of a CSV document
-     *
-     * @return string
      */
     protected function getHeadingLine(): string
     {
-        return self::HEADING . $this->getPropertyHeadingPart() . $this->getAttributeHeadingPart() . "\n";
+        return self::HEADING .
+            $this->getImageHeadingPart() .
+            $this->getPropertyHeadingPart() .
+            $this->getAttributeHeadingPart() .
+            "\n";
+    }
+
+    /**
+     * Returns the image part of the heading line.
+     */
+    protected function getImageHeadingPart(): string
+    {
+        $imageHeading = '';
+
+        for ($i = 0; $i < $this->imageCount; $i++) {
+            $imageHeading .= "\t" . 'image' . $i;
+        }
+
+        return $imageHeading;
     }
 
     /**
      * Returns the property part of the heading line.
-     *
-     * @return string
      */
     protected function getPropertyHeadingPart(): string
     {

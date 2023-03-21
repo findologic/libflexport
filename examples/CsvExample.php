@@ -23,8 +23,6 @@ class CsvExample extends BaseExample
 {
     public function createExport(): string
     {
-        $this->adaptExampleProducts();
-
         $exporter = Exporter::create(
             Exporter::TYPE_CSV,
             20,
@@ -47,19 +45,13 @@ class CsvExample extends BaseExample
                 'color',
                 'type',
                 'variant_value'
-            ]
+            ],
+            3
         );
 
         $items = $this->buildItems($exporter);
 
         return $exporter->serializeItems($items, 0, count($items), count($items));
-    }
-
-    private function adaptExampleProducts(): void
-    {
-        foreach ($this->products as $product) {
-            $product->images[''] = array_slice($product->images[''], 0, 1);
-        }
     }
 }
 

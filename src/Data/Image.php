@@ -89,10 +89,14 @@ class Image implements Serializable, NameAwareValue
     }
 
     /**
+     * @param int $imageCount
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [], array $availableAttributes = []): string
-    {
+    public function getCsvFragment(
+        array $availableProperties = [],
+        array $availableAttributes = [],
+        int $imageCount = 1
+    ): string {
         return $this->getUrl();
     }
 

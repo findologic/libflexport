@@ -184,7 +184,7 @@ abstract class BaseExample
     protected function addVariants(Exporter $exporter, ExampleBaseItem $product): void
     {
         foreach ($product->variants as $variantAttribute => $values) {
-            $variant = $exporter->createVariant($values['id']);
+            $variant = $exporter->createVariant($values['id'], $product->id);
 
             $variant->addName($values['title']);
             $variant->addOrdernumber(new Ordernumber($values['ordernumber']));

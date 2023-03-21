@@ -51,7 +51,8 @@ abstract class Exporter
         int $type,
         int $itemsPerPage = 20,
         array $csvProperties = [],
-        array $csvAttributes = []
+        array $csvAttributes = [],
+        int $imageCount = 1,
     ): Exporter {
         if ($itemsPerPage < 1) {
             throw new InvalidArgumentException('At least one item must be exported per page.');
@@ -62,7 +63,7 @@ abstract class Exporter
                 $exporter = new XMLExporter($itemsPerPage);
                 break;
             case self::TYPE_CSV:
-                $exporter = new CSVExporter($itemsPerPage, $csvProperties, $csvAttributes);
+                $exporter = new CSVExporter($itemsPerPage, $csvProperties, $csvAttributes, $imageCount);
                 break;
             default:
                 throw new InvalidArgumentException('Unsupported exporter type.');
@@ -129,13 +130,14 @@ abstract class Exporter
      * @param string $id Unique ID of the item.
      * @return Item The newly generated item.
      */
-    abstract public function createItem($id): Item;
+    abstract public function createItem(string $id): Item;
 
     /**
      * Creates an export format-specific variant instance.
      *
      * @param string $id Unique ID of the item.
+     * @param string $parentId
      * @return Variant The newly generated item.
      */
-    abstract public function createVariant($id): Variant;
+    abstract public function createVariant(string $id, string $parentId): Variant;
 }

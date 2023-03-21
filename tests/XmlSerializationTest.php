@@ -302,7 +302,7 @@ class XmlSerializationTest extends TestCase
         $item = new XMLItem(123);
 
         try {
-            $item->getCsvFragment();
+            $item->getCsvFragment([], [], 1);
         } catch (BadMethodCallException $e) {
             $this->assertEquals('XMLItem does not implement CSV export.', $e->getMessage());
         }

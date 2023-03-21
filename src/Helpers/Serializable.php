@@ -20,7 +20,13 @@ interface Serializable
     /**
      * @param array $availableProperties Properties that are available across the data set, so an individual item
      *      knows into which column to write its property value, if any.
+     * @param array $availableAttributes
+     * @param int $imageCount
      * @return string A CSV fragment that, combined with other fragments, will finally become an export file.
      */
-    public function getCsvFragment(array $availableProperties = [], array $availableAttributes = []): string;
+    public function getCsvFragment(
+        array $availableProperties = [],
+        array $availableAttributes = [],
+        int $imageCount = 1
+    ): string;
 }

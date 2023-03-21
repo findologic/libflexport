@@ -41,16 +41,17 @@ class XMLExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function createItem($id): Item
+    public function createItem(string $id): Item
     {
         return new XMLItem($id);
     }
 
     /**
+     * @param string $parentId
      * @inheritdoc
      */
-    public function createVariant($id): Variant
+    public function createVariant(string $id, string $parentId): Variant
     {
-        return new XmlVariant($id);
+        return new XmlVariant($id, $parentId);
     }
 }

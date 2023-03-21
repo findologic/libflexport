@@ -17,10 +17,14 @@ use FINDOLOGIC\Export\Helpers\XMLHelper;
 class XMLItem extends Item
 {
     /**
+     * @param int $imageCount
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = [], array $availableAttributes = []): string
-    {
+    public function getCsvFragment(
+        array $availableProperties = [],
+        array $availableAttributes = [],
+        int $imageCount = 1
+    ): string {
         throw new BadMethodCallException('XMLItem does not implement CSV export.');
     }
 

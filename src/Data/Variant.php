@@ -12,6 +12,8 @@ abstract class Variant implements Serializable
 {
     protected string $id;
 
+    protected string $parentId;
+
     protected Name $name;
 
     protected Price $price;
@@ -29,9 +31,10 @@ abstract class Variant implements Serializable
     /** @var Group[] */
     protected array $groups = [];
 
-    public function __construct($id)
+    public function __construct($id, $parentId)
     {
         $this->setId($id);
+        $this->setParentId($parentId);
 
         $this->name = new Name();
         $this->ordernumbers = new AllOrdernumbers();
@@ -48,6 +51,17 @@ abstract class Variant implements Serializable
     {
         DataHelper::checkItemIdNotExceedingCharacterLimit($id);
         $this->id = $id;
+    }
+
+    public function getParentId(): string
+    {
+        return $this->parentId;
+    }
+
+    public function setParentId(string $parentId): void
+    {
+        DataHelper::checkItemIdNotExceedingCharacterLimit($parentId);
+        $this->parentId = $parentId;
     }
 
     public function getName(): Name
@@ -170,6 +184,11 @@ abstract class Variant implements Serializable
         }
 
         $this->attributes[$attribute->getKey()] = $attribute;
+    }
+
+    public function getOrdernumbers(): AllOrdernumbers
+    {
+        return $this->ordernumbers;
     }
 
     public function addOrdernumber(Ordernumber $ordernumber): void

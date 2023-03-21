@@ -16,9 +16,13 @@ class CSVVariant extends Variant
         throw new BadMethodCallException('CSVItem does not implement XML export.');
     }
 
-    public function getCsvFragment(array $availableProperties = [], array $availableAttributes = []): string
-    {
+    public function getCsvFragment(
+        array $availableProperties = [],
+        array $availableAttributes = [],
+        int $imageCount = 1
+    ): string {
         $id = $this->getId();
+        $parentId = $this->getParentId();
         $ordernumbers = self::sanitize($this->ordernumbers->getCsvFragment());
         $name = self::sanitize($this->name->getCsvFragment());
         $price = $this->price->getCsvFragment();
@@ -30,12 +34,14 @@ class CSVVariant extends Variant
             return self::sanitize($groupName);
         }, $this->groups));
 
+        $images = $this->buildImages($imageCount);
         $properties = $this->buildProperties($availableProperties);
         $attributes = $this->buildAttributes($availableAttributes);
 
         return sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s\n",
+            "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s\n",
             $id,
+            $parentId,
             $ordernumbers,
             $name,
             '',
@@ -43,7 +49,7 @@ class CSVVariant extends Variant
             $price,
             $overriddenPrice,
             '',
-            '',
+            $images,
             '',
             $groups,
             '',
@@ -91,6 +97,11 @@ class CSVVariant extends Variant
         }
 
         return $attributesString;
+    }
+
+    private function buildImages(int $imageCount): string
+    {
+        return str_repeat("\t", $imageCount);
     }
 
     private static function sanitize($input, $stripTags = true): string

@@ -12,12 +12,16 @@ class AllKeywords extends UsergroupAwareMultiValue
     }
 
     /**
+     * @param int $imageCount
      * @param array $availableProperties Properties that are available across the data set, so an individual item
      *      knows into which column to write its property value, if any.
      * @return string A CSV fragment that, combined with other fragments, will finally become an export file.
      */
-    public function getCsvFragment(array $availableProperties = [], array $availableAttributes = []): string
-    {
+    public function getCsvFragment(
+        array $availableProperties = [],
+        array $availableAttributes = [],
+        int $imageCount = 1
+    ): string {
         if (array_key_exists('', $this->values)) {
             return implode(',', array_map(function (Keyword $keyword): string {
                 return $keyword->getCsvFragment();

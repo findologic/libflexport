@@ -28,11 +28,14 @@ class DateAdded extends UsergroupAwareSimpleValue
         parent::setValue($formatted, $usergroup);
     }
 
-    public function getCsvFragment(array $availableProperties = [], array $availableAttributes = []): string
-    {
+    public function getCsvFragment(
+        array $availableProperties = [],
+        array $availableAttributes = [],
+        int $imageCount = 1
+    ): string {
         $date = DateTime::createFromFormat(DATE_ATOM, $this->getValues()['']);
 
-        return $date->format('U');
+        return $date->format(DATE_ATOM);
     }
 
     /**
