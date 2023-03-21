@@ -5,7 +5,6 @@ namespace FINDOLOGIC\Export\Tests;
 use BadMethodCallException;
 use DateTime;
 use DOMDocument;
-use Exception;
 use FINDOLOGIC\Export\CSV\CSVExporter;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;

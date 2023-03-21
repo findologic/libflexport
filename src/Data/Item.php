@@ -5,8 +5,8 @@ namespace FINDOLOGIC\Export\Data;
 use DateTimeInterface;
 use DOMDocument;
 use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
-use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\DataHelper;
+use FINDOLOGIC\Export\Helpers\Serializable;
 use InvalidArgumentException;
 
 abstract class Item implements Serializable
