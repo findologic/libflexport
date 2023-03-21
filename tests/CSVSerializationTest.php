@@ -30,7 +30,7 @@ use InvalidArgumentException;
 
 class CSVSerializationTest extends TestCase
 {
-    private const DEFAULT_CSV_HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\t" .
+    private const DEFAULT_CSV_HEADING = "parent_id\tid\tordernumber\tname\tsummary\tdescription\tprice\t" .
         "overriddenPrice\turl\timage\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
 
     private const CSV_PATH = '/tmp/findologic.csv';
@@ -227,7 +227,7 @@ class CSVSerializationTest extends TestCase
         $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $expectedPropertyKeys, $expectedAttributeKeys);
 
         $expectedCsvLine = sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%d\t%d\t%s\t%d\t%s\t%s\n",
+            "\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%d\t%d\t%s\t%d\t%s\t%s\n",
             $expectedId,
             implode('|', $expectedOrdernumbers),
             $expectedName,
@@ -420,7 +420,7 @@ class CSVSerializationTest extends TestCase
         $csvLine = $item->getCsvFragment();
 
         $this->assertEquals(1, preg_match_all('/\n/', $csvLine));
-        $this->assertEquals(14, preg_match_all('/\t/', $csvLine));
+        $this->assertEquals(15, preg_match_all('/\t/', $csvLine));
         $this->assertEquals(0, preg_match_all('/\r/', $csvLine));
     }
 }
