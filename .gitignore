@@ -6,3 +6,6 @@
 /composer.lock
 /coverage.xml
 /vendor/
+
+example.csv
+example.xml

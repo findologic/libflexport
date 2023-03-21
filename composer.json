@@ -16,7 +16,9 @@
     "scripts": {
         "lint": "phpcs",
         "fix": "phpcbf",
-        "test": "XDEBUG_MODE=coverage phpunit"
+        "test": "XDEBUG_MODE=coverage phpunit",
+        "test-csv": "php examples/CsvExample.php > example.csv",
+        "test-xml": "php examples/XmlExample.php > example.xml"
     },
     "license": "MIT",
     "authors": [
