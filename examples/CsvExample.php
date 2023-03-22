@@ -6,13 +6,6 @@ require_once __DIR__ . '/data/ExampleBaseItem.php';
 require_once __DIR__ . '/data/ExampleProductItem.php';
 require_once __DIR__ . '/data/ExampleContentItem.php';
 
-use FINDOLOGIC\Export\Data\Attribute;
-use FINDOLOGIC\Export\Data\Image;
-use FINDOLOGIC\Export\Data\Item;
-use FINDOLOGIC\Export\Data\Keyword;
-use FINDOLOGIC\Export\Data\Ordernumber;
-use FINDOLOGIC\Export\Data\Property;
-use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Exporter;
 
 /**

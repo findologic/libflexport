@@ -182,36 +182,5 @@ class ExampleProductItem extends ExampleBaseItem
         ]
     ];
 
-    public array $variants = [
-        'Blue' => [
-            'id' => 'variant1',
-            'ordernumber' => 'variant1',
-            'title' => 'Adidas Sneaker blue',
-            'badge' => 'https://www.store.com/images/badges/new.png',
-            'price' => '13.99',
-            'overridden_price' => '',
-            'sale' => '',
-            'groups' => ['group1', 'group2']
-        ],
-        'Red' => [
-            'id' => 'variant2',
-            'ordernumber' => 'variant2',
-            'title' => 'Adidas Sneaker red',
-            'badge' => 'https://www.store.com/images/badges/sale.png',
-            'price' => '7.49',
-            'overridden_price' => '14.99',
-            'sale' => '50%',
-            'groups' => ['group1', 'group2']
-        ],
-        'Grey' => [
-            'id' => 'variant3',
-            'ordernumber' => 'variant3',
-            'title' => 'Adidas Sneaker grey',
-            'badge' => 'https://www.store.com/images/badges/sale.png',
-            'price' => '6.49',
-            'overridden_price' => '12.99',
-            'sale' => '50%',
-            'groups' => ['group1', 'group2']
-        ]
-    ];
+    public array $variants = [];
 }
