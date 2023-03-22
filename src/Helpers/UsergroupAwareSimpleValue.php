@@ -44,6 +44,16 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
         $this->values[$usergroup] = $this->validate($value);
     }
 
+    public function hasUsergroup(): bool
+    {
+        return count(
+            array_filter(
+                array_keys($this->values),
+                static fn(string $userGroup) => $userGroup !== ''
+            )
+        ) > 0;
+    }
+
     /**
      * Validates given value.
      * Basic implementation is validating against an empty string,

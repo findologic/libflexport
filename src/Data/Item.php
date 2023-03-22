@@ -6,8 +6,11 @@ use DateTimeInterface;
 use DOMDocument;
 use DOMElement;
 use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
+use FINDOLOGIC\Export\Exceptions\UsergroupsNotAllowedException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\Serializable;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValue;
+use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 use InvalidArgumentException;
 
 abstract class Item implements Serializable
@@ -53,6 +56,8 @@ abstract class Item implements Serializable
     /** @var Variant[] */
     protected array $variants = [];
 
+    protected bool $usergroupsUsed = false;
+
     public function __construct($id)
     {
         $this->setId($id);
@@ -89,11 +94,15 @@ abstract class Item implements Serializable
 
     public function setName(Name $name): void
     {
+        $this->checkUsergroupAwareValue($name);
+
         $this->name = $name;
     }
 
     public function addName(string $name, string $usergroup = ''): void
     {
+        $this->checkUsergroupString($usergroup);
+
         $this->name->setValue($name, $usergroup);
     }
 
@@ -104,11 +113,15 @@ abstract class Item implements Serializable
 
     public function setSummary(Summary $summary): void
     {
+        $this->checkUsergroupAwareValue($summary);
+
         $this->summary = $summary;
     }
 
     public function addSummary(string $summary, string $usergroup = ''): void
     {
+        $this->checkUsergroupString($usergroup);
+
         $this->summary->setValue($summary, $usergroup);
     }
 
@@ -119,11 +132,15 @@ abstract class Item implements Serializable
 
     public function setDescription(Description $description): void
     {
+        $this->checkUsergroupAwareValue($description);
+
         $this->description = $description;
     }
 
     public function addDescription(string $description, string $usergroup = ''): void
     {
+        $this->checkUsergroupString($usergroup);
+
         $this->description->setValue($description, $usergroup);
     }
 
@@ -134,11 +151,15 @@ abstract class Item implements Serializable
 
     public function setPrice(Price $price): void
     {
+        $this->checkUsergroupAwareValue($price);
+
         $this->price = $price;
     }
 
     public function addPrice(string|int|float $price, string $usergroup = ''): void
     {
+        $this->checkUsergroupString($usergroup);
+
         $this->price->setValue($price, $usergroup);
     }
 
@@ -155,6 +176,8 @@ abstract class Item implements Serializable
                 ));
             }
 
+            $this->checkUsergroupAwareValue($price);
+
             foreach ($price->getValues() as $usergroup => $value) {
                 $this->addPrice($value, $usergroup);
             }
@@ -168,14 +191,14 @@ abstract class Item implements Serializable
 
     public function setOverriddenPrice(OverriddenPrice $overriddenPrice): void
     {
+        $this->checkUsergroupAwareValue($overriddenPrice);
+
         $this->overriddenPrice = $overriddenPrice;
     }
 
     public function addOverriddenPrice(string|int|float $overriddenPrice, string $usergroup = ''): void
     {
-        if ($this->overriddenPrice === null) {
-            $this->overriddenPrice = new OverriddenPrice();
-        }
+        $this->checkUsergroupString($usergroup);
 
         $this->overriddenPrice->setValue($overriddenPrice, $usergroup);
     }
@@ -193,6 +216,8 @@ abstract class Item implements Serializable
                 ));
             }
 
+            $this->checkUsergroupAwareValue($overriddenPrice);
+
             foreach ($overriddenPrice->getValues() as $usergroup => $value) {
                 $this->addOverriddenPrice($value, $usergroup);
             }
@@ -206,11 +231,15 @@ abstract class Item implements Serializable
 
     public function setUrl(Url $url): void
     {
+        $this->checkUsergroupAwareValue($url);
+
         $this->url = $url;
     }
 
     public function addUrl(string $url, string $usergroup = ''): void
     {
+        $this->checkUsergroupString($usergroup);
+
         $this->url->setValue($url, $usergroup);
     }
 
@@ -226,6 +255,8 @@ abstract class Item implements Serializable
 
     public function addBonus(float $bonus, string $usergroup = ''): void
     {
+        $this->checkUsergroupString($usergroup);
+
         $this->bonus->setValue($bonus, $usergroup);
     }
 
@@ -241,6 +272,8 @@ abstract class Item implements Serializable
 
     public function addSalesFrequency(int $salesFrequency, string $usergroup = ''): void
     {
+        $this->checkUsergroupString($usergroup);
+
         $this->salesFrequency->setValue($salesFrequency, $usergroup);
     }
 
@@ -256,6 +289,8 @@ abstract class Item implements Serializable
 
     public function addDateAdded(DateTimeInterface $dateAdded, string $usergroup = ''): void
     {
+        $this->checkUsergroupString($usergroup);
+
         $this->dateAdded->setDateValue($dateAdded, $usergroup);
     }
 
@@ -271,6 +306,8 @@ abstract class Item implements Serializable
 
     public function addSort(int $sort, string $usergroup = ''): void
     {
+        $this->checkUsergroupString($usergroup);
+
         $this->sort->setValue($sort, $usergroup);
     }
 
@@ -281,6 +318,8 @@ abstract class Item implements Serializable
         }
 
         foreach ($property->getAllValues() as $usergroup => $value) {
+            $this->checkUsergroupString($usergroup);
+
             // No need to check if there are duplicate values for a single property and usergroup, because
             // Property::addValue() already takes care of that.
 
@@ -346,6 +385,8 @@ abstract class Item implements Serializable
 
     public function addImage(Image $image): void
     {
+        $this->checkUsergroupString($image->getUsergroup());
+
         if (!array_key_exists($image->getUsergroup(), $this->images)) {
             $this->images[$image->getUsergroup()] = [];
         }
@@ -359,12 +400,16 @@ abstract class Item implements Serializable
     public function setAllImages(array $images): void
     {
         foreach ($images as $image) {
+            $this->checkUsergroupString($image->getUsergroup());
+
             $this->addImage($image);
         }
     }
 
     public function addOrdernumber(Ordernumber $ordernumber): void
     {
+        $this->checkUsergroupString($ordernumber->getUsergroup());
+
         $this->ordernumbers->addValue($ordernumber);
     }
 
@@ -373,11 +418,17 @@ abstract class Item implements Serializable
      */
     public function setAllOrdernumbers(array $ordernumbers): void
     {
+        foreach ($ordernumbers as $ordernumber) {
+            $this->checkUsergroupString($ordernumber->getUsergroup());
+        }
+
         $this->ordernumbers->setAllValues($ordernumbers);
     }
 
     public function addKeyword(Keyword $keyword): void
     {
+        $this->checkUsergroupString($keyword->getUsergroup());
+
         $this->keywords->addValue($keyword);
     }
 
@@ -386,6 +437,10 @@ abstract class Item implements Serializable
      */
     public function setAllKeywords(array $keywords): void
     {
+        foreach ($keywords as $keyword) {
+            $this->checkUsergroupString($keyword->getUsergroup());
+        }
+
         $this->keywords->setAllValues($keywords);
     }
 
@@ -404,12 +459,42 @@ abstract class Item implements Serializable
 
     public function addVariant(Variant $variant): void
     {
+        if ($this->usergroupsUsed) {
+            throw new UsergroupsNotAllowedException();
+        }
+
         $this->variants[] = $variant;
     }
 
     public function setAllVariants(array $variants): void
     {
+        if ($this->usergroupsUsed) {
+            throw new UsergroupsNotAllowedException();
+        }
+
         $this->variants = $variants;
+    }
+
+    public function checkUsergroupString(string $usergroup): void
+    {
+        if (strlen($usergroup)) {
+            $this->usergroupsUsed = true;
+
+            if (count($this->variants)) {
+                throw new UsergroupsNotAllowedException();
+            }
+        }
+    }
+
+    public function checkUsergroupAwareValue(UsergroupAwareSimpleValue|UsergroupAwareMultiValue $value): void
+    {
+        if ($value->hasUsergroup()) {
+            $this->usergroupsUsed = true;
+
+            if (count($this->variants)) {
+                throw new UsergroupsNotAllowedException();
+            }
+        }
     }
 
     /**
