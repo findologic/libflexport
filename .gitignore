@@ -8,5 +8,6 @@
 /vendor/
 
 example.csv
+example-variants.csv
 example.xml
 example-variants.xml

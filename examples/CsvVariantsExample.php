@@ -1,14 +1,15 @@
 <?php
 
-require_once __DIR__ . '/BaseExample.php';
+require_once __DIR__ . '/BaseVariantsExample.php';
 
 use FINDOLOGIC\Export\Exporter;
 
 /**
- * This example class builds a CSV export inspired by the FINDOLOGIC documentation, which can be found at
- * https://docs.findologic.com/doku.php?id=export_patterns:csv .
+ * This example class builds an XML export based on the example of the FINDOLOGIC documentation, which can be found
+ * under the following link:
+ * @link https://docs.findologic.com/doku.php?id=xml_export_documentation:XML_format
  */
-class CsvExample extends BaseExample
+class CsvVariantsExample extends BaseVariantsExample
 {
     public function createExport(): string
     {
@@ -22,7 +23,6 @@ class CsvExample extends BaseExample
                 'availability',
                 'old_price',
                 'Basic_rate_price',
-                'variants',
                 'file_type',
                 'number_of_comments',
                 'badge',
@@ -33,6 +33,7 @@ class CsvExample extends BaseExample
                 'brand',
                 'color',
                 'type',
+                'variant_value'
             ],
             3
         );
@@ -43,7 +44,7 @@ class CsvExample extends BaseExample
     }
 }
 
-$example = new CsvExample();
+$example = new CsvVariantsExample();
 
-// Output the CSV content.
+// Output the XML content.
 echo $example->createExport();

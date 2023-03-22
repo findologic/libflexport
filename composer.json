@@ -18,6 +18,7 @@
         "fix": "phpcbf",
         "test": "XDEBUG_MODE=coverage phpunit",
         "test-csv": "php examples/CsvExample.php > example.csv",
+        "test-csv-variants": "php examples/CsvVariantsExample.php > example-variants.csv",
         "test-xml": "php examples/XmlExample.php > example.xml",
         "test-xml-variants": "php examples/XmlVariantsExample.php > example-variants.xml"
     },

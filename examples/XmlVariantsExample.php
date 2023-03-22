@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/BaseExample.php';
+require_once __DIR__ . '/BaseVariantsExample.php';
 
 use FINDOLOGIC\Export\Exporter;
 
@@ -9,17 +9,8 @@ use FINDOLOGIC\Export\Exporter;
  * under the following link:
  * @link https://docs.findologic.com/doku.php?id=xml_export_documentation:XML_format
  */
-class XmlVariantsExample extends BaseExample
+class XmlVariantsExample extends BaseVariantsExample
 {
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->products = [];
-        $this->products[] = new ExampleProductItemWithVariants();
-        $this->products[] = new ExampleContentItemWithoutUsergroups();
-    }
-
     public function createExport(): string
     {
         $exporter = Exporter::create(Exporter::TYPE_XML);
