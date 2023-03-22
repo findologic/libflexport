@@ -1,5 +1,12 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/data/ExampleBaseItem.php';
+require_once __DIR__ . '/data/ExampleProductItem.php';
+require_once __DIR__ . '/data/ExampleProductItemWithVariants.php';
+require_once __DIR__ . '/data/ExampleContentItem.php';
+require_once __DIR__ . '/data/ExampleContentItemWithoutUsergroups.php';
+
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Data\Image;

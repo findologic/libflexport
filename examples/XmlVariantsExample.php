@@ -1,11 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/BaseExample.php';
-require_once __DIR__ . '/data/ExampleBaseItem.php';
-require_once __DIR__ . '/data/ExampleProductItem.php';
-require_once __DIR__ . '/data/ExampleProductItemWithVariants.php';
-require_once __DIR__ . '/data/ExampleContentItem.php';
 
 use FINDOLOGIC\Export\Exporter;
 
@@ -22,7 +17,7 @@ class XmlVariantsExample extends BaseExample
 
         $this->products = [];
         $this->products[] = new ExampleProductItemWithVariants();
-        $this->products[] = new ExampleContentItem();
+        $this->products[] = new ExampleContentItemWithoutUsergroups();
     }
 
     public function createExport(): string

@@ -18,7 +18,8 @@
         "fix": "phpcbf",
         "test": "XDEBUG_MODE=coverage phpunit",
         "test-csv": "php examples/CsvExample.php > example.csv",
-        "test-xml": "php examples/XmlExample.php > example.xml"
+        "test-xml": "php examples/XmlExample.php > example.xml",
+        "test-xml-variants": "php examples/XmlVariantsExample.php > example-variants.xml"
     },
     "license": "MIT",
     "authors": [

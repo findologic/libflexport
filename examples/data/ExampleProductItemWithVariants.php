@@ -7,7 +7,7 @@ use FINDOLOGIC\Export\Data\Image;
  * As this is just a static class, an own logic must be implemented
  */
 
-class ExampleProductItemWithVariants extends ExampleBaseItem
+class ExampleProductItemWithVariants extends ExampleProductItem
 {
     public string $id = '5444bb0aa92841858ac47ef71c9cbab9';
 
@@ -76,29 +76,6 @@ class ExampleProductItemWithVariants extends ExampleBaseItem
             'https://www.store.com/images/277KTL.png' => Image::TYPE_DEFAULT,
             'https://www.store.com/images/thumbnails/277KTL.png' => Image::TYPE_THUMBNAIL
         ],
-    ];
-
-    public array $attributes = [
-        'cat' => [
-            'Sneakers_Men',
-            'Specials_Sale'
-        ],
-        'cat_url' => [
-            '/sneakers',
-            '/sneakers/men',
-            '/specials',
-            '/specials/sale'
-        ],
-        'brand' => [
-            'Adidas'
-        ],
-        'color' => [
-            'green,brown',
-            'blue'
-        ],
-        'type' => [
-            'product',
-        ]
     ];
 
     public array $properties = [

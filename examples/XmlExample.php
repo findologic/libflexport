@@ -1,10 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/BaseExample.php';
-require_once __DIR__ . '/data/ExampleBaseItem.php';
-require_once __DIR__ . '/data/ExampleProductItem.php';
-require_once __DIR__ . '/data/ExampleContentItem.php';
 
 use FINDOLOGIC\Export\Exporter;
 
