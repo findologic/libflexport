@@ -94,7 +94,7 @@ class XmlVariant extends Variant
          * @var string $key
          * @var Attribute $attribute
          */
-        foreach ($this->attributes as $key => $attribute) {
+        foreach ($this->attributes as $attribute) {
             $attributes->appendChild($attribute->getDomSubtree($document));
         }
 

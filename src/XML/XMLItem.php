@@ -11,7 +11,6 @@ use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Exceptions\BaseImageMissingException;
 use FINDOLOGIC\Export\Exceptions\ImagesWithoutUsergroupMissingException;
-use FINDOLOGIC\Export\Exceptions\UnsupportedValueException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 class XMLItem extends Item
@@ -112,7 +111,7 @@ class XMLItem extends Item
          * @var string $key
          * @var Attribute $attribute
          */
-        foreach ($this->attributes as $key => $attribute) {
+        foreach ($this->attributes as $attribute) {
             $attributes->appendChild($attribute->getDomSubtree($document));
         }
 
