@@ -2,8 +2,6 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-use DOMDocument;
-use DOMElement;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Traits\HasAttributes;
 use FINDOLOGIC\Export\Traits\HasBonus;
@@ -16,7 +14,6 @@ use FINDOLOGIC\Export\Traits\HasKeywords;
 use FINDOLOGIC\Export\Traits\HasName;
 use FINDOLOGIC\Export\Traits\HasOrdernumbers;
 use FINDOLOGIC\Export\Traits\HasOverriddenPrice;
-use FINDOLOGIC\Export\Traits\HasParentId;
 use FINDOLOGIC\Export\Traits\HasPrice;
 use FINDOLOGIC\Export\Traits\HasProperties;
 use FINDOLOGIC\Export\Traits\HasSalesFrequency;
@@ -63,9 +60,4 @@ abstract class Item implements Serializable
         $this->keywords = new AllKeywords();
         $this->ordernumbers = new AllOrdernumbers();
     }
-
-    /**
-     * @inheritdoc
-     */
-    abstract public function getDomSubtree(DOMDocument $document): DOMElement;
 }

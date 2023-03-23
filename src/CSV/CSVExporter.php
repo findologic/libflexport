@@ -12,25 +12,13 @@ class CSVExporter extends Exporter
     private const HEADING = "id\tparent_id\tordernumber\tname\tsummary\tdescription\tprice\toverriddenPrice\turl\t" .
         "keywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
 
-    /**
-     * @var string[] Names of properties; used for alignment of extra columns containing property values.
-     */
-    private array $propertyKeys;
+    private CSVConfig $csvConfig;
 
-    /**
-     * @var string[] Names of attributes; used for alignment of extra columns containing attribute values.
-     */
-    private array $attributeKeys;
-
-    private int $imageCount;
-
-    public function __construct(int $itemsPerPage, array $propertyKeys, array $attributeKeys, int $imageCount)
+    public function __construct(int $itemsPerPage, CSVConfig $csvConfig)
     {
         parent::__construct($itemsPerPage);
 
-        $this->propertyKeys = DataHelper::checkForInvalidCsvColumnKeys($propertyKeys);
-        $this->attributeKeys = DataHelper::checkForInvalidCsvColumnKeys($attributeKeys);
-        $this->imageCount = $imageCount;
+        $this->csvConfig = $csvConfig;
     }
 
     /**
@@ -47,7 +35,7 @@ class CSVExporter extends Exporter
 
         /** @var CSVItem $item */
         foreach ($items as $item) {
-            $export .= $item->getCsvFragment($this->propertyKeys, $this->attributeKeys, $this->imageCount);
+            $export .= $item->getCsvFragment($this->csvConfig);
         }
 
         return $export;
@@ -110,7 +98,7 @@ class CSVExporter extends Exporter
     {
         $imageHeading = '';
 
-        for ($i = 0; $i < $this->imageCount; $i++) {
+        for ($i = 0; $i < $this->csvConfig->getImageCount(); $i++) {
             $imageHeading .= "\t" . 'image' . $i;
         }
 
@@ -124,7 +112,7 @@ class CSVExporter extends Exporter
     {
         $propertyHeading = '';
 
-        foreach ($this->propertyKeys as $propertyKey) {
+        foreach ($this->csvConfig->getAvailableProperties() as $propertyKey) {
             $propertyHeading .= "\t" . 'prop_' . $propertyKey;
         }
 
@@ -140,7 +128,7 @@ class CSVExporter extends Exporter
     {
         $attributeHeading = '';
 
-        foreach ($this->attributeKeys as $attributeKey) {
+        foreach ($this->csvConfig->getAvailableAttributes() as $attributeKey) {
             $attributeHeading .= "\t" . 'attrib_' . $attributeKey;
         }
 

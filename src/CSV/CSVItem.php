@@ -20,37 +20,33 @@ class CSVItem extends Item
     }
 
     /**
-     * @param int $imageCount
      * @inheritdoc
      */
-    public function getCsvFragment(
-        array $availableProperties = [],
-        array $availableAttributes = [],
-        int $imageCount = 1
-    ): string {
+    public function getCsvFragment(CSVConfig $csvConfig): string
+    {
         $id = $this->getId();
-        $name = self::sanitize($this->name->getCsvFragment());
-        $summary = self::sanitize($this->summary->getCsvFragment());
-        $description = self::sanitize($this->description->getCsvFragment());
-        $price = $this->price->getCsvFragment();
-        $url = self::sanitize($this->url->getCsvFragment());
-        $keywords = self::sanitize($this->keywords->getCsvFragment());
-        $bonus = self::sanitize($this->bonus->getCsvFragment());
-        $salesFrequency = self::sanitize($this->salesFrequency->getCsvFragment());
-        $dateAdded = self::sanitize($this->dateAdded->getCsvFragment());
-        $sort = self::sanitize($this->sort->getCsvFragment());
+        $name = self::sanitize($this->name->getCsvFragment($csvConfig));
+        $summary = self::sanitize($this->summary->getCsvFragment($csvConfig));
+        $description = self::sanitize($this->description->getCsvFragment($csvConfig));
+        $price = $this->price->getCsvFragment($csvConfig);
+        $url = self::sanitize($this->url->getCsvFragment($csvConfig));
+        $keywords = self::sanitize($this->keywords->getCsvFragment($csvConfig));
+        $bonus = self::sanitize($this->bonus->getCsvFragment($csvConfig));
+        $salesFrequency = self::sanitize($this->salesFrequency->getCsvFragment($csvConfig));
+        $dateAdded = self::sanitize($this->dateAdded->getCsvFragment($csvConfig));
+        $sort = self::sanitize($this->sort->getCsvFragment($csvConfig));
 
-        $overriddenPrice = $this->getOverriddenPrice()->getCsvFragment();
-        $groups = implode(',', array_map(function (Group $group): string {
-            $groupName = $group->getCsvFragment();
-            DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
-            return self::sanitize($groupName);
+        $overriddenPrice = $this->getOverriddenPrice()->getCsvFragment($csvConfig);
+        $groups = implode(',', array_map(function (Group $group) use ($csvConfig): string {
+                $groupName = $group->getCsvFragment($csvConfig);
+                DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
+                return self::sanitize($groupName);
         }, $this->groups));
 
-        $ordernumbers = $this->buildOrdernumbers();
-        $images = $this->buildImages($imageCount);
-        $properties = $this->buildProperties($availableProperties);
-        $attributes = $this->buildAttributes($availableAttributes);
+        $ordernumbers = $this->buildOrdernumbers($csvConfig);
+        $images = $this->buildImages($csvConfig);
+        $properties = $this->buildProperties($csvConfig);
+        $attributes = $this->buildAttributes($csvConfig);
 
         $data = sprintf(
             "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s%s\n",
@@ -75,28 +71,28 @@ class CSVItem extends Item
         );
 
         foreach ($this->variants as $variant) {
-            $data .= $variant->getCsvFragment($availableProperties, $availableAttributes, $imageCount);
+            $data .= $variant->getCsvFragment($csvConfig);
         }
 
         return $data;
     }
 
-    private function buildOrdernumbers(): string
+    private function buildOrdernumbers(CSVConfig $csvConfig): string
     {
-        $orderNumbers = $this->ordernumbers->getCsvFragment();
+        $orderNumbers = $this->ordernumbers->getCsvFragment($csvConfig);
 
         foreach ($this->variants as $variant) {
-            $orderNumbers .= '|' . $variant->getOrdernumbers()->getCsvFragment();
+            $orderNumbers .= '|' . $variant->getOrdernumbers()->getCsvFragment($csvConfig);
         }
 
         return self::sanitize($orderNumbers);
     }
 
-    private function buildProperties(array $availableProperties): string
+    private function buildProperties(CSVConfig $csvConfig): string
     {
         $propertiesString = '';
 
-        foreach ($availableProperties as $availableProperty) {
+        foreach ($csvConfig->getAvailableProperties() as $availableProperty) {
             if (array_key_exists($availableProperty, $this->properties[''])) {
                 $propertiesString .= "\t" . self::sanitize($this->properties[''][$availableProperty]);
             } else {
@@ -107,11 +103,11 @@ class CSVItem extends Item
         return $propertiesString;
     }
 
-    private function buildAttributes(array $availableAttributes): string
+    private function buildAttributes(CSVConfig $csvConfig): string
     {
         $attributesString = '';
 
-        foreach ($availableAttributes as $availableAttribute) {
+        foreach ($csvConfig->getAvailableAttributes() as $availableAttribute) {
             if (array_key_exists($availableAttribute, $this->attributes)) {
                 $sanitizedValues = array_map(
                     function (string $value) {
@@ -130,15 +126,15 @@ class CSVItem extends Item
         return $attributesString;
     }
 
-    private function buildImages(int $imageCount): string
+    private function buildImages(CSVConfig $csvConfig): string
     {
         $imagesString = '';
 
         if (array_key_exists('', $this->images)) {
             $images = $this->images[''];
 
-            for ($i = 0; $i < $imageCount; $i++) {
-                $imageUrl = isset($images[$i]) ? $images[$i]->getCsvFragment() : '';
+            for ($i = 0; $i < $csvConfig->getImageCount(); $i++) {
+                $imageUrl = isset($images[$i]) ? $images[$i]->getCsvFragment($csvConfig) : '';
                 $imagesString .= "\t" . $imageUrl;
             }
         }

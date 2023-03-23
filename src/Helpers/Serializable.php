@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\Helpers;
 
 use DOMDocument;
 use DOMElement;
+use FINDOLOGIC\Export\CSV\CSVConfig;
 
 /**
  * Data that is serializable as CSV or XML.
@@ -18,15 +19,8 @@ interface Serializable
     public function getDomSubtree(DOMDocument $document): DOMElement;
 
     /**
-     * @param array $availableProperties Properties that are available across the data set, so an individual item
-     *      knows into which column to write its property value, if any.
-     * @param array $availableAttributes
-     * @param int $imageCount
+     * @param CSVConfig $csvConfig
      * @return string A CSV fragment that, combined with other fragments, will finally become an export file.
      */
-    public function getCsvFragment(
-        array $availableProperties = [],
-        array $availableAttributes = [],
-        int $imageCount = 1
-    ): string;
+    public function getCsvFragment(CSVConfig $csvConfig): string;
 }

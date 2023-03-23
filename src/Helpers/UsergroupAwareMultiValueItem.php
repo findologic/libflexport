@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\Helpers;
 
 use DOMDocument;
 use DOMElement;
+use FINDOLOGIC\Export\CSV\CSVConfig;
 
 /**
  * Class UsergroupAwareMultiValueItem
@@ -16,22 +17,13 @@ use DOMElement;
  */
 abstract class UsergroupAwareMultiValueItem implements Serializable, NameAwareValue
 {
-    /** @var string */
-    private $itemName;
+    private string $itemName;
 
-    /** @var string */
-    private $value;
+    private string $value;
 
-    /** @var string */
-    private $usergroup;
+    private string $usergroup;
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     * @param string $itemName
-     * @param mixed $value
-     * @param string|null $usergroup
-     */
-    public function __construct($itemName, $value, $usergroup)
+    public function __construct(string $itemName, mixed $value, ?string $usergroup)
     {
         $this->value = DataHelper::checkForEmptyValue($this->getValueName(), $value);
         $this->itemName = $itemName;
@@ -54,20 +46,14 @@ abstract class UsergroupAwareMultiValueItem implements Serializable, NameAwareVa
      */
     public function getDomSubtree(DOMDocument $document): DOMElement
     {
-        $valueElem = XMLHelper::createElementWithText($document, $this->itemName, $this->getValue());
-
-        return $valueElem;
+        return XMLHelper::createElementWithText($document, $this->itemName, $this->getValue());
     }
 
     /**
-     * @param int $imageCount
      * @inheritdoc
      */
-    public function getCsvFragment(
-        array $availableProperties = [],
-        array $availableAttributes = [],
-        int $imageCount = 1
-    ): string {
+    public function getCsvFragment(CSVConfig $csvConfig): string
+    {
         return $this->getValue();
     }
 }

@@ -7,11 +7,11 @@ use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
 
 trait HasProperties
 {
-    /** @var array<string, Property[]> */
+    /** @var array<string, string[]> */
     protected array $properties = [];
 
     /**
-     * @return array<string, Property[]>
+     * @return array<string, string[]>
      */
     public function getProperties(): array
     {

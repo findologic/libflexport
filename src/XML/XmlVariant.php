@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Export\XML;
 use BadMethodCallException;
 use DOMDocument;
 use DOMElement;
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Data\Variant;
@@ -13,14 +14,10 @@ use FINDOLOGIC\Export\Helpers\XMLHelper;
 class XmlVariant extends Variant
 {
     /**
-     * @param int $imageCount
      * @inheritdoc
      */
-    public function getCsvFragment(
-        array $availableProperties = [],
-        array $availableAttributes = [],
-        int $imageCount = 1
-    ): string {
+    public function getCsvFragment(CSVConfig $csvConfig): string
+    {
         throw new BadMethodCallException('XMLItem does not implement CSV export.');
     }
 

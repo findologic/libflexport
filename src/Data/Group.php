@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\Data;
 
 use DOMDocument;
 use DOMElement;
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\NameAwareValue;
 use FINDOLOGIC\Export\Helpers\Serializable;
@@ -33,14 +34,10 @@ class Group implements Serializable, NameAwareValue
     }
 
     /**
-     * @param int $imageCount
      * @inheritdoc
      */
-    public function getCsvFragment(
-        array $availableProperties = [],
-        array $availableAttributes = [],
-        int $imageCount = 1
-    ): string {
+    public function getCsvFragment(CSVConfig $csvConfig): string
+    {
         return $this->getValue();
     }
 

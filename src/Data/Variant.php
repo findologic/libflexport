@@ -2,8 +2,6 @@
 
 namespace FINDOLOGIC\Export\Data;
 
-use DOMDocument;
-use DOMElement;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValue;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
@@ -49,9 +47,4 @@ abstract class Variant implements Serializable
     {
         // Not needed for variants
     }
-
-    /**
-     * @inheritdoc
-     */
-    abstract public function getDomSubtree(DOMDocument $document): DOMElement;
 }

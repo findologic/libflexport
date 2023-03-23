@@ -16,27 +16,24 @@ class CSVVariant extends Variant
         throw new BadMethodCallException('CSVItem does not implement XML export.');
     }
 
-    public function getCsvFragment(
-        array $availableProperties = [],
-        array $availableAttributes = [],
-        int $imageCount = 1
-    ): string {
+    public function getCsvFragment(CSVConfig $csvConfig): string
+    {
         $id = $this->getId();
         $parentId = $this->getParentId();
-        $ordernumbers = self::sanitize($this->ordernumbers->getCsvFragment());
-        $name = self::sanitize($this->name->getCsvFragment());
-        $price = $this->price->getCsvFragment();
-        $overriddenPrice = $this->getOverriddenPrice()->getCsvFragment();
+        $ordernumbers = self::sanitize($this->ordernumbers->getCsvFragment($csvConfig));
+        $name = self::sanitize($this->name->getCsvFragment($csvConfig));
+        $price = $this->price->getCsvFragment($csvConfig);
+        $overriddenPrice = $this->getOverriddenPrice()->getCsvFragment($csvConfig);
 
-        $groups = implode(',', array_map(function (Group $group): string {
-            $groupName = $group->getCsvFragment();
+        $groups = implode(',', array_map(function (Group $group) use ($csvConfig): string {
+            $groupName = $group->getCsvFragment($csvConfig);
             DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
             return self::sanitize($groupName);
         }, $this->groups));
 
-        $images = $this->buildImages($imageCount);
-        $properties = $this->buildProperties($availableProperties);
-        $attributes = $this->buildAttributes($availableAttributes);
+        $images = $this->buildImages($csvConfig);
+        $properties = $this->buildProperties($csvConfig);
+        $attributes = $this->buildAttributes($csvConfig);
 
         return sprintf(
             "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s\n",
@@ -61,11 +58,11 @@ class CSVVariant extends Variant
         );
     }
 
-    private function buildProperties(array $availableProperties): string
+    private function buildProperties(CSVConfig $csvConfig): string
     {
         $propertiesString = '';
 
-        foreach ($availableProperties as $availableProperty) {
+        foreach ($csvConfig->getAvailableProperties() as $availableProperty) {
             if (array_key_exists($availableProperty, $this->properties[''])) {
                 $propertiesString .= "\t" . self::sanitize($this->properties[''][$availableProperty]);
             } else {
@@ -76,11 +73,11 @@ class CSVVariant extends Variant
         return $propertiesString;
     }
 
-    private function buildAttributes(array $availableAttributes): string
+    private function buildAttributes(CSVConfig $csvConfig): string
     {
         $attributesString = '';
 
-        foreach ($availableAttributes as $availableAttribute) {
+        foreach ($csvConfig->getAvailableAttributes() as $availableAttribute) {
             if (array_key_exists($availableAttribute, $this->attributes)) {
                 $sanitizedValues = array_map(
                     function (string $value) {
@@ -99,12 +96,12 @@ class CSVVariant extends Variant
         return $attributesString;
     }
 
-    private function buildImages(int $imageCount): string
+    private function buildImages(CSVConfig $csvConfig): string
     {
-        return str_repeat("\t", $imageCount);
+        return str_repeat("\t", $csvConfig->getImageCount());
     }
 
-    private static function sanitize($input, $stripTags = true): string
+    private static function sanitize(string $input, bool $stripTags = true): string
     {
         if ($stripTags) {
             $input = strip_tags($input);

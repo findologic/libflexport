@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValue;
 
 class AllOrdernumbers extends UsergroupAwareMultiValue
@@ -12,17 +13,13 @@ class AllOrdernumbers extends UsergroupAwareMultiValue
     }
 
     /**
-     * @param int $imageCount
      * @inheritdoc
      */
-    public function getCsvFragment(
-        array $availableProperties = [],
-        array $availableAttributes = [],
-        int $imageCount = 1
-    ): string {
+    public function getCsvFragment(CSVConfig $csvConfig): string
+    {
         if (array_key_exists('', $this->values)) {
-            return implode('|', array_map(function (Ordernumber $ordernumber): string {
-                return $ordernumber->getCsvFragment();
+            return implode('|', array_map(function (Ordernumber $ordernumber) use ($csvConfig): string {
+                return $ordernumber->getCsvFragment($csvConfig);
             }, $this->values['']));
         }
 

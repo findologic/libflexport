@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/BaseExample.php';
 
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Exporter;
 
 /**
@@ -12,9 +13,7 @@ class CsvExample extends BaseExample
 {
     public function createExport(): string
     {
-        $exporter = Exporter::create(
-            Exporter::TYPE_CSV,
-            20,
+        $csvConfig = new CSVConfig(
             [
                 'sale',
                 'novelty',
@@ -36,6 +35,8 @@ class CsvExample extends BaseExample
             ],
             3
         );
+
+        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);
 
         $items = $this->buildItems($exporter);
 

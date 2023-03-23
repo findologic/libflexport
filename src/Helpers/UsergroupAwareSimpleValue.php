@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\Helpers;
 
 use DOMDocument;
 use DOMElement;
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 
 /**
@@ -14,16 +15,14 @@ use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
  */
 abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
 {
-    /** @var string */
-    private $collectionName;
+    private string $collectionName;
 
-    /** @var string */
-    private $itemName;
+    private string $itemName;
 
     /** @var array */
     protected $values = [];
 
-    public function __construct($collectionName, $itemName)
+    public function __construct(string $collectionName, string $itemName)
     {
         $this->collectionName = $collectionName;
         $this->itemName = $itemName;
@@ -36,10 +35,10 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
-     * @param string|int|float $value The value of the element.
+     * @param mixed $value The value of the element.
      * @param string $usergroup The usergroup of the element.
      */
-    public function setValue($value, string $usergroup = ''): void
+    public function setValue(mixed $value, string $usergroup = ''): void
     {
         $this->values[$usergroup] = $this->validate($value);
     }
@@ -62,11 +61,11 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
      * When valid returns given value.
      * When not valid an exception is thrown.
      *
-     * @param string|int $value Validated value.
-     * @return string
+     * @param mixed $value Validated value.
+     * @return mixed
      * @throws EmptyValueNotAllowedException
      */
-    protected function validate($value)
+    protected function validate(mixed $value): mixed
     {
         $value = trim($value);
 
@@ -98,14 +97,10 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
     }
 
     /**
-     * @param int $imageCount
      * @inheritdoc
      */
-    public function getCsvFragment(
-        array $availableProperties = [],
-        array $availableAttributes = [],
-        int $imageCount = 1
-    ): string {
+    public function getCsvFragment(CSVConfig $csvConfig): string
+    {
         $value = '';
 
         if (array_key_exists('', $this->getValues())) {
