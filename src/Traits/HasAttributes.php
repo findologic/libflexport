@@ -84,15 +84,7 @@ trait HasAttributes
 
         foreach ($csvConfig->getAvailableAttributes() as $availableAttribute) {
             if (array_key_exists($availableAttribute, $this->attributes)) {
-                $sanitizedValues = array_map(
-                    function (string $value) {
-                        $sanitized = DataHelper::sanitize($value);
-                        return str_replace(',', '\,', $sanitized);
-                    },
-                    $this->attributes[$availableAttribute]->getValues()
-                );
-
-                $attributesString .= "\t" . DataHelper::sanitize(implode(',', $sanitizedValues));
+                $attributesString .= "\t" . $this->attributes[$availableAttribute]->getCsvFragment($csvConfig);
             } else {
                 $attributesString .= "\t";
             }

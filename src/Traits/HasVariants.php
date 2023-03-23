@@ -64,7 +64,7 @@ trait HasVariants
         }
     }
 
-    public function buildXmlVariants(DOMDocument $document): \DOMElement
+    protected function buildXmlVariants(DOMDocument $document): \DOMElement
     {
         $variants = XMLHelper::createElement($document, 'variants');
 

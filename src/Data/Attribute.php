@@ -85,14 +85,15 @@ class Attribute implements Serializable, NameAwareValue
      */
     public function getCsvFragment(CSVConfig $csvConfig): string
     {
-        $attributeParts = [];
+        $sanitizedValues = array_map(
+            function (string $value) {
+                $sanitized = DataHelper::sanitize($value);
+                return str_replace(',', '\,', $sanitized);
+            },
+            $this->getValues()
+        );
 
-        foreach ($this->getValues() as $value) {
-            DataHelper::checkCsvAttributeKeyNotExceedingCharacterLimit($this->getKey());
-            $attributeParts[] = sprintf('%s=%s', urlencode($this->getKey()), urlencode($value));
-        }
-
-        return implode('&', $attributeParts);
+        return implode(',', $sanitizedValues);
     }
 
     /**
