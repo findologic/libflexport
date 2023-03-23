@@ -25,7 +25,7 @@ trait HasPrice
     {
         $this->checkUsergroupString($usergroup);
 
-        $this->price->setValue($price, $usergroup);
+        $this->price->setValue($price);
     }
 
     /**
