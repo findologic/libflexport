@@ -10,6 +10,7 @@ use DOMElement;
 use DOMXPath;
 use Exception;
 use FINDOLOGIC\Export\Constant;
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Data\Image;
@@ -302,7 +303,7 @@ class XmlSerializationTest extends TestCase
         $item = new XMLItem(123);
 
         try {
-            $item->getCsvFragment([], [], 1);
+            $item->getCsvFragment(new CSVConfig());
         } catch (BadMethodCallException $e) {
             $this->assertEquals('XMLItem does not implement CSV export.', $e->getMessage());
         }
@@ -331,6 +332,11 @@ class XmlSerializationTest extends TestCase
             'summary' => ['Summary', $stringValuesWithUsergroupKeys],
             'description' => ['Description', $stringValuesWithUsergroupKeys],
             'price' => ['Price', [
+                '' => 13.37,
+                'foo' => 42,
+                'bar' => 12.00
+            ]],
+            'overriddenPrice' => ['OverriddenPrice', [
                 '' => 13.37,
                 'foo' => 42,
                 'bar' => 12.00

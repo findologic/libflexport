@@ -50,6 +50,10 @@ trait HasImages
 
     protected function buildCsvImages(CSVConfig $csvConfig, string $type): string
     {
+        $count = match ($type) {
+            Image::TYPE_DEFAULT => $csvConfig->getImageCount(),
+            Image::TYPE_THUMBNAIL => $csvConfig->getThumbnailCount(),
+        };
         $imagesString = '';
 
         if (array_key_exists('', $this->images)) {
@@ -59,7 +63,7 @@ trait HasImages
             );
             $images = array_values($imagesOfType);
 
-            for ($i = 0; $i < $csvConfig->getImageCount(); $i++) {
+            for ($i = 0; $i < $count; $i++) {
                 $imageUrl = isset($images[$i]) ? $images[$i]->getCsvFragment($csvConfig) : '';
                 $imagesString .= "\t" . $imageUrl;
             }

@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Export\Tests;
 use BadMethodCallException;
 use DateTime;
 use DOMDocument;
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\CSV\CSVExporter;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
@@ -204,6 +205,8 @@ class CSVSerializationTest extends TestCase
         $expectedImage0 = 'https://example.org/wonderful_product.png';
         $expectedImage1 = 'https://example.org/wonderful_product2.png';
         $expectedImage2 = '';
+        $expectedThumbnail0 = 'https://example.org/wonderful_product_thumb.png';
+        $expectedThumbnail1 = '';
         $expectedAttributeKeys = ['cat', 'vendor', 'use'];
         $expectedAttributes = [
             $expectedAttributeKeys[0] => ['Bikes', 'Bikes_Racing Bikes'],
@@ -227,10 +230,11 @@ class CSVSerializationTest extends TestCase
             $expectedPropertyKeys[1] => 'true'
         ];
 
-        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $expectedPropertyKeys, $expectedAttributeKeys);
+        $csvConfig = new CSVConfig($expectedPropertyKeys, $expectedAttributeKeys, 3, 2);
+        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);
 
         $expectedCsvLine = sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+            "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
             $expectedId,
             $expectedParentId,
             implode('|', $expectedOrdernumbers),
@@ -249,6 +253,8 @@ class CSVSerializationTest extends TestCase
             $expectedImage0,
             $expectedImage1,
             $expectedImage2,
+            $expectedThumbnail0,
+            $expectedThumbnail1,
             implode("\t", array_values($expectedProperties)),
             implode("\t", array_values($expectedAttributesColumns))
         );
@@ -267,6 +273,7 @@ class CSVSerializationTest extends TestCase
         $item->addUrl($expectedUrl);
         $item->addImage(new Image($expectedImage0));
         $item->addImage(new Image($expectedImage1));
+        $item->addImage(new Image($expectedThumbnail0, Image::TYPE_THUMBNAIL));
 
         foreach ($expectedAttributes as $attribute => $values) {
             $item->addAttribute(new Attribute($attribute, $values));
@@ -291,7 +298,7 @@ class CSVSerializationTest extends TestCase
 
         $item->addName($expectedName);
 
-        $this->assertEquals($expectedCsvLine, $item->getCsvFragment($expectedPropertyKeys, $expectedAttributeKeys, 3));
+        $this->assertEquals($expectedCsvLine, $item->getCsvFragment($csvConfig));
     }
 
     public function testItemsCanHaveVaryingProperties(): void
@@ -300,13 +307,8 @@ class CSVSerializationTest extends TestCase
         $secondPropertyName = 'all items';
         $thirdPropertyName = 'second and third item';
 
-        $exporter = Exporter::create(
-            Exporter::TYPE_CSV,
-            20,
-            [$firstPropertyName, $secondPropertyName, $thirdPropertyName],
-            [],
-            0
-        );
+        $csvConfig = new CSVConfig([$firstPropertyName, $secondPropertyName, $thirdPropertyName], [], 0, 0);
+        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);
 
         $firstItem = $this->getMinimalItem($exporter);
         $firstItem->addProperty(new Property($firstPropertyName, [null => 'first value']));
@@ -353,7 +355,7 @@ class CSVSerializationTest extends TestCase
         $exporter = Exporter::create(
             Exporter::TYPE_CSV,
             20,
-            [$property->getKey()]
+            new CSVConfig([$property->getKey()]),
         );
 
         $item = $this->getMinimalItem($exporter);
@@ -374,7 +376,7 @@ class CSVSerializationTest extends TestCase
         $imageWithRelativePath = '/media/images/image.jpg';
         $image = new Image($imageWithRelativePath);
 
-        $this->assertEquals($imageWithRelativePath, $image->getCsvFragment([], [], 1));
+        $this->assertEquals($imageWithRelativePath, $image->getCsvFragment(new CSVConfig()));
     }
 
     /**
@@ -416,7 +418,7 @@ class CSVSerializationTest extends TestCase
             $item->$setterMethodName($element);
         }
 
-        $csvLine = $item->getCsvFragment([], [], 0);
+        $csvLine = $item->getCsvFragment(new CSVConfig());
 
         $this->assertEquals(1, preg_match_all('/\n/', $csvLine));
         $this->assertEquals(14, preg_match_all('/\t/', $csvLine));

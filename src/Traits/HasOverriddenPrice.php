@@ -25,7 +25,7 @@ trait HasOverriddenPrice
     {
         $this->checkUsergroupString($usergroup);
 
-        $this->overriddenPrice->setValue($overriddenPrice);
+        $this->overriddenPrice->setValue($overriddenPrice, $usergroup);
     }
 
     /**
