@@ -35,7 +35,6 @@ class CSVVariant extends Variant
             '', // dateAdded
             '', // sort
             str_repeat("\t", $csvConfig->getImageCount()),
-            str_repeat("\t", $csvConfig->getThumbnailCount()),
             $this->buildCsvProperties($csvConfig),
             $this->buildCsvAttributes($csvConfig),
         );

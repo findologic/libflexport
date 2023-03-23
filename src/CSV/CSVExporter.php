@@ -11,7 +11,7 @@ class CSVExporter extends Exporter
     private const HEADING = "id\tparent_id\tordernumber\tname\tsummary\tdescription\tprice\toverriddenPrice\turl\t" .
         "keywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
 
-    public const LINE_TEMPLATE = "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s%s%s\n";
+    public const LINE_TEMPLATE = "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s%s\n";
 
     private CSVConfig $csvConfig;
 
@@ -86,7 +86,6 @@ class CSVExporter extends Exporter
     {
         return self::HEADING .
             $this->getNumberedHeadingPart($this->csvConfig->getImageCount(), 'image') .
-            $this->getNumberedHeadingPart($this->csvConfig->getThumbnailCount(), 'thumbnail') .
             $this->getPrefixedHeadingPart($this->csvConfig->getAvailableProperties(), 'prop_') .
             $this->getPrefixedHeadingPart($this->csvConfig->getAvailableAttributes(), 'attrib_') .
             "\n";

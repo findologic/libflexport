@@ -48,27 +48,19 @@ trait HasImages
         }
     }
 
-    protected function buildCsvImages(CSVConfig $csvConfig, string $type): string
+    protected function buildCsvImages(CSVConfig $csvConfig): string
     {
-        $count = match ($type) {
-            Image::TYPE_DEFAULT => $csvConfig->getImageCount(),
-            Image::TYPE_THUMBNAIL => $csvConfig->getThumbnailCount(),
-        };
         $imagesString = '';
 
         if (array_key_exists('', $this->images)) {
-            $imagesOfType = array_filter(
-                $this->images[''],
-                static fn(Image $image) => $image->getType() === $type
-            );
-            $images = array_values($imagesOfType);
+            $images = $this->images[''];
 
-            for ($i = 0; $i < $count; $i++) {
+            for ($i = 0; $i < $csvConfig->getImageCount(); $i++) {
                 $imageUrl = isset($images[$i]) ? $images[$i]->getCsvFragment($csvConfig) : '';
                 $imagesString .= "\t" . $imageUrl;
             }
         } else {
-            $imagesString .= str_repeat("\t", $count);
+            $imagesString .= str_repeat("\t", $csvConfig->getImageCount());
         }
 
         return $imagesString;

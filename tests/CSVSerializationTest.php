@@ -222,8 +222,7 @@ class CSVSerializationTest extends TestCase
         $expectedImage0 = 'https://example.org/wonderful_product.png';
         $expectedImage1 = 'https://example.org/wonderful_product2.png';
         $expectedImage2 = '';
-        $expectedThumbnail0 = 'https://example.org/wonderful_product_thumb.png';
-        $expectedThumbnail1 = '';
+        $expectedThumbnail = 'https://example.org/wonderful_product_thumb.png';
         $expectedAttributeKeys = ['cat', 'vendor', 'use', 'not_set'];
         $expectedAttributes = [
             $expectedAttributeKeys[0] => ['Bikes', 'Bikes_Racing Bikes'],
@@ -248,11 +247,11 @@ class CSVSerializationTest extends TestCase
             $expectedPropertyKeys[1] => 'true'
         ];
 
-        $csvConfig = new CSVConfig($expectedPropertyKeys, $expectedAttributeKeys, 3, 2);
+        $csvConfig = new CSVConfig($expectedPropertyKeys, $expectedAttributeKeys, 4);
         $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);
 
         $expectedCsvLine = sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+            "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
             $expectedId,
             $expectedParentId,
             implode('|', $expectedOrdernumbers),
@@ -270,9 +269,8 @@ class CSVSerializationTest extends TestCase
             $expectedSort,
             $expectedImage0,
             $expectedImage1,
+            $expectedThumbnail,
             $expectedImage2,
-            $expectedThumbnail0,
-            $expectedThumbnail1,
             implode("\t", array_values($expectedProperties)),
             implode("\t", array_values($expectedAttributesColumns))
         );
@@ -291,7 +289,7 @@ class CSVSerializationTest extends TestCase
         $item->addUrl($expectedUrl);
         $item->addImage(new Image($expectedImage0));
         $item->addImage(new Image($expectedImage1));
-        $item->addImage(new Image($expectedThumbnail0, Image::TYPE_THUMBNAIL));
+        $item->addImage(new Image($expectedThumbnail, Image::TYPE_THUMBNAIL));
 
         foreach ($expectedAttributes as $attribute => $values) {
             $item->addAttribute(new Attribute($attribute, $values));
@@ -447,7 +445,7 @@ class CSVSerializationTest extends TestCase
         $csvLine = $item->getCsvFragment(new CSVConfig());
 
         $this->assertEquals(1, preg_match_all('/\n/', $csvLine));
-        $this->assertEquals(16, preg_match_all('/\t/', $csvLine));
+        $this->assertEquals(15, preg_match_all('/\t/', $csvLine));
         $this->assertEquals(0, preg_match_all('/\r/', $csvLine));
     }
 
@@ -460,7 +458,7 @@ class CSVSerializationTest extends TestCase
         $csvData = $item->getCsvFragment(new CSVConfig());
 
         $this->assertEquals(2, preg_match_all('/\n/', $csvData));
-        $this->assertEquals(32, preg_match_all('/\t/', $csvData));
+        $this->assertEquals(30, preg_match_all('/\t/', $csvData));
         $this->assertEquals(0, preg_match_all('/\r/', $csvData));
     }
 

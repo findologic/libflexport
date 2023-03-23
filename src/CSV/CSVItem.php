@@ -41,8 +41,7 @@ class CSVItem extends Item
             DataHelper::sanitize($this->salesFrequency->getCsvFragment($csvConfig)),
             DataHelper::sanitize($this->dateAdded->getCsvFragment($csvConfig)),
             DataHelper::sanitize($this->sort->getCsvFragment($csvConfig)),
-            $this->buildCsvImages($csvConfig, Image::TYPE_DEFAULT),
-            $this->buildCsvImages($csvConfig, Image::TYPE_THUMBNAIL),
+            $this->buildCsvImages($csvConfig),
             $this->buildCsvProperties($csvConfig),
             $this->buildCsvAttributes($csvConfig),
         );

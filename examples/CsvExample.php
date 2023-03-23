@@ -33,8 +33,7 @@ class CsvExample extends BaseExample
                 'color',
                 'type',
             ],
-            2,
-            2
+            3,
         );
 
         $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);
