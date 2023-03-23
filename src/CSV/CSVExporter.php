@@ -85,53 +85,38 @@ class CSVExporter extends Exporter
     protected function getHeadingLine(): string
     {
         return self::HEADING .
-            $this->getImageHeadingPart() .
-            $this->getPropertyHeadingPart() .
-            $this->getAttributeHeadingPart() .
+            $this->getNumberedHeadingPart($this->csvConfig->getImageCount(), 'image') .
+            $this->getNumberedHeadingPart($this->csvConfig->getThumbnailCount(), 'thumbnail') .
+            $this->getPrefixedHeadingPart($this->csvConfig->getAvailableProperties(), 'prop_') .
+            $this->getPrefixedHeadingPart($this->csvConfig->getAvailableAttributes(), 'attrib_') .
             "\n";
     }
 
     /**
-     * Returns the image part of the heading line.
+     * Returns the header part for the given numbered columns.
      */
-    protected function getImageHeadingPart(): string
+    protected function getNumberedHeadingPart(int $count, string $columnName): string
     {
-        $imageHeading = '';
+        $heading = '';
 
-        for ($i = 0; $i < $this->csvConfig->getImageCount(); $i++) {
-            $imageHeading .= "\t" . 'image' . $i;
+        for ($i = 0; $i < $count; $i++) {
+            $heading .= "\t" . $columnName . $i;
         }
 
-        return $imageHeading;
+        return $heading;
     }
 
     /**
-     * Returns the property part of the heading line.
+     * Returns the header part for the given prefixed column keys.
      */
-    protected function getPropertyHeadingPart(): string
+    protected function getPrefixedHeadingPart(array $keys, string $prefix): string
     {
-        $propertyHeading = '';
+        $heading = '';
 
-        foreach ($this->csvConfig->getAvailableProperties() as $propertyKey) {
-            $propertyHeading .= "\t" . 'prop_' . $propertyKey;
+        foreach ($keys as $key) {
+            $heading .= "\t" . $prefix . $key;
         }
 
-        return $propertyHeading;
-    }
-
-    /**
-     * Returns the attribute part of the heading line.
-     *
-     * @return string
-     */
-    protected function getAttributeHeadingPart(): string
-    {
-        $attributeHeading = '';
-
-        foreach ($this->csvConfig->getAvailableAttributes() as $attributeKey) {
-            $attributeHeading .= "\t" . 'attrib_' . $attributeKey;
-        }
-
-        return $attributeHeading;
+        return $heading;
     }
 }

@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Export\CSV;
 use BadMethodCallException;
 use DOMDocument;
 use DOMElement;
+use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Helpers\DataHelper;
@@ -44,12 +45,13 @@ class CSVItem extends Item
         }, $this->groups));
 
         $ordernumbers = $this->buildOrdernumbers($csvConfig);
-        $images = $this->buildImages($csvConfig);
+        $images = $this->buildImages($csvConfig, Image::TYPE_DEFAULT);
+        $thumbnails = $this->buildImages($csvConfig, Image::TYPE_THUMBNAIL);
         $properties = $this->buildProperties($csvConfig);
         $attributes = $this->buildAttributes($csvConfig);
 
         $data = sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s%s\n",
+            "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s%s%s\n",
             $id,
             '', // parentId
             $ordernumbers,
@@ -66,6 +68,7 @@ class CSVItem extends Item
             $dateAdded,
             $sort,
             $images,
+            $thumbnails,
             $properties,
             $attributes,
         );
@@ -126,12 +129,16 @@ class CSVItem extends Item
         return $attributesString;
     }
 
-    private function buildImages(CSVConfig $csvConfig): string
+    private function buildImages(CSVConfig $csvConfig, string $type): string
     {
         $imagesString = '';
 
         if (array_key_exists('', $this->images)) {
-            $images = $this->images[''];
+            $imagesOfType = array_filter(
+                $this->images[''],
+                static fn(Image $image) => $image->getType() === $type
+            );
+            $images = array_values($imagesOfType);
 
             for ($i = 0; $i < $csvConfig->getImageCount(); $i++) {
                 $imageUrl = isset($images[$i]) ? $images[$i]->getCsvFragment($csvConfig) : '';

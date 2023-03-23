@@ -31,12 +31,13 @@ class CSVVariant extends Variant
             return self::sanitize($groupName);
         }, $this->groups));
 
-        $images = $this->buildImages($csvConfig);
+        $images = $this->buildImages($csvConfig->getImageCount());
+        $thumbnails = $this->buildImages($csvConfig->getThumbnailCount());
         $properties = $this->buildProperties($csvConfig);
         $attributes = $this->buildAttributes($csvConfig);
 
         return sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s\n",
+            "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s%s%s\n",
             $id,
             $parentId,
             $ordernumbers,
@@ -46,13 +47,14 @@ class CSVVariant extends Variant
             $price,
             $overriddenPrice,
             '',
-            $images,
             '',
             $groups,
             '',
             '',
             '',
             '',
+            $images,
+            $thumbnails,
             $properties,
             $attributes,
         );
@@ -96,9 +98,9 @@ class CSVVariant extends Variant
         return $attributesString;
     }
 
-    private function buildImages(CSVConfig $csvConfig): string
+    private function buildImages(int $count): string
     {
-        return str_repeat("\t", $csvConfig->getImageCount());
+        return str_repeat("\t", $count);
     }
 
     private static function sanitize(string $input, bool $stripTags = true): string

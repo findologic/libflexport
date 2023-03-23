@@ -34,7 +34,8 @@ class CsvVariantsExample extends BaseVariantsExample
                 'type',
                 'variant_value'
             ],
-            3
+            2,
+            2
         );
 
         $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);
