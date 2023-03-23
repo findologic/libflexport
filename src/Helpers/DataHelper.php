@@ -134,4 +134,13 @@ class DataHelper
             throw new AttributeKeyLengthException($group, self::CSV_ATTRIBUTE_KEY_CHARACTER_LIMIT);
         }
     }
+
+    public static function sanitize(string $input, $stripTags = true): string
+    {
+        if ($stripTags) {
+            $input = strip_tags($input);
+        }
+
+        return preg_replace('/[\t\n\r]/', ' ', $input);
+    }
 }

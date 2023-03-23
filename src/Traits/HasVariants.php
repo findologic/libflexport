@@ -2,10 +2,12 @@
 
 namespace FINDOLOGIC\Export\Traits;
 
+use DOMDocument;
 use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Exceptions\UsergroupsNotAllowedException;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValue;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
+use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 trait HasVariants
 {
@@ -60,5 +62,16 @@ trait HasVariants
                 throw new UsergroupsNotAllowedException();
             }
         }
+    }
+
+    public function buildXmlVariants(DOMDocument $document): \DOMElement
+    {
+        $variants = XMLHelper::createElement($document, 'variants');
+
+        foreach ($this->variants as $variant) {
+            $variants->appendChild($variant->getDomSubtree($document));
+        }
+
+        return $variants;
     }
 }

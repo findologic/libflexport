@@ -12,6 +12,8 @@ class CSVExporter extends Exporter
     private const HEADING = "id\tparent_id\tordernumber\tname\tsummary\tdescription\tprice\toverriddenPrice\turl\t" .
         "keywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
 
+    public const LINE_TEMPLATE = "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s%s%s\n";
+
     private CSVConfig $csvConfig;
 
     public function __construct(int $itemsPerPage, CSVConfig $csvConfig)

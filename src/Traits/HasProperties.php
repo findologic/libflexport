@@ -2,8 +2,13 @@
 
 namespace FINDOLOGIC\Export\Traits;
 
+use DOMDocument;
+use DOMElement;
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
+use FINDOLOGIC\Export\Helpers\DataHelper;
+use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 trait HasProperties
 {
@@ -32,5 +37,48 @@ trait HasProperties
 
             $this->properties[$usergroup][$property->getKey()] = $value;
         }
+    }
+
+    protected function buildCsvProperties(CSVConfig $csvConfig): string
+    {
+        $propertiesString = '';
+
+        foreach ($csvConfig->getAvailableProperties() as $availableProperty) {
+            if (array_key_exists($availableProperty, $this->properties[''])) {
+                $propertiesString .= "\t" . DataHelper::sanitize($this->properties[''][$availableProperty]);
+            } else {
+                $propertiesString .= "\t";
+            }
+        }
+
+        return $propertiesString;
+    }
+
+    protected function buildXmlProperties(DOMDocument $document): DOMElement
+    {
+        $allProps = XMLHelper::createElement($document, 'allProperties');
+
+        foreach ($this->properties as $usergroup => $usergroupSpecificProperties) {
+            $usergroupPropsElem = XMLHelper::createElement($document, 'properties');
+
+            if ($usergroup) {
+                $usergroupPropsElem->setAttribute('usergroup', $usergroup);
+            }
+
+            $allProps->appendChild($usergroupPropsElem);
+
+            foreach ($usergroupSpecificProperties as $key => $value) {
+                $propertyElem = XMLHelper::createElement($document, 'property');
+                $usergroupPropsElem->appendChild($propertyElem);
+
+                $keyElem = XMLHelper::createElementWithText($document, 'key', $key);
+                $propertyElem->appendChild($keyElem);
+
+                $valueElem = XMLHelper::createElementWithText($document, 'value', $value);
+                $propertyElem->appendChild($valueElem);
+            }
+        }
+
+        return $allProps;
     }
 }

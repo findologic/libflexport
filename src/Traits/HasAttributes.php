@@ -2,8 +2,13 @@
 
 namespace FINDOLOGIC\Export\Traits;
 
+use DOMDocument;
+use DOMElement;
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
+use FINDOLOGIC\Export\Helpers\DataHelper;
+use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 trait HasAttributes
 {
@@ -71,5 +76,41 @@ trait HasAttributes
         }
 
         $this->attributes[$attribute->getKey()] = $attribute;
+    }
+
+    protected function buildCsvAttributes(CSVConfig $csvConfig): string
+    {
+        $attributesString = '';
+
+        foreach ($csvConfig->getAvailableAttributes() as $availableAttribute) {
+            if (array_key_exists($availableAttribute, $this->attributes)) {
+                $sanitizedValues = array_map(
+                    function (string $value) {
+                        $sanitized = DataHelper::sanitize($value);
+                        return str_replace(',', '\,', $sanitized);
+                    },
+                    $this->attributes[$availableAttribute]->getValues()
+                );
+
+                $attributesString .= "\t" . DataHelper::sanitize(implode(',', $sanitizedValues));
+            } else {
+                $attributesString .= "\t";
+            }
+        }
+
+        return $attributesString;
+    }
+
+    protected function buildXmlAttributes(DOMDocument $document): DOMElement
+    {
+        $allAttributes = XMLHelper::createElement($document, 'allAttributes');
+        $attributes = XMLHelper::createElement($document, 'attributes');
+        $allAttributes->appendChild($attributes);
+
+        foreach ($this->attributes as $attribute) {
+            $attributes->appendChild($attribute->getDomSubtree($document));
+        }
+
+        return $allAttributes;
     }
 }

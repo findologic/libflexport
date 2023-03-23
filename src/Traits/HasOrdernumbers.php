@@ -2,8 +2,10 @@
 
 namespace FINDOLOGIC\Export\Traits;
 
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Data\AllOrdernumbers;
 use FINDOLOGIC\Export\Data\Ordernumber;
+use FINDOLOGIC\Export\Helpers\DataHelper;
 
 trait HasOrdernumbers
 {
@@ -31,5 +33,10 @@ trait HasOrdernumbers
         }
 
         $this->ordernumbers->setAllValues($ordernumbers);
+    }
+
+    protected function buildCsvOrdernumbers(CSVConfig $csvConfig): string
+    {
+        return DataHelper::sanitize($this->ordernumbers->getCsvFragment($csvConfig));
     }
 }
