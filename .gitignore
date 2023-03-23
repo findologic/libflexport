@@ -5,9 +5,5 @@
 /phpcs.xml
 /composer.lock
 /coverage/
+/resources/generated_examples/
 /vendor/
-
-example.csv
-example-variants.csv
-example.xml
-example-variants.xml
