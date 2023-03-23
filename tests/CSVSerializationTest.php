@@ -421,7 +421,7 @@ class CSVSerializationTest extends TestCase
         $csvLine = $item->getCsvFragment(new CSVConfig());
 
         $this->assertEquals(1, preg_match_all('/\n/', $csvLine));
-        $this->assertEquals(14, preg_match_all('/\t/', $csvLine));
+        $this->assertEquals(16, preg_match_all('/\t/', $csvLine));
         $this->assertEquals(0, preg_match_all('/\r/', $csvLine));
     }
 }

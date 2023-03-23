@@ -67,6 +67,8 @@ trait HasImages
                 $imageUrl = isset($images[$i]) ? $images[$i]->getCsvFragment($csvConfig) : '';
                 $imagesString .= "\t" . $imageUrl;
             }
+        } else {
+            $imagesString .= str_repeat("\t", $count);
         }
 
         return $imagesString;
