@@ -1,0 +1,31 @@
+<?php
+
+namespace FINDOLOGIC\Export\Traits;
+
+use FINDOLOGIC\Export\Data\Visibility;
+
+trait HasVisibility
+{
+    use SupportsUserGroups;
+
+    protected Visibility $visibility;
+
+    public function getVisibility(): Visibility
+    {
+        return $this->visibility;
+    }
+
+    public function setVisibility(Visibility $visibility): void
+    {
+        $this->checkUsergroupAwareValue($visibility);
+
+        $this->visibility = $visibility;
+    }
+
+    public function addVisibility(int $visible, string $usergroup = ''): void
+    {
+        $this->checkUsergroupString($usergroup);
+
+        $this->visibility->setValue($visible, $usergroup);
+    }
+}

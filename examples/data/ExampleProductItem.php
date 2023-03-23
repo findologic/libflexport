@@ -183,4 +183,9 @@ class ExampleProductItem extends ExampleBaseItem
     ];
 
     public array $variants = [];
+
+    public array $visibilities = [
+        self::DEFAULT_USER_GROUP => 1,
+        self::SPECIFIC_USER_GROUP => false
+    ];
 }
