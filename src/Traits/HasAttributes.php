@@ -7,7 +7,6 @@ use DOMElement;
 use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
-use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 trait HasAttributes

@@ -16,24 +16,26 @@ use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Keyword;
+use FINDOLOGIC\Export\Data\Name;
 use FINDOLOGIC\Export\Data\Ordernumber;
 use FINDOLOGIC\Export\Data\OverriddenPrice;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\Url;
-use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Exceptions\BaseImageMissingException;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\ImagesWithoutUsergroupMissingException;
 use FINDOLOGIC\Export\Exceptions\InvalidUrlException;
 use FINDOLOGIC\Export\Exceptions\ItemsExceedCountValueException;
-use FINDOLOGIC\Export\Exceptions\UnsupportedValueException;
+use FINDOLOGIC\Export\Exceptions\UsergroupsNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\XMLSchemaViolationException;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 use FINDOLOGIC\Export\XML\Page;
 use FINDOLOGIC\Export\XML\XMLExporter;
 use FINDOLOGIC\Export\XML\XMLItem;
+use FINDOLOGIC\Export\XML\XmlVariant;
 use InvalidArgumentException;
 use stdClass;
 
@@ -87,7 +89,34 @@ class XmlSerializationTest extends TestCase
         $price->setValue('13.37');
         $item->setPrice($price);
 
+        $overriddenPrice = new OverriddenPrice();
+        $overriddenPrice->setValue('16.67');
+        $item->setOverriddenPrice($overriddenPrice);
+
         return $item;
+    }
+
+    private function getMinimalVariant($parentId, $exporter = null): Variant
+    {
+        if ($exporter === null) {
+            $exporter = $this->exporter;
+        }
+
+        $variant = $exporter->createVariant('123-V', $parentId);
+
+        $variant->addName('Variant name');
+        $variant->addOrdernumber(new Ordernumber('variant1'));
+        $variant->addAttribute(new Attribute('key', ['value1']));
+
+        $price = new Price();
+        $price->setValue('13.37');
+        $variant->setPrice($price);
+
+        $overriddenPrice = new OverriddenPrice();
+        $overriddenPrice->setValue('16.67');
+        $variant->setOverriddenPrice($overriddenPrice);
+
+        return $variant;
     }
 
     private function assertPageIsValid($xmlString): void
@@ -108,6 +137,16 @@ class XmlSerializationTest extends TestCase
     public function testMinimalItemIsValid(): void
     {
         $item = $this->getMinimalItem();
+        $page = $this->exporter->serializeItems([$item], 0, 1, 1);
+
+        $this->assertPageIsValid($page);
+    }
+
+    public function testMinimalItemWithVariantsIsValid(): void
+    {
+        $item = $this->getMinimalItem();
+        $item->addVariant($this->getMinimalVariant('123'));
+
         $page = $this->exporter->serializeItems([$item], 0, 1, 1);
 
         $this->assertPageIsValid($page);
@@ -257,7 +296,7 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($page);
     }
 
-    public function testUsergroupVisibilitiesAreExported(): void
+    public function testGroupVisibilitiesAreExported(): void
     {
         $item = $this->getMinimalItem();
 
@@ -300,13 +339,22 @@ class XmlSerializationTest extends TestCase
 
     public function testAttemptingToGetCsvFromAnXmlItemResultsInAnException(): void
     {
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('XMLItem does not implement CSV export.');
+
         $item = new XMLItem(123);
 
-        try {
-            $item->getCsvFragment(new CSVConfig());
-        } catch (BadMethodCallException $e) {
-            $this->assertEquals('XMLItem does not implement CSV export.', $e->getMessage());
-        }
+        $item->getCsvFragment(new CSVConfig());
+    }
+
+    public function testAttemptingToGetCsvFromAnXmlVariantResultsInAnException(): void
+    {
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('XmlVariant does not implement CSV export.');
+
+        $variant = new XmlVariant('123-V1', '123');
+
+        $variant->getCsvFragment(new CSVConfig());
     }
 
     /**
@@ -389,6 +437,94 @@ class XmlSerializationTest extends TestCase
         }
 
         $this->assertEquals($expectedValues, $item->getDateAdded()->getValues());
+    }
+
+    public function testImagesAddedToItemViaShortcutAccumulate(): void
+    {
+        $imageWithoutUsergroup = new Image('https://example.com/image1');
+        $imageWithUsergroup = new Image('https://example.com/image2', '', 'foo');
+
+        $values = [$imageWithoutUsergroup, $imageWithUsergroup];
+        $expectedValues = [
+            '' => [$imageWithoutUsergroup],
+            'foo' => [$imageWithUsergroup],
+        ];
+
+        $item = new XMLItem(123);
+
+        foreach ($values as $value) {
+            $item->addImage($value);
+        }
+
+        $this->assertEquals($expectedValues, $item->getImages());
+    }
+
+    public function testKeywordsAddedToItemViaShortcutAccumulate(): void
+    {
+        $keywordWithoutUsergroup = new Keyword('keyword1');
+        $keywordWithUsergroup = new Keyword('keyword2', 'foo');
+
+        $values = [$keywordWithoutUsergroup, $keywordWithUsergroup];
+        $expectedValues = [
+            '' => [$keywordWithoutUsergroup],
+            'foo' => [$keywordWithUsergroup],
+        ];
+
+        $item = new XMLItem(123);
+
+        foreach ($values as $value) {
+            $item->addKeyword($value);
+        }
+
+        $this->assertEquals($expectedValues, $item->getKeywords()->getValues());
+    }
+
+    public function testGroupsAddedToItemViaShortcutAccumulate(): void
+    {
+        $groups = [
+            'group1',
+            'group2',
+        ];
+
+        $item = new XMLItem(123);
+
+        foreach ($groups as $group) {
+            $item->addGroup(new Group($group));
+        }
+
+        $this->assertEquals($groups, $item->getGroups());
+    }
+
+    public function testVariantsAddedToItemViaShortcutAccumulates(): void
+    {
+        $item = new XMLItem(123);
+
+        $expectedVariants = [
+            $this->getMinimalVariant('123'),
+            $this->getMinimalVariant('123'),
+            $this->getMinimalVariant('123'),
+        ];
+
+        foreach ($expectedVariants as $variant) {
+            $item->addVariant($variant);
+        }
+
+        $this->assertEquals($expectedVariants, $item->getVariants());
+    }
+
+    public function testAllVariantsCanBeSet(): void
+    {
+        $item = new XMLItem(123);
+
+        $expectedVariants = [
+            $this->getMinimalVariant('123'),
+            $this->getMinimalVariant('123'),
+            $this->getMinimalVariant('123'),
+        ];
+
+        $item->setAllVariants($expectedVariants);
+
+        $this->assertEquals($expectedVariants, $item->getVariants());
     }
 
     /**
@@ -678,5 +814,55 @@ class XmlSerializationTest extends TestCase
         }
 
         $this->assertEquals($expectedAttributes, $actualAttributes);
+    }
+
+    public function testExceptionIsThrownWhenUsingUsergroupStringWithExistingVariants(): void
+    {
+        $this->expectException(UsergroupsNotAllowedException::class);
+        $this->expectExceptionMessage('Usergroups are not supported when using variants');
+
+        $item = $this->getMinimalItem();
+
+        $item->addVariant($this->getMinimalVariant($item->getId()));
+
+        $item->addName('name', 'usergroup');
+    }
+
+    public function testExceptionIsThrownWhenUsingUsergroupValueWithExistingVariants(): void
+    {
+        $this->expectException(UsergroupsNotAllowedException::class);
+        $this->expectExceptionMessage('Usergroups are not supported when using variants');
+
+        $item = $this->getMinimalItem();
+
+        $item->addVariant($this->getMinimalVariant($item->getId()));
+
+        $name = new Name();
+        $name->setValue('name', 'usergroup');
+        $item->setName($name);
+    }
+
+    public function testExceptionIsThrownWhenAddingVariantsWithUsedUsergroups(): void
+    {
+        $this->expectException(UsergroupsNotAllowedException::class);
+        $this->expectExceptionMessage('Usergroups are not supported when using variants');
+
+        $item = $this->getMinimalItem();
+
+        $item->addName('name', 'usergroup');
+        $item->addVariant($this->getMinimalVariant($item->getId()));
+    }
+
+    public function testExceptionIsThrownWhenSettingVariantsWithUsedUsergroups(): void
+    {
+        $this->expectException(UsergroupsNotAllowedException::class);
+        $this->expectExceptionMessage('Usergroups are not supported when using variants');
+
+        $item = $this->getMinimalItem();
+
+        $item->addName('name', 'usergroup');
+        $item->setAllVariants([
+            $this->getMinimalVariant($item->getId())
+        ]);
     }
 }

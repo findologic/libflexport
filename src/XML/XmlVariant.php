@@ -16,7 +16,7 @@ class XmlVariant extends Variant
      */
     public function getCsvFragment(CSVConfig $csvConfig): string
     {
-        throw new BadMethodCallException('XMLItem does not implement CSV export.');
+        throw new BadMethodCallException('XmlVariant does not implement CSV export.');
     }
 
     /**

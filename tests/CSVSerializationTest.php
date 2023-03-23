@@ -16,6 +16,7 @@ use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Name;
 use FINDOLOGIC\Export\Data\Ordernumber;
+use FINDOLOGIC\Export\Data\OverriddenPrice;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\SalesFrequency;
@@ -23,11 +24,11 @@ use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Group;
+use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValueItem;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
-use InvalidArgumentException;
 
 class CSVSerializationTest extends TestCase
 {
@@ -79,6 +80,10 @@ class CSVSerializationTest extends TestCase
         $price->setValue('13.37');
         $item->setPrice($price);
 
+        $overriddenPrice = new OverriddenPrice();
+        $overriddenPrice->setValue('16.67');
+        $item->setOverriddenPrice($overriddenPrice);
+
         $url = new Url();
         $url->setValue('http://example.org/my-awesome-product.html');
         $item->setUrl($url);
@@ -100,6 +105,25 @@ class CSVSerializationTest extends TestCase
         $item->setSort($sort);
 
         return $item;
+    }
+
+    private function getMinimalVariant($parentId, $exporter = null): Variant
+    {
+        if ($exporter === null) {
+            $exporter = $this->exporter;
+        }
+
+        $variant = $exporter->createVariant('123-V', $parentId);
+
+        $name = new Name();
+        $name->setValue('Foobar &quot;</>]]>');
+        $variant->setName($name);
+
+        $price = new Price();
+        $price->setValue('13.37');
+        $variant->setPrice($price);
+
+        return $variant;
     }
 
     public function testMinimalItemIsExported(): void
@@ -207,7 +231,7 @@ class CSVSerializationTest extends TestCase
         $expectedImage2 = '';
         $expectedThumbnail0 = 'https://example.org/wonderful_product_thumb.png';
         $expectedThumbnail1 = '';
-        $expectedAttributeKeys = ['cat', 'vendor', 'use'];
+        $expectedAttributeKeys = ['cat', 'vendor', 'use', 'not_set'];
         $expectedAttributes = [
             $expectedAttributeKeys[0] => ['Bikes', 'Bikes_Racing Bikes'],
             $expectedAttributeKeys[1] => ['Ultrabikes, Megabikes'],
@@ -217,6 +241,7 @@ class CSVSerializationTest extends TestCase
             implode(',', ['Bikes', 'Bikes_Racing Bikes']),
             implode(',', ['Ultrabikes\, Megabikes']),
             implode(',', ['Outdoor', 'Race', "&==%"]),
+            ''
         ];
         $expectedKeywords = ['bike', 'race', 'velobike', 'ultrabikes'];
         $expectedGroups = [1, 2, 3];
@@ -371,6 +396,13 @@ class CSVSerializationTest extends TestCase
         $this->getMinimalItem()->getDomSubtree(new DOMDocument());
     }
 
+    public function testAttemptingToGetXmlVersionForACSVVariantCausesAnException(): void
+    {
+        $this->expectException(BadMethodCallException::class);
+
+        $this->getMinimalVariant('123')->getDomSubtree(new DOMDocument());
+    }
+
     public function testAddingRelativeUrlIsNotCausingAnException(): void
     {
         $imageWithRelativePath = '/media/images/image.jpg';
@@ -423,5 +455,38 @@ class CSVSerializationTest extends TestCase
         $this->assertEquals(1, preg_match_all('/\n/', $csvLine));
         $this->assertEquals(16, preg_match_all('/\t/', $csvLine));
         $this->assertEquals(0, preg_match_all('/\r/', $csvLine));
+    }
+
+    public function testVariantsAreAdded(): void
+    {
+        $item = $this->getMinimalItem();
+
+        $item->addVariant($this->getMinimalVariant($item->getId()));
+
+        $csvData = $item->getCsvFragment(new CSVConfig());
+
+        $this->assertEquals(2, preg_match_all('/\n/', $csvData));
+        $this->assertEquals(32, preg_match_all('/\t/', $csvData));
+        $this->assertEquals(0, preg_match_all('/\r/', $csvData));
+    }
+
+    public function testMainProductIncludesVariantOrdernumbers(): void
+    {
+        $item = $this->getMinimalItem();
+        $item->addOrdernumber(
+            new Ordernumber('number1')
+        );
+
+        $variant = $this->getMinimalVariant($item->getId());
+        $variant->addOrdernumber(
+            new Ordernumber('variant1')
+        );
+
+        $item->addVariant($variant);
+
+        $csvData = $item->getCsvFragment(new CSVConfig());
+        $mainProduct = explode("\n", $csvData)[0];
+
+        $this->assertStringContainsString('number1|variant1', $mainProduct);
     }
 }
