@@ -28,6 +28,9 @@ jobs:
       - name: Install dependencies
         run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
 
+      - name: Test behavior of diff command
+        run: diff composer.json composer.lock -q
+
       - name: Lint files
         run: composer lint
 
