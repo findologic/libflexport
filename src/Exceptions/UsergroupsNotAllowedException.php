@@ -2,7 +2,9 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-class UsergroupsNotAllowedException extends \RuntimeException
+use RuntimeException;
+
+class UsergroupsNotAllowedException extends RuntimeException
 {
     public function __construct()
     {

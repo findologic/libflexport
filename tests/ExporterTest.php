@@ -20,7 +20,7 @@ class ExporterTest extends TestCase
     public function testUnknownExporterTypeMustThrowException(): void
     {
         try {
-            Exporter::create(123, 20);
+            Exporter::create(123);
             $this->fail('Requesting an unknown exporter type must cause an exception.');
         } catch (InvalidArgumentException $e) {
             $this->assertEquals('Unsupported exporter type.', $e->getMessage());

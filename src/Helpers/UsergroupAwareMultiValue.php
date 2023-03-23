@@ -13,23 +13,16 @@ use DOMElement;
  */
 abstract class UsergroupAwareMultiValue implements Serializable, NameAwareValue
 {
-    /** @var string */
-    private $rootCollectionName;
+    private string $rootCollectionName;
 
-    /** @var string */
-    private $usergroupCollectionName;
+    private string $usergroupCollectionName;
 
-    /** @var string */
-    private $csvDelimiter;
+    protected array $values = [];
 
-    /** @var array */
-    protected $values = [];
-
-    public function __construct($rootCollectionName, $usergroupCollectionName, $csvDelimiter)
+    public function __construct($rootCollectionName, $usergroupCollectionName)
     {
         $this->rootCollectionName = $rootCollectionName;
         $this->usergroupCollectionName = $usergroupCollectionName;
-        $this->csvDelimiter = $csvDelimiter;
     }
 
     /**
@@ -41,7 +34,7 @@ abstract class UsergroupAwareMultiValue implements Serializable, NameAwareValue
             $this->values[$value->getUsergroup()] = [];
         }
 
-        array_push($this->values[$value->getUsergroup()], $value);
+        $this->values[$value->getUsergroup()][] = $value;
     }
 
     /**
@@ -62,7 +55,6 @@ abstract class UsergroupAwareMultiValue implements Serializable, NameAwareValue
     }
 
     /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(DOMDocument $document): DOMElement

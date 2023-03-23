@@ -24,7 +24,7 @@ class DateAdded extends UsergroupAwareSimpleValue
 
     public function setDateValue(DateTimeInterface $value, string $usergroup = ''): void
     {
-        $formatted = $value->format(DateTime::ATOM);
+        $formatted = $value->format(DateTimeInterface::ATOM);
 
         parent::setValue($formatted, $usergroup);
     }

@@ -22,17 +22,16 @@ class Property
     ];
 
     /** @var string */
-    private $key;
+    private string $key;
 
-    /** @var array */
-    private $values;
+    /** @var string[] */
+    private array $values;
 
     /**
      * Property constructor.
      *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @param string $key The property key.
-     * @param array $values The values of the property.
+     * @param string[] $values The values of the property.
      */
     public function __construct(string $key, array $values = [])
     {
@@ -54,7 +53,6 @@ class Property
     /**
      * Add a value to the property element.
      *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @param string $value The value to add to the property element.
      * @param string|null $usergroup The usergroup of the property value.
      */
@@ -75,7 +73,7 @@ class Property
          * As we can not check if the values of the given array are associative,
          * we trigger a notice if the array keys are not a string.
          */
-        array_walk($values, function (/** @noinspection PhpUnusedParameterInspection */ $item, $key) {
+        array_walk($values, function ($item, $key) {
             if (!is_string($key)) {
                 $format = 'Property values have to be associative, like $key => $value. The key "%s" has to be a ' .
                     'string, integer given.';

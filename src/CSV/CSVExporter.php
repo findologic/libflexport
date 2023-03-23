@@ -5,7 +5,6 @@ namespace FINDOLOGIC\Export\CSV;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Exporter;
-use FINDOLOGIC\Export\Helpers\DataHelper;
 
 class CSVExporter extends Exporter
 {
@@ -73,7 +72,6 @@ class CSVExporter extends Exporter
     }
 
     /**
-     * @param string $parentId
      * @inheritdoc
      */
     public function createVariant(string $id, string $parentId): Variant

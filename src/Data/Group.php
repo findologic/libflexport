@@ -25,7 +25,6 @@ class Group implements Serializable, NameAwareValue
     }
 
     /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(DOMDocument $document): DOMElement

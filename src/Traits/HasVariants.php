@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Export\Traits;
 
 use DOMDocument;
+use DOMElement;
 use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Exceptions\UsergroupsNotAllowedException;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValue;
@@ -64,7 +65,7 @@ trait HasVariants
         }
     }
 
-    protected function buildXmlVariants(DOMDocument $document): \DOMElement
+    protected function buildXmlVariants(DOMDocument $document): DOMElement
     {
         $variants = XMLHelper::createElement($document, 'variants');
 

@@ -12,7 +12,7 @@ class CSVVariant extends Variant
 {
     public function getDomSubtree(DOMDocument $document): DOMElement
     {
-        throw new BadMethodCallException('CSVItem does not implement XML export.');
+        throw new BadMethodCallException('CSVVariant does not implement XML export.');
     }
 
     public function getCsvFragment(CSVConfig $csvConfig): string

@@ -38,11 +38,8 @@ class CSVSerializationTest extends TestCase
     private const CSV_PATH = '/tmp/findologic.csv';
 
     /** @var CSVExporter */
-    private $exporter;
+    private Exporter $exporter;
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     */
     public function setUp(): void
     {
         $this->exporter = Exporter::create(Exporter::TYPE_CSV);
@@ -107,13 +104,9 @@ class CSVSerializationTest extends TestCase
         return $item;
     }
 
-    private function getMinimalVariant($parentId, $exporter = null): Variant
+    private function getMinimalVariant($parentId): Variant
     {
-        if ($exporter === null) {
-            $exporter = $this->exporter;
-        }
-
-        $variant = $exporter->createVariant('123-V', $parentId);
+        $variant = $this->exporter->createVariant('123-V', $parentId);
 
         $name = new Name();
         $name->setValue('Foobar &quot;</>]]>');
@@ -392,6 +385,7 @@ class CSVSerializationTest extends TestCase
     public function testAttemptingToGetXmlVersionForACSVItemCausesAnException(): void
     {
         $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('CSVItem does not implement XML export.');
 
         $this->getMinimalItem()->getDomSubtree(new DOMDocument());
     }
@@ -399,6 +393,7 @@ class CSVSerializationTest extends TestCase
     public function testAttemptingToGetXmlVersionForACSVVariantCausesAnException(): void
     {
         $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('CSVVariant does not implement XML export.');
 
         $this->getMinimalVariant('123')->getDomSubtree(new DOMDocument());
     }
@@ -442,13 +437,12 @@ class CSVSerializationTest extends TestCase
 
         if (get_parent_class($elementType) === UsergroupAwareMultiValueItem::class) {
             $element = new $elementType($value);
-            $item->$setterMethodName($element);
         } else {
             /** @var UsergroupAwareSimpleValue $element */
             $element = new $elementType();
             $element->setValue($value);
-            $item->$setterMethodName($element);
         }
+        $item->$setterMethodName($element);
 
         $csvLine = $item->getCsvFragment(new CSVConfig());
 

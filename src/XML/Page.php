@@ -4,17 +4,17 @@ namespace FINDOLOGIC\Export\XML;
 
 use DOMDocument;
 use FINDOLOGIC\Export\Constant;
-use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Exceptions\ItemsExceedCountValueException;
 use FINDOLOGIC\Export\Exceptions\XMLSchemaViolationException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 class Page
 {
-    private $items;
-    private $start;
-    private $count;
-    private $total;
+    /** @var XMLItem[] */
+    private array $items;
+    private int $start;
+    private int $count;
+    private int $total;
 
     public function __construct(int $start, int $count, int $total)
     {
@@ -26,11 +26,11 @@ class Page
 
     public function addItem(XMLItem $item): void
     {
-        array_push($this->items, $item);
+        $this->items[] = $item;
     }
 
     /**
-     * @param Item[] $items
+     * @param XMLItem[] $items
      */
     public function setAllItems(array $items): void
     {
@@ -41,9 +41,6 @@ class Page
         }
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     */
     public function getXml(): DOMDocument
     {
         if (count($this->items) > $this->count) {
@@ -80,9 +77,8 @@ class Page
     private function validateWithSchema(DOMDocument $document): void
     {
         $validationErrors = [];
-        set_error_handler(function (/** @noinspection PhpUnusedParameterInspection */ $errno, $errstr)
- use (&$validationErrors) {
-            array_push($validationErrors, $errstr);
+        set_error_handler(function ($errno, $errstr) use (&$validationErrors) {
+            $validationErrors[] = $errstr;
         });
 
         $isValid = $document->schemaValidate(Constant::$XSD_SCHEMA_PATH_20);

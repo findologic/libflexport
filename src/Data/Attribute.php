@@ -13,13 +13,11 @@ use FINDOLOGIC\Export\Helpers\XMLHelper;
 class Attribute implements Serializable, NameAwareValue
 {
     /** @var string */
-    private $key;
+    private string $key;
 
-    /** @var array */
-    private $values;
+    private array $values;
 
     /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @var string $key The name of the attribute.
      * @var array $values The attribute values to set.
      */
@@ -29,14 +27,10 @@ class Attribute implements Serializable, NameAwareValue
         $this->setValues($values);
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     * @param mixed $value
-     */
-    public function addValue($value): void
+    public function addValue(mixed $value): void
     {
         DataHelper::checkAttributeValueNotExceedingCharacterLimit($this->getKey(), $value);
-        array_push($this->values, DataHelper::checkForEmptyValue($this->getValueName(), $value));
+        $this->values[] = DataHelper::checkForEmptyValue($this->getValueName(), $value);
     }
 
     public function setValues(array $values): void
@@ -59,7 +53,6 @@ class Attribute implements Serializable, NameAwareValue
     }
 
     /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(DOMDocument $document): DOMElement

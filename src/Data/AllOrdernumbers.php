@@ -9,7 +9,7 @@ class AllOrdernumbers extends UsergroupAwareMultiValue
 {
     public function __construct()
     {
-        parent::__construct('allOrdernumbers', 'ordernumbers', '|');
+        parent::__construct('allOrdernumbers', 'ordernumbers');
     }
 
     /**

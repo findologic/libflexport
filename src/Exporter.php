@@ -14,14 +14,14 @@ abstract class Exporter
     /**
      * XML-based export format.
      *
-     * @see https://docs.findologic.com/doku.php?id=export_patterns:xml
+     * @see https://docs.findologic.com/doku.php?id=xml_export_documentation:XML_2_format
      */
     public const TYPE_XML = 0;
 
     /**
      * CSV-based export format. Does not support usergroups.
      *
-     * @see https://docs.findologic.com/doku.php?id=export_patterns:csv
+     * @see https://docs.findologic.com/doku.php?id=csv_export_documentation:csv_2_format
      */
     public const TYPE_CSV = 1;
 
@@ -51,18 +51,11 @@ abstract class Exporter
             throw new InvalidArgumentException('At least one item must be exported per page.');
         }
 
-        switch ($type) {
-            case self::TYPE_XML:
-                $exporter = new XMLExporter($itemsPerPage);
-                break;
-            case self::TYPE_CSV:
-                $exporter = new CSVExporter($itemsPerPage, $csvConfig ?? new CSVConfig());
-                break;
-            default:
-                throw new InvalidArgumentException('Unsupported exporter type.');
-        }
-
-        return $exporter;
+        return match ($type) {
+            self::TYPE_XML => new XMLExporter($itemsPerPage),
+            self::TYPE_CSV => new CSVExporter($itemsPerPage, $csvConfig ?? new CSVConfig()),
+            default => throw new InvalidArgumentException('Unsupported exporter type.'),
+        };
     }
 
     /**

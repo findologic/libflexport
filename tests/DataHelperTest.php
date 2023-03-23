@@ -56,10 +56,10 @@ class DataHelperTest extends TestCase
     /**
      * @dataProvider emptyValueProvider
      *
-     * @param string|int $value Value that should be checked.
+     * @param mixed $value Value that should be checked.
      * @param bool $shouldCauseException Whether the value should cause an exception or not.
      */
-    public function testEmptyValueDetectsEmptyStringsOnly($value, bool $shouldCauseException): void
+    public function testEmptyValueDetectsEmptyStringsOnly(mixed $value, bool $shouldCauseException): void
     {
         $expectedValueNames = 'foobar';
 
@@ -105,10 +105,10 @@ class DataHelperTest extends TestCase
     /**
      * @dataProvider numericValueProvider
      *
-     * @param string|int|bool $value Value that should be checked.
+     * @param mixed $value Value that should be checked.
      * @param bool $shouldCauseException Whether the value should cause an exception or not.
      */
-    public function testNumericValuesAreValidated($value, bool $shouldCauseException): void
+    public function testNumericValuesAreValidated(mixed $value, bool $shouldCauseException): void
     {
         try {
             $numericValueElement = new DummyNumericValue('dummies', 'dummy');
@@ -171,7 +171,7 @@ class DataHelperTest extends TestCase
             if (!$shouldCauseException) {
                 $this->fail('This should not fail.');
             } else {
-                $this->assertEquals(get_class($exception), BadPropertyKeyException::class);
+                $this->assertEquals(BadPropertyKeyException::class, get_class($exception));
             }
         }
     }
@@ -230,7 +230,7 @@ class DataHelperTest extends TestCase
      * @param int $stringLength The string length to generate.
      * @return string The multi byte character string.
      */
-    public static function generateMultiByteCharacterString($stringLength): string
+    public static function generateMultiByteCharacterString(int $stringLength): string
     {
         return implode('', array_fill(0, $stringLength, '©'));
     }

@@ -20,7 +20,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
     private string $itemName;
 
     /** @var array */
-    protected $values = [];
+    protected array $values = [];
 
     public function __construct(string $collectionName, string $itemName)
     {
@@ -34,7 +34,6 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
     }
 
     /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @param mixed $value The value of the element.
      * @param string $usergroup The usergroup of the element.
      */
@@ -77,7 +76,6 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
     }
 
     /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(DOMDocument $document): DOMElement

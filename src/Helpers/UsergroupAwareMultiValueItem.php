@@ -41,7 +41,6 @@ abstract class UsergroupAwareMultiValueItem implements Serializable, NameAwareVa
     }
 
     /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(DOMDocument $document): DOMElement

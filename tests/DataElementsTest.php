@@ -114,7 +114,7 @@ class DataElementsTest extends TestCase
      * @param string|null $expectedException
      */
     public function testAddingEmptyValuesToSimpleItemsCausesException(
-        $value,
+        string|float|int $value,
         string $elementType,
         ?string $expectedException = null
     ): void {

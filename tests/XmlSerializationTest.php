@@ -5,8 +5,8 @@ namespace FINDOLOGIC\Export\Tests;
 use BadMethodCallException;
 use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
 use DOMDocument;
-use DOMElement;
 use DOMXPath;
 use Exception;
 use FINDOLOGIC\Export\Constant;
@@ -50,7 +50,10 @@ use stdClass;
  */
 class XmlSerializationTest extends TestCase
 {
-    private static $schema;
+    /** @var XMLExporter */
+    private Exporter $exporter;
+
+    private static string $schema;
 
     public static function setUpBeforeClass(): void
     {
@@ -65,12 +68,6 @@ class XmlSerializationTest extends TestCase
         }
     }
 
-    /** @var XMLExporter */
-    private $exporter;
-
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     */
     public function setUp(): void
     {
         $this->exporter = Exporter::create(Exporter::TYPE_XML);
@@ -96,13 +93,9 @@ class XmlSerializationTest extends TestCase
         return $item;
     }
 
-    private function getMinimalVariant($parentId, $exporter = null): Variant
+    private function getMinimalVariant($parentId): Variant
     {
-        if ($exporter === null) {
-            $exporter = $this->exporter;
-        }
-
-        $variant = $exporter->createVariant('123-V', $parentId);
+        $variant = $this->exporter->createVariant('123-V', $parentId);
 
         $variant->addName('Variant name');
         $variant->addOrdernumber(new Ordernumber('variant1'));
@@ -231,7 +224,6 @@ class XmlSerializationTest extends TestCase
         ]);
         $root->appendChild($xmlItems);
 
-        /** @var DOMElement $itemDom */
         $itemDom = $item->getDomSubtree($document);
 
         foreach ($itemDom->childNodes as $node) {
@@ -694,7 +686,7 @@ class XmlSerializationTest extends TestCase
     public function testDateTimesWhichExtendDateTimeInterfaceCanBeSetAsDateAdded(): void
     {
         $expectedDateTime = new DateTimeImmutable();
-        $expectedValue = $expectedDateTime->format(DateTime::ATOM);
+        $expectedValue = $expectedDateTime->format(DateTimeInterface::ATOM);
 
         /** @var XMLItem $item */
         $item = $this->getMinimalItem();
