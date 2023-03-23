@@ -59,7 +59,10 @@ class CSVItem extends Item
         $orderNumbers = $this->buildCsvOrdernumbers($csvConfig);
 
         foreach ($this->variants as $variant) {
-            $orderNumbers .= '|' . DataHelper::sanitize($variant->getOrdernumbers()->getCsvFragment($csvConfig));
+            $variantOrdernumbers = DataHelper::sanitize($variant->getOrdernumbers()->getCsvFragment($csvConfig));
+            if (strlen($variantOrdernumbers)) {
+                $orderNumbers .= '|' . $variantOrdernumbers;
+            }
         }
 
         return $orderNumbers;
