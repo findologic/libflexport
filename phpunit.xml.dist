@@ -16,7 +16,7 @@
             <directory>src</directory>
         </include>
         <report>
-            <clover outputFile="./coverage.xml"/>
+            <html outputDirectory="coverage"/>
             <text outputFile="php://stdout"/>
         </report>
     </coverage>
