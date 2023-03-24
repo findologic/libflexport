@@ -27,7 +27,7 @@ abstract class Variant implements Serializable
     use HasPrice;
     use HasProperties;
 
-    public function __construct($id, $parentId)
+    public function __construct(string $id, string $parentId)
     {
         $this->setId($id);
         $this->setParentId($parentId);

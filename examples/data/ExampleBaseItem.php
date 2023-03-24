@@ -3,7 +3,7 @@
 class ExampleBaseItem
 {
     public const DEFAULT_USER_GROUP = '';
-    public const SPECIFIC_USER_GROUP = 'LNrLF7BRVJ0toQ==';
+    public const SPECIFIC_USER_GROUP = 'B2B';
 
     public string $id;
 
