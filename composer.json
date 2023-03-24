@@ -34,11 +34,11 @@
         ],
         "generate-xml": [
             "@create-example-folder",
-            "php examples/XmlExample.php > resources/generated_examples/example.xml"
+            "php examples/XmlExample.php | xmlstarlet fo > resources/generated_examples/example.xml"
         ],
         "generate-xml-variants": [
             "@create-example-folder",
-            "php examples/XmlVariantsExample.php > resources/generated_examples/example-variants.xml"
+            "php examples/XmlVariantsExample.php | xmlstarlet fo > resources/generated_examples/example-variants.xml"
         ],
         "generate-examples": [
             "@create-example-folder",
