@@ -29,7 +29,7 @@ abstract class UsergroupAwareBoolValue extends UsergroupAwareSimpleValue
         $isBoolean = is_bool($value);
 
         if ($isValidInt || $isBooleanString || $isBoolean) {
-            $boolValue = ($isValidInt && $value === 1) ||
+            $boolValue = ($isValidInt && intval($value) === 1) ||
                 ($isBooleanString && strtolower($value) === 'true') ||
                 $isBoolean && $value;
 

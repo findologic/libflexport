@@ -391,6 +391,7 @@ class XmlSerializationTest extends TestCase
             'bar' => 'faLSe',
             'bar2' => 'TruE',
             'bar3' => 'false',
+            'bar4' => '1',
         ];
         $expectedBooleanValuesWithUsergroupKeys = [
             '' => 0,
@@ -400,6 +401,7 @@ class XmlSerializationTest extends TestCase
             'bar' => 0,
             'bar2' => 1,
             'bar3' => 0,
+            'bar4' => 1,
         ];
 
         return [
