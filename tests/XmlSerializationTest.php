@@ -23,6 +23,7 @@ use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Variant;
+use FINDOLOGIC\Export\Data\Visibility;
 use FINDOLOGIC\Export\Exceptions\BaseImageMissingException;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\ImagesWithoutUsergroupMissingException;
@@ -288,6 +289,21 @@ class XmlSerializationTest extends TestCase
         $this->assertPageIsValid($page);
     }
 
+    public function testVisibilitiesSupportUsergroups(): void
+    {
+        $item = $this->getMinimalItem();
+
+        $visibility = new Visibility();
+        $visibility->setValue(true, '');
+        $visibility->setValue(false, 'foo');
+        $visibility->setValue(1, 'bar');
+        $item->setVisibility($visibility);
+
+        $page = $this->exporter->serializeItems([$item], 0, 1, 1);
+
+        $this->assertPageIsValid($page);
+    }
+
     public function testGroupVisibilitiesAreExported(): void
     {
         $item = $this->getMinimalItem();
@@ -367,6 +383,25 @@ class XmlSerializationTest extends TestCase
             'bar' => 10
         ];
 
+        $booleanValuesWithUsergroupKeys = [
+            '' => 0,
+            'xyz' => 1,
+            'foo' => true,
+            'foo1' => false,
+            'bar' => 'faLSe',
+            'bar2' => 'TruE',
+            'bar3' => 'false',
+        ];
+        $expectedBooleanValuesWithUsergroupKeys = [
+            '' => 0,
+            'xyz' => 1,
+            'foo' => 1,
+            'foo1' => 0,
+            'bar' => 0,
+            'bar2' => 1,
+            'bar3' => 0,
+        ];
+
         return [
             'name' => ['Name', $stringValuesWithUsergroupKeys],
             'summary' => ['Summary', $stringValuesWithUsergroupKeys],
@@ -389,6 +424,7 @@ class XmlSerializationTest extends TestCase
             'bonus' => ['Bonus', $integerValuesWithUsergroupKeys],
             'sales frequency' => ['SalesFrequency', $integerValuesWithUsergroupKeys],
             'sort' => ['Sort', $integerValuesWithUsergroupKeys],
+            'visibility' => ['Visibility', $booleanValuesWithUsergroupKeys, $expectedBooleanValuesWithUsergroupKeys],
         ];
     }
 
@@ -397,16 +433,22 @@ class XmlSerializationTest extends TestCase
      *
      * @param string $valueType
      * @param array $values
+     * @param ?array $expectedValues
      */
-    public function testSimpleValuesAddedToItemViaShortcutAccumulate(string $valueType, array $values): void
-    {
+    public function testSimpleValuesAddedToItemViaShortcutAccumulate(
+        string $valueType,
+        array $values,
+        ?array $expectedValues = null
+    ): void {
+        $expectedValues = $expectedValues ?? $values;
+
         $item = new XMLItem(123);
 
         foreach ($values as $usergroup => $value) {
             $item->{'add' . $valueType}($value, $usergroup);
         }
 
-        $this->assertEquals($values, $item->{'get' . $valueType}()->getValues());
+        $this->assertEquals($expectedValues, $item->{'get' . $valueType}()->getValues());
     }
 
     public function testDateValuesAddedToItemViaShortcutAccumulate(): void
@@ -631,6 +673,7 @@ class XmlSerializationTest extends TestCase
         $item->addSort(345, $expectedUsergroup);
         $item->addSummary('Summing up things', $expectedUsergroup);
         $item->addUrl('http://example.org', $expectedUsergroup);
+        $item->addVisibility(true, $expectedUsergroup);
 
         $page = new Page(0, 1, 1);
         $page->addItem($item);
@@ -646,6 +689,7 @@ class XmlSerializationTest extends TestCase
         $this->assertEquals(1, $xpath->query('//sort' . $usergroupAttributeQuery)->length);
         $this->assertEquals(1, $xpath->query('//summary' . $usergroupAttributeQuery)->length);
         $this->assertEquals(1, $xpath->query('//url' . $usergroupAttributeQuery)->length);
+        $this->assertEquals(1, $xpath->query('//visible' . $usergroupAttributeQuery)->length);
     }
 
     public function testEmptyNameCausesException(): void
