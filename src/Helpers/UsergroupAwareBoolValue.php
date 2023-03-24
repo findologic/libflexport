@@ -6,10 +6,10 @@ use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotAllowedException;
 
 /**
- * Class UsergroupAwareSimpleValue
+ * Class UsergroupAwareBoolValue
  * @package FINDOLOGIC\Export\Helpers
  *
- * Simple values that can differ per usergroup, but have one value at most for each.
+ * Boolean values that can differ per usergroup.
  */
 abstract class UsergroupAwareBoolValue extends UsergroupAwareSimpleValue
 {
