@@ -22,7 +22,7 @@ trait HasVisibility
         $this->visibility = $visibility;
     }
 
-    public function addVisibility(int $visible, string $usergroup = ''): void
+    public function addVisibility(mixed $visible, string $usergroup = ''): void
     {
         $this->checkUsergroupString($usergroup);
 
