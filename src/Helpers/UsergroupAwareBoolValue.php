@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Export\Helpers;
 
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotAllowedException;
 
 /**
@@ -12,6 +13,15 @@ use FINDOLOGIC\Export\Exceptions\ValueIsNotAllowedException;
  */
 abstract class UsergroupAwareBoolValue extends UsergroupAwareSimpleValue
 {
+    protected int $default;
+
+    public function __construct(string $collectionName, string $itemName, int|bool $default)
+    {
+        parent::__construct($collectionName, $itemName);
+
+        $this->default = $this->validate($default);
+    }
+
     protected function validate(mixed $value): string
     {
         $isValidInt = is_numeric($value) && (intval($value) === 1 || intval($value) === 0);
@@ -28,5 +38,19 @@ abstract class UsergroupAwareBoolValue extends UsergroupAwareSimpleValue
         } else {
             throw new ValueIsNotAllowedException($value, 'a boolean, 1 or 0');
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCsvFragment(CSVConfig $csvConfig): string
+    {
+        $value = $this->default;
+
+        if (array_key_exists('', $this->getValues())) {
+            $value = $this->getValues()[''];
+        }
+
+        return $value;
     }
 }

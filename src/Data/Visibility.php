@@ -8,7 +8,7 @@ class Visibility extends UsergroupAwareBoolValue
 {
     public function __construct()
     {
-        parent::__construct('visibilities', 'visible');
+        parent::__construct('visibilities', 'visible', true);
     }
 
     public function getValueName(): string
