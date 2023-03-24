@@ -47,5 +47,5 @@ class CsvVariantsExample extends BaseVariantsExample
 
 $example = new CsvVariantsExample();
 
-// Output the XML content.
+// Output the CSV content.
 echo $example->createExport();
