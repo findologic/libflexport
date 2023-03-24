@@ -81,7 +81,7 @@ class Attribute implements Serializable, NameAwareValue
         $sanitizedValues = array_map(
             function (string $value) {
                 $sanitized = DataHelper::sanitize($value);
-                return str_replace(',', '\,', $sanitized);
+                return addcslashes($sanitized, ',');
             },
             $this->getValues()
         );

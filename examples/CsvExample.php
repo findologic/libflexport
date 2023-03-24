@@ -14,7 +14,7 @@ class CsvExample extends BaseExample
     public function createExport(): string
     {
         $csvConfig = new CSVConfig(
-            [
+            availableProperties: [
                 'sale',
                 'novelty',
                 'logo',
@@ -26,14 +26,14 @@ class CsvExample extends BaseExample
                 'number_of_comments',
                 'badge',
             ],
-            [
+            availableAttributes: [
                 'cat',
                 'cat_url',
                 'brand',
                 'color',
                 'type',
             ],
-            3,
+            imageCount: 3,
         );
 
         $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);

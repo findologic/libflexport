@@ -43,7 +43,7 @@ abstract class Item implements Serializable
     use HasUrl;
     use HasVariants;
 
-    public function __construct($id)
+    public function __construct(string $id)
     {
         $this->setId($id);
 

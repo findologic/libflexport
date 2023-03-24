@@ -85,7 +85,7 @@ class ExampleProductItem extends ExampleBaseItem
 
     public array $groups = [
         self::SPECIFIC_USER_GROUP,
-        'cHBw'
+        'student'
     ];
 
     public array $images = [
