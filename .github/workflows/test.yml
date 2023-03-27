@@ -26,10 +26,18 @@ jobs:
           tools: composer:v2
 
       - name: Install dependencies
-        run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
+        run: |
+          sudo apt-get install xmlstarlet
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
+
+      - name: Generate examples
+        run: composer generate-examples
 
       - name: Lint files
         run: composer lint
 
       - name: Run test suite
         run: composer test
+
+      - name: Compare generated examples
+        run: composer test-examples

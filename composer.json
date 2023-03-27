@@ -17,10 +17,36 @@
         "lint": "phpcs",
         "fix": "phpcbf",
         "test": "XDEBUG_MODE=coverage phpunit",
-        "test-csv": "php examples/CsvExample.php > example.csv",
-        "test-csv-variants": "php examples/CsvVariantsExample.php > example-variants.csv",
-        "test-xml": "php examples/XmlExample.php > example.xml",
-        "test-xml-variants": "php examples/XmlVariantsExample.php > example-variants.xml"
+        "create-example-folder": "mkdir -p resources/generated_examples",
+        "test-examples": [
+            "diff resources/baseline_examples/example.csv resources/generated_examples/example.csv",
+            "diff resources/baseline_examples/example-variants.csv resources/generated_examples/example-variants.csv",
+            "diff resources/baseline_examples/example.xml resources/generated_examples/example.xml",
+            "diff resources/baseline_examples/example-variants.xml resources/generated_examples/example-variants.xml"
+        ],
+        "generate-csv": [
+            "@create-example-folder",
+            "php examples/CsvExample.php > resources/generated_examples/example.csv"
+        ],
+        "generate-csv-variants": [
+            "@create-example-folder",
+            "php examples/CsvVariantsExample.php > resources/generated_examples/example-variants.csv"
+        ],
+        "generate-xml": [
+            "@create-example-folder",
+            "php examples/XmlExample.php | xmlstarlet fo > resources/generated_examples/example.xml"
+        ],
+        "generate-xml-variants": [
+            "@create-example-folder",
+            "php examples/XmlVariantsExample.php | xmlstarlet fo > resources/generated_examples/example-variants.xml"
+        ],
+        "generate-examples": [
+            "@create-example-folder",
+            "@generate-csv",
+            "@generate-csv-variants",
+            "@generate-xml",
+            "@generate-xml-variants"
+        ]
     },
     "license": "MIT",
     "authors": [
