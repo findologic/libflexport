@@ -19,7 +19,7 @@ final class Image implements Serializable, NameAwareValue
 
     /**
      * @param string $url The image url of the element.
-     * @param ImageType $type The image type to use. Either Image::TYPE_DEFAULT or Image::TYPE_THUMBNAIL.
+     * @param ImageType $type The image type to use. Either ImageType::DEFAULT or ImageType::THUMBNAIL.
      * @param string $usergroup The usergroup of the image element.
      */
     public function __construct(

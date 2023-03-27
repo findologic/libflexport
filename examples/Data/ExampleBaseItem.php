@@ -8,14 +8,10 @@ use FINDOLOGIC\Export\Enums\ImageType;
 
 class ExampleBaseItem
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     public const DEFAULT_USER_GROUP = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public const SPECIFIC_USER_GROUP = 'B2B';
 
     public string $id;

@@ -36,15 +36,11 @@ use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
 final class CSVSerializationTest extends TestCase
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private const DEFAULT_CSV_HEADING = "id\tparent_id\tordernumber\tname\tsummary\tdescription\tprice\t" .
         "overriddenPrice\turl\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort\tvisibility";
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private const CSV_PATH = '/tmp/findologic.csv';
 
     /** @var CSVExporter */
