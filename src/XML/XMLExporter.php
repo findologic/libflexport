@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\XML;
 
 use FINDOLOGIC\Export\Data\Item;

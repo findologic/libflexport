@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export;
 
 use FINDOLOGIC\Export\CSV\CSVConfig;

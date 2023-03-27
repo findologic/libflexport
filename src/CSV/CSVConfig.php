@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\CSV;
 
 use FINDOLOGIC\Export\Helpers\DataHelper;
