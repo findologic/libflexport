@@ -15,7 +15,7 @@ class CsvVariantsExample extends BaseVariantsExample
     public function createExport(): string
     {
         $csvConfig = new CSVConfig(
-            [
+            availableProperties: [
                 'sale',
                 'novelty',
                 'logo',
@@ -26,7 +26,7 @@ class CsvVariantsExample extends BaseVariantsExample
                 'number_of_comments',
                 'badge',
             ],
-            [
+            availableAttributes: [
                 'cat',
                 'cat_url',
                 'brand',
@@ -34,7 +34,7 @@ class CsvVariantsExample extends BaseVariantsExample
                 'type',
                 'variant_value'
             ],
-            3,
+            imageCount: 3,
         );
 
         $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);
@@ -47,5 +47,5 @@ class CsvVariantsExample extends BaseVariantsExample
 
 $example = new CsvVariantsExample();
 
-// Output the XML content.
+// Output the CSV content.
 echo $example->createExport();

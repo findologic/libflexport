@@ -68,7 +68,7 @@ class ExampleProductItemWithVariants extends ExampleProductItem
 
     public array $groups = [
         self::SPECIFIC_USER_GROUP,
-        'cHBw'
+        'student'
     ];
 
     public array $images = [

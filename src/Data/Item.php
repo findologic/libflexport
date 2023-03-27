@@ -45,7 +45,7 @@ abstract class Item implements Serializable
     use HasVariants;
     use HasVisibility;
 
-    public function __construct($id)
+    public function __construct(string $id)
     {
         $this->setId($id);
 
