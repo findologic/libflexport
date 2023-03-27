@@ -1,10 +1,13 @@
 <?php
 
+namespace FINDOLOGIC\Export\Examples\Data;
+
+use FINDOLOGIC\Export\Enums\ImageType;
+
 /*
  * This class represents an example content.
  * As this is just a static class, an own logic must be implemented
  */
-
 final class ExampleContentItemWithoutUsergroups extends ExampleContentItem
 {
     public string $id = 'content_f1daaa5dbb744b4f9965f151b3eaf069';

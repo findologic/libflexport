@@ -1,5 +1,7 @@
 <?php
 
+namespace FINDOLOGIC\Export\Examples\Data;
+
 final class ExampleBaseVariant
 {
     public string $id;

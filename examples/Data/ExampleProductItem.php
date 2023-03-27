@@ -1,10 +1,13 @@
 <?php
 
+namespace FINDOLOGIC\Export\Examples\Data;
+
+use FINDOLOGIC\Export\Enums\ImageType;
+
 /*
  * This class represents an example product.
  * As this is just a static class, an own logic must be implemented
  */
-
 class ExampleProductItem extends ExampleBaseItem
 {
     public string $id = '01120c948ad41a2284ad9f0402fbc7d';

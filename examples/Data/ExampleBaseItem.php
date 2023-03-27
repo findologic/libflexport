@@ -1,5 +1,9 @@
 <?php
 
+namespace FINDOLOGIC\Export\Examples\Data;
+
+use FINDOLOGIC\Export\Enums\ImageType;
+
 class ExampleBaseItem
 {
     /**

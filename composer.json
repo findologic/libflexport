@@ -78,7 +78,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "FINDOLOGIC\\Export\\": "src"
+            "FINDOLOGIC\\Export\\": "src",
+            "FINDOLOGIC\\Export\\Examples\\": "examples"
         }
     },
     "autoload-dev": {

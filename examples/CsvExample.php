@@ -1,6 +1,8 @@
 <?php
 
-require_once __DIR__ . '/BaseExample.php';
+namespace FINDOLOGIC\Export\Examples;
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Exporter;

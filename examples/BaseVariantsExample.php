@@ -1,7 +1,11 @@
 <?php
 
+namespace FINDOLOGIC\Export\Examples;
+
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/BaseExample.php';
+
+use FINDOLOGIC\Export\Examples\Data\ExampleContentItemWithoutUsergroups;
+use FINDOLOGIC\Export\Examples\Data\ExampleProductItemWithVariants;
 
 abstract class BaseVariantsExample extends BaseExample
 {
