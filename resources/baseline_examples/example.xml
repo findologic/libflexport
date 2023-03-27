@@ -60,6 +60,10 @@
           <ordernumber><![CDATA[377KTL]]></ordernumber>
         </ordernumbers>
       </allOrdernumbers>
+      <visibilities>
+        <visible><![CDATA[1]]></visible>
+        <visible usergroup="B2B"><![CDATA[0]]></visible>
+      </visibilities>
       <allProperties>
         <properties>
           <property>
@@ -223,6 +227,7 @@
           <ordernumber><![CDATA[pdf305xyz]]></ordernumber>
         </ordernumbers>
       </allOrdernumbers>
+      <visibilities/>
       <allProperties>
         <properties>
           <property>

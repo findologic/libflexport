@@ -51,6 +51,7 @@ abstract class BaseExample
             $this->addSalesFrequencies($product);
             $this->addDateAddeds($product);
             $this->addSorts($product);
+            $this->addVisibilities($product);
             $this->addGroups($product);
             $this->addImages($product);
             $this->addAttributes($product);
@@ -148,6 +149,13 @@ abstract class BaseExample
     {
         foreach ($product->sorts as $userGroup => $sort) {
             $this->item->addSort($sort, $userGroup);
+        }
+    }
+
+    protected function addVisibilities(ExampleBaseItem $product): void
+    {
+        foreach ($product->visibilities as $userGroup => $visible) {
+            $this->item->addVisibility($visible, $userGroup);
         }
     }
 

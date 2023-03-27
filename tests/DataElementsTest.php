@@ -18,8 +18,10 @@ use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Group;
+use FINDOLOGIC\Export\Data\Visibility;
 use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
+use FINDOLOGIC\Export\Exceptions\ValueIsNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotIntegerException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotPositiveIntegerException;
@@ -103,18 +105,27 @@ class DataElementsTest extends TestCase
             'Summary with empty value' => ['', Summary::class, EmptyValueNotAllowedException::class],
             'Summary with value' => ['value', Summary::class, null],
             'Url with empty value' => ['', Url::class, EmptyValueNotAllowedException::class],
-            'Url with correct input' => ['https://www.store.com/images/thumbnails/277KTLmen.png', Url::class]
+            'Url with correct input' => ['https://www.store.com/images/thumbnails/277KTLmen.png', Url::class],
+            'Visibility with empty value' => ['', Visibility::class, ValueIsNotAllowedException::class],
+            'Visibility with true value' => [true, Visibility::class],
+            'Visibility with false value' => [false, Visibility::class],
+            'Visibility with 1' => [1, Visibility::class],
+            'Visibility with 0' => [0, Visibility::class],
+            'Visibility with numeric string' => ['0', Visibility::class],
+            'Visibility with boolean string' => ['trUe', Visibility::class],
+            'Visibility with invalid number' => [5, Visibility::class, ValueIsNotAllowedException::class],
+            'Visibility with random string' => ['random_string', Visibility::class, ValueIsNotAllowedException::class],
         ];
     }
 
     /**
      * @dataProvider simpleValueItemProvider
-     * @param string|float|int $value
+     * @param string|float|int|bool $value
      * @param string $elementType
      * @param string|null $expectedException
      */
     public function testAddingEmptyValuesToSimpleItemsCausesException(
-        string|float|int $value,
+        string|float|int|bool $value,
         string $elementType,
         ?string $expectedException = null
     ): void {

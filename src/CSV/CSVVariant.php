@@ -34,6 +34,7 @@ class CSVVariant extends Variant
             '', // salesFrequency
             '', // dateAdded
             '', // sort
+            '', // visibility
             str_repeat("\t", $csvConfig->getImageCount()),
             $this->buildCsvProperties($csvConfig),
             $this->buildCsvAttributes($csvConfig),

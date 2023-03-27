@@ -131,4 +131,8 @@ class ExampleProductItemWithVariants extends ExampleProductItem
             'groups' => ['group1', 'group2']
         ]
     ];
+
+    public array $visibilities = [
+        self::DEFAULT_USER_GROUP => '1'
+    ];
 }

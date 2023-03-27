@@ -43,6 +43,7 @@ class XMLItem extends Item
         $itemElem->appendChild($this->sort->getDomSubtree($document));
         $itemElem->appendChild($this->keywords->getDomSubtree($document));
         $itemElem->appendChild($this->ordernumbers->getDomSubtree($document));
+        $itemElem->appendChild($this->visibility->getDomSubtree($document));
 
         $itemElem->appendChild($this->buildXmlProperties($document));
         $itemElem->appendChild($this->buildXmlAttributes($document));

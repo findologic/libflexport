@@ -57,4 +57,7 @@ class ExampleBaseItem
 
     /** @var array<string, array<string, mixed>> */
     public array $variants;
+
+    /** @var array<string, mixed> */
+    public array $visibilities;
 }

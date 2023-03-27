@@ -33,7 +33,7 @@ use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 class CSVSerializationTest extends TestCase
 {
     private const DEFAULT_CSV_HEADING = "id\tparent_id\tordernumber\tname\tsummary\tdescription\tprice\t" .
-        "overriddenPrice\turl\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
+        "overriddenPrice\turl\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort\tvisibility";
 
     private const CSV_PATH = '/tmp/findologic.csv';
 
@@ -241,6 +241,7 @@ class CSVSerializationTest extends TestCase
         $expectedSalesFrequency = 123;
         $expectedDateAdded = new DateTime();
         $expectedSort = 0;
+        $expectedVisibility = 1;
         $expectedPropertyKeys = ['availability', 'sale'];
         $expectedProperties = [
             $expectedPropertyKeys[0] => 'Ready to ship',
@@ -251,7 +252,7 @@ class CSVSerializationTest extends TestCase
         $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);
 
         $expectedCsvLine = sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+            "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
             $expectedId,
             $expectedParentId,
             implode('|', $expectedOrdernumbers),
@@ -267,6 +268,7 @@ class CSVSerializationTest extends TestCase
             $expectedSalesFrequency,
             $expectedDateAdded->format(DATE_ATOM),
             $expectedSort,
+            $expectedVisibility,
             $expectedImage0,
             $expectedImage1,
             $expectedThumbnail,
@@ -307,6 +309,7 @@ class CSVSerializationTest extends TestCase
         $item->addSalesFrequency($expectedSalesFrequency);
         $item->addDateAdded($expectedDateAdded);
         $item->addSort($expectedSort);
+        $item->addVisibility($expectedVisibility);
 
         foreach ($expectedProperties as $key => $value) {
             $item->addProperty(new Property($key, ['' => $value]));
@@ -445,7 +448,7 @@ class CSVSerializationTest extends TestCase
         $csvLine = $item->getCsvFragment(new CSVConfig());
 
         $this->assertEquals(1, preg_match_all('/\n/', $csvLine));
-        $this->assertEquals(15, preg_match_all('/\t/', $csvLine));
+        $this->assertEquals(16, preg_match_all('/\t/', $csvLine));
         $this->assertEquals(0, preg_match_all('/\r/', $csvLine));
     }
 
@@ -458,7 +461,7 @@ class CSVSerializationTest extends TestCase
         $csvData = $item->getCsvFragment(new CSVConfig());
 
         $this->assertEquals(2, preg_match_all('/\n/', $csvData));
-        $this->assertEquals(30, preg_match_all('/\t/', $csvData));
+        $this->assertEquals(32, preg_match_all('/\t/', $csvData));
         $this->assertEquals(0, preg_match_all('/\r/', $csvData));
     }
 

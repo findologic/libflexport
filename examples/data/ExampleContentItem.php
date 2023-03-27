@@ -105,4 +105,6 @@ class ExampleContentItem extends ExampleBaseItem
     ];
 
     public array $variants = [];
+
+    public array $visibilities = [];
 }

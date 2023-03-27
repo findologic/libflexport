@@ -44,6 +44,9 @@
           <ordernumber><![CDATA[4987123846879-v]]></ordernumber>
         </ordernumbers>
       </allOrdernumbers>
+      <visibilities>
+        <visible><![CDATA[1]]></visible>
+      </visibilities>
       <allProperties>
         <properties>
           <property>
@@ -277,6 +280,7 @@
           <ordernumber><![CDATA[9424585418519]]></ordernumber>
         </ordernumbers>
       </allOrdernumbers>
+      <visibilities/>
       <allProperties>
         <properties>
           <property>

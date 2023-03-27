@@ -20,6 +20,7 @@ use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Group;
+use FINDOLOGIC\Export\Data\Visibility;
 use FINDOLOGIC\Export\Exceptions\AttributeKeyLengthException;
 use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
 use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
@@ -257,7 +258,8 @@ class DataHelperTest extends TestCase
             'Sort' => [Sort::class, [], 'sort'],
             'Summary' => [Summary::class, [], 'summary'],
             'Url' => [Url::class, [], 'url'],
-            'Group' => [Group::class, ['nice people'], 'group']
+            'Group' => [Group::class, ['nice people'], 'group'],
+            'Visibility' => [Visibility::class, ['true'], 'visible']
         ];
     }
 

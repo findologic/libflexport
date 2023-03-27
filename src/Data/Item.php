@@ -21,6 +21,7 @@ use FINDOLOGIC\Export\Traits\HasSort;
 use FINDOLOGIC\Export\Traits\HasSummary;
 use FINDOLOGIC\Export\Traits\HasUrl;
 use FINDOLOGIC\Export\Traits\HasVariants;
+use FINDOLOGIC\Export\Traits\HasVisibility;
 
 abstract class Item implements Serializable
 {
@@ -42,6 +43,7 @@ abstract class Item implements Serializable
     use HasSummary;
     use HasUrl;
     use HasVariants;
+    use HasVisibility;
 
     public function __construct(string $id)
     {
@@ -59,5 +61,6 @@ abstract class Item implements Serializable
         $this->sort = new Sort();
         $this->keywords = new AllKeywords();
         $this->ordernumbers = new AllOrdernumbers();
+        $this->visibility = new Visibility();
     }
 }
