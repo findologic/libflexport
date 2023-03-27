@@ -14,11 +14,11 @@ use FINDOLOGIC\Export\Helpers\XMLHelper;
 
 trait HasProperties
 {
-    /** @var array<string, string[]> */
+    /** @var array<string, mixed> */
     protected array $properties = [];
 
     /**
-     * @return array<string, string[]>
+     * @return array<string, mixed>
      */
     public function getProperties(): array
     {
@@ -47,7 +47,7 @@ trait HasProperties
 
         foreach ($csvConfig->getAvailableProperties() as $availableProperty) {
             if (array_key_exists($availableProperty, $this->properties[''])) {
-                $propertiesString .= "\t" . DataHelper::sanitize($this->properties[''][$availableProperty]);
+                $propertiesString .= "\t" . DataHelper::sanitize((string) $this->properties[''][$availableProperty]);
             } else {
                 $propertiesString .= "\t";
             }
@@ -76,7 +76,7 @@ trait HasProperties
                 $keyElem = XMLHelper::createElementWithText($document, 'key', $key);
                 $propertyElem->appendChild($keyElem);
 
-                $valueElem = XMLHelper::createElementWithText($document, 'value', $value);
+                $valueElem = XMLHelper::createElementWithText($document, 'value', (string) $value);
                 $propertyElem->appendChild($valueElem);
             }
         }

@@ -55,10 +55,10 @@ final class Property
     /**
      * Add a value to the property element.
      *
-     * @param string $value The value to add to the property element.
-     * @param string|null $usergroup The usergroup of the property value.
+     * @param mixed $value The value to add to the property element.
+     * @param ?string $usergroup The usergroup of the property value.
      */
-    public function addValue(string $value, ?string $usergroup = null): void
+    public function addValue(mixed $value, ?string $usergroup = null): void
     {
         if (array_key_exists($usergroup, $this->getAllValues())) {
             throw new DuplicateValueForUsergroupException($this->getKey(), $usergroup);

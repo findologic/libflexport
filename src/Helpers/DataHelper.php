@@ -51,9 +51,9 @@ final class DataHelper
      * @param mixed $value The value to check. Regardless of type, it is coerced into a string.
      * @return string Returns the value if not empty.
      */
-    public static function checkForEmptyValue(string $valueName, mixed $value): string
+    public static function checkForEmptyValue(string $valueName, mixed $value): mixed
     {
-        $value = trim((string) $value);
+        $value = is_string($value) ? trim($value) : $value;
 
         if ($value === '') {
             throw new EmptyValueNotAllowedException($valueName);
