@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Export\Exceptions;
 
 use RuntimeException;
 
-class EmptyElementsNotAllowedException extends RuntimeException
+final class EmptyElementsNotAllowedException extends RuntimeException
 {
     public function __construct(string $elementType, string $elementKey)
     {

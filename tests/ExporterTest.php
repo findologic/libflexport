@@ -5,7 +5,7 @@ namespace FINDOLOGIC\Export\Tests;
 use FINDOLOGIC\Export\Exporter;
 use InvalidArgumentException;
 
-class ExporterTest extends TestCase
+final class ExporterTest extends TestCase
 {
     public function testItemsPerPageMustBeGreaterThanZero(): void
     {

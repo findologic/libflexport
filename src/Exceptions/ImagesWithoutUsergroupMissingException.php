@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Export\Exceptions;
 
 use RuntimeException;
 
-class ImagesWithoutUsergroupMissingException extends RuntimeException
+final class ImagesWithoutUsergroupMissingException extends RuntimeException
 {
     public function __construct()
     {

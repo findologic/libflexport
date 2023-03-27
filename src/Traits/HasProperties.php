@@ -25,7 +25,7 @@ trait HasProperties
 
     public function addProperty(Property $property): void
     {
-        if (count($property->getAllValues()) === 0) {
+        if ($property->getAllValues() === []) {
             throw new EmptyElementsNotAllowedException('Property', $property->getKey());
         }
 

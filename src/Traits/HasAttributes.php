@@ -39,7 +39,7 @@ trait HasAttributes
      */
     public function addAttribute(Attribute $attribute): void
     {
-        if (count($attribute->getValues()) === 0) {
+        if ($attribute->getValues() === []) {
             throw new EmptyElementsNotAllowedException('Attribute', $attribute->getKey());
         }
 
@@ -63,7 +63,7 @@ trait HasAttributes
      */
     public function addMergedAttribute(Attribute $attribute): void
     {
-        if (count($attribute->getValues()) === 0) {
+        if ($attribute->getValues() === []) {
             throw new EmptyElementsNotAllowedException('Attribute', $attribute->getKey());
         }
 

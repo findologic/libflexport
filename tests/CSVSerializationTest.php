@@ -25,27 +25,34 @@ use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Data\Variant;
+use FINDOLOGIC\Export\Enums\ImageType;
 use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValueItem;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
-class CSVSerializationTest extends TestCase
+final class CSVSerializationTest extends TestCase
 {
+    /**
+     * @var string
+     */
     private const DEFAULT_CSV_HEADING = "id\tparent_id\tordernumber\tname\tsummary\tdescription\tprice\t" .
         "overriddenPrice\turl\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort\tvisibility";
 
+    /**
+     * @var string
+     */
     private const CSV_PATH = '/tmp/findologic.csv';
 
     /** @var CSVExporter */
     private Exporter $exporter;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->exporter = Exporter::create(Exporter::TYPE_CSV);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         if (file_exists(self::CSV_PATH)) {
             // Cleanup file after tests have created it.
@@ -104,7 +111,7 @@ class CSVSerializationTest extends TestCase
         return $item;
     }
 
-    private function getMinimalVariant($parentId): Variant
+    private function getMinimalVariant(string $parentId): Variant
     {
         $variant = $this->exporter->createVariant('123-V', $parentId);
 
@@ -291,18 +298,18 @@ class CSVSerializationTest extends TestCase
         $item->addUrl($expectedUrl);
         $item->addImage(new Image($expectedImage0));
         $item->addImage(new Image($expectedImage1));
-        $item->addImage(new Image($expectedThumbnail, Image::TYPE_THUMBNAIL));
+        $item->addImage(new Image($expectedThumbnail, ImageType::THUMBNAIL));
 
         foreach ($expectedAttributes as $attribute => $values) {
             $item->addAttribute(new Attribute($attribute, $values));
         }
 
-        foreach ($expectedKeywords as $keyword) {
-            $item->addKeyword(new Keyword($keyword));
+        foreach ($expectedKeywords as $expectedKeyword) {
+            $item->addKeyword(new Keyword($expectedKeyword));
         }
 
-        foreach ($expectedGroups as $group) {
-            $item->addGroup(new Group($group));
+        foreach ($expectedGroups as $expectedGroup) {
+            $item->addGroup(new Group($expectedGroup));
         }
 
         $item->addBonus($expectedBonus);
@@ -428,9 +435,6 @@ class CSVSerializationTest extends TestCase
 
     /**
      * @dataProvider csvSanitizedElementsInputProvider
-     * @param string $value
-     * @param string $elementType
-     * @param string $setterMethodName
      */
     public function testSanitizingOfElementsWorks(string $value, string $elementType, string $setterMethodName): void
     {

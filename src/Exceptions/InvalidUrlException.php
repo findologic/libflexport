@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Export\Exceptions;
 
 use RuntimeException;
 
-class InvalidUrlException extends RuntimeException
+final class InvalidUrlException extends RuntimeException
 {
     public function __construct(string $url)
     {

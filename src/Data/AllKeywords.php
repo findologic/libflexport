@@ -5,7 +5,7 @@ namespace FINDOLOGIC\Export\Data;
 use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValue;
 
-class AllKeywords extends UsergroupAwareMultiValue
+final class AllKeywords extends UsergroupAwareMultiValue
 {
     public function __construct()
     {
@@ -18,9 +18,13 @@ class AllKeywords extends UsergroupAwareMultiValue
     public function getCsvFragment(CSVConfig $csvConfig): string
     {
         if (array_key_exists('', $this->values)) {
-            return implode(',', array_map(function (Keyword $keyword) use ($csvConfig): string {
-                return $keyword->getCsvFragment($csvConfig);
-            }, $this->values['']));
+            return implode(
+                ',',
+                array_map(
+                    static fn(Keyword $keyword): string => $keyword->getCsvFragment($csvConfig),
+                    $this->values['']
+                )
+            );
         }
 
         return '';

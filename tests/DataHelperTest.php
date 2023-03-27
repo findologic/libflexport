@@ -33,7 +33,7 @@ use FINDOLOGIC\Export\Helpers\NameAwareValue;
 use ReflectionClass;
 use ReflectionException;
 
-class DataHelperTest extends TestCase
+final class DataHelperTest extends TestCase
 {
     /**
      * Scenarios for empty value validation.
@@ -172,7 +172,7 @@ class DataHelperTest extends TestCase
             if (!$shouldCauseException) {
                 $this->fail('This should not fail.');
             } else {
-                $this->assertEquals(BadPropertyKeyException::class, get_class($exception));
+                $this->assertEquals(BadPropertyKeyException::class, $exception::class);
             }
         }
     }
@@ -236,9 +236,6 @@ class DataHelperTest extends TestCase
         return implode('', array_fill(0, $stringLength, '©'));
     }
 
-    /**
-     * @return array
-     */
     public static function allValuesProvider(): array
     {
         return [

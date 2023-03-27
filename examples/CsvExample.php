@@ -9,7 +9,7 @@ use FINDOLOGIC\Export\Exporter;
  * This example class builds a CSV export inspired by the FINDOLOGIC documentation, which can be found at
  * https://docs.findologic.com/doku.php?id=export_patterns:csv .
  */
-class CsvExample extends BaseExample
+final class CsvExample extends BaseExample
 {
     public function createExport(): string
     {

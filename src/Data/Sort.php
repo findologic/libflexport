@@ -6,7 +6,7 @@ use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotIntegerException;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
-class Sort extends UsergroupAwareSimpleValue
+final class Sort extends UsergroupAwareSimpleValue
 {
     public function __construct()
     {

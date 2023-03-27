@@ -10,7 +10,7 @@ use FINDOLOGIC\Export\Exporter;
  * under the following link:
  * @link https://docs.findologic.com/doku.php?id=xml_export_documentation:XML_format
  */
-class CsvVariantsExample extends BaseVariantsExample
+final class CsvVariantsExample extends BaseVariantsExample
 {
     public function createExport(): string
     {

@@ -6,7 +6,7 @@ use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotPositiveIntegerException;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
-class SalesFrequency extends UsergroupAwareSimpleValue
+final class SalesFrequency extends UsergroupAwareSimpleValue
 {
     public function __construct()
     {

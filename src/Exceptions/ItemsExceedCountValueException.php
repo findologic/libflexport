@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Export\Exceptions;
 
 use RuntimeException;
 
-class ItemsExceedCountValueException extends RuntimeException
+final class ItemsExceedCountValueException extends RuntimeException
 {
     public function __construct()
     {

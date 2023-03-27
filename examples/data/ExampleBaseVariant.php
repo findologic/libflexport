@@ -1,27 +1,27 @@
 <?php
 
-class ExampleBaseVariant
+final class ExampleBaseVariant
 {
     public string $id;
 
     /** @var array<string, string[]> */
-    public array $orderNumbers;
+    public array $orderNumbers = [];
 
     /** @var array<string, string> */
-    public array $names;
+    public array $names = [];
 
     /** @var array<string, int|float> */
-    public array $prices;
+    public array $prices = [];
 
     /** @var array<string, int|float> */
-    public array $overriddenPrice;
+    public array $overriddenPrice = [];
 
     /** @var string[] */
-    public array $groups;
+    public array $groups = [];
 
     /** @var array<string, string[]> */
-    public array $attributes;
+    public array $attributes = [];
 
     /** @var array<string, array<string, mixed>> */
-    public array $properties;
+    public array $properties = [];
 }

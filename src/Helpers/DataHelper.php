@@ -16,25 +16,29 @@ use FINDOLOGIC\Export\Exceptions\ItemIdLengthException;
  *
  * Collection of helper methods for data elements.
  */
-class DataHelper
+final class DataHelper
 {
     /**
      * Internal character limit for attribute values.
+     * @var int
      */
     public const ATTRIBUTE_CHARACTER_LIMIT = 16383;
 
     /**
      * Internal character limit for item id.
+     * @var int
      */
     public const ITEM_ID_CHARACTER_LIMIT = 255;
 
     /**
      * Internal character limit for group names of CSV export.
+     * @var int
      */
     public const CSV_GROUP_CHARACTER_LIMIT = 255;
 
     /**
      * Internal character limit for attribute key names of CSV export.
+     * @var int
      */
     public const CSV_ATTRIBUTE_KEY_CHARACTER_LIMIT = 247;
 
@@ -47,7 +51,7 @@ class DataHelper
      */
     public static function checkForEmptyValue(string $valueName, mixed $value): string
     {
-        $value = trim($value);
+        $value = trim((string) $value);
 
         if ($value === '') {
             throw new EmptyValueNotAllowedException($valueName);

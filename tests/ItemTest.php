@@ -10,12 +10,12 @@ use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\XML\XMLExporter;
 
-class ItemTest extends TestCase
+final class ItemTest extends TestCase
 {
     /** @var XMLExporter */
     private Exporter $exporter;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->exporter = Exporter::create(Exporter::TYPE_XML);
     }

@@ -17,17 +17,11 @@ use FINDOLOGIC\Export\CSV\CSVConfig;
  */
 abstract class UsergroupAwareMultiValueItem implements Serializable, NameAwareValue
 {
-    private string $itemName;
+    private readonly string $value;
 
-    private string $value;
-
-    private string $usergroup;
-
-    public function __construct(string $itemName, mixed $value, ?string $usergroup)
+    public function __construct(private readonly string $itemName, mixed $value, private readonly ?string $usergroup)
     {
         $this->value = DataHelper::checkForEmptyValue($this->getValueName(), $value);
-        $this->itemName = $itemName;
-        $this->usergroup = $usergroup;
     }
 
     public function getValue(): string

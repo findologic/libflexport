@@ -9,7 +9,7 @@ use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
-class XMLItem extends Item
+final class XMLItem extends Item
 {
     /**
      * @inheritdoc

@@ -5,7 +5,7 @@ namespace FINDOLOGIC\Export\Helpers;
 use DOMDocument;
 use DOMElement;
 
-class XMLHelper
+final class XMLHelper
 {
     /**
      * Shortcut for creating an XML element.

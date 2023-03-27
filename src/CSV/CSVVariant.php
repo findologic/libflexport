@@ -8,7 +8,7 @@ use DOMElement;
 use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 
-class CSVVariant extends Variant
+final class CSVVariant extends Variant
 {
     public function getDomSubtree(DOMDocument $document): DOMElement
     {

@@ -1,13 +1,11 @@
 <?php
 
-use FINDOLOGIC\Export\Data\Image;
-
 /*
  * This class represents an example content.
  * As this is just a static class, an own logic must be implemented
  */
 
-class ExampleContentItemWithoutUsergroups extends ExampleContentItem
+final class ExampleContentItemWithoutUsergroups extends ExampleContentItem
 {
     public string $id = 'content_f1daaa5dbb744b4f9965f151b3eaf069';
 
@@ -31,8 +29,8 @@ class ExampleContentItemWithoutUsergroups extends ExampleContentItem
 
     public array $images = [
         self::DEFAULT_USER_GROUP => [
-            'https://www.store.com/images/pdf304xyz.png' => Image::TYPE_DEFAULT,
-            'https://www.store.com/images/thumbnails/pdf304xyz.png' => Image::TYPE_THUMBNAIL
+            'https://www.store.com/images/pdf304xyz.png' => ImageType::DEFAULT,
+            'https://www.store.com/images/thumbnails/pdf304xyz.png' => ImageType::THUMBNAIL
         ],
     ];
 }

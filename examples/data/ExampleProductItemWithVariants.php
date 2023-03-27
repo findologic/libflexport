@@ -1,13 +1,11 @@
 <?php
 
-use FINDOLOGIC\Export\Data\Image;
-
 /*
  * This class represents an example product.
  * As this is just a static class, an own logic must be implemented
  */
 
-class ExampleProductItemWithVariants extends ExampleProductItem
+final class ExampleProductItemWithVariants extends ExampleProductItem
 {
     public string $id = '5444bb0aa92841858ac47ef71c9cbab9';
 
@@ -28,7 +26,7 @@ class ExampleProductItemWithVariants extends ExampleProductItem
 
     public array $descriptions = [
         self::DEFAULT_USER_GROUP =>
-            'With this sneaker you will walk in style. It\'s available in green and blue.',
+            "With this sneaker you will walk in style. It's available in green and blue.",
     ];
 
     public array $prices = [
@@ -73,8 +71,8 @@ class ExampleProductItemWithVariants extends ExampleProductItem
 
     public array $images = [
         self::DEFAULT_USER_GROUP => [
-            'https://www.store.com/images/277KTL.png' => Image::TYPE_DEFAULT,
-            'https://www.store.com/images/thumbnails/277KTL.png' => Image::TYPE_THUMBNAIL
+            'https://www.store.com/images/277KTL.png' => ImageType::DEFAULT,
+            'https://www.store.com/images/thumbnails/277KTL.png' => ImageType::THUMBNAIL
         ],
     ];
 

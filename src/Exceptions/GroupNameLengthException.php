@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-class GroupNameLengthException extends InternalCharacterLimitException
+final class GroupNameLengthException extends InternalCharacterLimitException
 {
     public function __construct(string $group, string $characterLimit)
     {

@@ -7,7 +7,7 @@ use DOMElement;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
-class Url extends UsergroupAwareSimpleValue
+final class Url extends UsergroupAwareSimpleValue
 {
     public function __construct()
     {

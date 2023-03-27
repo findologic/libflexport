@@ -48,7 +48,7 @@ abstract class UsergroupAwareBoolValue extends UsergroupAwareSimpleValue
         $value = $this->default;
 
         if (array_key_exists('', $this->getValues())) {
-            $value = $this->getValues()[''];
+            return $this->getValues()[''];
         }
 
         return $value;

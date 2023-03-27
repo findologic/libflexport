@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-class AttributeKeyLengthException extends InternalCharacterLimitException
+final class AttributeKeyLengthException extends InternalCharacterLimitException
 {
     public function __construct(string $attributeKey, string $characterLimit)
     {

@@ -9,7 +9,7 @@ use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 
-class CSVItem extends Item
+final class CSVItem extends Item
 {
     /**
      * @inheritdoc

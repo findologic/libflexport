@@ -1,7 +1,5 @@
 <?php
 
-use FINDOLOGIC\Export\Data\Image;
-
 /*
  * This class represents an example content.
  * As this is just a static class, an own logic must be implemented
@@ -80,12 +78,12 @@ class ExampleContentItem extends ExampleBaseItem
 
     public array $images = [
         self::DEFAULT_USER_GROUP => [
-            'https://www.store.com/images/pdf304xyz.png' => Image::TYPE_DEFAULT,
-            'https://www.store.com/images/thumbnails/pdf304xyz.png' => Image::TYPE_THUMBNAIL
+            'https://www.store.com/images/pdf304xyz.png' => ImageType::DEFAULT,
+            'https://www.store.com/images/thumbnails/pdf304xyz.png' => ImageType::THUMBNAIL
         ],
         self::SPECIFIC_USER_GROUP => [
-            'https://www.store.com/images/pdf305xyz.png' => Image::TYPE_DEFAULT,
-            'https://www.store.com/images/thumbnails/pdf305xyz.png' => Image::TYPE_THUMBNAIL
+            'https://www.store.com/images/pdf305xyz.png' => ImageType::DEFAULT,
+            'https://www.store.com/images/thumbnails/pdf305xyz.png' => ImageType::THUMBNAIL
         ]
     ];
 

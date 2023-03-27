@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Export\Exceptions;
 
 use RuntimeException;
 
-class ValueIsNotPositiveIntegerException extends RuntimeException
+final class ValueIsNotPositiveIntegerException extends RuntimeException
 {
     public function __construct(string $value)
     {

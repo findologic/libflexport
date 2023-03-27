@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Export\Data;
 
 use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
 
-class Price extends UsergroupAwareNumericValue
+final class Price extends UsergroupAwareNumericValue
 {
     public function __construct()
     {

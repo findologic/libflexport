@@ -13,16 +13,12 @@ use DOMElement;
  */
 abstract class UsergroupAwareMultiValue implements Serializable, NameAwareValue
 {
-    private string $rootCollectionName;
-
-    private string $usergroupCollectionName;
-
     protected array $values = [];
 
-    public function __construct($rootCollectionName, $usergroupCollectionName)
-    {
-        $this->rootCollectionName = $rootCollectionName;
-        $this->usergroupCollectionName = $usergroupCollectionName;
+    public function __construct(
+        private readonly string $rootCollectionName,
+        private readonly string $usergroupCollectionName
+    ) {
     }
 
     /**

@@ -7,7 +7,7 @@ use RuntimeException;
 /**
  * Thrown in case an XML export page does not conform to the schema.
  */
-class XMLSchemaViolationException extends RuntimeException
+final class XMLSchemaViolationException extends RuntimeException
 {
     public function __construct(array $validationErrors)
     {

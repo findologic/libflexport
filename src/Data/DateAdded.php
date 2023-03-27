@@ -8,7 +8,7 @@ use DateTimeInterface;
 use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
-class DateAdded extends UsergroupAwareSimpleValue
+final class DateAdded extends UsergroupAwareSimpleValue
 {
     public function __construct()
     {

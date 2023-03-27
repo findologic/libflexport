@@ -8,20 +8,14 @@ use FINDOLOGIC\Export\Exceptions\ItemsExceedCountValueException;
 use FINDOLOGIC\Export\Exceptions\XMLSchemaViolationException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
-class Page
+final class Page
 {
     /** @var XMLItem[] */
-    private array $items;
-    private int $start;
-    private int $count;
-    private int $total;
+    private array $items = [];
 
-    public function __construct(int $start, int $count, int $total)
+
+    public function __construct(private readonly int $start, private readonly int $count, private readonly int $total)
     {
-        $this->start = $start;
-        $this->count = $count;
-        $this->total = $total;
-        $this->items = [];
     }
 
     public function addItem(XMLItem $item): void
@@ -58,7 +52,6 @@ class Page
         ]);
         $root->appendChild($items);
 
-        /** @var XMLItem $item */
         foreach ($this->items as $item) {
             $itemDom = $item->getDomSubtree($document);
             $items->appendChild($itemDom);
@@ -77,7 +70,7 @@ class Page
     private function validateWithSchema(DOMDocument $document): void
     {
         $validationErrors = [];
-        set_error_handler(function ($errno, $errstr) use (&$validationErrors) {
+        set_error_handler(static function ($errno, $errstr) use (&$validationErrors): void {
             $validationErrors[] = $errstr;
         });
 

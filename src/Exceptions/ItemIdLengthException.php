@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Export\Exceptions;
 
-class ItemIdLengthException extends InternalCharacterLimitException
+final class ItemIdLengthException extends InternalCharacterLimitException
 {
     public function __construct(string $id, string $characterLimit)
     {

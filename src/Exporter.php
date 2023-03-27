@@ -15,6 +15,7 @@ abstract class Exporter
      * XML-based export format.
      *
      * @see https://docs.findologic.com/doku.php?id=xml_export_documentation:XML_2_format
+     * @var int
      */
     public const TYPE_XML = 0;
 
@@ -22,18 +23,19 @@ abstract class Exporter
      * CSV-based export format. Does not support usergroups.
      *
      * @see https://docs.findologic.com/doku.php?id=csv_export_documentation:csv_2_format
+     * @var int
      */
     public const TYPE_CSV = 1;
 
+    /**
+     * @var string
+     */
     protected const DEFAULT_FILE_NAME_PREFIX = 'findologic';
-
-    protected int $itemsPerPage;
 
     protected string $fileNamePrefix = self::DEFAULT_FILE_NAME_PREFIX;
 
-    protected function __construct(int $itemsPerPage)
+    protected function __construct(protected int $itemsPerPage)
     {
-        $this->itemsPerPage = $itemsPerPage;
     }
 
     /**
@@ -42,7 +44,6 @@ abstract class Exporter
      * @param int $type The type of export format to choose. Must be either Exporter::TYPE_XML or Exporter::TYPE_CSV.
      * @param int $itemsPerPage Number of items being exported at once. Respecting this parameter is at the exporter
      *      implementation's discretion.
-     * @param ?CSVConfig $csvConfig
      * @return Exporter The exporter for the desired output format.
      */
     public static function create(int $type, int $itemsPerPage = 20, ?CSVConfig $csvConfig = null): Exporter
@@ -122,7 +123,6 @@ abstract class Exporter
      * Creates an export format-specific variant instance.
      *
      * @param string $id Unique ID of the item.
-     * @param string $parentId
      * @return Variant The newly generated item.
      */
     abstract public function createVariant(string $id, string $parentId): Variant;

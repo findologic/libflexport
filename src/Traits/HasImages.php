@@ -6,6 +6,7 @@ use DOMDocument;
 use DOMElement;
 use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Data\Image;
+use FINDOLOGIC\Export\Enums\ImageType;
 use FINDOLOGIC\Export\Exceptions\BaseImageMissingException;
 use FINDOLOGIC\Export\Exceptions\ImagesWithoutUsergroupMissingException;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
@@ -55,7 +56,7 @@ trait HasImages
         if (array_key_exists('', $this->images)) {
             $images = $this->images[''];
 
-            for ($i = 0; $i < $csvConfig->getImageCount(); $i++) {
+            for ($i = 0; $i < $csvConfig->getImageCount(); ++$i) {
                 $imageUrl = isset($images[$i]) ? $images[$i]->getCsvFragment($csvConfig) : '';
                 $imagesString .= "\t" . $imageUrl;
             }
@@ -105,7 +106,7 @@ trait HasImages
     protected static function validateImages(array $images): bool
     {
         foreach ($images as $image) {
-            if ($image->getType() === Image::TYPE_DEFAULT) {
+            if ($image->getType() === ImageType::DEFAULT) {
                 return true;
             }
         }

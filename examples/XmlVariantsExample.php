@@ -9,7 +9,7 @@ use FINDOLOGIC\Export\Exporter;
  * under the following link:
  * @link https://docs.findologic.com/doku.php?id=xml_export_documentation:XML_format
  */
-class XmlVariantsExample extends BaseVariantsExample
+final class XmlVariantsExample extends BaseVariantsExample
 {
     public function createExport(): string
     {

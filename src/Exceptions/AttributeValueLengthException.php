@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Export\Exceptions;
 
 use RuntimeException;
 
-class AttributeValueLengthException extends RuntimeException
+final class AttributeValueLengthException extends RuntimeException
 {
     public function __construct(string $attributeName, int $characterLimit)
     {

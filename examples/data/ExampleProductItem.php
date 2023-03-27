@@ -1,7 +1,5 @@
 <?php
 
-use FINDOLOGIC\Export\Data\Image;
-
 /*
  * This class represents an example product.
  * As this is just a static class, an own logic must be implemented
@@ -23,7 +21,7 @@ class ExampleProductItem extends ExampleBaseItem
 
     public array $names = [
         self::DEFAULT_USER_GROUP => 'Adidas Sneaker',
-        self::SPECIFIC_USER_GROUP => 'Adidas Men\'s Sneaker'
+        self::SPECIFIC_USER_GROUP => "Adidas Men's Sneaker"
     ];
 
     public array $summaries = [
@@ -33,9 +31,9 @@ class ExampleProductItem extends ExampleBaseItem
 
     public array $descriptions = [
         self::DEFAULT_USER_GROUP =>
-            'With this sneaker you will walk in style. It\'s available in green and blue.',
+            "With this sneaker you will walk in style. It's available in green and blue.",
         self::SPECIFIC_USER_GROUP =>
-            'With this men\'s sneaker you will walk in style. It\'s comes in various sizes and colors.'
+            "With this men's sneaker you will walk in style. It's comes in various sizes and colors."
     ];
 
     public array $prices = [
@@ -90,12 +88,12 @@ class ExampleProductItem extends ExampleBaseItem
 
     public array $images = [
         self::DEFAULT_USER_GROUP => [
-            'https://www.store.com/images/277KTL.png' => Image::TYPE_DEFAULT,
-            'https://www.store.com/images/thumbnails/277KTL.png' => Image::TYPE_THUMBNAIL
+            'https://www.store.com/images/277KTL.png' => ImageType::DEFAULT,
+            'https://www.store.com/images/thumbnails/277KTL.png' => ImageType::THUMBNAIL
         ],
         self::SPECIFIC_USER_GROUP => [
-            'https://www.store.com/images/277KTLmen.png' => Image::TYPE_DEFAULT,
-            'https://www.store.com/images/thumbnails/277KTLmen.png' => Image::TYPE_THUMBNAIL
+            'https://www.store.com/images/277KTLmen.png' => ImageType::DEFAULT,
+            'https://www.store.com/images/thumbnails/277KTLmen.png' => ImageType::THUMBNAIL
         ]
     ];
 

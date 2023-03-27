@@ -6,7 +6,7 @@ use Exception;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException;
 
-class PropertyTest extends TestCase
+final class PropertyTest extends TestCase
 {
     public function testAddingMultipleValuesPerUsergroupCausesException(): void
     {
@@ -26,9 +26,6 @@ class PropertyTest extends TestCase
         $property->addValue('foobar');
     }
 
-    /**
-     * @return array
-     */
     public static function propertyKeyProvider(): array
     {
         return [
@@ -44,8 +41,6 @@ class PropertyTest extends TestCase
 
     /**
      * @dataProvider propertyKeyProvider
-     * @param string $key
-     * @param bool $shouldCauseException
      */
     public function testReservedPropertyKeysCausesException(string $key, bool $shouldCauseException): void
     {
