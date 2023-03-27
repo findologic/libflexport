@@ -55,7 +55,7 @@ final class DataHelper
     {
         $value = is_string($value) ? trim($value) : $value;
 
-        if ($value === '') {
+        if ($value === '' || $value === false) {
             throw new EmptyValueNotAllowedException($valueName);
         }
 
