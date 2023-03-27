@@ -42,10 +42,10 @@ class DataHelper
      * Checks if the provided value is empty.
      *
      * @param string $valueName Name of the value, for better error reporting.
-     * @param string|int|float $value The value to check. Regardless of type, it is coerced into a string.
+     * @param mixed $value The value to check. Regardless of type, it is coerced into a string.
      * @return string Returns the value if not empty.
      */
-    public static function checkForEmptyValue(string $valueName, $value): string
+    public static function checkForEmptyValue(string $valueName, mixed $value): string
     {
         $value = trim($value);
 
@@ -77,27 +77,29 @@ class DataHelper
     /**
      * Verifies that property keys for use in CSV export don't contain characters that could break the format fatally.
      *
-     * @param array $propertyKeys The property keys to check.
+     * @param string[] $columnKeys The property keys to check.
      * @return array The validated property keys.
      * @throws  BadPropertyKeyException In case the property key contains dangerous characters.
      */
-    public static function checkForInvalidCsvPropertyKeys(array $propertyKeys): array
+    public static function checkForInvalidCsvColumnKeys(array $columnKeys): array
     {
-        foreach ($propertyKeys as $propertyKey) {
-            if (strpos($propertyKey, "\t") !== false || strpos($propertyKey, "\n") !== false) {
-                throw new BadPropertyKeyException($propertyKey);
+        foreach ($columnKeys as $columnKey) {
+            if (str_contains($columnKey, "\t") || str_contains($columnKey, "\n")) {
+                throw new BadPropertyKeyException($columnKey);
             }
         }
 
-        return $propertyKeys;
+        return $columnKeys;
     }
 
     /**
      * @param string $attributeName Attribute name to output in exception.
      * @param string $attributeValue Attribute value to check if it exceeds character limit.
      */
-    public static function checkAttributeValueNotExceedingCharacterLimit($attributeName, $attributeValue): void
-    {
+    public static function checkAttributeValueNotExceedingCharacterLimit(
+        string $attributeName,
+        string $attributeValue
+    ): void {
         if (mb_strlen($attributeValue) > self::ATTRIBUTE_CHARACTER_LIMIT) {
             throw new AttributeValueLengthException($attributeName, self::ATTRIBUTE_CHARACTER_LIMIT);
         }
@@ -106,7 +108,7 @@ class DataHelper
     /**
      * @param string $id Attribute value to check if it exceeds character limit.
      */
-    public static function checkItemIdNotExceedingCharacterLimit($id)
+    public static function checkItemIdNotExceedingCharacterLimit(string $id): void
     {
         if (mb_strlen($id) > self::ITEM_ID_CHARACTER_LIMIT) {
             throw new ItemIdLengthException($id, self::ITEM_ID_CHARACTER_LIMIT);
@@ -116,7 +118,7 @@ class DataHelper
     /**
      * @param string $group Group name to check if it exceeds character limit.
      */
-    public static function checkCsvGroupNameNotExceedingCharacterLimit($group)
+    public static function checkCsvGroupNameNotExceedingCharacterLimit(string $group): void
     {
         if (mb_strlen($group) > self::CSV_GROUP_CHARACTER_LIMIT) {
             throw new GroupNameLengthException($group, self::CSV_GROUP_CHARACTER_LIMIT);
@@ -126,10 +128,19 @@ class DataHelper
     /**
      * @param string $group Group name to check if it exceeds character limit.
      */
-    public static function checkCsvAttributeKeyNotExceedingCharacterLimit($group)
+    public static function checkCsvAttributeKeyNotExceedingCharacterLimit(string $group): void
     {
         if (mb_strlen($group) > self::CSV_ATTRIBUTE_KEY_CHARACTER_LIMIT) {
             throw new AttributeKeyLengthException($group, self::CSV_ATTRIBUTE_KEY_CHARACTER_LIMIT);
         }
+    }
+
+    public static function sanitize(string $input, $stripTags = true): string
+    {
+        if ($stripTags) {
+            $input = strip_tags($input);
+        }
+
+        return preg_replace('/[\t\n\r]/', ' ', $input);
     }
 }

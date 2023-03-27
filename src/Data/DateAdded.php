@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Export\Data;
 use BadMethodCallException;
 use DateTime;
 use DateTimeInterface;
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
 class DateAdded extends UsergroupAwareSimpleValue
@@ -23,16 +24,19 @@ class DateAdded extends UsergroupAwareSimpleValue
 
     public function setDateValue(DateTimeInterface $value, string $usergroup = ''): void
     {
-        $formatted = $value->format(DateTime::ATOM);
+        $formatted = $value->format(DateTimeInterface::ATOM);
 
         parent::setValue($formatted, $usergroup);
     }
 
-    public function getCsvFragment(array $availableProperties = []): string
+    /**
+     * @inheritdoc
+     */
+    public function getCsvFragment(CSVConfig $csvConfig): string
     {
         $date = DateTime::createFromFormat(DATE_ATOM, $this->getValues()['']);
 
-        return $date->format('U');
+        return $date->format(DATE_ATOM);
     }
 
     /**

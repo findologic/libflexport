@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\Data;
 
 use DOMDocument;
 use DOMElement;
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\NameAwareValue;
 use FINDOLOGIC\Export\Helpers\Serializable;
@@ -12,13 +13,11 @@ use FINDOLOGIC\Export\Helpers\XMLHelper;
 class Attribute implements Serializable, NameAwareValue
 {
     /** @var string */
-    private $key;
+    private string $key;
 
-    /** @var array */
-    private $values;
+    private array $values;
 
     /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @var string $key The name of the attribute.
      * @var array $values The attribute values to set.
      */
@@ -28,14 +27,10 @@ class Attribute implements Serializable, NameAwareValue
         $this->setValues($values);
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     * @param mixed $value
-     */
-    public function addValue($value): void
+    public function addValue(mixed $value): void
     {
         DataHelper::checkAttributeValueNotExceedingCharacterLimit($this->getKey(), $value);
-        array_push($this->values, DataHelper::checkForEmptyValue($this->getValueName(), $value));
+        $this->values[] = DataHelper::checkForEmptyValue($this->getValueName(), $value);
     }
 
     public function setValues(array $values): void
@@ -58,7 +53,6 @@ class Attribute implements Serializable, NameAwareValue
     }
 
     /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(DOMDocument $document): DOMElement
@@ -82,16 +76,17 @@ class Attribute implements Serializable, NameAwareValue
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = []): string
+    public function getCsvFragment(CSVConfig $csvConfig): string
     {
-        $attributeParts = [];
+        $sanitizedValues = array_map(
+            function (string $value) {
+                $sanitized = DataHelper::sanitize($value);
+                return addcslashes($sanitized, ',');
+            },
+            $this->getValues()
+        );
 
-        foreach ($this->getValues() as $value) {
-            DataHelper::checkCsvAttributeKeyNotExceedingCharacterLimit($this->getKey());
-            $attributeParts[] = sprintf('%s=%s', urlencode($this->getKey()), urlencode($value));
-        }
-
-        return implode('&', $attributeParts);
+        return implode(',', $sanitizedValues);
     }
 
     /**

@@ -15,7 +15,7 @@ class XMLHelper
      * @param array $attributes String-to-string mapping of attributes to set on the element.
      * @return DOMElement The newly constructed independent DOM element.
      */
-    public static function createElement(DOMDocument $document, $name, array $attributes = []): DOMElement
+    public static function createElement(DOMDocument $document, string $name, array $attributes = []): DOMElement
     {
         $element = $document->createElement($name);
 

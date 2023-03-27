@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Export\XML;
 
 use FINDOLOGIC\Export\Data\Item;
+use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Exporter;
 
 class XMLExporter extends Exporter
@@ -40,8 +41,17 @@ class XMLExporter extends Exporter
     /**
      * @inheritdoc
      */
-    public function createItem($id): Item
+    public function createItem(string $id): Item
     {
         return new XMLItem($id);
+    }
+
+    /**
+     * @param string $parentId
+     * @inheritdoc
+     */
+    public function createVariant(string $id, string $parentId): Variant
+    {
+        return new XmlVariant($id, $parentId);
     }
 }

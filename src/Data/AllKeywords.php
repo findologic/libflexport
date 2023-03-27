@@ -2,25 +2,24 @@
 
 namespace FINDOLOGIC\Export\Data;
 
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValue;
 
 class AllKeywords extends UsergroupAwareMultiValue
 {
     public function __construct()
     {
-        parent::__construct('allKeywords', 'keywords', ',');
+        parent::__construct('allKeywords', 'keywords');
     }
 
     /**
-     * @param array $availableProperties Properties that are available across the data set, so an individual item
-     *      knows into which column to write its property value, if any.
-     * @return string A CSV fragment that, combined with other fragments, will finally become an export file.
+     * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = []): string
+    public function getCsvFragment(CSVConfig $csvConfig): string
     {
         if (array_key_exists('', $this->values)) {
-            return implode(',', array_map(function (Keyword $keyword): string {
-                return $keyword->getCsvFragment();
+            return implode(',', array_map(function (Keyword $keyword) use ($csvConfig): string {
+                return $keyword->getCsvFragment($csvConfig);
             }, $this->values['']));
         }
 

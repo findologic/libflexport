@@ -6,11 +6,12 @@ use FINDOLOGIC\Export\Data\Image;
  * This class represents an example product.
  * As this is just a static class, an own logic must be implemented
  */
+
 class ExampleProductItem extends ExampleBaseItem
 {
-    public $id = '01120c948ad41a2284ad9f0402fbc7d';
+    public string $id = '01120c948ad41a2284ad9f0402fbc7d';
 
-    public $orderNumbers = [
+    public array $orderNumbers = [
         self::DEFAULT_USER_GROUP => [
             '277KTL',
             '4987123846879'
@@ -20,34 +21,39 @@ class ExampleProductItem extends ExampleBaseItem
         ]
     ];
 
-    public $names = [
+    public array $names = [
         self::DEFAULT_USER_GROUP => 'Adidas Sneaker',
         self::SPECIFIC_USER_GROUP => 'Adidas Men\'s Sneaker'
     ];
 
-    public $summaries = [
+    public array $summaries = [
         self::DEFAULT_USER_GROUP => 'A cool and fashionable sneaker',
         self::SPECIFIC_USER_GROUP => 'A cool and fashionable sneaker for men'
     ];
 
-    public $descriptions = [
+    public array $descriptions = [
         self::DEFAULT_USER_GROUP =>
             'With this sneaker you will walk in style. It\'s available in green and blue.',
         self::SPECIFIC_USER_GROUP =>
             'With this men\'s sneaker you will walk in style. It\'s comes in various sizes and colors.'
     ];
 
-    public $prices = [
+    public array $prices = [
         self::DEFAULT_USER_GROUP => 44.8,
         self::SPECIFIC_USER_GROUP => 45.9
     ];
 
-    public $urls = [
+    public array $overriddenPrices = [
+        self::DEFAULT_USER_GROUP => 54.8,
+        self::SPECIFIC_USER_GROUP => 55.9
+    ];
+
+    public array $urls = [
         self::DEFAULT_USER_GROUP => 'https://www.store.com/sneakers/adidas.html',
         self::SPECIFIC_USER_GROUP => 'https://www.store.com/sneakers/adidas.html'
     ];
 
-    public $keywords = [
+    public array $keywords = [
         self::DEFAULT_USER_GROUP => [
             '277KTL',
             '4987123846879'
@@ -57,32 +63,32 @@ class ExampleProductItem extends ExampleBaseItem
         ]
     ];
 
-    public $bonuses = [
+    public array $bonuses = [
         self::DEFAULT_USER_GROUP => 3,
         self::SPECIFIC_USER_GROUP => 5
     ];
 
-    public $salesFrequencies = [
+    public array $salesFrequencies = [
         self::DEFAULT_USER_GROUP => 5,
         self::SPECIFIC_USER_GROUP => 10
     ];
 
-    public $dateAddeds = [
+    public array $dateAddeds = [
         self::DEFAULT_USER_GROUP => '2019-10-31T10:20:28+02:00',
         self::SPECIFIC_USER_GROUP => '2019-10-31T10:20:28+02:00'
     ];
 
-    public $sorts = [
+    public array $sorts = [
         self::DEFAULT_USER_GROUP => 5,
         self::SPECIFIC_USER_GROUP => 7
     ];
 
-    public $userGroups = [
+    public array $groups = [
         self::SPECIFIC_USER_GROUP,
-        'cHBw'
+        'student'
     ];
 
-    public $images = [
+    public array $images = [
         self::DEFAULT_USER_GROUP => [
             'https://www.store.com/images/277KTL.png' => Image::TYPE_DEFAULT,
             'https://www.store.com/images/thumbnails/277KTL.png' => Image::TYPE_THUMBNAIL
@@ -93,7 +99,7 @@ class ExampleProductItem extends ExampleBaseItem
         ]
     ];
 
-    public $attributes = [
+    public array $attributes = [
         'cat' => [
             'Sneakers_Men',
             'Specials_Sale'
@@ -108,7 +114,7 @@ class ExampleProductItem extends ExampleBaseItem
             'Adidas'
         ],
         'color' => [
-            'green',
+            'green,brown',
             'blue'
         ],
         'type' => [
@@ -116,7 +122,7 @@ class ExampleProductItem extends ExampleBaseItem
         ]
     ];
 
-    public $properties = [
+    public array $properties = [
         'sale' => [
             self::DEFAULT_USER_GROUP => 1,
             self::SPECIFIC_USER_GROUP => 0
@@ -175,4 +181,6 @@ class ExampleProductItem extends ExampleBaseItem
             ]
         ]
     ];
+
+    public array $variants = [];
 }

@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Export\Tests;
 use BadMethodCallException;
 use DateTime;
 use DOMDocument;
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\CSV\CSVExporter;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Bonus;
@@ -15,32 +16,30 @@ use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Name;
 use FINDOLOGIC\Export\Data\Ordernumber;
+use FINDOLOGIC\Export\Data\OverriddenPrice;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\SalesFrequency;
 use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
-use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Data\Group;
+use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValueItem;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
-use InvalidArgumentException;
 
 class CSVSerializationTest extends TestCase
 {
-    private const DEFAULT_CSV_HEADING = "id\tordernumber\tname\tsummary\tdescription\tprice\tinstead\tmaxprice\t" .
-        "taxrate\turl\timage\tattributes\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
+    private const DEFAULT_CSV_HEADING = "id\tparent_id\tordernumber\tname\tsummary\tdescription\tprice\t" .
+        "overriddenPrice\turl\tkeywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort";
 
     private const CSV_PATH = '/tmp/findologic.csv';
 
     /** @var CSVExporter */
-    private $exporter;
+    private Exporter $exporter;
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     */
     public function setUp(): void
     {
         $this->exporter = Exporter::create(Exporter::TYPE_CSV);
@@ -78,6 +77,10 @@ class CSVSerializationTest extends TestCase
         $price->setValue('13.37');
         $item->setPrice($price);
 
+        $overriddenPrice = new OverriddenPrice();
+        $overriddenPrice->setValue('16.67');
+        $item->setOverriddenPrice($overriddenPrice);
+
         $url = new Url();
         $url->setValue('http://example.org/my-awesome-product.html');
         $item->setUrl($url);
@@ -99,6 +102,21 @@ class CSVSerializationTest extends TestCase
         $item->setSort($sort);
 
         return $item;
+    }
+
+    private function getMinimalVariant($parentId): Variant
+    {
+        $variant = $this->exporter->createVariant('123-V', $parentId);
+
+        $name = new Name();
+        $name->setValue('Foobar &quot;</>]]>');
+        $variant->setName($name);
+
+        $price = new Price();
+        $price->setValue('13.37');
+        $variant->setPrice($price);
+
+        return $variant;
     }
 
     public function testMinimalItemIsExported(): void
@@ -192,21 +210,30 @@ class CSVSerializationTest extends TestCase
     public function testKitchenSink(): void
     {
         $expectedId = '123';
+        $expectedParentId = '';
         $expectedOrdernumbers = ['987654321', 'BAC-123'];
         $expectedName = 'Velobike';
         $expectedSummary = 'This is a brief exposition of the product.';
         $expectedDescription =
             'Here I keep on rambling in length about how the product will enhance your existence as a consumer.';
         $expectedPrice = 11.99;
-        $expectedInsteadPrice = 10.11;
-        $expectedMaxPrice = 20.00;
-        $expectedTaxRate = 20;
+        $expectedOverriddenPrice = 10.11;
         $expectedUrl = 'https://example.org/wonderful_product.html';
-        $expectedImage = 'https://example.org/wonderful_product.png';
+        $expectedImage0 = 'https://example.org/wonderful_product.png';
+        $expectedImage1 = 'https://example.org/wonderful_product2.png';
+        $expectedImage2 = '';
+        $expectedThumbnail = 'https://example.org/wonderful_product_thumb.png';
+        $expectedAttributeKeys = ['cat', 'vendor', 'use', 'not_set'];
         $expectedAttributes = [
-            'cat' => ['Bikes', 'Bikes_Racing Bikes'],
-            'vendor' => ['Ultrabikes'],
-            'use' => ['Outdoor', 'Race', "&=<>=%"]
+            $expectedAttributeKeys[0] => ['Bikes', 'Bikes_Racing Bikes'],
+            $expectedAttributeKeys[1] => ['Ultrabikes, Megabikes'],
+            $expectedAttributeKeys[2] => ['Outdoor', 'Race', "&=<>=%"]
+        ];
+        $expectedAttributesColumns = [
+            implode(',', ['Bikes', 'Bikes_Racing Bikes']),
+            implode(',', ['Ultrabikes\, Megabikes']),
+            implode(',', ['Outdoor', 'Race', "&==%"]),
+            ''
         ];
         $expectedKeywords = ['bike', 'race', 'velobike', 'ultrabikes'];
         $expectedGroups = [1, 2, 3];
@@ -220,37 +247,32 @@ class CSVSerializationTest extends TestCase
             $expectedPropertyKeys[1] => 'true'
         ];
 
-        $expectedAttributeArray = [];
-        foreach ($expectedAttributes as $attribute => $values) {
-            $expectedAttributeArray [] = implode('&', array_map(function (string $value) use ($attribute): string {
-                return sprintf('%s=%s', $attribute, urlencode($value));
-            }, $values));
-        }
-        $expectedAttributeString = implode('&', $expectedAttributeArray);
-
-        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $expectedPropertyKeys);
+        $csvConfig = new CSVConfig($expectedPropertyKeys, $expectedAttributeKeys, 4);
+        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);
 
         $expectedCsvLine = sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%d\t%d\t%s\t%d\t%s\n",
+            "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
             $expectedId,
+            $expectedParentId,
             implode('|', $expectedOrdernumbers),
             $expectedName,
             $expectedSummary,
             $expectedDescription,
             $expectedPrice,
-            $expectedInsteadPrice,
-            $expectedMaxPrice,
-            $expectedTaxRate,
+            $expectedOverriddenPrice,
             $expectedUrl,
-            $expectedImage,
-            $expectedAttributeString,
             implode(',', $expectedKeywords),
             implode(',', $expectedGroups),
             $expectedBonus,
             $expectedSalesFrequency,
-            $expectedDateAdded->format('U'),
+            $expectedDateAdded->format(DATE_ATOM),
             $expectedSort,
-            implode("\t", array_values($expectedProperties))
+            $expectedImage0,
+            $expectedImage1,
+            $expectedThumbnail,
+            $expectedImage2,
+            implode("\t", array_values($expectedProperties)),
+            implode("\t", array_values($expectedAttributesColumns))
         );
 
         $item = $exporter->createItem($expectedId);
@@ -263,11 +285,11 @@ class CSVSerializationTest extends TestCase
         $item->addSummary($expectedSummary);
         $item->addDescription($expectedDescription);
         $item->addPrice($expectedPrice);
-        $item->setInsteadPrice($expectedInsteadPrice);
-        $item->setMaxPrice($expectedMaxPrice);
-        $item->setTaxRate($expectedTaxRate);
+        $item->addOverriddenPrice($expectedOverriddenPrice);
         $item->addUrl($expectedUrl);
-        $item->addImage(new Image($expectedImage));
+        $item->addImage(new Image($expectedImage0));
+        $item->addImage(new Image($expectedImage1));
+        $item->addImage(new Image($expectedThumbnail, Image::TYPE_THUMBNAIL));
 
         foreach ($expectedAttributes as $attribute => $values) {
             $item->addAttribute(new Attribute($attribute, $values));
@@ -278,7 +300,7 @@ class CSVSerializationTest extends TestCase
         }
 
         foreach ($expectedGroups as $group) {
-            $item->addUsergroup(new Usergroup($group));
+            $item->addGroup(new Group($group));
         }
 
         $item->addBonus($expectedBonus);
@@ -292,7 +314,7 @@ class CSVSerializationTest extends TestCase
 
         $item->addName($expectedName);
 
-        $this->assertEquals($expectedCsvLine, $item->getCsvFragment($expectedPropertyKeys));
+        $this->assertEquals($expectedCsvLine, $item->getCsvFragment($csvConfig));
     }
 
     public function testItemsCanHaveVaryingProperties(): void
@@ -301,12 +323,8 @@ class CSVSerializationTest extends TestCase
         $secondPropertyName = 'all items';
         $thirdPropertyName = 'second and third item';
 
-        $exporter = Exporter::create(
-            Exporter::TYPE_CSV,
-            20,
-            [
-                $firstPropertyName, $secondPropertyName, $thirdPropertyName]
-        );
+        $csvConfig = new CSVConfig([$firstPropertyName, $secondPropertyName, $thirdPropertyName], [], 0, 0);
+        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);
 
         $firstItem = $this->getMinimalItem($exporter);
         $firstItem->addProperty(new Property($firstPropertyName, [null => 'first value']));
@@ -325,7 +343,7 @@ class CSVSerializationTest extends TestCase
         $lines = explode("\n", $csv);
 
         $expectedCsvHeading = sprintf(
-            "%s\t%s\t%s\t%s",
+            "%s\tprop_%s\tprop_%s\tprop_%s",
             self::DEFAULT_CSV_HEADING,
             $firstPropertyName,
             $secondPropertyName,
@@ -353,7 +371,7 @@ class CSVSerializationTest extends TestCase
         $exporter = Exporter::create(
             Exporter::TYPE_CSV,
             20,
-            [$property->getKey()]
+            new CSVConfig([$property->getKey()]),
         );
 
         $item = $this->getMinimalItem($exporter);
@@ -362,21 +380,20 @@ class CSVSerializationTest extends TestCase
         $exporter->serializeItems([$item], 0, 1, 1);
     }
 
-    public function testSettingMoreThanOneImagePerItemCausesException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $item = $this->getMinimalItem();
-        $item->addImage(new Image('https://example.org/some_image.png', Image::TYPE_DEFAULT));
-        $item->addImage(new Image('https://example.org/some_image.png', Image::TYPE_THUMBNAIL));
-
-        $this->exporter->serializeItems([$item], 0, 1, 1);
-    }
-
     public function testAttemptingToGetXmlVersionForACSVItemCausesAnException(): void
     {
         $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('CSVItem does not implement XML export.');
 
         $this->getMinimalItem()->getDomSubtree(new DOMDocument());
+    }
+
+    public function testAttemptingToGetXmlVersionForACSVVariantCausesAnException(): void
+    {
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('CSVVariant does not implement XML export.');
+
+        $this->getMinimalVariant('123')->getDomSubtree(new DOMDocument());
     }
 
     public function testAddingRelativeUrlIsNotCausingAnException(): void
@@ -384,7 +401,7 @@ class CSVSerializationTest extends TestCase
         $imageWithRelativePath = '/media/images/image.jpg';
         $image = new Image($imageWithRelativePath);
 
-        $this->assertEquals($imageWithRelativePath, $image->getCsvFragment());
+        $this->assertEquals($imageWithRelativePath, $image->getCsvFragment(new CSVConfig()));
     }
 
     /**
@@ -412,24 +429,56 @@ class CSVSerializationTest extends TestCase
      * @param string $elementType
      * @param string $setterMethodName
      */
-    public function testSanitizingOfElementsWorks($value = '', $elementType = '', $setterMethodName = ''): void
+    public function testSanitizingOfElementsWorks(string $value, string $elementType, string $setterMethodName): void
     {
         $item = $this->getMinimalItem();
 
         if (get_parent_class($elementType) === UsergroupAwareMultiValueItem::class) {
             $element = new $elementType($value);
-            $item->$setterMethodName($element);
         } else {
             /** @var UsergroupAwareSimpleValue $element */
             $element = new $elementType();
             $element->setValue($value);
-            $item->$setterMethodName($element);
         }
+        $item->$setterMethodName($element);
 
-        $csvLine = $item->getCsvFragment();
+        $csvLine = $item->getCsvFragment(new CSVConfig());
 
         $this->assertEquals(1, preg_match_all('/\n/', $csvLine));
-        $this->assertEquals(17, preg_match_all('/\t/', $csvLine));
+        $this->assertEquals(15, preg_match_all('/\t/', $csvLine));
         $this->assertEquals(0, preg_match_all('/\r/', $csvLine));
+    }
+
+    public function testVariantsAreAdded(): void
+    {
+        $item = $this->getMinimalItem();
+
+        $item->addVariant($this->getMinimalVariant($item->getId()));
+
+        $csvData = $item->getCsvFragment(new CSVConfig());
+
+        $this->assertEquals(2, preg_match_all('/\n/', $csvData));
+        $this->assertEquals(30, preg_match_all('/\t/', $csvData));
+        $this->assertEquals(0, preg_match_all('/\r/', $csvData));
+    }
+
+    public function testMainProductIncludesVariantOrdernumbers(): void
+    {
+        $item = $this->getMinimalItem();
+        $item->addOrdernumber(
+            new Ordernumber('number1')
+        );
+
+        $variant = $this->getMinimalVariant($item->getId());
+        $variant->addOrdernumber(
+            new Ordernumber('variant1')
+        );
+
+        $item->addVariant($variant);
+
+        $csvData = $item->getCsvFragment(new CSVConfig());
+        $mainProduct = explode("\n", $csvData)[0];
+
+        $this->assertStringContainsString('number1|variant1', $mainProduct);
     }
 }

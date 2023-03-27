@@ -4,19 +4,17 @@ namespace FINDOLOGIC\Export\CSV;
 
 use BadMethodCallException;
 use DOMDocument;
-use FINDOLOGIC\Export\Data\Attribute;
+use DOMElement;
 use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Item;
-use FINDOLOGIC\Export\Data\Usergroup;
 use FINDOLOGIC\Export\Helpers\DataHelper;
-use InvalidArgumentException;
 
 class CSVItem extends Item
 {
     /**
      * @inheritdoc
      */
-    public function getDomSubtree(DOMDocument $document): void
+    public function getDomSubtree(DOMDocument $document): DOMElement
     {
         throw new BadMethodCallException('CSVItem does not implement XML export.');
     }
@@ -24,119 +22,48 @@ class CSVItem extends Item
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = []): string
+    public function getCsvFragment(CSVConfig $csvConfig): string
     {
-        $id = $this->getId();
-        $ordernumbers = self::sanitize($this->ordernumbers->getCsvFragment());
-        $name = self::sanitize($this->name->getCsvFragment());
-        $summary = self::sanitize($this->summary->getCsvFragment());
-        $description = self::sanitize($this->description->getCsvFragment());
-        $price = $this->price->getCsvFragment();
-        $url = self::sanitize($this->url->getCsvFragment());
-        $keywords = self::sanitize($this->keywords->getCsvFragment());
-        $bonus = self::sanitize($this->bonus->getCsvFragment());
-        $salesFrequency = self::sanitize($this->salesFrequency->getCsvFragment());
-        $dateAdded = self::sanitize($this->dateAdded->getCsvFragment());
-        $sort = self::sanitize($this->sort->getCsvFragment());
-
-        $instead = $this->getInsteadPrice();
-        $maxPrice = $this->getMaxPrice();
-        $taxRate = $this->getTaxRate();
-        $groups = implode(',', array_map(function (Usergroup $group): string {
-            /** @var $group Usergroup */
-            $groupName = $group->getCsvFragment();
-            DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
-            return self::sanitize($groupName);
-        }, $this->usergroups));
-
-
-        $image = $this->buildImages();
-        $attributes = $this->buildAttributes();
-        $properties = $this->buildProperties($availableProperties);
-
-        $line = sprintf(
-            "%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s\n",
-            $id,
-            $ordernumbers,
-            $name,
-            $summary,
-            $description,
-            $price,
-            $instead,
-            $maxPrice,
-            $taxRate,
-            $url,
-            $image,
-            $attributes,
-            $keywords,
-            $groups,
-            $bonus,
-            $salesFrequency,
-            $dateAdded,
-            $sort,
-            $properties
+        $data = sprintf(
+            CSVExporter::LINE_TEMPLATE,
+            $this->getId(),
+            '', // parentId
+            $this->buildAllOrdernumbers($csvConfig),
+            DataHelper::sanitize($this->name->getCsvFragment($csvConfig)),
+            DataHelper::sanitize($this->summary->getCsvFragment($csvConfig)),
+            DataHelper::sanitize($this->description->getCsvFragment($csvConfig)),
+            $this->price->getCsvFragment($csvConfig),
+            $this->getOverriddenPrice()->getCsvFragment($csvConfig),
+            DataHelper::sanitize($this->url->getCsvFragment($csvConfig)),
+            DataHelper::sanitize($this->keywords->getCsvFragment($csvConfig)),
+            $this->buildCsvGroups($csvConfig),
+            DataHelper::sanitize($this->bonus->getCsvFragment($csvConfig)),
+            DataHelper::sanitize($this->salesFrequency->getCsvFragment($csvConfig)),
+            DataHelper::sanitize($this->dateAdded->getCsvFragment($csvConfig)),
+            DataHelper::sanitize($this->sort->getCsvFragment($csvConfig)),
+            $this->buildCsvImages($csvConfig),
+            $this->buildCsvProperties($csvConfig),
+            $this->buildCsvAttributes($csvConfig),
         );
 
-        return $line;
+        foreach ($this->variants as $variant) {
+            $data .= $variant->getCsvFragment($csvConfig);
+        }
+
+        return $data;
     }
 
-    private function buildProperties(array $availableProperties): string
+    private function buildAllOrdernumbers(CSVConfig $csvConfig): string
     {
-        $propertiesString = '';
+        $orderNumbers = $this->buildCsvOrdernumbers($csvConfig);
 
-        foreach ($availableProperties as $availableProperty) {
-            if (array_key_exists($availableProperty, $this->properties[''])) {
-                $propertiesString .= "\t" . self::sanitize($this->properties[''][$availableProperty]);
-            } else {
-                $propertiesString .= "\t";
+        foreach ($this->variants as $variant) {
+            $variantOrdernumbers = DataHelper::sanitize($variant->getOrdernumbers()->getCsvFragment($csvConfig));
+            if (strlen($variantOrdernumbers)) {
+                $orderNumbers .= '|' . $variantOrdernumbers;
             }
         }
 
-        return $propertiesString;
-    }
-
-    private function buildAttributes(): string
-    {
-        $attributes = [];
-
-        /** @var Attribute $attribute */
-        foreach ($this->attributes as $attribute) {
-            $attributes[] = $attribute->getCsvFragment();
-        }
-
-        $attributes = implode('&', $attributes);
-
-        return $attributes;
-    }
-
-    private function buildImages(): string
-    {
-        $imageUrl = '';
-
-        // Use the first available image that is not restricted by usergroup. If more than one usergroup-less image
-        // exists, cause an error because it's no longer certain which one is intended to be used.
-        if (array_key_exists('', $this->images)) {
-            if (count($this->images['']) === 1) {
-                /** @var Image $image */
-                $image = $this->images[''][0];
-                $imageUrl = $image->getCsvFragment();
-            } else {
-                throw new InvalidArgumentException(
-                    'Zero or multiple images without usergroup associated with item. ' .
-                    'Cannot generate CSV if there is not one definitive image set.'
-                );
-            }
-        }
-
-        return $imageUrl;
-    }
-
-    private static function sanitize($input, $stripTags = true): string
-    {
-        if ($stripTags) {
-            $input = strip_tags($input);
-        }
-
-        return preg_replace('/[\t\n\r]/', ' ', $input);
+        return $orderNumbers;
     }
 }

@@ -13,11 +13,8 @@ use FINDOLOGIC\Export\XML\XMLExporter;
 class ItemTest extends TestCase
 {
     /** @var XMLExporter */
-    private $exporter;
+    private Exporter $exporter;
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     */
     public function setUp(): void
     {
         $this->exporter = Exporter::create(Exporter::TYPE_XML);

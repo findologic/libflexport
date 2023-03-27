@@ -13,12 +13,13 @@ use FINDOLOGIC\Export\Data\Image;
 use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Name;
 use FINDOLOGIC\Export\Data\Ordernumber;
+use FINDOLOGIC\Export\Data\OverriddenPrice;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\SalesFrequency;
 use FINDOLOGIC\Export\Data\Sort;
 use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
-use FINDOLOGIC\Export\Data\Usergroup;
+use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Exceptions\AttributeKeyLengthException;
 use FINDOLOGIC\Export\Exceptions\AttributeValueLengthException;
 use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
@@ -55,10 +56,10 @@ class DataHelperTest extends TestCase
     /**
      * @dataProvider emptyValueProvider
      *
-     * @param string|int $value Value that should be checked.
+     * @param mixed $value Value that should be checked.
      * @param bool $shouldCauseException Whether the value should cause an exception or not.
      */
-    public function testEmptyValueDetectsEmptyStringsOnly($value, bool $shouldCauseException): void
+    public function testEmptyValueDetectsEmptyStringsOnly(mixed $value, bool $shouldCauseException): void
     {
         $expectedValueNames = 'foobar';
 
@@ -104,10 +105,10 @@ class DataHelperTest extends TestCase
     /**
      * @dataProvider numericValueProvider
      *
-     * @param string|int|bool $value Value that should be checked.
+     * @param mixed $value Value that should be checked.
      * @param bool $shouldCauseException Whether the value should cause an exception or not.
      */
-    public function testNumericValuesAreValidated($value, bool $shouldCauseException): void
+    public function testNumericValuesAreValidated(mixed $value, bool $shouldCauseException): void
     {
         try {
             $numericValueElement = new DummyNumericValue('dummies', 'dummy');
@@ -134,43 +135,43 @@ class DataHelperTest extends TestCase
      *
      * @return array Cases with the value to check and whether it should cause a validation issue.
      */
-    public static function propertyKeyProvider(): array
+    public static function columnKeyProvider(): array
     {
         return [
-            'Valid property keys' => [
-                ['valid_property_key', 'also-a_valid-propery-key',],
+            'Valid column keys' => [
+                ['valid_column_key', 'also-a_valid-column-key',],
                 false,
             ],
-            'Invalid property keys' => [
-                ["invalid\tproperty\nkey", "invalid\tkey", "invalid\nkey",],
+            'Invalid column keys' => [
+                ["invalid\tvalid_column_key\nkey", "invalid\tkey", "invalid\nkey",],
                 true,
             ],
-            'Mixed valid and invalid property keys' => [
-                ['valid_property_key',"invalid\tproperty\nkey",],
+            'Mixed valid and invalid column keys' => [
+                ['valid_column_key',"invalid\tcolumn\nkey",],
                 true,
             ],
         ];
     }
 
     /**
-     * @dataProvider propertyKeyProvider
+     * @dataProvider columnKeyProvider
      *
-     * @param array $propertyKeys The keys to check.
+     * @param array $columnKeys The keys to check.
      * @param bool $shouldCauseException Whether the array should cause an exception or not.
      */
     public function testAddingInvalidCsvPropertyKeysCausesException(
-        array $propertyKeys,
-        bool $shouldCauseException
+        array $columnKeys,
+        bool  $shouldCauseException
     ): void {
         try {
-            $validatedPropertyKeys = DataHelper::checkForInvalidCsvPropertyKeys($propertyKeys);
+            $validatedColumnKeys = DataHelper::checkForInvalidCsvColumnKeys($columnKeys);
 
-            $this->assertEquals($propertyKeys, $validatedPropertyKeys);
+            $this->assertEquals($columnKeys, $validatedColumnKeys);
         } catch (Exception $exception) {
             if (!$shouldCauseException) {
                 $this->fail('This should not fail.');
             } else {
-                $this->assertEquals(get_class($exception), BadPropertyKeyException::class);
+                $this->assertEquals(BadPropertyKeyException::class, get_class($exception));
             }
         }
     }
@@ -229,7 +230,7 @@ class DataHelperTest extends TestCase
      * @param int $stringLength The string length to generate.
      * @return string The multi byte character string.
      */
-    public static function generateMultiByteCharacterString($stringLength): string
+    public static function generateMultiByteCharacterString(int $stringLength): string
     {
         return implode('', array_fill(0, $stringLength, '©'));
     }
@@ -250,12 +251,13 @@ class DataHelperTest extends TestCase
             'Keyword' => [Keyword::class, ['keyword value'], 'keyword'],
             'Name' => [Name::class, [], 'name'],
             'Ordernumber' => [Ordernumber::class, ['ordernumber value'], 'ordernumber'],
+            'OverriddenPrice' => [OverriddenPrice::class, ['ordernumber value'], 'overriddenPrice'],
             'Price' => [Price::class, [], 'price'],
             'SalesFrequency' => [SalesFrequency::class, [], 'salesFrequency'],
             'Sort' => [Sort::class, [], 'sort'],
             'Summary' => [Summary::class, [], 'summary'],
             'Url' => [Url::class, [], 'url'],
-            'Usergroup' => [Usergroup::class, ['nice people'], 'usergroup']
+            'Group' => [Group::class, ['nice people'], 'group']
         ];
     }
 

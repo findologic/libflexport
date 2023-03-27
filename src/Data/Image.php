@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Export\Data;
 
 use DOMDocument;
 use DOMElement;
+use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\NameAwareValue;
 use FINDOLOGIC\Export\Helpers\Serializable;
@@ -21,17 +22,13 @@ class Image implements Serializable, NameAwareValue
      */
     public const TYPE_THUMBNAIL = 'thumbnail';
 
-    /** @var string */
-    private $url;
+    private string $url;
 
-    /** @var string */
-    private $type;
+    private string $type;
 
-    /** @var string */
-    private $usergroup;
+    private string $usergroup;
 
     /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @param string $url The image url of the element.
      * @param string $type The image type to use. Either Image::TYPE_DEFAULT or Image::TYPE_THUMBNAIL.
      * @param string $usergroup The usergroup of the image element.
@@ -75,7 +72,6 @@ class Image implements Serializable, NameAwareValue
     }
 
     /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @inheritdoc
      */
     public function getDomSubtree(DOMDocument $document): DOMElement
@@ -91,7 +87,7 @@ class Image implements Serializable, NameAwareValue
     /**
      * @inheritdoc
      */
-    public function getCsvFragment(array $availableProperties = []): string
+    public function getCsvFragment(CSVConfig $csvConfig): string
     {
         return $this->getUrl();
     }
