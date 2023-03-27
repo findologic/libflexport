@@ -6,6 +6,7 @@ use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
+use FINDOLOGIC\Export\Enums\ExporterType;
 use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\XML\XMLExporter;
@@ -17,7 +18,7 @@ final class ItemTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->exporter = Exporter::create(Exporter::TYPE_XML);
+        $this->exporter = Exporter::create(ExporterType::XML);
     }
 
     private function getMinimalItem(): Item

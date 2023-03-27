@@ -25,6 +25,7 @@ use FINDOLOGIC\Export\Data\Summary;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Data\Variant;
+use FINDOLOGIC\Export\Enums\ExporterType;
 use FINDOLOGIC\Export\Enums\ImageType;
 use FINDOLOGIC\Export\Exceptions\BadPropertyKeyException;
 use FINDOLOGIC\Export\Exporter;
@@ -49,7 +50,7 @@ final class CSVSerializationTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->exporter = Exporter::create(Exporter::TYPE_CSV);
+        $this->exporter = Exporter::create(ExporterType::CSV);
     }
 
     protected function tearDown(): void
@@ -256,7 +257,7 @@ final class CSVSerializationTest extends TestCase
         ];
 
         $csvConfig = new CSVConfig($expectedPropertyKeys, $expectedAttributeKeys, 4);
-        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);
+        $exporter = Exporter::create(ExporterType::CSV, 20, $csvConfig);
 
         $expectedCsvLine = sprintf(
             "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
@@ -334,7 +335,7 @@ final class CSVSerializationTest extends TestCase
         $thirdPropertyName = 'second and third item';
 
         $csvConfig = new CSVConfig([$firstPropertyName, $secondPropertyName, $thirdPropertyName], [], 0, 0);
-        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);
+        $exporter = Exporter::create(ExporterType::CSV, 20, $csvConfig);
 
         $firstItem = $this->getMinimalItem($exporter);
         $firstItem->addProperty(new Property($firstPropertyName, [null => 'first value']));
@@ -379,7 +380,7 @@ final class CSVSerializationTest extends TestCase
     {
         $this->expectException(BadPropertyKeyException::class);
         $exporter = Exporter::create(
-            Exporter::TYPE_CSV,
+            ExporterType::CSV,
             20,
             new CSVConfig([$property->getKey()]),
         );

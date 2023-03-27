@@ -6,30 +6,13 @@ use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\CSV\CSVExporter;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Variant;
+use FINDOLOGIC\Export\Enums\ExporterType;
 use FINDOLOGIC\Export\XML\XMLExporter;
 use InvalidArgumentException;
 
 abstract class Exporter
 {
-    /**
-     * XML-based export format.
-     *
-     * @see https://docs.findologic.com/doku.php?id=xml_export_documentation:XML_2_format
-     * @var int
-     */
-    public const TYPE_XML = 0;
-
-    /**
-     * CSV-based export format. Does not support usergroups.
-     *
-     * @see https://docs.findologic.com/doku.php?id=csv_export_documentation:csv_2_format
-     * @var int
-     */
-    public const TYPE_CSV = 1;
-
-    /**
-     * @var string
-     */
+    /** @var string */
     protected const DEFAULT_FILE_NAME_PREFIX = 'findologic';
 
     protected string $fileNamePrefix = self::DEFAULT_FILE_NAME_PREFIX;
@@ -41,21 +24,21 @@ abstract class Exporter
     /**
      * Creates an exporter for the desired output format.
      *
-     * @param int $type The type of export format to choose. Must be either Exporter::TYPE_XML or Exporter::TYPE_CSV.
+     * @param ExporterType $type The type of export format to choose.
+     *      Must be either ExporterType::XML or ExporterType::CSV.
      * @param int $itemsPerPage Number of items being exported at once. Respecting this parameter is at the exporter
      *      implementation's discretion.
      * @return Exporter The exporter for the desired output format.
      */
-    public static function create(int $type, int $itemsPerPage = 20, ?CSVConfig $csvConfig = null): Exporter
+    public static function create(ExporterType $type, int $itemsPerPage = 20, ?CSVConfig $csvConfig = null): Exporter
     {
         if ($itemsPerPage < 1) {
             throw new InvalidArgumentException('At least one item must be exported per page.');
         }
 
         return match ($type) {
-            self::TYPE_XML => new XMLExporter($itemsPerPage),
-            self::TYPE_CSV => new CSVExporter($itemsPerPage, $csvConfig ?? new CSVConfig()),
-            default => throw new InvalidArgumentException('Unsupported exporter type.'),
+            ExporterType::XML => new XMLExporter($itemsPerPage),
+            ExporterType::CSV => new CSVExporter($itemsPerPage, $csvConfig ?? new CSVConfig()),
         };
     }
 

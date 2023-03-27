@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Export\Examples;
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use FINDOLOGIC\Export\CSV\CSVConfig;
+use FINDOLOGIC\Export\Enums\ExporterType;
 use FINDOLOGIC\Export\Exporter;
 
 /**
@@ -39,7 +40,7 @@ final class CsvVariantsExample extends BaseVariantsExample
             imageCount: 3,
         );
 
-        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);
+        $exporter = Exporter::create(ExporterType::CSV, 20, $csvConfig);
 
         $items = $this->buildItems($exporter);
 

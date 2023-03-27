@@ -24,6 +24,7 @@ use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Data\Visibility;
+use FINDOLOGIC\Export\Enums\ExporterType;
 use FINDOLOGIC\Export\Enums\ImageType;
 use FINDOLOGIC\Export\Exceptions\BaseImageMissingException;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
@@ -72,7 +73,7 @@ final class XmlSerializationTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->exporter = Exporter::create(Exporter::TYPE_XML);
+        $this->exporter = Exporter::create(ExporterType::XML);
     }
 
     private function getMinimalItem(): Item
