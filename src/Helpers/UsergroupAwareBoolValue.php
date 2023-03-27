@@ -27,7 +27,7 @@ abstract class UsergroupAwareBoolValue extends UsergroupAwareSimpleValue
     protected function validate(mixed $value): int
     {
         $isValidInt = is_numeric($value) && (intval($value) === 1 || intval($value) === 0);
-        $isBooleanString = strtolower($value) === 'true' || strtolower($value) === 'false';
+        $isBooleanString = is_string($value) && (strtolower($value) === 'true' || strtolower($value) === 'false');
         $isBoolean = is_bool($value);
 
         if ($isValidInt || $isBooleanString || $isBoolean) {
@@ -50,9 +50,9 @@ abstract class UsergroupAwareBoolValue extends UsergroupAwareSimpleValue
         $value = $this->default;
 
         if (array_key_exists('', $this->getValues())) {
-            return $this->getValues()[''];
+            $value = $this->getValues()[''];
         }
 
-        return $value;
+        return (string) $value;
     }
 }

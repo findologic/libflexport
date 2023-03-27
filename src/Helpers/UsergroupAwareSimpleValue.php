@@ -58,7 +58,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
      */
     protected function validate(mixed $value): mixed
     {
-        $value = trim($value);
+        $value = is_string($value) ? trim($value) : $value;
 
         if ($value === '') {
             throw new EmptyValueNotAllowedException($this->getValueName());
@@ -75,7 +75,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
         $collectionElem = XMLHelper::createElement($document, $this->collectionName);
 
         foreach ($this->getValues() as $usergroup => $value) {
-            $itemElem = XMLHelper::createElementWithText($document, $this->itemName, $value);
+            $itemElem = XMLHelper::createElementWithText($document, $this->itemName, (string) $value);
             $collectionElem->appendChild($itemElem);
 
             if ($usergroup !== '') {
@@ -97,6 +97,6 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
             $value = $this->getValues()[''];
         }
 
-        return $value;
+        return (string) $value;
     }
 }

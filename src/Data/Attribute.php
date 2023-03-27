@@ -67,7 +67,7 @@ final class Attribute implements Serializable, NameAwareValue
         $attributeElem->appendChild($valuesElem);
 
         foreach ($this->getValues() as $value) {
-            $valueElem = XMLHelper::createElementWithText($document, 'value', $value);
+            $valueElem = XMLHelper::createElementWithText($document, 'value', (string) $value);
             $valuesElem->appendChild($valueElem);
         }
 

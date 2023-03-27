@@ -246,7 +246,7 @@ final class CSVSerializationTest extends TestCase
             ''
         ];
         $expectedKeywords = ['bike', 'race', 'velobike', 'ultrabikes'];
-        $expectedGroups = [1, 2, 3];
+        $expectedGroups = ['1', '2', '3'];
         $expectedBonus = 3;
         $expectedSalesFrequency = 123;
         $expectedDateAdded = new DateTime();

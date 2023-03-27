@@ -354,7 +354,7 @@ final class XmlSerializationTest extends TestCase
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('XMLItem does not implement CSV export.');
 
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         $item->getCsvFragment(new CSVConfig());
     }
@@ -444,7 +444,7 @@ final class XmlSerializationTest extends TestCase
     ): void {
         $expectedValues ??= $values;
 
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         foreach ($values as $usergroup => $value) {
             $item->{'add' . $valueType}($value, $usergroup);
@@ -467,7 +467,7 @@ final class XmlSerializationTest extends TestCase
             $values
         );
 
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         foreach ($values as $usergroup => $value) {
             $item->addDateAdded($value, $usergroup);
@@ -487,7 +487,7 @@ final class XmlSerializationTest extends TestCase
             'foo' => [$imageWithUsergroup],
         ];
 
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         foreach ($values as $value) {
             $item->addImage($value);
@@ -507,7 +507,7 @@ final class XmlSerializationTest extends TestCase
             'foo' => [$keywordWithUsergroup],
         ];
 
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         foreach ($values as $value) {
             $item->addKeyword($value);
@@ -523,7 +523,7 @@ final class XmlSerializationTest extends TestCase
             'group2',
         ];
 
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         foreach ($groups as $group) {
             $item->addGroup(new Group($group));
@@ -534,7 +534,7 @@ final class XmlSerializationTest extends TestCase
 
     public function testVariantsAddedToItemViaShortcutAccumulates(): void
     {
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         $expectedVariants = [
             $this->getMinimalVariant('123'),
@@ -551,7 +551,7 @@ final class XmlSerializationTest extends TestCase
 
     public function testAllVariantsCanBeSet(): void
     {
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         $expectedVariants = [
             $this->getMinimalVariant('123'),

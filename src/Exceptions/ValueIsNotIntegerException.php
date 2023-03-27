@@ -8,7 +8,7 @@ use RuntimeException;
 
 final class ValueIsNotIntegerException extends RuntimeException
 {
-    public function __construct(string $value)
+    public function __construct(mixed $value)
     {
         parent::__construct(sprintf('%s is not an integer!', $value));
     }

@@ -22,7 +22,7 @@ final class XMLHelper
         $element = $document->createElement($name);
 
         foreach ($attributes as $attribName => $attribValue) {
-            $element->setAttribute($attribName, $attribValue);
+            $element->setAttribute($attribName, (string) $attribValue);
         }
 
         return $element;
