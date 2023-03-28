@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Helpers;
 
 use DOMDocument;
 use DOMElement;
 
-class XMLHelper
+final class XMLHelper
 {
     /**
      * Shortcut for creating an XML element.
@@ -20,7 +22,7 @@ class XMLHelper
         $element = $document->createElement($name);
 
         foreach ($attributes as $attribName => $attribValue) {
-            $element->setAttribute($attribName, $attribValue);
+            $element->setAttribute($attribName, (string) $attribValue);
         }
 
         return $element;

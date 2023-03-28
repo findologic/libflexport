@@ -1,8 +1,13 @@
 <?php
 
-require_once __DIR__ . '/BaseVariantsExample.php';
+declare(strict_types=1);
+
+namespace FINDOLOGIC\Export\Examples;
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use FINDOLOGIC\Export\CSV\CSVConfig;
+use FINDOLOGIC\Export\Enums\ExporterType;
 use FINDOLOGIC\Export\Exporter;
 
 /**
@@ -10,7 +15,7 @@ use FINDOLOGIC\Export\Exporter;
  * under the following link:
  * @link https://docs.findologic.com/doku.php?id=xml_export_documentation:XML_format
  */
-class CsvVariantsExample extends BaseVariantsExample
+final class CsvVariantsExample extends BaseVariantsExample
 {
     public function createExport(): string
     {
@@ -37,7 +42,7 @@ class CsvVariantsExample extends BaseVariantsExample
             imageCount: 3,
         );
 
-        $exporter = Exporter::create(Exporter::TYPE_CSV, 20, $csvConfig);
+        $exporter = Exporter::create(ExporterType::CSV, 20, $csvConfig);
 
         $items = $this->buildItems($exporter);
 

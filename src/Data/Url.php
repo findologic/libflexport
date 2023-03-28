@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Data;
 
 use DOMDocument;
@@ -7,7 +9,7 @@ use DOMElement;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
-class Url extends UsergroupAwareSimpleValue
+final class Url extends UsergroupAwareSimpleValue
 {
     public function __construct()
     {

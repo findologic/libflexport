@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Traits;
 
 use DOMDocument;
@@ -34,18 +36,23 @@ trait HasGroups
 
     protected function buildCsvGroups(CSVConfig $csvConfig): string
     {
-        return implode(',', array_map(function (Group $group) use ($csvConfig): string {
-            $groupName = $group->getCsvFragment($csvConfig);
-            DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
-            return DataHelper::sanitize($groupName);
-        }, $this->groups));
+        return implode(
+            ',',
+            array_map(
+                static function (Group $group) use ($csvConfig): string {
+                    $groupName = $group->getCsvFragment($csvConfig);
+                    DataHelper::checkCsvGroupNameNotExceedingCharacterLimit($groupName);
+                    return DataHelper::sanitize($groupName);
+                },
+                $this->groups
+            )
+        );
     }
 
     protected function buildXmlGroups(DOMDocument $document): DOMElement
     {
         $groups = XMLHelper::createElement($document, 'groups');
 
-        /** @var Group $groups */
         foreach ($this->groups as $group) {
             $groups->appendChild($group->getDomSubtree($document));
         }

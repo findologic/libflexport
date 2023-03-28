@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Exceptions;
 
 use RuntimeException;
 
-class EmptyValueNotAllowedException extends RuntimeException
+final class EmptyValueNotAllowedException extends RuntimeException
 {
     public function __construct(string $valueName)
     {

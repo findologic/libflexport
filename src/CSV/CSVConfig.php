@@ -1,27 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\CSV;
 
 use FINDOLOGIC\Export\Helpers\DataHelper;
 
-class CSVConfig
+final class CSVConfig
 {
     /** @var string[] */
-    protected array $availableProperties;
+    private array $availableProperties = [];
 
     /** @var string[] */
-    protected array $availableAttributes;
-
-    protected int $imageCount;
+    private array $availableAttributes = [];
 
     public function __construct(
         array $availableProperties = [],
         array $availableAttributes = [],
-        int $imageCount = 1,
+        private readonly int $imageCount = 1,
     ) {
         $this->availableProperties = DataHelper::checkForInvalidCsvColumnKeys($availableProperties);
         $this->availableAttributes = DataHelper::checkForInvalidCsvColumnKeys($availableAttributes);
-        $this->imageCount = $imageCount;
     }
 
     /**

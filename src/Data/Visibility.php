@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Data;
 
 use FINDOLOGIC\Export\Helpers\UsergroupAwareBoolValue;
 
-class Visibility extends UsergroupAwareBoolValue
+final class Visibility extends UsergroupAwareBoolValue
 {
     public function __construct()
     {

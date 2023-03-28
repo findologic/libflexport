@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Exceptions;
 
 use RuntimeException;
@@ -7,7 +9,7 @@ use RuntimeException;
 /**
  * Thrown in case a property key is used for CSV export containing characters that would break the format.
  */
-class BadPropertyKeyException extends RuntimeException
+final class BadPropertyKeyException extends RuntimeException
 {
     public function __construct(string $propertyKey)
     {

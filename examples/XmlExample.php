@@ -1,7 +1,12 @@
 <?php
 
-require_once __DIR__ . '/BaseExample.php';
+declare(strict_types=1);
 
+namespace FINDOLOGIC\Export\Examples;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use FINDOLOGIC\Export\Enums\ExporterType;
 use FINDOLOGIC\Export\Exporter;
 
 /**
@@ -9,11 +14,11 @@ use FINDOLOGIC\Export\Exporter;
  * under the following link:
  * @link https://docs.findologic.com/doku.php?id=xml_export_documentation:XML_format
  */
-class XmlExample extends BaseExample
+final class XmlExample extends BaseExample
 {
     public function createExport(): string
     {
-        $exporter = Exporter::create(Exporter::TYPE_XML);
+        $exporter = Exporter::create(ExporterType::XML);
         $items = $this->buildItems($exporter);
 
         return $exporter->serializeItems($items, 0, count($items), count($items));

@@ -1,23 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Price;
 use FINDOLOGIC\Export\Data\Property;
+use FINDOLOGIC\Export\Enums\ExporterType;
 use FINDOLOGIC\Export\Exceptions\EmptyElementsNotAllowedException;
 use FINDOLOGIC\Export\Exporter;
 use FINDOLOGIC\Export\XML\XMLExporter;
 
-class ItemTest extends TestCase
+final class ItemTest extends TestCase
 {
     /** @var XMLExporter */
     private Exporter $exporter;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-        $this->exporter = Exporter::create(Exporter::TYPE_XML);
+        $this->exporter = Exporter::create(ExporterType::XML);
     }
 
     private function getMinimalItem(): Item

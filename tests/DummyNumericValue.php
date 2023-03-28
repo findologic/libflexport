@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Tests;
 
 use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
 
-class DummyNumericValue extends UsergroupAwareNumericValue
+final class DummyNumericValue extends UsergroupAwareNumericValue
 {
     /**
      * @return string The name of the value, e.g. name or description, which is used for more accurate error reporting.

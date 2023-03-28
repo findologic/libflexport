@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Helpers;
 
 use DOMDocument;
@@ -19,7 +21,6 @@ interface Serializable
     public function getDomSubtree(DOMDocument $document): DOMElement;
 
     /**
-     * @param CSVConfig $csvConfig
      * @return string A CSV fragment that, combined with other fragments, will finally become an export file.
      */
     public function getCsvFragment(CSVConfig $csvConfig): string;

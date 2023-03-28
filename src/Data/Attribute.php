@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Data;
 
 use DOMDocument;
@@ -10,10 +12,9 @@ use FINDOLOGIC\Export\Helpers\NameAwareValue;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
-class Attribute implements Serializable, NameAwareValue
+final class Attribute implements Serializable, NameAwareValue
 {
-    /** @var string */
-    private string $key;
+    private readonly string $key;
 
     private array $values;
 
@@ -66,7 +67,7 @@ class Attribute implements Serializable, NameAwareValue
         $attributeElem->appendChild($valuesElem);
 
         foreach ($this->getValues() as $value) {
-            $valueElem = XMLHelper::createElementWithText($document, 'value', $value);
+            $valueElem = XMLHelper::createElementWithText($document, 'value', (string) $value);
             $valuesElem->appendChild($valueElem);
         }
 
@@ -79,7 +80,7 @@ class Attribute implements Serializable, NameAwareValue
     public function getCsvFragment(CSVConfig $csvConfig): string
     {
         $sanitizedValues = array_map(
-            function (string $value) {
+            static function (string $value): string {
                 $sanitized = DataHelper::sanitize($value);
                 return addcslashes($sanitized, ',');
             },

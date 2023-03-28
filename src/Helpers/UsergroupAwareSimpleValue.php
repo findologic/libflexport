@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Helpers;
 
 use DOMDocument;
@@ -15,17 +17,10 @@ use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
  */
 abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
 {
-    private string $collectionName;
-
-    private string $itemName;
-
-    /** @var array */
     protected array $values = [];
 
-    public function __construct(string $collectionName, string $itemName)
+    public function __construct(private readonly string $collectionName, private readonly string $itemName)
     {
-        $this->collectionName = $collectionName;
-        $this->itemName = $itemName;
     }
 
     public function getValues(): array
@@ -44,12 +39,10 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
 
     public function hasUsergroup(): bool
     {
-        return count(
-            array_filter(
-                array_keys($this->values),
-                static fn(string $userGroup) => $userGroup !== ''
-            )
-        ) > 0;
+        return array_filter(
+            array_keys($this->values),
+            static fn(string $userGroup): bool => $userGroup !== ''
+        ) !== [];
     }
 
     /**
@@ -61,12 +54,11 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
      * When not valid an exception is thrown.
      *
      * @param mixed $value Validated value.
-     * @return mixed
      * @throws EmptyValueNotAllowedException
      */
     protected function validate(mixed $value): mixed
     {
-        $value = trim($value);
+        $value = is_string($value) ? trim($value) : $value;
 
         if ($value === '') {
             throw new EmptyValueNotAllowedException($this->getValueName());
@@ -83,7 +75,7 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
         $collectionElem = XMLHelper::createElement($document, $this->collectionName);
 
         foreach ($this->getValues() as $usergroup => $value) {
-            $itemElem = XMLHelper::createElementWithText($document, $this->itemName, $value);
+            $itemElem = XMLHelper::createElementWithText($document, $this->itemName, (string) $value);
             $collectionElem->appendChild($itemElem);
 
             if ($usergroup !== '') {
@@ -105,6 +97,6 @@ abstract class UsergroupAwareSimpleValue implements Serializable, NameAwareValue
             $value = $this->getValues()[''];
         }
 
-        return $value;
+        return (string) $value;
     }
 }

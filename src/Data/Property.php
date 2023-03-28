@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Data;
 
 use FINDOLOGIC\Export\Exceptions\DuplicateValueForUsergroupException;
 use FINDOLOGIC\Export\Exceptions\PropertyKeyNotAllowedException;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 
-class Property
+final class Property
 {
     /**
      * Reserved property keys for internal use which would be overwritten when importing
@@ -14,6 +16,7 @@ class Property
      * - Image URLs of type default.
      * - Image URLs of type thumbnail.
      * - The products first exported ordernumber.
+     * @var string[]
      */
     private const RESERVED_PROPERTY_KEYS = [
         "/^image\d+$/",
@@ -21,11 +24,10 @@ class Property
         "/^ordernumber$/"
     ];
 
-    /** @var string */
-    private string $key;
+    private readonly string $key;
 
     /** @var string[] */
-    private array $values;
+    private array $values = [];
 
     /**
      * Property constructor.
@@ -53,10 +55,10 @@ class Property
     /**
      * Add a value to the property element.
      *
-     * @param string $value The value to add to the property element.
-     * @param string|null $usergroup The usergroup of the property value.
+     * @param mixed $value The value to add to the property element.
+     * @param ?string $usergroup The usergroup of the property value.
      */
-    public function addValue(string $value, ?string $usergroup = null): void
+    public function addValue(mixed $value, ?string $usergroup = null): void
     {
         if (array_key_exists($usergroup, $this->getAllValues())) {
             throw new DuplicateValueForUsergroupException($this->getKey(), $usergroup);
@@ -73,13 +75,16 @@ class Property
          * As we can not check if the values of the given array are associative,
          * we trigger a notice if the array keys are not a string.
          */
-        array_walk($values, function ($item, $key) {
-            if (!is_string($key)) {
-                $format = 'Property values have to be associative, like $key => $value. The key "%s" has to be a ' .
-                    'string, integer given.';
-                trigger_error(sprintf($format, $key), E_USER_WARNING);
+        array_walk(
+            $values,
+            static function ($item, $key): void {
+                if (!is_string($key)) {
+                    $format = 'Property values have to be associative, like $key => $value. The key "%s" has to be a ' .
+                        'string, integer given.';
+                    trigger_error(sprintf($format, $key), E_USER_WARNING);
+                }
             }
-        });
+        );
 
         foreach ($values as $usergroup => $value) {
             $this->addValue($value, $usergroup);

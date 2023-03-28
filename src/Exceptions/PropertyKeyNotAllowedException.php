@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Exceptions;
 
 use RuntimeException;
 
-class PropertyKeyNotAllowedException extends RuntimeException
+final class PropertyKeyNotAllowedException extends RuntimeException
 {
     public function __construct(string $key)
     {

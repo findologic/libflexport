@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Exceptions;
 
 use RuntimeException;
 
-class UsergroupsNotAllowedException extends RuntimeException
+final class UsergroupsNotAllowedException extends RuntimeException
 {
     public function __construct()
     {

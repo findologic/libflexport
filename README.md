@@ -66,7 +66,7 @@ require_once './vendor/autoload.php';
 
 use FINDOLOGIC\Export\Exporter;
 
-$exporter = Exporter::create(Exporter::TYPE_XML);
+$exporter = Exporter::create(ExporterType::XML);
 
 $item = $exporter->createItem('123');
 
@@ -94,7 +94,7 @@ require_once './vendor/autoload.php';
 
 use FINDOLOGIC\Export\Exporter;
 
-$exporter = Exporter::create(Exporter::TYPE_CSV);
+$exporter = Exporter::create(ExporterType::CSV);
 
 $item = $exporter->createItem('123');
 

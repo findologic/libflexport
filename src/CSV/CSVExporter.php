@@ -1,25 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\CSV;
 
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Exporter;
 
-class CSVExporter extends Exporter
+final class CSVExporter extends Exporter
 {
+    /** @var string */
     private const HEADING = "id\tparent_id\tordernumber\tname\tsummary\tdescription\tprice\toverriddenPrice\turl\t" .
         "keywords\tgroups\tbonus\tsales_frequency\tdate_added\tsort\tvisibility";
 
+    /** @var string */
     public const LINE_TEMPLATE = "%s\t%s\t%s\t%s\t%s\t%s\t%.2f\t%.2f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%s%s%s\n";
 
-    private CSVConfig $csvConfig;
-
-    public function __construct(int $itemsPerPage, CSVConfig $csvConfig)
+    public function __construct(int $itemsPerPage, private readonly CSVConfig $csvConfig)
     {
         parent::__construct($itemsPerPage);
-
-        $this->csvConfig = $csvConfig;
     }
 
     /**
@@ -82,7 +82,7 @@ class CSVExporter extends Exporter
     /**
      * Returns the heading line of a CSV document
      */
-    protected function getHeadingLine(): string
+    private function getHeadingLine(): string
     {
         return self::HEADING .
             $this->getNumberedHeadingPart($this->csvConfig->getImageCount(), 'image') .
@@ -94,7 +94,7 @@ class CSVExporter extends Exporter
     /**
      * Returns the header part for the given numbered columns.
      */
-    protected function getNumberedHeadingPart(int $count, string $columnName): string
+    private function getNumberedHeadingPart(int $count, string $columnName): string
     {
         $heading = '';
 
@@ -108,7 +108,7 @@ class CSVExporter extends Exporter
     /**
      * Returns the header part for the given prefixed column keys.
      */
-    protected function getPrefixedHeadingPart(array $keys, string $prefix): string
+    private function getPrefixedHeadingPart(array $keys, string $prefix): string
     {
         $heading = '';
 

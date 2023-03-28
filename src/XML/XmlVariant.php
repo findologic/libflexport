@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\XML;
 
 use BadMethodCallException;
@@ -9,7 +11,7 @@ use FINDOLOGIC\Export\CSV\CSVConfig;
 use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
 
-class XmlVariant extends Variant
+final class XmlVariant extends Variant
 {
     /**
      * @inheritdoc

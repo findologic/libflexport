@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Data;
 
 use FINDOLOGIC\Export\Helpers\UsergroupAwareNumericValue;
 
-class Bonus extends UsergroupAwareNumericValue
+final class Bonus extends UsergroupAwareNumericValue
 {
     public function __construct()
     {

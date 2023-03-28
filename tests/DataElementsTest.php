@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Tests;
 
 use BadMethodCallException;
@@ -27,7 +29,7 @@ use FINDOLOGIC\Export\Exceptions\ValueIsNotNumericException;
 use FINDOLOGIC\Export\Exceptions\ValueIsNotPositiveIntegerException;
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
-class DataElementsTest extends TestCase
+final class DataElementsTest extends TestCase
 {
     /**
      * Provides a data set for testing if initializing elements of type UsergroupAwareMultiValueItem
@@ -47,9 +49,6 @@ class DataElementsTest extends TestCase
 
     /**
      * @dataProvider multiValueItemProvider
-     * @param string $value
-     * @param string $elementType
-     * @param bool $shouldCauseException
      */
     public function testAddingEmptyValuesToMultiValueItemCausesException(
         string $value = '',
@@ -120,9 +119,6 @@ class DataElementsTest extends TestCase
 
     /**
      * @dataProvider simpleValueItemProvider
-     * @param string|float|int|bool $value
-     * @param string $elementType
-     * @param string|null $expectedException
      */
     public function testAddingEmptyValuesToSimpleItemsCausesException(
         string|float|int|bool $value,
@@ -173,10 +169,6 @@ class DataElementsTest extends TestCase
 
     /**
      * @dataProvider emptyValueProvider
-     * @param string $key
-     * @param array $value
-     * @param string $elementType
-     * @param bool $shouldCauseException
      */
     public function testAddingEmptyValueCausesException(
         string $key,
@@ -207,9 +199,9 @@ class DataElementsTest extends TestCase
 
     public function testUsergroupStringRepresentationIsTheUsergroupValue(): void
     {
-        $usergroup = new Group('test');
+        $group = new Group('test');
 
-        $this->assertEquals($usergroup->getValue(), (string) $usergroup);
+        $this->assertEquals($group->getValue(), (string) $group);
     }
 
     public function testVeryLongAttributeValueCausesException(): void

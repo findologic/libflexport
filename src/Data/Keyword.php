@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Data;
 
 use FINDOLOGIC\Export\Helpers\UsergroupAwareMultiValueItem;
 
-class Keyword extends UsergroupAwareMultiValueItem
+final class Keyword extends UsergroupAwareMultiValueItem
 {
     public function __construct(string $value, string $usergroup = '')
     {

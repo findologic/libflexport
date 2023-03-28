@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Tests;
 
 use BadMethodCallException;
@@ -24,6 +26,8 @@ use FINDOLOGIC\Export\Data\Property;
 use FINDOLOGIC\Export\Data\Url;
 use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Data\Visibility;
+use FINDOLOGIC\Export\Enums\ExporterType;
+use FINDOLOGIC\Export\Enums\ImageType;
 use FINDOLOGIC\Export\Exceptions\BaseImageMissingException;
 use FINDOLOGIC\Export\Exceptions\EmptyValueNotAllowedException;
 use FINDOLOGIC\Export\Exceptions\ImagesWithoutUsergroupMissingException;
@@ -49,7 +53,7 @@ use stdClass;
  * The schema is fetched from GitHub every time the test case is run, to ensure that tests still pass in case the schema
  * changed in the meantime.
  */
-class XmlSerializationTest extends TestCase
+final class XmlSerializationTest extends TestCase
 {
     /** @var XMLExporter */
     private Exporter $exporter;
@@ -62,16 +66,16 @@ class XmlSerializationTest extends TestCase
         self::$schema = file_get_contents(Constant::$XSD_SCHEMA_PATH_20);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         if (file_exists('/tmp/findologic_0_1.xml')) {
             unlink('/tmp/findologic_0_1.xml');
         }
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-        $this->exporter = Exporter::create(Exporter::TYPE_XML);
+        $this->exporter = Exporter::create(ExporterType::XML);
     }
 
     private function getMinimalItem(): Item
@@ -94,7 +98,7 @@ class XmlSerializationTest extends TestCase
         return $item;
     }
 
-    private function getMinimalVariant($parentId): Variant
+    private function getMinimalVariant(string $parentId): Variant
     {
         $variant = $this->exporter->createVariant('123-V', $parentId);
 
@@ -113,7 +117,7 @@ class XmlSerializationTest extends TestCase
         return $variant;
     }
 
-    private function assertPageIsValid($xmlString): void
+    private function assertPageIsValid(string $xmlString): void
     {
         $xmlDocument = new DOMDocument('1.0', 'utf-8');
         $xmlDocument->loadXML($xmlString);
@@ -196,8 +200,8 @@ class XmlSerializationTest extends TestCase
 
         $item->setAllImages([
             new Image('http://example.org/default.png'),
-            new Image('http://example.org/thumbnail.png', Image::TYPE_THUMBNAIL),
-            new Image('http://example.org/ug_default.png', Image::TYPE_DEFAULT, 'usergroup'),
+            new Image('http://example.org/thumbnail.png', ImageType::THUMBNAIL),
+            new Image('http://example.org/ug_default.png', ImageType::DEFAULT, 'usergroup'),
         ]);
 
         $page = $this->exporter->serializeItems([$item], 0, 1, 1);
@@ -241,8 +245,8 @@ class XmlSerializationTest extends TestCase
         $item = $this->getMinimalItem();
 
         $item->setAllImages([
-            new Image('http://example.org/thumbnail.png', Image::TYPE_THUMBNAIL),
-            new Image('http://example.org/ug_default.png', Image::TYPE_THUMBNAIL, 'usergroup'),
+            new Image('http://example.org/thumbnail.png', ImageType::THUMBNAIL),
+            new Image('http://example.org/ug_default.png', ImageType::THUMBNAIL, 'usergroup'),
         ]);
 
         $this->exporter->serializeItems([$item], 0, 1, 1);
@@ -255,7 +259,7 @@ class XmlSerializationTest extends TestCase
         $item = $this->getMinimalItem();
 
         $item->setAllImages([
-            new Image('http://example.org/ug_default.png', Image::TYPE_DEFAULT, 'usergroup'),
+            new Image('http://example.org/ug_default.png', ImageType::DEFAULT, 'usergroup'),
         ]);
 
         $this->exporter->serializeItems([$item], 0, 1, 1);
@@ -350,7 +354,7 @@ class XmlSerializationTest extends TestCase
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('XMLItem does not implement CSV export.');
 
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         $item->getCsvFragment(new CSVConfig());
     }
@@ -432,19 +436,15 @@ class XmlSerializationTest extends TestCase
 
     /**
      * @dataProvider simpleValueAddingShortcutProvider
-     *
-     * @param string $valueType
-     * @param array $values
-     * @param ?array $expectedValues
      */
     public function testSimpleValuesAddedToItemViaShortcutAccumulate(
         string $valueType,
         array $values,
         ?array $expectedValues = null
     ): void {
-        $expectedValues = $expectedValues ?? $values;
+        $expectedValues ??= $values;
 
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         foreach ($values as $usergroup => $value) {
             $item->{'add' . $valueType}($value, $usergroup);
@@ -462,11 +462,12 @@ class XmlSerializationTest extends TestCase
         ];
 
         // On assignment, dates are converted to strings according to the format set in the schema.
-        $expectedValues = array_map(function (DateTime $date): string {
-            return $date->format(DATE_ATOM);
-        }, $values);
+        $expectedValues = array_map(
+            static fn(DateTime $date): string => $date->format(DATE_ATOM),
+            $values
+        );
 
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         foreach ($values as $usergroup => $value) {
             $item->addDateAdded($value, $usergroup);
@@ -478,7 +479,7 @@ class XmlSerializationTest extends TestCase
     public function testImagesAddedToItemViaShortcutAccumulate(): void
     {
         $imageWithoutUsergroup = new Image('https://example.com/image1');
-        $imageWithUsergroup = new Image('https://example.com/image2', '', 'foo');
+        $imageWithUsergroup = new Image('https://example.com/image2', ImageType::DEFAULT, 'foo');
 
         $values = [$imageWithoutUsergroup, $imageWithUsergroup];
         $expectedValues = [
@@ -486,7 +487,7 @@ class XmlSerializationTest extends TestCase
             'foo' => [$imageWithUsergroup],
         ];
 
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         foreach ($values as $value) {
             $item->addImage($value);
@@ -506,7 +507,7 @@ class XmlSerializationTest extends TestCase
             'foo' => [$keywordWithUsergroup],
         ];
 
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         foreach ($values as $value) {
             $item->addKeyword($value);
@@ -522,7 +523,7 @@ class XmlSerializationTest extends TestCase
             'group2',
         ];
 
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         foreach ($groups as $group) {
             $item->addGroup(new Group($group));
@@ -533,7 +534,7 @@ class XmlSerializationTest extends TestCase
 
     public function testVariantsAddedToItemViaShortcutAccumulates(): void
     {
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         $expectedVariants = [
             $this->getMinimalVariant('123'),
@@ -550,7 +551,7 @@ class XmlSerializationTest extends TestCase
 
     public function testAllVariantsCanBeSet(): void
     {
-        $item = new XMLItem(123);
+        $item = new XMLItem('123');
 
         $expectedVariants = [
             $this->getMinimalVariant('123'),
@@ -582,9 +583,6 @@ class XmlSerializationTest extends TestCase
 
     /**
      * @dataProvider urlValidationProvider
-     *
-     * @param string $value
-     * @param string $expectedException
      */
     public function testUrlValidationWorks(string $value, string $expectedException): void
     {
@@ -648,8 +646,8 @@ class XmlSerializationTest extends TestCase
         $this->expectException(XMLSchemaViolationException::class);
         $this->expectExceptionMessage(
             'XML schema validation failed: DOMDocument::schemaValidate(): Element ' .
-            '\'url\': \'https://www.store.com/search?attrib[cat][]=Foobar\' ' .
-            'is not a valid value of the atomic type \'httpURI\'.'
+            "'url': 'https://www.store.com/search?attrib[cat][]=Foobar' " .
+            "is not a valid value of the atomic type 'httpURI'."
         );
 
         /** @var XMLItem $item */

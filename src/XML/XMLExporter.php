@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\XML;
 
 use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Exporter;
 
-class XMLExporter extends Exporter
+final class XMLExporter extends Exporter
 {
     /**
      * @inheritdoc
@@ -47,7 +49,6 @@ class XMLExporter extends Exporter
     }
 
     /**
-     * @param string $parentId
      * @inheritdoc
      */
     public function createVariant(string $id, string $parentId): Variant

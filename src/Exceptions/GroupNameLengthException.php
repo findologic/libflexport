@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Exceptions;
 
-class GroupNameLengthException extends InternalCharacterLimitException
+final class GroupNameLengthException extends InternalCharacterLimitException
 {
-    public function __construct(string $group, string $characterLimit)
+    public function __construct(string $group, int $characterLimit)
     {
         parent::__construct('Group with name', $group, $characterLimit);
     }

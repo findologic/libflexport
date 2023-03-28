@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Data;
 
 use DOMDocument;
@@ -9,12 +11,13 @@ use FINDOLOGIC\Export\Helpers\DataHelper;
 use FINDOLOGIC\Export\Helpers\NameAwareValue;
 use FINDOLOGIC\Export\Helpers\Serializable;
 use FINDOLOGIC\Export\Helpers\XMLHelper;
+use Stringable;
 
-class Group implements Serializable, NameAwareValue
+final class Group implements Serializable, NameAwareValue, Stringable
 {
-    private string $value;
+    private readonly string $value;
 
-    public function __construct($value)
+    public function __construct(string $value)
     {
         $this->value = DataHelper::checkForEmptyValue($this->getValueName(), $value);
     }

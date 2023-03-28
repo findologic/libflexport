@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Data;
 
 use FINDOLOGIC\Export\Helpers\UsergroupAwareSimpleValue;
 
-class Summary extends UsergroupAwareSimpleValue
+final class Summary extends UsergroupAwareSimpleValue
 {
     public function __construct()
     {

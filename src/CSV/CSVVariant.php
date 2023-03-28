@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\CSV;
 
 use BadMethodCallException;
@@ -8,7 +10,7 @@ use DOMElement;
 use FINDOLOGIC\Export\Data\Variant;
 use FINDOLOGIC\Export\Helpers\DataHelper;
 
-class CSVVariant extends Variant
+final class CSVVariant extends Variant
 {
     public function getDomSubtree(DOMDocument $document): DOMElement
     {

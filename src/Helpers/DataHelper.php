@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Export\Helpers;
 
 use FINDOLOGIC\Export\Exceptions\AttributeKeyLengthException;
@@ -16,25 +18,29 @@ use FINDOLOGIC\Export\Exceptions\ItemIdLengthException;
  *
  * Collection of helper methods for data elements.
  */
-class DataHelper
+final class DataHelper
 {
     /**
      * Internal character limit for attribute values.
+     * @var int
      */
     public const ATTRIBUTE_CHARACTER_LIMIT = 16383;
 
     /**
      * Internal character limit for item id.
+     * @var int
      */
     public const ITEM_ID_CHARACTER_LIMIT = 255;
 
     /**
      * Internal character limit for group names of CSV export.
+     * @var int
      */
     public const CSV_GROUP_CHARACTER_LIMIT = 255;
 
     /**
      * Internal character limit for attribute key names of CSV export.
+     * @var int
      */
     public const CSV_ATTRIBUTE_KEY_CHARACTER_LIMIT = 247;
 
@@ -45,11 +51,11 @@ class DataHelper
      * @param mixed $value The value to check. Regardless of type, it is coerced into a string.
      * @return string Returns the value if not empty.
      */
-    public static function checkForEmptyValue(string $valueName, mixed $value): string
+    public static function checkForEmptyValue(string $valueName, mixed $value): mixed
     {
-        $value = trim($value);
+        $value = is_string($value) ? trim($value) : $value;
 
-        if ($value === '') {
+        if ($value === '' || $value === false) {
             throw new EmptyValueNotAllowedException($valueName);
         }
 

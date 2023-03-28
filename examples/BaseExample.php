@@ -1,12 +1,12 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/data/ExampleBaseItem.php';
-require_once __DIR__ . '/data/ExampleProductItem.php';
-require_once __DIR__ . '/data/ExampleProductItemWithVariants.php';
-require_once __DIR__ . '/data/ExampleContentItem.php';
-require_once __DIR__ . '/data/ExampleContentItemWithoutUsergroups.php';
+declare(strict_types=1);
 
+namespace FINDOLOGIC\Export\Examples;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use DateTime;
 use FINDOLOGIC\Export\Data\Attribute;
 use FINDOLOGIC\Export\Data\Group;
 use FINDOLOGIC\Export\Data\Image;
@@ -14,6 +14,9 @@ use FINDOLOGIC\Export\Data\Item;
 use FINDOLOGIC\Export\Data\Keyword;
 use FINDOLOGIC\Export\Data\Ordernumber;
 use FINDOLOGIC\Export\Data\Property;
+use FINDOLOGIC\Export\Examples\Data\ExampleBaseItem;
+use FINDOLOGIC\Export\Examples\Data\ExampleContentItem;
+use FINDOLOGIC\Export\Examples\Data\ExampleProductItem;
 use FINDOLOGIC\Export\Exporter;
 
 abstract class BaseExample
