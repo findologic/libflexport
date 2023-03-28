@@ -58,7 +58,7 @@ trait HasImages
         if (array_key_exists('', $this->images)) {
             $images = $this->images[''];
 
-            for ($i = 0; $i < $csvConfig->getImageCount(); ++$i) {
+            for ($i = 0; $i < $csvConfig->getImageCount(); $i++) {
                 $imageUrl = isset($images[$i]) ? $images[$i]->getCsvFragment($csvConfig) : '';
                 $imagesString .= "\t" . $imageUrl;
             }

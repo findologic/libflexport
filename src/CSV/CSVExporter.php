@@ -98,7 +98,7 @@ final class CSVExporter extends Exporter
     {
         $heading = '';
 
-        for ($i = 0; $i < $count; ++$i) {
+        for ($i = 0; $i < $count; $i++) {
             $heading .= "\t" . $columnName . $i;
         }
 
