@@ -36,6 +36,9 @@ final class CsvVariantsExample extends BaseVariantsExample
                 'cat_url',
                 'brand',
                 'color',
+                'ratingAvg',
+                'ratingCount',
+                'free_shipping',
                 'type',
                 'variant_value'
             ],
