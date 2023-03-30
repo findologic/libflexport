@@ -159,6 +159,24 @@
               <value><![CDATA[product]]></value>
             </values>
           </attribute>
+          <attribute>
+            <key><![CDATA[ratingAvg]]></key>
+            <values>
+              <value><![CDATA[4.5]]></value>
+            </values>
+          </attribute>
+          <attribute>
+            <key><![CDATA[ratingCount]]></key>
+            <values>
+              <value><![CDATA[11]]></value>
+            </values>
+          </attribute>
+          <attribute>
+            <key><![CDATA[free_shipping]]></key>
+            <values>
+              <value><![CDATA[1]]></value>
+            </values>
+          </attribute>
         </attributes>
       </allAttributes>
       <allImages>

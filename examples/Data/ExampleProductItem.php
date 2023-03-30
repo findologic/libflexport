@@ -122,6 +122,15 @@ class ExampleProductItem extends ExampleBaseItem
         ],
         'type' => [
             'product',
+        ],
+        'ratingAvg' => [
+            4.5
+        ],
+        'ratingCount' => [
+            11
+        ],
+        'free_shipping' => [
+            true
         ]
     ];
 

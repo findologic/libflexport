@@ -30,7 +30,7 @@ final class Attribute implements Serializable, NameAwareValue
 
     public function addValue(mixed $value): void
     {
-        DataHelper::checkAttributeValueNotExceedingCharacterLimit($this->getKey(), $value);
+        DataHelper::checkAttributeValueNotExceedingCharacterLimit($this->getKey(), (string) $value);
         $this->values[] = DataHelper::checkForEmptyValue($this->getValueName(), $value);
     }
 
