@@ -825,6 +825,31 @@ final class XmlSerializationTest extends TestCase
         $item->setAllOverriddenPrices([new stdClass()]);
     }
 
+    public function testAttributeValueTypes(): void
+    {
+        /** @var XMLItem $item */
+        $item = $this->getMinimalItem();
+
+        $expectedAttributes = ['string', '4.5', '11', '1'];
+        $attr1 = new Attribute('values', ['string', 4.5, 11, true]);
+
+        $item->addAttribute($attr1);
+
+        $page = new Page(0, 1, 1);
+        $page->addItem($item);
+        $document = $page->getXml();
+        $xpath = new DOMXPath($document);
+
+        $values = $xpath->query('//attribute')->item(0)->childNodes->item(1)->childNodes;
+
+        $actualAttributes = [];
+        foreach ($values as $value) {
+            $actualAttributes[] = $value->nodeValue;
+        }
+
+        $this->assertEquals($expectedAttributes, $actualAttributes);
+    }
+
     public function testMergingAttributesWillNotOverrideExistingOnes(): void
     {
         /** @var XMLItem $item */
