@@ -21,8 +21,8 @@
 ## Synopsis
 
 This project provides an export library for XML and CSV generation according to the FINDOLOGIC export patterns.
-* XML <https://docs.findologic.com/doku.php?id=xml_export_documentation:xml_format>
-* CSV <https://docs.findologic.com/doku.php?id=csv_export_documentation:csv_format>
+* XML https://docs.findologic.com/doku.php?id=xml_export_documentation:XML_2_format
+* CSV https://docs.findologic.com/doku.php?id=csv_export_documentation:csv_2_format
   * Note that CSV support is still relatively new. Consider it beta-quality.
 
 #### Export recommendation
@@ -35,9 +35,9 @@ Using the XML export is recommended by FINDOLOGIC. The XML is easier to read and
 * Standardized structure.
 * Dynamically extract the products from the database via `start` and `count` parameter in the url.
 * No limited file size for XML because of pagination.
-* Using multiple usergroups per product.
+* Using multiple groups per product.
 
-The key advantage for CSV is that it is possible to use way more groups than XML usergroups. On the other hand:
+The key advantage for CSV is that it is possible to use way more groups than for XML. On the other hand:
 
 * Groups only regulate visibility - it's not possible to show different values per group.
 * The format is prone to encoding issues if non-UTF-8 data is fed into it.
@@ -64,9 +64,9 @@ following is necessary:
 ```php
 require_once './vendor/autoload.php';
 
-use \FINDOLOGIC\Export\Exporter;
+use FINDOLOGIC\Export\Exporter;
 
-$exporter = Exporter::create(Exporter::TYPE_XML);
+$exporter = Exporter::create(ExporterType::XML);
 
 $item = $exporter->createItem('123');
 
@@ -92,9 +92,9 @@ $xmlOutput = $exporter->serializeItems([$item], 0, 1, 1);
 ```php
 require_once './vendor/autoload.php';
 
-use \FINDOLOGIC\Export\Exporter;
+use FINDOLOGIC\Export\Exporter;
 
-$exporter = Exporter::create(Exporter::TYPE_CSV);
+$exporter = Exporter::create(ExporterType::CSV);
 
 $item = $exporter->createItem('123');
 
@@ -127,18 +127,14 @@ For more specific examples, please have a look at the examples directory.
 The status of the major versions of libflexport is outlined below. Version numbers generally follow
 [semantic versioning](https://semver.org/) principles.
 
-| Version | PHP support | Receives bug fixes | Receives enhancements | End of life                   |
-|---------|-------------|--------------------|-----------------------|-------------------------------|
-| 2.X     | \>=7.1      | :heavy_check_mark: | :heavy_check_mark:    | Not in the foreseeable future |
-| 1.X     | 5.6 - 7.3   | :heavy_check_mark: | :x:                   | TBD                           |
-| 0.X     | 5.6 - 7.0   | :x:                | :x:                   | 2017-11-24                    |
+| Version | Branch  |PHP support | Receives bug fixes | Receives enhancements | End of life                   |
+|---------|---------|-------------|--------------------|-----------------------|-------------------------------|
+| 3.X     | develop | \>=8.1      | :heavy_check_mark: | :heavy_check_mark:    | Not in the foreseeable future |
+| 2.X     | 2.x     | \>=7.1      | :heavy_check_mark: | :x:                   | Not in the foreseeable future |
+| 1.X     | 1.x     | 5.6 - 7.3   | :heavy_check_mark: | :x:                   | TBD                           |
+| 0.X     | :x:     | 5.6 - 7.0   | :x:                | :x:                   | 2017-11-24                    |
 
 All versions will most likely remain available for as long as the infrastructure to do so exists.
-
-Development for 2.X is conducted on the branch `main` with `develop` serving as target branch between releases.
-
-Bug maintenance for 1.X is conducted on the branch `1.X` with `develop_1.X` serving as target branch between
-releases.
 
 ## Contributors
 

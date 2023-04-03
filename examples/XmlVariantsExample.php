@@ -14,7 +14,7 @@ use FINDOLOGIC\Export\Exporter;
  * under the following link:
  * @link https://docs.findologic.com/doku.php?id=xml_export_documentation:XML_format
  */
-final class XmlExample extends BaseExample
+final class XmlVariantsExample extends BaseVariantsExample
 {
     public function createExport(): string
     {
@@ -25,7 +25,7 @@ final class XmlExample extends BaseExample
     }
 }
 
-$example = new XmlExample();
+$example = new XmlVariantsExample();
 
 // Output the XML content.
 echo $example->createExport();
