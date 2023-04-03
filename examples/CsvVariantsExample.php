@@ -11,10 +11,11 @@ use FINDOLOGIC\Export\Enums\ExporterType;
 use FINDOLOGIC\Export\Exporter;
 
 /**
- * This example class builds a CSV export inspired by the FINDOLOGIC documentation, which can be found at
- * https://docs.findologic.com/doku.php?id=export_patterns:csv .
+ * This example class builds an XML export based on the example of the FINDOLOGIC documentation, which can be found
+ * under the following link:
+ * @link https://docs.findologic.com/doku.php?id=xml_export_documentation:XML_format
  */
-final class CsvExample extends BaseExample
+final class CsvVariantsExample extends BaseVariantsExample
 {
     public function createExport(): string
     {
@@ -26,7 +27,6 @@ final class CsvExample extends BaseExample
                 'availability',
                 'old_price',
                 'Basic_rate_price',
-                'variants',
                 'file_type',
                 'number_of_comments',
                 'badge',
@@ -40,6 +40,7 @@ final class CsvExample extends BaseExample
                 'ratingCount',
                 'free_shipping',
                 'type',
+                'variant_value'
             ],
             imageCount: 3,
         );
@@ -52,7 +53,7 @@ final class CsvExample extends BaseExample
     }
 }
 
-$example = new CsvExample();
+$example = new CsvVariantsExample();
 
 // Output the CSV content.
 echo $example->createExport();

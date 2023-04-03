@@ -35,9 +35,9 @@ Using the XML export is recommended by FINDOLOGIC. The XML is easier to read and
 * Standardized structure.
 * Dynamically extract the products from the database via `start` and `count` parameter in the url.
 * No limited file size for XML because of pagination.
-* Using multiple usergroups per product.
+* Using multiple groups per product.
 
-The key advantage for CSV is that it is possible to use way more groups than XML usergroups. On the other hand:
+The key advantage for CSV is that it is possible to use way more groups than for XML. On the other hand:
 
 * Groups only regulate visibility - it's not possible to show different values per group.
 * The format is prone to encoding issues if non-UTF-8 data is fed into it.
@@ -64,9 +64,9 @@ following is necessary:
 ```php
 require_once './vendor/autoload.php';
 
-use \FINDOLOGIC\Export\Exporter;
+use FINDOLOGIC\Export\Exporter;
 
-$exporter = Exporter::create(Exporter::TYPE_XML);
+$exporter = Exporter::create(ExporterType::XML);
 
 $item = $exporter->createItem('123');
 
@@ -92,9 +92,9 @@ $xmlOutput = $exporter->serializeItems([$item], 0, 1, 1);
 ```php
 require_once './vendor/autoload.php';
 
-use \FINDOLOGIC\Export\Exporter;
+use FINDOLOGIC\Export\Exporter;
 
-$exporter = Exporter::create(Exporter::TYPE_CSV);
+$exporter = Exporter::create(ExporterType::CSV);
 
 $item = $exporter->createItem('123');
 

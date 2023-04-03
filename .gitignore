@@ -4,5 +4,6 @@
 /phpunit.xml
 /phpcs.xml
 /composer.lock
-/coverage.xml
+/coverage/
+/resources/generated_examples/
 /vendor/
