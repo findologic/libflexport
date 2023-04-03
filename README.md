@@ -127,21 +127,14 @@ For more specific examples, please have a look at the examples directory.
 The status of the major versions of libflexport is outlined below. Version numbers generally follow
 [semantic versioning](https://semver.org/) principles.
 
-| Version | PHP support | Receives bug fixes | Receives enhancements | End of life                   |
-|---------|-------------|--------------------|-----------------------|-------------------------------|
-| 3.X     | \>=8.1      | :heavy_check_mark: | :heavy_check_mark:    | Not in the foreseeable future |
-| 2.X     | \>=7.1      | :heavy_check_mark: | :x:                   | Not in the foreseeable future |
-| 1.X     | 5.6 - 7.3   | :heavy_check_mark: | :x:                   | TBD                           |
-| 0.X     | 5.6 - 7.0   | :x:                | :x:                   | 2017-11-24                    |
+| Version | Branch  |PHP support | Receives bug fixes | Receives enhancements | End of life                   |
+|---------|---------|-------------|--------------------|-----------------------|-------------------------------|
+| 3.X     | develop | \>=8.1      | :heavy_check_mark: | :heavy_check_mark:    | Not in the foreseeable future |
+| 2.X     | 2.x     | \>=7.1      | :heavy_check_mark: | :x:                   | Not in the foreseeable future |
+| 1.X     | 1.x     | 5.6 - 7.3   | :heavy_check_mark: | :x:                   | TBD                           |
+| 0.X     | :x:     | 5.6 - 7.0   | :x:                | :x:                   | 2017-11-24                    |
 
 All versions will most likely remain available for as long as the infrastructure to do so exists.
-
-Development for 3.X is conducted on the branch `main` with `develop` serving as target branch between releases.
-
-Bug maintenance for 2.X is conducted on the branch `2.x` with `develop_2.x` serving as target branch between releases.
-
-Bug maintenance for 1.X is conducted on the branch `1.X` with `develop_1.X` serving as target branch between
-releases.
 
 ## Contributors
 
