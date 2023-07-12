@@ -42,6 +42,7 @@ abstract class Variant implements Serializable
         $this->ordernumbers = new AllOrdernumbers();
         $this->price = new Price();
         $this->overriddenPrice = new OverriddenPrice();
+        $this->url = new Url();
     }
 
     public function checkUsergroupString(string $usergroup): void

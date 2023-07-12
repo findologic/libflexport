@@ -29,7 +29,7 @@ final class CSVVariant extends Variant
             '', // description
             $this->price->getCsvFragment($csvConfig),
             $this->getOverriddenPrice()->getCsvFragment($csvConfig),
-            '', // url
+            DataHelper::sanitize($this->url->getCsvFragment($csvConfig)),
             '', // keywords
             $this->buildCsvGroups($csvConfig),
             '', // bonus
@@ -37,7 +37,7 @@ final class CSVVariant extends Variant
             '', // dateAdded
             '', // sort
             '', // visibility
-            str_repeat("\t", $csvConfig->getImageCount()),
+            $this->buildCsvImages($csvConfig),
             $this->buildCsvProperties($csvConfig),
             $this->buildCsvAttributes($csvConfig),
         );

@@ -36,10 +36,12 @@ final class XmlVariant extends Variant
         if (count($this->overriddenPrice->getValues())) {
             $itemElem->appendChild($this->overriddenPrice->getDomSubtree($document));
         }
+        $itemElem->appendChild($this->url->getDomSubtree($document));
         $itemElem->appendChild($this->ordernumbers->getDomSubtree($document));
 
         $itemElem->appendChild($this->buildXmlProperties($document));
         $itemElem->appendChild($this->buildXmlAttributes($document));
+        $itemElem->appendChild($this->buildXmlImages($document));
         $itemElem->appendChild($this->buildXmlGroups($document));
 
         return $itemElem;
