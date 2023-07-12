@@ -150,6 +150,9 @@
           <prices>
             <price><![CDATA[13.99]]></price>
           </prices>
+          <urls>
+            <url><![CDATA[https://www.store.com/sneakers/adidas_blue.html]]></url>
+          </urls>
           <allOrdernumbers>
             <ordernumbers>
               <ordernumber><![CDATA[variant1]]></ordernumber>
@@ -173,6 +176,12 @@
               </attribute>
             </attributes>
           </allAttributes>
+          <allImages>
+            <images>
+              <image><![CDATA[https://www.store.com/images/277KTL_blue.png]]></image>
+              <image type="thumbnail"><![CDATA[https://www.store.com/images/thumbnails/277KTL_blue.png]]></image>
+            </images>
+          </allImages>
           <groups/>
         </variant>
         <variant id="variant2">
@@ -185,6 +194,9 @@
           <overriddenPrices>
             <overriddenPrice><![CDATA[14.99]]></overriddenPrice>
           </overriddenPrices>
+          <urls>
+            <url><![CDATA[https://www.store.com/sneakers/adidas_red.html]]></url>
+          </urls>
           <allOrdernumbers>
             <ordernumbers>
               <ordernumber><![CDATA[variant2]]></ordernumber>
@@ -212,6 +224,12 @@
               </attribute>
             </attributes>
           </allAttributes>
+          <allImages>
+            <images>
+              <image><![CDATA[https://www.store.com/images/277KTL_red.png]]></image>
+              <image type="thumbnail"><![CDATA[https://www.store.com/images/thumbnails/277KTL_red.png]]></image>
+            </images>
+          </allImages>
           <groups/>
         </variant>
         <variant id="variant3">
@@ -224,6 +242,9 @@
           <overriddenPrices>
             <overriddenPrice><![CDATA[12.99]]></overriddenPrice>
           </overriddenPrices>
+          <urls>
+            <url><![CDATA[https://www.store.com/sneakers/adidas_grey.html]]></url>
+          </urls>
           <allOrdernumbers>
             <ordernumbers>
               <ordernumber><![CDATA[variant3]]></ordernumber>
@@ -251,6 +272,13 @@
               </attribute>
             </attributes>
           </allAttributes>
+          <allImages>
+            <images>
+              <image><![CDATA[https://www.store.com/images/277KTL_grey.png]]></image>
+              <image><![CDATA[https://www.store.com/images/277KTL_grey2.png]]></image>
+              <image type="thumbnail"><![CDATA[https://www.store.com/images/thumbnails/277KTL_grey.png]]></image>
+            </images>
+          </allImages>
           <groups/>
         </variant>
       </variants>
