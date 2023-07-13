@@ -207,6 +207,7 @@ abstract class BaseExample
             $variant->addName($values['title']);
             $variant->addOrdernumber(new Ordernumber($values['ordernumber']));
             $variant->addPrice($values['price']);
+            $variant->addUrl($values['url']);
             $variant->addMergedAttribute(
                 new Attribute('variant_value', [$variantAttribute])
             );
@@ -222,6 +223,10 @@ abstract class BaseExample
 
             if ($values['overridden_price']) {
                 $variant->addOverriddenPrice($values['overridden_price']);
+            }
+
+            foreach ($values['images'] as $image => $type) {
+                $variant->addImage(new Image($image, $type));
             }
 
             $this->item->addVariant($variant);

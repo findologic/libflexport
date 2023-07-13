@@ -111,7 +111,12 @@ final class ExampleProductItemWithVariants extends ExampleProductItem
             'price' => '13.99',
             'overridden_price' => '',
             'sale' => '',
-            'groups' => ['group1', 'group2']
+            'groups' => ['group1', 'group2'],
+            'url' => 'https://www.store.com/sneakers/adidas_blue.html',
+            'images' => [
+                'https://www.store.com/images/277KTL_blue.png' => ImageType::DEFAULT,
+                'https://www.store.com/images/thumbnails/277KTL_blue.png' => ImageType::THUMBNAIL
+            ]
         ],
         'Red' => [
             'id' => 'variant2',
@@ -121,7 +126,12 @@ final class ExampleProductItemWithVariants extends ExampleProductItem
             'price' => '7.49',
             'overridden_price' => '14.99',
             'sale' => '50%',
-            'groups' => ['group1', 'group2']
+            'groups' => ['group1', 'group2'],
+            'url' => 'https://www.store.com/sneakers/adidas_red.html',
+            'images' => [
+                'https://www.store.com/images/277KTL_red.png' => ImageType::DEFAULT,
+                'https://www.store.com/images/thumbnails/277KTL_red.png' => ImageType::THUMBNAIL
+            ],
         ],
         'Grey' => [
             'id' => 'variant3',
@@ -131,7 +141,13 @@ final class ExampleProductItemWithVariants extends ExampleProductItem
             'price' => '6.49',
             'overridden_price' => '12.99',
             'sale' => '50%',
-            'groups' => ['group1', 'group2']
+            'groups' => ['group1', 'group2'],
+            'url' => 'https://www.store.com/sneakers/adidas_grey.html',
+            'images' => [
+                'https://www.store.com/images/277KTL_grey.png' => ImageType::DEFAULT,
+                'https://www.store.com/images/277KTL_grey2.png' => ImageType::DEFAULT,
+                'https://www.store.com/images/thumbnails/277KTL_grey.png' => ImageType::THUMBNAIL
+            ],
         ]
     ];
 

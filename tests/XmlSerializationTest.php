@@ -103,6 +103,7 @@ final class XmlSerializationTest extends TestCase
         $variant = $this->exporter->createVariant('123-V', $parentId);
 
         $variant->addName('Variant name');
+        $variant->addUrl('https://example.com/variant1');
         $variant->addOrdernumber(new Ordernumber('variant1'));
         $variant->addAttribute(new Attribute('key', ['value1']));
 
